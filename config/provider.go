@@ -10,7 +10,11 @@ import (
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
 
-	"github.com/upbound/provider-vault/config/null"
+	"github.com/humoflife/provider-vault/config/adsecretbackend"
+	"github.com/humoflife/provider-vault/config/adsecretbackendlibrary"
+	"github.com/humoflife/provider-vault/config/adsecretrole"
+	"github.com/humoflife/provider-vault/config/alicloudauthbackendrole"
+	"github.com/humoflife/provider-vault/config/approleauthbackendlogin"
 )
 
 const (
@@ -35,7 +39,11 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		null.Configure,
+		adsecretbackend.Configure,
+		adsecretbackendlibrary.Configure,
+		adsecretrole.Configure,
+		alicloudauthbackendrole.Configure,
+		approleauthbackendlogin.Configure,
 	} {
 		configure(pc)
 	}

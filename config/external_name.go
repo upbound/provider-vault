@@ -10,7 +10,11 @@ import "github.com/upbound/upjet/pkg/config"
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
 	// Import requires using a randomly generated ID from provider: nl-2e21sda
-	"null_resource": config.IdentifierFromProvider,
+	"vault_ad_secret_backend":          config.IdentifierFromProvider,
+	"vault_ad_secret_backend_library":  config.IdentifierFromProvider,
+	"vault_ad_secret_role":             config.IdentifierFromProvider,
+	"vault_alicloud_auth_backend_role": config.IdentifierFromProvider,
+	"vault_approle_auth_backend_login": config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the
