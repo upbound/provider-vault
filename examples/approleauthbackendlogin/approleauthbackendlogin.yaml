@@ -1,0 +1,12 @@
+apiVersion: approle.vault.upbound.io/v1alpha1
+kind: AuthBackendLogin
+metadata:
+  name: vault-auth-backend-login
+spec:
+  forProvider:
+    backend: ""
+    namespace: upbound-system
+    roleId: "vault-role-id"
+    secretId: "vault-secret-id"
+  providerConfigRef:
+    name: default

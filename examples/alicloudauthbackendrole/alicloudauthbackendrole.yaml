@@ -1,0 +1,12 @@
+apiVersion: alicloud.vault.upbound.io/v1alpha1
+kind: AuthBackendRole
+metadata:
+  name: vault-alicloud-auth-backend-role
+spec:
+  forProvider:
+    arn: ""
+    backend: ""
+    namespace: upbound-system
+    role: vault-secret-role
+  providerConfigRef:
+    name: default

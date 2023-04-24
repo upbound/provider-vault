@@ -9,7 +9,10 @@ import (
 
 	"github.com/upbound/upjet/pkg/controller"
 
-	resource "github.com/upbound/provider-vault/internal/controller/null/resource"
+	secretbackend "github.com/upbound/provider-vault/internal/controller/ad/secretbackend"
+	secretrole "github.com/upbound/provider-vault/internal/controller/ad/secretrole"
+	authbackendrole "github.com/upbound/provider-vault/internal/controller/alicloud/authbackendrole"
+	authbackendlogin "github.com/upbound/provider-vault/internal/controller/approle/authbackendlogin"
 	providerconfig "github.com/upbound/provider-vault/internal/controller/providerconfig"
 )
 
@@ -17,7 +20,10 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
-		resource.Setup,
+		secretbackend.Setup,
+		secretrole.Setup,
+		authbackendrole.Setup,
+		authbackendlogin.Setup,
 		providerconfig.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {

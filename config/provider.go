@@ -10,11 +10,11 @@ import (
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
 
-	"github.com/humoflife/provider-vault/config/adsecretbackend"
-	"github.com/humoflife/provider-vault/config/adsecretbackendlibrary"
-	"github.com/humoflife/provider-vault/config/adsecretrole"
-	"github.com/humoflife/provider-vault/config/alicloudauthbackendrole"
-	"github.com/humoflife/provider-vault/config/approleauthbackendlogin"
+	"github.com/upbound/provider-vault/config/adsecretbackend"
+	"github.com/upbound/provider-vault/config/adsecretbackendlibrary"
+	"github.com/upbound/provider-vault/config/adsecretrole"
+	"github.com/upbound/provider-vault/config/alicloudauthbackendrole"
+	"github.com/upbound/provider-vault/config/approleauthbackendlogin"
 )
 
 const (

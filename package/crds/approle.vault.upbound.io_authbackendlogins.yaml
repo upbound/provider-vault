@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: resources.null.vault.upbound.io
+  name: authbackendlogins.approle.vault.upbound.io
 spec:
-  group: null.vault.upbound.io
+  group: approle.vault.upbound.io
   names:
     categories:
     - crossplane
     - managed
     - vault
-    kind: Resource
-    listKind: ResourceList
-    plural: resources
-    singular: resource
+    kind: AuthBackendLogin
+    listKind: AuthBackendLoginList
+    plural: authbackendlogins
+    singular: authbackendlogin
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,7 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Resource is the Schema for the Resources API. <no value>
+        description: AuthBackendLogin is the Schema for the AuthBackendLogins API.
+          <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: ResourceSpec defines the desired state of Resource
+            description: AuthBackendLoginSpec defines the desired state of AuthBackendLogin
             properties:
               deletionPolicy:
                 default: Delete
@@ -67,13 +68,18 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  triggers:
-                    additionalProperties:
-                      type: string
-                    description: A map of arbitrary strings that, when changed, will
-                      force the null resource to be replaced, re-running any associated
-                      provisioners.
-                    type: object
+                  backend:
+                    description: Unique name of the auth backend to configure.
+                    type: string
+                  namespace:
+                    description: Target namespace. (requires Enterprise)
+                    type: string
+                  roleId:
+                    description: The RoleID to log in with.
+                    type: string
+                  secretId:
+                    description: The SecretID to log in with.
+                    type: string
                 type: object
               managementPolicy:
                 default: FullControl
@@ -261,20 +267,52 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: roleId is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.roleId)
           status:
-            description: ResourceStatus defines the observed state of Resource.
+            description: AuthBackendLoginStatus defines the observed state of AuthBackendLogin.
             properties:
               atProvider:
                 properties:
+                  accessor:
+                    description: The accessor for the token.
+                    type: string
+                  backend:
+                    description: Unique name of the auth backend to configure.
+                    type: string
+                  clientToken:
+                    description: The token.
+                    type: string
                   id:
                     type: string
-                  triggers:
+                  leaseDuration:
+                    description: How long the token is valid for.
+                    type: number
+                  leaseStarted:
+                    type: string
+                  metadata:
                     additionalProperties:
                       type: string
-                    description: A map of arbitrary strings that, when changed, will
-                      force the null resource to be replaced, re-running any associated
-                      provisioners.
+                    description: Metadata associated with the token.
                     type: object
+                  namespace:
+                    description: Target namespace. (requires Enterprise)
+                    type: string
+                  policies:
+                    description: Policies set on the token.
+                    items:
+                      type: string
+                    type: array
+                  renewable:
+                    description: Whether the token is renewable or not.
+                    type: boolean
+                  roleId:
+                    description: The RoleID to log in with.
+                    type: string
+                  secretId:
+                    description: The SecretID to log in with.
+                    type: string
                 type: object
               conditions:
                 description: Conditions of the resource.
