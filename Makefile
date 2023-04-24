@@ -8,9 +8,9 @@ export TERRAFORM_VERSION ?= 1.3.9
 
 export TERRAFORM_PROVIDER_SOURCE ?= hashicorp/vault
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/hashicorp/terraform-provider-vault
-export TERRAFORM_PROVIDER_VERSION ?= 3.14.0
+export TERRAFORM_PROVIDER_VERSION ?= 3.15.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-vault
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-null_v3.14.0_x5
+export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-null_v3.15.0_x5
 export TERRAFORM_DOCS_PATH ?= website/docs/r
 
 PLATFORMS ?= linux_amd64 linux_arm64

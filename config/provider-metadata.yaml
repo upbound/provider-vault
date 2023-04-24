@@ -2886,6 +2886,47 @@ resources:
                 (int) - The number of delay periods that are allowed when validating a TOTP token.
                 This value can either be 0 or 1.
         importStatements: []
+    vault_mongodbatlas_secret_backend resource:
+        subCategory: ""
+        description: Creates a MongoDB Atlas secret backend for Vault.
+        name: vault_mongodbatlas_secret_backend resource
+        title: vault_mongodbatlas_secret_backend resource
+        argumentDocs:
+            mount: '- (Required) Path where the MongoDB Atlas Secrets Engine is mounted.'
+            namespace: |-
+                - (Optional) The namespace to provision the resource in.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+                Available only for Vault Enterprise.
+            private_key: '- (Required) Specifies the Private API Key used to authenticate with the MongoDB Atlas API.'
+            public_key: '- (Required) Specifies the Public API Key used to authenticate with the MongoDB Atlas API.'
+        importStatements: []
+    vault_mongodbatlas_secret_role resource:
+        subCategory: ""
+        description: Creates a role for the MongoDB Atlas Secret Engine in Vault.
+        name: vault_mongodbatlas_secret_role resource
+        title: vault_mongodbatlas_secret_role resource
+        argumentDocs:
+            cidr_blocks: '- (Optional) Whitelist entry in CIDR notation to be added for the API key.'
+            ip_addresses: '- (Optional) IP address to be added to the whitelist for the API key.'
+            max_ttl: '- (Optional) The maximum allowed lifetime of credentials issued using this role.'
+            mount: '- (Required) Path where the MongoDB Atlas Secrets Engine is mounted.'
+            name: '- (Required) The name of the role.'
+            namespace: |-
+                - (Optional) The namespace to provision the resource in.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+                Available only for Vault Enterprise.
+            organization_id: |-
+                - (Optional) Unique identifier for the organization to which the target API Key belongs.
+                Required if project_id is not set.
+            project_id: |-
+                - (Optional) Unique identifier for the project to which the target API Key belongs.
+                Required if organization_id is not set.
+            project_roles: '- (Optional) Roles assigned when an org API key is assigned to a project API key.'
+            roles: '- (Required) List of roles that the API Key needs to have.'
+            ttl: '- (Optional) Duration in seconds after which the issued credential should expire.'
+        importStatements: []
     vault_mount resource:
         subCategory: ""
         description: Managing the mounting of secret backends in Vault
