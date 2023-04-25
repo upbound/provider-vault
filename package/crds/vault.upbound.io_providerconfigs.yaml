@@ -47,6 +47,10 @@ spec:
           spec:
             description: A ProviderConfigSpec defines the desired state of a ProviderConfig.
             properties:
+              address:
+                description: Required origin URL of the Vault server. This is a URL
+                  with a scheme, a hostname and a port but with no path.
+                type: string
               credentials:
                 description: Credentials required to authenticate to this provider.
                 properties:
@@ -101,6 +105,7 @@ spec:
                 - source
                 type: object
             required:
+            - address
             - credentials
             type: object
           status:

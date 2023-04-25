@@ -12,6 +12,11 @@ import (
 
 // A ProviderConfigSpec defines the desired state of a ProviderConfig.
 type ProviderConfigSpec struct {
+	// Required origin URL of the Vault server.
+	// This is a URL with a scheme, a hostname
+	// and a port but with no path.
+	Address string `json:"address"`
+
 	// Credentials required to authenticate to this provider.
 	Credentials ProviderCredentials `json:"credentials"`
 }

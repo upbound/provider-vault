@@ -1,11 +1,12 @@
 apiVersion: vault.upbound.io/v1beta1
 kind: ProviderConfig
 metadata:
-  name: default
+  name: vault-provider-config
 spec:
+  address: http://127.0.0.1:8200
   credentials:
     source: Secret
     secretRef:
-      name: example-vault-creds
-      namespace: upbound-system
-      key: credentials
+      name: vault-creds
+      namespace: vault
+      key: token
