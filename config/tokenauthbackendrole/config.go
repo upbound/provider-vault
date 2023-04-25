@@ -1,4 +1,4 @@
-package DIR_tokenauthbackendrole
+package tokenauthbackendrole
 
 import "github.com/upbound/upjet/pkg/config"
 

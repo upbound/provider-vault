@@ -1,4 +1,4 @@
-package DIR_gcpsecretbackend
+package gcpsecretbackend
 
 import "github.com/upbound/upjet/pkg/config"
 

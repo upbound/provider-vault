@@ -1,4 +1,4 @@
-package DIR_azuresecretbackend
+package azuresecretbackend
 
 import "github.com/upbound/upjet/pkg/config"
 

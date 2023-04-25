@@ -1,4 +1,4 @@
-package DIR_passwordpolicy
+package passwordpolicy
 
 import "github.com/upbound/upjet/pkg/config"
 

@@ -1,4 +1,4 @@
-package DIR_genericendpoint
+package genericendpoint
 
 import "github.com/upbound/upjet/pkg/config"
 

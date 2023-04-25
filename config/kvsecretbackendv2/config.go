@@ -1,4 +1,4 @@
-package DIR_kvsecretbackendv2
+package kvsecretbackendv2
 
 import "github.com/upbound/upjet/pkg/config"
 

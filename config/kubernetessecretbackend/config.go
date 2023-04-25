@@ -1,4 +1,4 @@
-package DIR_kubernetessecretbackend
+package kubernetessecretbackend
 
 import "github.com/upbound/upjet/pkg/config"
 

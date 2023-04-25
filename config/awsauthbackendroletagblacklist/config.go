@@ -1,4 +1,4 @@
-package DIR_awsauthbackendroletagblacklist
+package awsauthbackendroletagblacklist
 
 import "github.com/upbound/upjet/pkg/config"
 

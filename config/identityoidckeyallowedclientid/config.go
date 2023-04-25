@@ -1,4 +1,4 @@
-package DIR_identityoidckeyallowedclientid
+package identityoidckeyallowedclientid
 
 import "github.com/upbound/upjet/pkg/config"
 

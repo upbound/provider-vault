@@ -1,4 +1,4 @@
-package DIR_kvsecret
+package kvsecret
 
 import "github.com/upbound/upjet/pkg/config"
 

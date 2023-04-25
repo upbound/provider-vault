@@ -1,4 +1,4 @@
-package DIR_identitymfaokta
+package identitymfaokta
 
 import "github.com/upbound/upjet/pkg/config"
 

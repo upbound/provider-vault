@@ -1,4 +1,4 @@
-package DIR_mfaduo
+package mfaduo
 
 import "github.com/upbound/upjet/pkg/config"
 

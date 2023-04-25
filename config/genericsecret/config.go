@@ -1,4 +1,4 @@
-package DIR_genericsecret
+package genericsecret
 
 import "github.com/upbound/upjet/pkg/config"
 

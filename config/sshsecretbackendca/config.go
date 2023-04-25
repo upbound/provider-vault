@@ -1,4 +1,4 @@
-package DIR_sshsecretbackendca
+package sshsecretbackendca
 
 import "github.com/upbound/upjet/pkg/config"
 

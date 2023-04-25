@@ -1,4 +1,4 @@
-package DIR_quotaleasecount
+package quotaleasecount
 
 import "github.com/upbound/upjet/pkg/config"
 

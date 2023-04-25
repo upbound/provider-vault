@@ -1,4 +1,4 @@
-package DIR_databasesecretbackendrole
+package databasesecretbackendrole
 
 import "github.com/upbound/upjet/pkg/config"
 

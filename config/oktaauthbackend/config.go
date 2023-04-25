@@ -1,4 +1,4 @@
-package DIR_oktaauthbackend
+package oktaauthbackend
 
 import "github.com/upbound/upjet/pkg/config"
 

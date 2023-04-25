@@ -1,4 +1,4 @@
-package DIR_approleauthbackendrolesecretid
+package approleauthbackendrolesecretid
 
 import "github.com/upbound/upjet/pkg/config"
 

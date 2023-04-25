@@ -1,4 +1,4 @@
-package DIR_terraformcloudsecretbackend
+package terraformcloudsecretbackend
 
 import "github.com/upbound/upjet/pkg/config"
 

@@ -1,4 +1,4 @@
-package DIR_gcpauthbackend
+package gcpauthbackend
 
 import "github.com/upbound/upjet/pkg/config"
 

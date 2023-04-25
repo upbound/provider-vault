@@ -1,4 +1,4 @@
-package DIR_transformtransformation
+package transformtransformation
 
 import "github.com/upbound/upjet/pkg/config"
 

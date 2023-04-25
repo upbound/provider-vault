@@ -1,4 +1,4 @@
-package DIR_identitygroup
+package identitygroup
 
 import "github.com/upbound/upjet/pkg/config"
 

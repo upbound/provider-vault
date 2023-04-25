@@ -1,4 +1,4 @@
-package DIR_kmipsecretrole
+package kmipsecretrole
 
 import "github.com/upbound/upjet/pkg/config"
 

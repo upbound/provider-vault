@@ -1,4 +1,4 @@
-package DIR_pkisecretbackendrole
+package pkisecretbackendrole
 
 import "github.com/upbound/upjet/pkg/config"
 

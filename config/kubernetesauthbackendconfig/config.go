@@ -1,4 +1,4 @@
-package DIR_kubernetesauthbackendconfig
+package kubernetesauthbackendconfig
 
 import "github.com/upbound/upjet/pkg/config"
 

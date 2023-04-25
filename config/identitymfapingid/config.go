@@ -1,4 +1,4 @@
-package DIR_identitymfapingid
+package identitymfapingid
 
 import "github.com/upbound/upjet/pkg/config"
 

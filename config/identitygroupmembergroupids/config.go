@@ -1,4 +1,4 @@
-package DIR_identitygroupmembergroupids
+package identitygroupmembergroupids
 
 import "github.com/upbound/upjet/pkg/config"
 

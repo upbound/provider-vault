@@ -1,4 +1,4 @@
-package DIR_identitymfaduo
+package identitymfaduo
 
 import "github.com/upbound/upjet/pkg/config"
 

@@ -1,4 +1,4 @@
-package DIR_transformalphabet
+package transformalphabet
 
 import "github.com/upbound/upjet/pkg/config"
 

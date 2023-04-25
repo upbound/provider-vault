@@ -1,4 +1,4 @@
-package DIR_gcpsecretimpersonatedaccount
+package gcpsecretimpersonatedaccount
 
 import "github.com/upbound/upjet/pkg/config"
 

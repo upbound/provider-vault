@@ -1,4 +1,4 @@
-package DIR_awssecretbackend
+package awssecretbackend
 
 import "github.com/upbound/upjet/pkg/config"
 

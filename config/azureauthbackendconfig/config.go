@@ -1,4 +1,4 @@
-package DIR_azureauthbackendconfig
+package azureauthbackendconfig
 
 import "github.com/upbound/upjet/pkg/config"
 

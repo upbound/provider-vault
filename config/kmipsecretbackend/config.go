@@ -1,4 +1,4 @@
-package DIR_kmipsecretbackend
+package kmipsecretbackend
 
 import "github.com/upbound/upjet/pkg/config"
 

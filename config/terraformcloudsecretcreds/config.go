@@ -1,4 +1,4 @@
-package DIR_terraformcloudsecretcreds
+package terraformcloudsecretcreds
 
 import "github.com/upbound/upjet/pkg/config"
 

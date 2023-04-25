@@ -1,4 +1,4 @@
-package DIR_token
+package token
 
 import "github.com/upbound/upjet/pkg/config"
 

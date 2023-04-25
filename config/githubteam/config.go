@@ -1,4 +1,4 @@
-package DIR_githubteam
+package githubteam
 
 import "github.com/upbound/upjet/pkg/config"
 

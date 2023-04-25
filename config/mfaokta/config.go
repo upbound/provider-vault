@@ -1,4 +1,4 @@
-package DIR_mfaokta
+package mfaokta
 
 import "github.com/upbound/upjet/pkg/config"
 

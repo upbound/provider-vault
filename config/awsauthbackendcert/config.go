@@ -1,4 +1,4 @@
-package DIR_awsauthbackendcert
+package awsauthbackendcert
 
 import "github.com/upbound/upjet/pkg/config"
 

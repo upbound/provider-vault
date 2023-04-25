@@ -1,4 +1,4 @@
-package DIR_githubauthbackend
+package githubauthbackend
 
 import "github.com/upbound/upjet/pkg/config"
 

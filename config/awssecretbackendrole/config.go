@@ -1,4 +1,4 @@
-package DIR_awssecretbackendrole
+package awssecretbackendrole
 
 import "github.com/upbound/upjet/pkg/config"
 

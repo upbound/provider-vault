@@ -1,4 +1,4 @@
-package DIR_identityoidcrole
+package identityoidcrole
 
 import "github.com/upbound/upjet/pkg/config"
 

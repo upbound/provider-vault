@@ -1,4 +1,4 @@
-package DIR_githubuser
+package githubuser
 
 import "github.com/upbound/upjet/pkg/config"
 

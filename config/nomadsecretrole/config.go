@@ -1,4 +1,4 @@
-package DIR_nomadsecretrole
+package nomadsecretrole
 
 import "github.com/upbound/upjet/pkg/config"
 

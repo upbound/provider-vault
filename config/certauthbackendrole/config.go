@@ -1,4 +1,4 @@
-package DIR_certauthbackendrole
+package certauthbackendrole
 
 import "github.com/upbound/upjet/pkg/config"
 

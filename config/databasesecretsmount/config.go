@@ -1,4 +1,4 @@
-package DIR_databasesecretsmount
+package databasesecretsmount
 
 import "github.com/upbound/upjet/pkg/config"
 

@@ -1,4 +1,4 @@
-package DIR_gcpauthbackendrole
+package gcpauthbackendrole
 
 import "github.com/upbound/upjet/pkg/config"
 

@@ -1,4 +1,4 @@
-package DIR_terraformcloudsecretrole
+package terraformcloudsecretrole
 
 import "github.com/upbound/upjet/pkg/config"
 

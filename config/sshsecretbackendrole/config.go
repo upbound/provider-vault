@@ -1,4 +1,4 @@
-package DIR_sshsecretbackendrole
+package sshsecretbackendrole
 
 import "github.com/upbound/upjet/pkg/config"
 

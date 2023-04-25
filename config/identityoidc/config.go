@@ -1,4 +1,4 @@
-package DIR_identityoidc
+package identityoidc
 
 import "github.com/upbound/upjet/pkg/config"
 

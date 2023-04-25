@@ -1,4 +1,4 @@
-package DIR_rgppolicy
+package rgppolicy
 
 import "github.com/upbound/upjet/pkg/config"
 

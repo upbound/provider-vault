@@ -1,4 +1,4 @@
-package DIR_mount
+package mount
 
 import "github.com/upbound/upjet/pkg/config"
 

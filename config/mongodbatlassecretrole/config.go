@@ -1,4 +1,4 @@
-package DIR_mongodbatlassecretrole
+package mongodbatlassecretrole
 
 import "github.com/upbound/upjet/pkg/config"
 

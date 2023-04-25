@@ -1,4 +1,4 @@
-package DIR_pkisecretbackendintermediatesetsigned
+package pkisecretbackendintermediatesetsigned
 
 import "github.com/upbound/upjet/pkg/config"
 

@@ -1,4 +1,4 @@
-package DIR_raftautopilot
+package raftautopilot
 
 import "github.com/upbound/upjet/pkg/config"
 

@@ -1,4 +1,4 @@
-package DIR_databasesecretbackendconnection
+package databasesecretbackendconnection
 
 import "github.com/upbound/upjet/pkg/config"
 

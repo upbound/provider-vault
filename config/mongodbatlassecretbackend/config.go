@@ -1,4 +1,4 @@
-package DIR_mongodbatlassecretbackend
+package mongodbatlassecretbackend
 
 import "github.com/upbound/upjet/pkg/config"
 

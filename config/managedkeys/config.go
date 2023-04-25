@@ -1,4 +1,4 @@
-package DIR_managedkeys
+package managedkeys
 
 import "github.com/upbound/upjet/pkg/config"
 

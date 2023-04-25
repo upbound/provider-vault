@@ -1,4 +1,4 @@
-package DIR_transitsecretbackendcacheconfig
+package transitsecretbackendcacheconfig
 
 import "github.com/upbound/upjet/pkg/config"
 

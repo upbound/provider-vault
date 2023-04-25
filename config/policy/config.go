@@ -1,4 +1,4 @@
-package DIR_policy
+package policy
 
 import "github.com/upbound/upjet/pkg/config"
 

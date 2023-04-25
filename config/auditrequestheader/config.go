@@ -1,4 +1,4 @@
-package DIR_auditrequestheader
+package auditrequestheader
 
 import "github.com/upbound/upjet/pkg/config"
 

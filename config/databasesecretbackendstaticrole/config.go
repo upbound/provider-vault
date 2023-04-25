@@ -1,4 +1,4 @@
-package DIR_databasesecretbackendstaticrole
+package databasesecretbackendstaticrole
 
 import "github.com/upbound/upjet/pkg/config"
 

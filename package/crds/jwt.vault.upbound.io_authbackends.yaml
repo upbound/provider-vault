@@ -1,0 +1,555 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.11.3
+  creationTimestamp: null
+  name: authbackends.jwt.vault.upbound.io
+spec:
+  group: jwt.vault.upbound.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - vault
+    kind: AuthBackend
+    listKind: AuthBackendList
+    plural: authbackends
+    singular: authbackend
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: AuthBackend is the Schema for the AuthBackends API. <no value>
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: AuthBackendSpec defines the desired state of AuthBackend
+            properties:
+              deletionPolicy:
+                default: Delete
+                description: 'DeletionPolicy specifies what will happen to the underlying
+                  external when this managed resource is deleted - either "Delete"
+                  or "Orphan" the external resource. This field is planned to be deprecated
+                  in favor of the ManagementPolicy field in a future release. Currently,
+                  both could be set independently and non-default values would be
+                  honored if the feature flag is enabled. See the design doc for more
+                  information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              forProvider:
+                properties:
+                  boundIssuer:
+                    description: The value against which to match the iss claim in
+                      a JWT
+                    type: string
+                  defaultRole:
+                    description: The default role to use if none is provided during
+                      login
+                    type: string
+                  description:
+                    description: The description of the auth backend
+                    type: string
+                  disableRemount:
+                    description: If set, opts out of mount migration on path updates.
+                    type: boolean
+                  jwksCaPem:
+                    description: The CA certificate or chain of certificates, in PEM
+                      format, to use to validate connections to the JWKS URL. If not
+                      set, system certificates are used.
+                    type: string
+                  jwksUrl:
+                    description: JWKS URL to use to authenticate signatures. Cannot
+                      be used with 'oidc_discovery_url' or 'jwt_validation_pubkeys'.
+                    type: string
+                  jwtSupportedAlgs:
+                    description: A list of supported signing algorithms. Defaults
+                      to [RS256]
+                    items:
+                      type: string
+                    type: array
+                  jwtValidationPubkeys:
+                    description: A list of PEM-encoded public keys to use to authenticate
+                      signatures locally. Cannot be used with 'jwks_url' or 'oidc_discovery_url'.
+                    items:
+                      type: string
+                    type: array
+                  local:
+                    description: Specifies if the auth method is local only
+                    type: boolean
+                  namespace:
+                    description: Target namespace. (requires Enterprise)
+                    type: string
+                  namespaceInState:
+                    description: Pass namespace in the OIDC state parameter instead
+                      of as a separate query parameter. With this setting, the allowed
+                      redirect URL(s) in Vault and on the provider side should not
+                      contain a namespace query parameter. This means only one redirect
+                      URL entry needs to be maintained on the OIDC provider side for
+                      all vault namespaces that will be authenticating against it.
+                      Defaults to true for new configs.
+                    type: boolean
+                  oidcClientId:
+                    description: Client ID used for OIDC
+                    type: string
+                  oidcClientSecretSecretRef:
+                    description: Client Secret used for OIDC
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  oidcDiscoveryCaPem:
+                    description: The CA certificate or chain of certificates, in PEM
+                      format, to use to validate connections to the OIDC Discovery
+                      URL. If not set, system certificates are used
+                    type: string
+                  oidcDiscoveryUrl:
+                    description: The OIDC Discovery URL, without any .well-known component
+                      (base path). Cannot be used with 'jwks_url' or 'jwt_validation_pubkeys'.
+                    type: string
+                  oidcResponseMode:
+                    description: The response mode to be used in the OAuth2 request.
+                      Allowed values are 'query' and 'form_post'. Defaults to 'query'.
+                      If using Vault namespaces, and oidc_response_mode is 'form_post',
+                      then 'namespace_in_state' should be set to false.
+                    type: string
+                  oidcResponseTypes:
+                    description: 'The response types to request. Allowed values are
+                      ''code'' and ''id_token''. Defaults to ''code''. Note: ''id_token''
+                      may only be used if ''oidc_response_mode'' is set to ''form_post''.'
+                    items:
+                      type: string
+                    type: array
+                  path:
+                    description: path to mount the backend
+                    type: string
+                  providerConfig:
+                    additionalProperties:
+                      type: string
+                    description: Provider specific handling configuration
+                    type: object
+                  tune:
+                    items:
+                      properties:
+                        allowedResponseHeaders:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacRequestKeys:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacResponseKeys:
+                          items:
+                            type: string
+                          type: array
+                        defaultLeaseTtl:
+                          type: string
+                        listingVisibility:
+                          type: string
+                        maxLeaseTtl:
+                          type: string
+                        passthroughRequestHeaders:
+                          items:
+                            type: string
+                          type: array
+                        tokenType:
+                          type: string
+                      type: object
+                    type: array
+                  type:
+                    description: Type of backend. Can be either 'jwt' or 'oidc'
+                    type: string
+                type: object
+              managementPolicy:
+                default: FullControl
+                description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. ManagementPolicy
+                  specifies the level of control Crossplane has over the managed external
+                  resource. This field is planned to replace the DeletionPolicy field
+                  in a future release. Currently, both could be set independently
+                  and non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
+                enum:
+                - FullControl
+                - ObserveOnly
+                - OrphanOnDelete
+                type: string
+              providerConfigRef:
+                default:
+                  name: default
+                description: ProviderConfigReference specifies how the provider that
+                  will be used to create, observe, update, and delete this managed
+                  resource should be configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              providerRef:
+                description: 'ProviderReference specifies the provider that will be
+                  used to create, observe, update, and delete this managed resource.
+                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: PublishConnectionDetailsTo specifies the connection secret
+                  config which contains a name, metadata and a reference to secret
+                  store config to which any connection details for this managed resource
+                  should be written. Connection details frequently include the endpoint,
+                  username, and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: SecretStoreConfigRef specifies which secret store
+                      config should be used for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  metadata:
+                    description: Metadata is the metadata for connection secret.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: Annotations are the annotations to be added to
+                          connection secret. - For Kubernetes secrets, this will be
+                          used as "metadata.annotations". - It is up to Secret Store
+                          implementation for others store types.
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels are the labels/tags to be added to connection
+                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store
+                          types.
+                        type: object
+                      type:
+                        description: Type is the SecretType for the connection secret.
+                          - Only valid for Kubernetes Secret Stores.
+                        type: string
+                    type: object
+                  name:
+                    description: Name is the name of the connection secret.
+                    type: string
+                required:
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: WriteConnectionSecretToReference specifies the namespace
+                  and name of a Secret to which any connection details for this managed
+                  resource should be written. Connection details frequently include
+                  the endpoint, username, and password required to connect to the
+                  managed resource. This field is planned to be replaced in a future
+                  release in favor of PublishConnectionDetailsTo. Currently, both
+                  could be set independently and connection details would be published
+                  to both without affecting each other.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - forProvider
+            type: object
+          status:
+            description: AuthBackendStatus defines the observed state of AuthBackend.
+            properties:
+              atProvider:
+                properties:
+                  accessor:
+                    description: The accessor of the JWT auth backend
+                    type: string
+                  boundIssuer:
+                    description: The value against which to match the iss claim in
+                      a JWT
+                    type: string
+                  defaultRole:
+                    description: The default role to use if none is provided during
+                      login
+                    type: string
+                  description:
+                    description: The description of the auth backend
+                    type: string
+                  disableRemount:
+                    description: If set, opts out of mount migration on path updates.
+                    type: boolean
+                  id:
+                    type: string
+                  jwksCaPem:
+                    description: The CA certificate or chain of certificates, in PEM
+                      format, to use to validate connections to the JWKS URL. If not
+                      set, system certificates are used.
+                    type: string
+                  jwksUrl:
+                    description: JWKS URL to use to authenticate signatures. Cannot
+                      be used with 'oidc_discovery_url' or 'jwt_validation_pubkeys'.
+                    type: string
+                  jwtSupportedAlgs:
+                    description: A list of supported signing algorithms. Defaults
+                      to [RS256]
+                    items:
+                      type: string
+                    type: array
+                  jwtValidationPubkeys:
+                    description: A list of PEM-encoded public keys to use to authenticate
+                      signatures locally. Cannot be used with 'jwks_url' or 'oidc_discovery_url'.
+                    items:
+                      type: string
+                    type: array
+                  local:
+                    description: Specifies if the auth method is local only
+                    type: boolean
+                  namespace:
+                    description: Target namespace. (requires Enterprise)
+                    type: string
+                  namespaceInState:
+                    description: Pass namespace in the OIDC state parameter instead
+                      of as a separate query parameter. With this setting, the allowed
+                      redirect URL(s) in Vault and on the provider side should not
+                      contain a namespace query parameter. This means only one redirect
+                      URL entry needs to be maintained on the OIDC provider side for
+                      all vault namespaces that will be authenticating against it.
+                      Defaults to true for new configs.
+                    type: boolean
+                  oidcClientId:
+                    description: Client ID used for OIDC
+                    type: string
+                  oidcDiscoveryCaPem:
+                    description: The CA certificate or chain of certificates, in PEM
+                      format, to use to validate connections to the OIDC Discovery
+                      URL. If not set, system certificates are used
+                    type: string
+                  oidcDiscoveryUrl:
+                    description: The OIDC Discovery URL, without any .well-known component
+                      (base path). Cannot be used with 'jwks_url' or 'jwt_validation_pubkeys'.
+                    type: string
+                  oidcResponseMode:
+                    description: The response mode to be used in the OAuth2 request.
+                      Allowed values are 'query' and 'form_post'. Defaults to 'query'.
+                      If using Vault namespaces, and oidc_response_mode is 'form_post',
+                      then 'namespace_in_state' should be set to false.
+                    type: string
+                  oidcResponseTypes:
+                    description: 'The response types to request. Allowed values are
+                      ''code'' and ''id_token''. Defaults to ''code''. Note: ''id_token''
+                      may only be used if ''oidc_response_mode'' is set to ''form_post''.'
+                    items:
+                      type: string
+                    type: array
+                  path:
+                    description: path to mount the backend
+                    type: string
+                  providerConfig:
+                    additionalProperties:
+                      type: string
+                    description: Provider specific handling configuration
+                    type: object
+                  tune:
+                    items:
+                      properties:
+                        allowedResponseHeaders:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacRequestKeys:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacResponseKeys:
+                          items:
+                            type: string
+                          type: array
+                        defaultLeaseTtl:
+                          type: string
+                        listingVisibility:
+                          type: string
+                        maxLeaseTtl:
+                          type: string
+                        passthroughRequestHeaders:
+                          items:
+                            type: string
+                          type: array
+                        tokenType:
+                          type: string
+                      type: object
+                    type: array
+                  type:
+                    description: Type of backend. Can be either 'jwt' or 'oidc'
+                    type: string
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: LastTransitionTime is the last time this condition
+                        transitioned from one status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A Message containing details about this condition's
+                        last transition from one status to another, if any.
+                      type: string
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: Type of this condition. At most one of each condition
+                        type may apply to a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

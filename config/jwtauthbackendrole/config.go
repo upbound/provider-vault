@@ -1,4 +1,4 @@
-package DIR_jwtauthbackendrole
+package jwtauthbackendrole
 
 import "github.com/upbound/upjet/pkg/config"
 

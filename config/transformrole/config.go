@@ -1,4 +1,4 @@
-package DIR_transformrole
+package transformrole
 
 import "github.com/upbound/upjet/pkg/config"
 

@@ -1,4 +1,4 @@
-package DIR_identitymfaloginenforcement
+package identitymfaloginenforcement
 
 import "github.com/upbound/upjet/pkg/config"
 

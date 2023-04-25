@@ -1,4 +1,4 @@
-package DIR_raftsnapshotagentconfig
+package raftsnapshotagentconfig
 
 import "github.com/upbound/upjet/pkg/config"
 

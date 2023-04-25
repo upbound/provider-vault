@@ -1,4 +1,4 @@
-package DIR_transformtemplate
+package transformtemplate
 
 import "github.com/upbound/upjet/pkg/config"
 

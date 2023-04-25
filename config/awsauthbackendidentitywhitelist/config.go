@@ -1,4 +1,4 @@
-package DIR_awsauthbackendidentitywhitelist
+package awsauthbackendidentitywhitelist
 
 import "github.com/upbound/upjet/pkg/config"
 

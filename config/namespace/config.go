@@ -1,4 +1,4 @@
-package DIR_namespace
+package namespace
 
 import "github.com/upbound/upjet/pkg/config"
 

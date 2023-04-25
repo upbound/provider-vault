@@ -1,4 +1,4 @@
-package DIR_pkisecretbackendconfigurls
+package pkisecretbackendconfigurls
 
 import "github.com/upbound/upjet/pkg/config"
 

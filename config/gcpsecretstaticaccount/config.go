@@ -1,4 +1,4 @@
-package DIR_gcpsecretstaticaccount
+package gcpsecretstaticaccount
 
 import "github.com/upbound/upjet/pkg/config"
 

@@ -1,4 +1,4 @@
-package DIR_identitygrouppolicies
+package identitygrouppolicies
 
 import "github.com/upbound/upjet/pkg/config"
 

@@ -1,4 +1,4 @@
-package DIR_awsauthbackendconfigidentity
+package awsauthbackendconfigidentity
 
 import "github.com/upbound/upjet/pkg/config"
 

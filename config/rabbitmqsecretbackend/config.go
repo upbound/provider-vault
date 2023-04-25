@@ -1,4 +1,4 @@
-package DIR_rabbitmqsecretbackend
+package rabbitmqsecretbackend
 
 import "github.com/upbound/upjet/pkg/config"
 

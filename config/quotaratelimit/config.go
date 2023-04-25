@@ -1,4 +1,4 @@
-package DIR_quotaratelimit
+package quotaratelimit
 
 import "github.com/upbound/upjet/pkg/config"
 

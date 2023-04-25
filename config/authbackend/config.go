@@ -1,4 +1,4 @@
-package DIR_authbackend
+package authbackend
 
 import "github.com/upbound/upjet/pkg/config"
 

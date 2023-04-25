@@ -1,4 +1,4 @@
-package DIR_nomadsecretbackend
+package nomadsecretbackend
 
 import "github.com/upbound/upjet/pkg/config"
 

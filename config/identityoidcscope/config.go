@@ -1,4 +1,4 @@
-package DIR_identityoidcscope
+package identityoidcscope
 
 import "github.com/upbound/upjet/pkg/config"
 

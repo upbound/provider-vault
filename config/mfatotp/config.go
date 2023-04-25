@@ -1,4 +1,4 @@
-package DIR_mfatotp
+package mfatotp
 
 import "github.com/upbound/upjet/pkg/config"
 

@@ -1,4 +1,4 @@
-package DIR_gcpsecretroleset
+package gcpsecretroleset
 
 import "github.com/upbound/upjet/pkg/config"
 

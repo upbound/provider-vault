@@ -1,4 +1,4 @@
-package DIR_kubernetesauthbackendrole
+package kubernetesauthbackendrole
 
 import "github.com/upbound/upjet/pkg/config"
 

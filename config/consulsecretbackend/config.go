@@ -1,4 +1,4 @@
-package DIR_consulsecretbackend
+package consulsecretbackend
 
 import "github.com/upbound/upjet/pkg/config"
 

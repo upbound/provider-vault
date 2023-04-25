@@ -1,4 +1,4 @@
-package DIR_awsauthbackendstsrole
+package awsauthbackendstsrole
 
 import "github.com/upbound/upjet/pkg/config"
 

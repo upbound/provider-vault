@@ -1,4 +1,4 @@
-package DIR_identityoidcassignment
+package identityoidcassignment
 
 import "github.com/upbound/upjet/pkg/config"
 

@@ -1,4 +1,4 @@
-package DIR_kmipsecretscope
+package kmipsecretscope
 
 import "github.com/upbound/upjet/pkg/config"
 

@@ -1,4 +1,4 @@
-package DIR_egppolicy
+package egppolicy
 
 import "github.com/upbound/upjet/pkg/config"
 

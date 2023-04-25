@@ -1,4 +1,4 @@
-package DIR_awsauthbackendrole
+package awsauthbackendrole
 
 import "github.com/upbound/upjet/pkg/config"
 

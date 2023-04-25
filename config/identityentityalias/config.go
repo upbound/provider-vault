@@ -1,4 +1,4 @@
-package DIR_identityentityalias
+package identityentityalias
 
 import "github.com/upbound/upjet/pkg/config"
 

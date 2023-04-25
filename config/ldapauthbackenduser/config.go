@@ -1,4 +1,4 @@
-package DIR_ldapauthbackenduser
+package ldapauthbackenduser
 
 import "github.com/upbound/upjet/pkg/config"
 
