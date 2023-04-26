@@ -5,6 +5,71 @@ is built using [Upjet](https://github.com/upbound/upjet) code
 generation tools and exposes XRM-conformant managed resources for the
 Vault API.
 
+## Prerequisites
+
+This provider interacts with HashiCorp Vault. 
+To test it you will need Vault installed. 
+Vault has many options and various ways for how
+it can be installed. We will use a very simple
+installation approach to test the provider-vault.
+
+Create a vault namespace.
+```
+kubectl create namespace vault
+```
+
+Add hashicorp to your helm repo.
+```
+helm repo add hashicorp https://helm.releases.hashicorp.com
+```
+
+Install vault.
+```
+helm install vault hashicorp/vault -n vault
+```
+
+Initialize and unseal vault.
+```
+kubectl exec -it vault-0 -n vault -- sh
+```
+
+Inside of the vault pod, initialize it.
+```
+vault operator init
+```
+Make note of the root key and the unseal keys.
+
+Unseal vault 3 times with a different key.
+```
+vault operator unseal
+```
+
+Verify that vault is unsealed.
+```
+vault status
+```
+
+From the commandline, forward the vault pod port.
+```
+kubectl port-forward vault-0 -n vault 8200:8200
+```
+
+Update the examples/providerconfig/secret.yaml.tmpl
+with your root token or an access token that was
+created in Vault for your provider. Note that 
+this token should not be accessible 
+by cluster operators, only by Vault admins.
+
+Apply the secret.
+```
+kubectl apply -f providerconfig/secret.yaml.tmpl
+```
+
+Apply the provider config.
+```
+kubectl apply -f providerconfig/providerconfig.yaml
+```
+
 ## Getting Started
 
 Install the provider by using the following command after changing the image tag
