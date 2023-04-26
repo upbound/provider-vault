@@ -104,9 +104,13 @@ spec:
                 required:
                 - source
                 type: object
+              token:
+                description: Optional Token, but only auth method for now.
+                type: string
             required:
             - address
             - credentials
+            - token
             type: object
           status:
             description: A ProviderConfigStatus reflects the observed state of a ProviderConfig.

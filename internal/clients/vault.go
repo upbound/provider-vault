@@ -89,10 +89,25 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			return ps, errors.Wrap(err, errTrackUsage)
 		}
 
+		// set provider configuration
+		ps.Configuration = map[string]any{}
+
+		// Assign mandatory address parameter
+		ps.Configuration[keyAddress] = pc.Spec.Address
+		ps.Configuration[keyToken] = pc.Spec.Token
+
 		data, err := resource.CommonCredentialExtractor(ctx, pc.Spec.Credentials.Source, client, pc.Spec.Credentials.CommonCredentialSelectors)
 		if err != nil {
 			return ps, errors.Wrap(err, errExtractCredentials)
 		}
+
+		// data seems to be empty
+		// TODO: determine cause
+		//       use for token once resolved
+		if len(data) == 0 {
+			return ps, nil
+		}
+
 		creds := map[string]string{}
 		if err := json.Unmarshal(data, &creds); err != nil {
 			return ps, errors.Wrap(err, errUnmarshalCredentials)
@@ -103,16 +118,9 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			"username": creds["username"],
 			"password": creds["password"],
 		}*/
-		// set provider configuration
-		ps.Configuration = map[string]any{}
-		if v, ok := creds[keyAddress]; ok {
-			ps.Configuration[keyAddress] = v
-		}
+
 		if v, ok := creds[keyAddAddressToEnv]; ok {
 			ps.Configuration[keyAddAddressToEnv] = v
-		}
-		if v, ok := creds[keyToken]; ok {
-			ps.Configuration[keyToken] = v
 		}
 		if v, ok := creds[keyTokenName]; ok {
 			ps.Configuration[keyTokenName] = v

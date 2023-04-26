@@ -9,4 +9,4 @@ spec:
     roleId: "vault-role-id"
     secretId: "vault-secret-id"
   providerConfigRef:
-    name: default
+    name: vault-provider-config

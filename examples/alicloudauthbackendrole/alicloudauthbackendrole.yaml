@@ -9,4 +9,4 @@ spec:
     namespace: upbound-system
     role: vault-secret-role
   providerConfigRef:
-    name: default
+    name: vault-provider-config

@@ -1,0 +1,12 @@
+apiVersion: vault.vault.upbound.io/v1alpha1
+kind: Audit
+metadata:
+  name: vault-audit
+spec:
+  forProvider:
+    description: "Managed with UXP Vault Provider (generated with Upjet)"
+    type: "file"
+    local: false
+    options: {file_path=/var/vault_audit.log}
+  providerConfigRef:
+    name: vault-provider-config

@@ -4,9 +4,9 @@ metadata:
   name: vault
 spec:
   type: Vault
-  defaultScope: upbound-system
+  defaultScope: vault
   vault:
-    server: http://vault.vault-system:8200
+    server: http://127.0.0.1:8200
     mountPath: kv2/
     version: v2
     auth:
@@ -14,6 +14,6 @@ spec:
       token:
         source: Secret
         secretRef:
-          namespace: upbound-system
-          name: vault-token
+          namespace: vault
+          name: vault-creds
           key: token

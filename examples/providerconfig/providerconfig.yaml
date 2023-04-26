@@ -4,9 +4,12 @@ metadata:
   name: vault-provider-config
 spec:
   address: http://127.0.0.1:8200
+  # Test Token. Do not check real tokens into Git
+  token: "INSERT_YOUR_TEMPORARY_TEST_TOKEN"
+  # The credentials below are not used until a refactor
   credentials:
     source: Secret
     secretRef:
       name: vault-creds
       namespace: vault
-      key: token
+      key: token_name
