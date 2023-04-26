@@ -52,7 +52,8 @@ spec:
                   with a scheme, a hostname and a port but with no path.
                 type: string
               credentials:
-                description: Credentials required to authenticate to this provider.
+                description: Optional Token, but only auth method for now. Token string
+                  `json:"token"` Credentials required to authenticate to this provider.
                 properties:
                   env:
                     description: Env is a reference to an environment variable that
@@ -104,13 +105,9 @@ spec:
                 required:
                 - source
                 type: object
-              token:
-                description: Optional Token, but only auth method for now.
-                type: string
             required:
             - address
             - credentials
-            - token
             type: object
           status:
             description: A ProviderConfigStatus reflects the observed state of a ProviderConfig.

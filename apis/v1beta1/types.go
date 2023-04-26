@@ -17,7 +17,7 @@ type ProviderConfigSpec struct {
 	// and a port but with no path.
 	Address string `json:"address"`
 	// Optional Token, but only auth method for now.
-	Token string `json:"token"`
+	// Token string `json:"token"`
 	// Credentials required to authenticate to this provider.
 	Credentials ProviderCredentials `json:"credentials"`
 }

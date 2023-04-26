@@ -62,6 +62,11 @@ created in Vault for your provider. Note that
 this token should not be accessible 
 by cluster operators, only by Vault admins.
 
+Apply provider-vault package/crds.
+```
+kubectl apply -f package/crds
+```
+
 Apply the secret.
 ```
 kubectl apply -f providerconfig/secret.yaml.tmpl
