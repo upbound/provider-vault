@@ -94,7 +94,30 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 
 		// Assign mandatory address parameter
 		ps.Configuration[keyAddress] = pc.Spec.Address
-		//ps.Configuration[keyToken] = pc.Spec.Token
+
+		// ps.Configuration[keySkipTlsVerify] = pc.Spec.SkipTlsVerify
+		// if pc.Spec.TlsServerName != "" {
+		// 	ps.Configuration[keyTlsServerName] = pc.Spec.TlsServerName
+		// }
+		// ps.Configuration[keySkipChildToken] = pc.Spec.SkipChildToken
+		// if pc.Spec.MaxLeaseTtlSeconds != 0 {
+		// 	ps.Configuration[keyMaxLeaseTtlSeconds] = pc.Spec.MaxLeaseTtlSeconds
+		// }
+		// if pc.Spec.MaxRetries != 0 {
+		// 	ps.Configuration[keyMaxRetries] = pc.Spec.MaxRetries
+		// }
+		// if pc.Spec.MaxRetriesCcc != 0 {
+		// 	ps.Configuration[keyMaxRetriesCcc] = pc.Spec.MaxRetriesCcc
+		// }
+		// if pc.Spec.Namespace != "" {
+		// 	ps.Configuration[keyNamespace] = pc.Spec.Namespace
+		// }
+		// ps.Configuration[keySkipGetVaultVersion] = pc.Spec.SkipGetVaultVersion
+		// ps.Configuration[keyVaultVersionOverride] = pc.Spec.VaultVersionOverride
+		// Headers are not supported for now
+		// if pc.Spec.Headers != (v1beta1.ProviderHeaders{}) {
+		// 		ps.Configuration[keyHeaders] = pc.Spec.Headers
+		// }
 
 		data, err := resource.CommonCredentialExtractor(ctx, pc.Spec.Credentials.Source, client, pc.Spec.Credentials.CommonCredentialSelectors)
 		if err != nil {
@@ -162,36 +185,6 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		}
 		if v, ok := creds[keyClientAuth]; ok {
 			ps.Configuration[keyClientAuth] = v
-		}
-		if v, ok := creds[keySkipTlsVerify]; ok {
-			ps.Configuration[keySkipTlsVerify] = v
-		}
-		if v, ok := creds[keyTlsServerName]; ok {
-			ps.Configuration[keyTlsServerName] = v
-		}
-		if v, ok := creds[keySkipChildToken]; ok {
-			ps.Configuration[keySkipChildToken] = v
-		}
-		if v, ok := creds[keyMaxLeaseTtlSeconds]; ok {
-			ps.Configuration[keyMaxLeaseTtlSeconds] = v
-		}
-		if v, ok := creds[keyMaxRetries]; ok {
-			ps.Configuration[keyMaxRetries] = v
-		}
-		if v, ok := creds[keyMaxRetriesCcc]; ok {
-			ps.Configuration[keyMaxRetriesCcc] = v
-		}
-		if v, ok := creds[keyNamespace]; ok {
-			ps.Configuration[keyNamespace] = v
-		}
-		if v, ok := creds[keySkipGetVaultVersion]; ok {
-			ps.Configuration[keySkipGetVaultVersion] = v
-		}
-		if v, ok := creds[keyVaultVersionOverride]; ok {
-			ps.Configuration[keyVaultVersionOverride] = v
-		}
-		if v, ok := creds[keyHeaders]; ok {
-			ps.Configuration[keyHeaders] = v
 		}
 		return ps, nil
 	}

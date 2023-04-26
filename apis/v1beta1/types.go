@@ -16,11 +16,98 @@ type ProviderConfigSpec struct {
 	// This is a URL with a scheme, a hostname
 	// and a port but with no path.
 	Address string `json:"address"`
-	// Optional Token, but only auth method for now.
-	// Token string `json:"token"`
+
+	// Optional. If true the environment variable
+	// VAULT_ADDR in the Terraform process environment
+	// will be set to the value of the address argument
+	// from this provider. By default, this is false.
+	AddAddressToEnv bool `json:"add_address_to_env, omitempty"`
+
+	// Optional. Set this to true to disable verification
+	// of the Vault server's TLS certificate. This is
+	// strongly discouraged except in prototype or
+	// development environments, since it exposes the
+	// possibility that Terraform can be tricked into
+	// writing secrets to a server controlled by an intruder.
+	SkipTlsVerify bool `json:"skip_tls_verify, omitempty"`
+
+	// Optional. Name to use as the SNI host when connecting
+	// via TLS.
+	TlsServerName string `json:"tls_server_name, omitempty"`
+
+	// Optional. Set this to true to disable creation of an
+	// intermediate ephemeral Vault token for Terraform to use.
+	// Enabling this is strongly discouraged since it increases
+	// the potential for a renewable Vault token being exposed
+	// in clear text. Only change this setting when the provided
+	// token cannot be permitted to create child tokens and there
+	// is no risk of exposure from the output of Terraform.
+	SkipChildToken bool `json:"skip_child_token, omitempty"`
+
+	// Optional. Used as the duration for the intermediate Vault
+	// token Terraform issues itself, which in turn limits the
+	// duration of secret leases issued by Vault. Defaults to
+	// 20 minutes.
+	MaxLeaseTtlSeconds int `json:"max_lease_ttl_seconds, omitempty"`
+
+	// Optional. Used as the maximum number of retries when a
+	// 5xx error code is encountered. Defaults to 2 retries.
+	MaxRetries int `json:"max_retries, omitempty"`
+
+	// Optional. Maximum number of retries for Client Controlled
+	// Consistency related operations. Defaults to 10 retries.
+	MaxRetriesCcc int `json:"max_retries_ccc, omitempty"`
+
+	// Optional. Set the namespace to use.
+	Namespace string `json:"namespace, omitempty"`
+
+	// Optional. Skip the dynamic fetching of the Vault server
+	// version. Set to true when the /sys/seal-status API
+	// endpoint is not available.
+	SkipGetVaultVersion bool `json:"skip_get_vault_version, omitempty"`
+
+	// Optional. Override the target Vault server semantic
+	// version. Normally the version is dynamically set
+	// from the /sys/seal-status API endpoint. In the case
+	// where this endpoint is not available an override can
+	// be specified here.
+	VaultVersionOverride string `json:"vault_version_override", omitempty"`
+
+	// Optional. A configuration block, described below,
+	// that provides headers to be sent along with all
+	// requests to the Vault server. This block can be
+	// specified multiple times.
+	//
+	// Headers are not supported for now
+	// Headers ProviderHeaders `json:"headers, omitempty"`
+
 	// Credentials required to authenticate to this provider.
+	// There are many options to authenticate. They include
+	// - token - (Optional) Vault token that will be used
+	// by Terraform to authenticate. May be set via the
+	// VAULT_TOKEN environment variable. If none is otherwise
+	// supplied, Terraform will attempt to read it from
+	// ~/.vault-token (where the vault command stores its
+	// current token). Terraform will issue itself a new token
+	// that is a child of the one given, with a short TTL to
+	// limit the exposure of any requested secrets, unless
+	// skip_child_token is set to true (see below). Note
+	// that the given token must have the update capability
+	// on the auth/token/create path in Vault in order to create
+	// child tokens. A token is required for the provider. A
+	// token can explicitly set via token argument, alternatively
+	// a token can be dynamically set via an auth_login* block.
 	Credentials ProviderCredentials `json:"credentials"`
 }
+
+// ProviderHeaders optional.
+// Headers are not supported for now
+// type ProviderHeaders struct {
+// Required header name
+// 	name string `json:"name"`
+// Required header value
+// 	value string `json:"value"`
+// }
 
 // ProviderCredentials required to authenticate.
 type ProviderCredentials struct {

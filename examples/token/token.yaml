@@ -1,0 +1,12 @@
+apiVersion: vault.vault.upbound.io/v1alpha1
+kind: Token
+metadata:
+  name: vault-token
+spec:
+  forProvider:
+    roleName: "app"
+    ttl: "24h"
+    renewMinLease: 43200
+    renewIncrement: 86400
+  providerConfigRef:
+    name: vault-provider-config

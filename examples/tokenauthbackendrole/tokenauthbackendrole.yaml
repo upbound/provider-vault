@@ -1,0 +1,9 @@
+apiVersion: token.vault.upbound.io/v1alpha1
+kind: AuthBackendRole
+metadata:
+  name: app
+spec:
+  forProvider:
+    roleName: "app"
+  providerConfigRef:
+    name: vault-provider-config
