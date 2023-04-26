@@ -7,6 +7,7 @@ package clients
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	"github.com/pkg/errors"
@@ -105,7 +106,10 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		// TODO: determine cause
 		//       use for token once resolved
 		if len(data) == 0 {
+			fmt.Println("DATA WAS EMPTY")
 			return ps, nil
+		} else {
+			fmt.Println(string(data))
 		}
 
 		creds := map[string]string{}
@@ -124,6 +128,7 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		}
 		if v, ok := creds[keyTokenName]; ok {
 			ps.Configuration[keyTokenName] = v
+			fmt.Println("creds[keyTokenName]: ", creds[keyTokenName])
 		}
 		if v, ok := creds[keyCaCertFile]; ok {
 			ps.Configuration[keyCaCertFile] = v
