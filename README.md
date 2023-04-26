@@ -23,7 +23,9 @@ Add hashicorp to your helm repo.
 helm repo add hashicorp https://helm.releases.hashicorp.com
 ```
 
-Install vault.
+Install vault. Note that the vault-0 pod
+will not be ready until vault is unsealed.
+This is expected behavior.
 ```
 helm install vault hashicorp/vault -n vault
 ```
