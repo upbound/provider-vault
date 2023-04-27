@@ -1,0 +1,11 @@
+apiVersion: vault.vault.upbound.io/v1alpha1
+kind: Mount
+metadata:
+  name: kv-v2-secret-mount
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    path: "kvv2"
+    type: "kv-v2"
+  providerConfigRef:
+    name: vault-provider-config
