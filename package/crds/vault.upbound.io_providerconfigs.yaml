@@ -121,6 +121,21 @@ spec:
                 required:
                 - source
                 type: object
+              headers:
+                description: Optional. A configuration block, described below, that
+                  provides headers to be sent along with all requests to the Vault
+                  server. This block can be specified multiple times.
+                properties:
+                  name:
+                    description: Required header name
+                    type: string
+                  value:
+                    description: Required header value
+                    type: string
+                required:
+                - name
+                - value
+                type: object
               max_lease_ttl_seconds:
                 description: Optional. Used as the duration for the intermediate Vault
                   token Terraform issues itself, which in turn limits the duration
@@ -172,6 +187,7 @@ spec:
             - add_address_to_env
             - address
             - credentials
+            - headers
             - max_lease_ttl_seconds
             - max_retries
             - max_retries_ccc

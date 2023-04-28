@@ -95,29 +95,26 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		// Assign mandatory address parameter
 		ps.Configuration[keyAddress] = pc.Spec.Address
 
-		// ps.Configuration[keySkipTlsVerify] = pc.Spec.SkipTlsVerify
-		// if pc.Spec.TlsServerName != "" {
-		// 	ps.Configuration[keyTlsServerName] = pc.Spec.TlsServerName
-		// }
-		// ps.Configuration[keySkipChildToken] = pc.Spec.SkipChildToken
-		// if pc.Spec.MaxLeaseTtlSeconds != 0 {
-		// 	ps.Configuration[keyMaxLeaseTtlSeconds] = pc.Spec.MaxLeaseTtlSeconds
-		// }
-		// if pc.Spec.MaxRetries != 0 {
-		// 	ps.Configuration[keyMaxRetries] = pc.Spec.MaxRetries
-		// }
-		// if pc.Spec.MaxRetriesCcc != 0 {
-		// 	ps.Configuration[keyMaxRetriesCcc] = pc.Spec.MaxRetriesCcc
-		// }
-		// if pc.Spec.Namespace != "" {
-		// 	ps.Configuration[keyNamespace] = pc.Spec.Namespace
-		// }
-		// ps.Configuration[keySkipGetVaultVersion] = pc.Spec.SkipGetVaultVersion
-		// ps.Configuration[keyVaultVersionOverride] = pc.Spec.VaultVersionOverride
-		// Headers are not supported for now
-		// if pc.Spec.Headers != (v1beta1.ProviderHeaders{}) {
-		// 		ps.Configuration[keyHeaders] = pc.Spec.Headers
-		// }
+		// Assign optional parameters
+		ps.Configuration[keyAddAddressToEnv] = pc.Spec.AddAddressToEnv
+		ps.Configuration[keySkipTlsVerify] = pc.Spec.SkipTlsVerify
+		if len(pc.Spec.TlsServerName) > 0 {
+			ps.Configuration[keyTlsServerName] = pc.Spec.TlsServerName
+		}
+		ps.Configuration[keySkipChildToken] = pc.Spec.SkipChildToken
+		ps.Configuration[keyMaxLeaseTtlSeconds] = pc.Spec.MaxLeaseTtlSeconds
+		ps.Configuration[keyMaxRetries] = pc.Spec.MaxRetries
+		ps.Configuration[keyMaxRetriesCcc] = pc.Spec.MaxRetriesCcc
+		if len(pc.Spec.Namespace) > 0 {
+			ps.Configuration[keyNamespace] = pc.Spec.Namespace
+		}
+		ps.Configuration[keySkipGetVaultVersion] = pc.Spec.SkipGetVaultVersion
+		if len(pc.Spec.VaultVersionOverride) > 0 {
+			ps.Configuration[keyVaultVersionOverride] = pc.Spec.VaultVersionOverride
+		}
+		if pc.Spec.Headers != (v1beta1.ProviderHeaders{}) {
+			ps.Configuration[keyHeaders] = pc.Spec.Headers
+		}
 
 		data, err := resource.CommonCredentialExtractor(ctx, pc.Spec.Credentials.Source, client, pc.Spec.Credentials.CommonCredentialSelectors)
 		if err != nil {
@@ -129,15 +126,8 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			return ps, errors.Wrap(err, errUnmarshalCredentials)
 		}
 
-		// Set credentials in Terraform provider configuration.
-		/*ps.Configuration = map[string]any{
-			"username": creds["username"],
-			"password": creds["password"],
-		}*/
-
-		if v, ok := creds[keyAddAddressToEnv]; ok {
-			ps.Configuration[keyAddAddressToEnv] = v
-		}
+		// Set credentials in Terraform
+		// provider configuration
 		if v, ok := creds[keyToken]; ok {
 			ps.Configuration[keyToken] = v
 		}

@@ -77,9 +77,7 @@ type ProviderConfigSpec struct {
 	// that provides headers to be sent along with all
 	// requests to the Vault server. This block can be
 	// specified multiple times.
-	//
-	// Headers are not supported for now
-	// Headers ProviderHeaders `json:"headers, omitempty"`
+	Headers ProviderHeaders `json:"headers, omitempty"`
 
 	// Credentials required to authenticate to this provider.
 	// There are many options to authenticate. They include
@@ -101,13 +99,12 @@ type ProviderConfigSpec struct {
 }
 
 // ProviderHeaders optional.
-// Headers are not supported for now
-// type ProviderHeaders struct {
-// Required header name
-// 	name string `json:"name"`
-// Required header value
-// 	value string `json:"value"`
-// }
+type ProviderHeaders struct {
+	// Required header name
+	name string `json:"name"`
+	// Required header value
+	value string `json:"value"`
+}
 
 // ProviderCredentials required to authenticate.
 type ProviderCredentials struct {
