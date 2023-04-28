@@ -1,0 +1,13 @@
+apiVersion: jwt.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  name: jwt-auth-backend
+spec:
+  forProvider:
+    description: "JWT backend for UXP manageed Vault"
+    path: "oidc"
+    type: "oidc"
+    oidc_discovery_url: "INSERT_URL"
+    bound_issuer: "INSERT_URL"
+  providerConfigRef:
+    name: vault-provider-config

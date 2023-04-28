@@ -1,0 +1,20 @@
+apiVersion: jwt.vault.upbound.io/v1alpha1
+# Manages an JWT/OIDC auth backend role in a Vault server. 
+kind: AuthBackendRole
+metadata:
+  name: jwt-auth-backend-role
+spec:
+  forProvider:
+    backend: "jwt-auth-backend"
+    roleName: "jwt-role"
+    tokenPolicies: ["default", "dev", "prod"]
+
+    boundAudiences: ["https://upbound.test"]
+    boundClaims: {
+      color: "red, green, blue"
+    }
+    userClaim: "https://vault/user"
+    roleType: "jwt"
+    roleType: "oidc"
+  providerConfigRef:
+    name: vault-provider-config
