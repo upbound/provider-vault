@@ -1,0 +1,13 @@
+apiVersion: github.vault.upbound.io/v1alpha1
+kind: Team
+metadata:
+  name: github-team
+spec:
+  forProvider:
+    # Read the id from
+    # authbackend.github.vault.upbound.io/github-auth-backend
+    # status.atProvider.organizationId
+    backend: "31934484"
+    team: "everyone"
+  providerConfigRef:
+    name: vault-provider-config

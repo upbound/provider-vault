@@ -1,0 +1,9 @@
+apiVersion: github.vault.upbound.io/v1alpha1
+kind: AuthBackend
+metadata:
+  name: github-auth-backend
+spec:
+  forProvider:
+    organization: upbound
+  providerConfigRef:
+    name: vault-provider-config
