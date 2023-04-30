@@ -1,4 +1,6 @@
 apiVersion: alicloud.vault.upbound.io/v1alpha1
+# Provides a resource to create a role in an
+# AliCloud auth backend within Vault.
 kind: AuthBackendRole
 metadata:
   name: vault-alicloud-auth-backend-role

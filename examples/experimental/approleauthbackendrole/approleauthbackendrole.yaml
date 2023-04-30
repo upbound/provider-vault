@@ -1,0 +1,11 @@
+apiVersion: approle.vault.upbound.io/v1alpha1
+kind: AuthBackendRole
+metadata:
+  name: vault-auth-backend-role
+spec:
+  forProvider:
+    backend: "github-auth-backend"
+    roleName: "example-role"
+    tokenPolicies: ["default"]
+  providerConfigRef:
+    name: vault-provider-config

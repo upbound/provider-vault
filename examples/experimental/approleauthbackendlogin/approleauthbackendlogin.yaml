@@ -1,4 +1,7 @@
 apiVersion: approle.vault.upbound.io/v1alpha1
+# Logs into Vault using the AppRole auth backend.
+# See the Vault documentation for more information.
+# https://developer.hashicorp.com/vault/docs/auth/approle
 kind: AuthBackendLogin
 metadata:
   name: vault-auth-backend-login

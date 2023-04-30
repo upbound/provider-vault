@@ -3,8 +3,8 @@ set -aeuo pipefail
 
 echo "Running setup.sh"
 echo "Waiting until configuration package is healthy/installed..."
-${KUBECTL} wait configuration.pkg platform-ref-aws --for=condition=Healthy --timeout 5m
-${KUBECTL} wait configuration.pkg platform-ref-aws --for=condition=Installed --timeout 5m
+#${KUBECTL} wait configuration.pkg platform-ref-aws --for=condition=Healthy --timeout 5m
+#${KUBECTL} wait configuration.pkg platform-ref-aws --for=condition=Installed --timeout 5m
 
 echo "Creating cloud credential secret..."
 ${KUBECTL} -n upbound-system create secret generic aws-creds --from-file=credentials="UPBOUND_AWS_CREDENTIALS_PATH" \
