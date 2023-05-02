@@ -88,9 +88,6 @@ type ProviderConfigSpec struct {
 	// requests to the Vault server. This block can be
 	// specified multiple times.
 	// +optional
-	VaultVersionOverride string `json:"vault_version_override", omitempty"`
-
-	// +optional
 	Headers ProviderHeaders `json:"headers, omitempty"`
 
 	// Credentials required to authenticate to this provider.
