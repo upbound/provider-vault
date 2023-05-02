@@ -52,6 +52,7 @@ KIND_VERSION = v0.18.0
 UP_VERSION = v0.15.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.2.1
+UPTEST_EXAMPLE_LIST=examples/release/mount/mount-generic-secrets.yaml,examples/release/genericsecret/genericsecret.yaml
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
@@ -164,9 +165,14 @@ CROSSPLANE_NAMESPACE = upbound-system
 -include build/makelib/local.xpkg.mk
 -include build/makelib/controlplane.mk
 
+# This target requires the following environment
+# variables to be set:
+# - UPTEST_CLOUD_CREDENTIALS, cloud credentials
+#   for the provider being tested, e.g. export
+#   UPTEST_CLOUD_CREDENTIALS=$(cat ~/.aws/credentials)
 uptest: $(UPTEST) $(KUBECTL) $(KUTTL)
 	@$(INFO) running automated tests
-	@KUBECTL=$(KUBECTL) KUTTL=$(KUTTL) $(UPTEST) e2e "${UPTEST_EXAMPLE_LIST}" --setup-script=cluster/test/setup.sh || $(FAIL)
+	@KUBECTL=$(KUBECTL) KUTTL=$(KUTTL) $(UPTEST) e2e ${UPTEST_EXAMPLE_LIST} --setup-script=cluster/test/setup.sh --default-timeout=2400 || $(FAIL)
 	@$(OK) running automated tests
 
 local-deploy: build controlplane.up local.xpkg.deploy.provider.$(PROJECT_NAME)
@@ -175,9 +181,9 @@ local-deploy: build controlplane.up local.xpkg.deploy.provider.$(PROJECT_NAME)
 	@$(KUBECTL) -n upbound-system wait --for=condition=Available deployment --all --timeout=5m
 	@$(OK) running locally built provider
 
-e2e: local-deploy uptest
+e2e: build controlplane.up local-deploy uptest
 
-.PHONY: cobertura submodules fallthrough run crds.clean
+.PHONY: uptest e2e cobertura submodules fallthrough run crds.clean
 
 # ====================================================================================
 # Special Targets
