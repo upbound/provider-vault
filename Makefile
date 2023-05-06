@@ -52,7 +52,7 @@ KIND_VERSION = v0.18.0
 UP_VERSION = v0.15.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.2.1
-UPTEST_EXAMPLE_LIST=examples/release/mount/mount-generic-secrets.yaml,examples/release/genericsecret/genericsecret.yaml
+UPTEST_EXAMPLE_LIST=examples/release/mount/mount-generic-secrets.yaml,examples/release/genericsecret/genericsecret.yaml,examples/release/mount/mount-kv-v1.yaml,examples/release/kvsecret/kvsecret.yaml,examples/release/mount/mount-kv-v2.yaml,examples/release/kvsecretv2/kvsecretv2.yaml
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
