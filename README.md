@@ -19,7 +19,7 @@ and unseal a copy of Vault against which the
 automated tests are running. The list of tests
 is specified in the `Makefile` variable
 `UPTEST_EXAMPLE_LIST`. The tests it runs are
-specified in the `example` directory.
+specified in the `examples` directory.
 
 Create a vault namespace.
 ```
