@@ -11,7 +11,15 @@ This provider interacts with HashiCorp Vault.
 To test it you will need Vault installed. 
 Vault has many options and various ways for how
 it can be installed. We will use a very simple
-installation approach to test the provider-vault.
+installation approach to show how to test the
+provider-vault manually per below. To test this
+provider-vault using automated tests, please
+run `make e2e`. This will create, initialize
+and unseal a copy of Vault against which the
+automated tests are running. The list of tests
+is specified in the `Makefile` variable
+`UPTEST_EXAMPLE_LIST`. The tests it runs are
+specified in the `example` directory.
 
 Create a vault namespace.
 ```
