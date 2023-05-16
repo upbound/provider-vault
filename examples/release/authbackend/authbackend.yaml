@@ -6,7 +6,5 @@ spec:
   forProvider:
     description: "GitHub backend for UXP manageed Vault"
     type: "github"
-    tune:
-      listingVisibility: "unauth"
   providerConfigRef:
     name: vault-provider-config
