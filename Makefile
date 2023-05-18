@@ -53,7 +53,7 @@ UP_VERSION = v0.15.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.2.1
 RELDIR = "examples/release"
-UPTEST_EXAMPLE_LIST=${RELDIR}/mount/mount-generic-secrets.yaml,${RELDIR}/genericsecret/genericsecret.yaml,${RELDIR}/mount/mount-kv-v1.yaml,${RELDIR}/kvsecret/kvsecret.yaml,${RELDIR}/mount/mount-kv-v2.yaml,${RELDIR}/kvsecretv2/kvsecretv2.yaml,${RELDIR}/tokenauthbackendrole/tokenauthbackendrole.yaml,${RELDIR}/token/token.yaml,${RELDIR}/githubauthbackend/githubauthbackend.yaml
+UPTEST_EXAMPLE_LIST=${RELDIR}/mount/mount-generic-secrets.yaml,${RELDIR}/genericsecret/genericsecret.yaml,${RELDIR}/mount/mount-kv-v1.yaml,${RELDIR}/kvsecret/kvsecret.yaml,${RELDIR}/mount/mount-kv-v2.yaml,${RELDIR}/kvsecretv2/kvsecretv2.yaml,${RELDIR}/tokenauthbackendrole/tokenauthbackendrole.yaml,${RELDIR}/token/token.yaml,${RELDIR}/githubauthbackend/githubauthbackend.yaml,${RELDIR}/githubteam/githubteam.yaml
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================

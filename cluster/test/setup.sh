@@ -104,7 +104,6 @@ kind: ProviderConfig
 metadata:
   name: vault-provider-config
 spec:
-  # address: http://127.0.0.1:8200
   address: http://$VAULT_0_POD_IP:8200
   add_address_to_env: false
   headers: {name: test, value: "e2e"}
@@ -124,6 +123,13 @@ spec:
       namespace: vault
       key: credentials
 EOF
+
+echo_info "Enabling GitHub Auth"
+${KUBECTL} exec -n vault --stdin vault-0 -- vault login -tls-skip-verify $VAULT_ROOT_TOKEN
+${KUBECTL} exec -n vault --stdin vault-0 -- vault auth enable github
+
+echo_info "Enabled Auth Methods"
+${KUBECTL} exec -n vault --stdin vault-0 -- vault auth list
 
 # More useful setup info
 # https://itnext.io/vault-cluster-with-auto-unseal-on-kubernetes-8e469f9cdcfd

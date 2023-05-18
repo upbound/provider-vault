@@ -7,7 +7,7 @@ spec:
     # Read the id from
     # authbackend.github.vault.upbound.io/github-auth-backend
     # status.atProvider.organizationId
-    backend: "31934484"
+    backend: "github"
     team: "everyone"
   providerConfigRef:
     name: vault-provider-config

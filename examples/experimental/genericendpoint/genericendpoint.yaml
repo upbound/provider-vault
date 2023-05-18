@@ -1,0 +1,13 @@
+apiVersion: generic.vault.upbound.io/v1alpha1
+kind: Endpoint
+metadata:
+  name: generic-endpoint
+spec:
+  forProvider:
+    path: "generic-endpoint"
+    dataJsonSecretRef:
+      name: vault-creds
+      namespace: vault
+      key: credentials
+  providerConfigRef:
+    name: vault-provider-config

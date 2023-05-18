@@ -1,10 +1,10 @@
 apiVersion: github.vault.upbound.io/v1alpha1
 kind: User
 metadata:
-  name: github-user-humoflife
+  name: github-user-humoflife-2
 spec:
   forProvider:
-    backend: "github"
+    backend: "auth/github-specific"
     user: humoflife
   providerConfigRef:
     name: vault-provider-config

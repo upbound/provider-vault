@@ -1,0 +1,14 @@
+apiVersion: raft.vault.upbound.io/v1alpha1
+kind: Autopilot
+metadata:
+  name: raft-autopilot
+spec:
+  forProvider:
+    cleanupDeadServers: true
+    deadServerLastContactThreshold: "24h0m0s"
+    lastContactThreshold: "10s"
+    maxTrailingLogs: 1000
+    minQuorum: 1
+    serverStabilizationTime: "10s"
+  providerConfigRef:
+    name: vault-provider-config
