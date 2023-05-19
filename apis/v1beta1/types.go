@@ -22,7 +22,7 @@ type ProviderConfigSpec struct {
 	// will be set to the value of the address argument
 	// from this provider. By default, this is false.
 	// +optional
-	AddAddressToEnv bool `json:"add_address_to_env, omitempty"`
+	AddAddressToEnv bool `json:"add_address_to_env,omitempty"`
 
 	// Set this to true to disable verification
 	// of the Vault server's TLS certificate. This is
@@ -31,12 +31,12 @@ type ProviderConfigSpec struct {
 	// possibility that Terraform can be tricked into
 	// writing secrets to a server controlled by an intruder.
 	// +optional
-	SkipTlsVerify bool `json:"skip_tls_verify, omitempty"`
+	SkipTLSVerify bool `json:"skip_tls_verify,omitempty"`
 
 	// Name to use as the SNI host when connecting
 	// via TLS.
 	// +optional
-	TlsServerName string `json:"tls_server_name, omitempty"`
+	TLSServerName string `json:"tls_server_name,omitempty"`
 
 	// Set this to true to disable creation of an
 	// intermediate ephemeral Vault token for Terraform to use.
@@ -46,34 +46,34 @@ type ProviderConfigSpec struct {
 	// token cannot be permitted to create child tokens and there
 	// is no risk of exposure from the output of Terraform.
 	// +optional
-	SkipChildToken bool `json:"skip_child_token, omitempty"`
+	SkipChildToken bool `json:"skip_child_token,omitempty"`
 
 	// Used as the duration for the intermediate Vault
 	// token Terraform issues itself, which in turn limits the
 	// duration of secret leases issued by Vault. Defaults to
 	// 20 minutes.
 	// +optional
-	MaxLeaseTtlSeconds int `json:"max_lease_ttl_seconds, omitempty"`
+	MaxLeaseTTLSeconds int `json:"max_lease_ttl_seconds,omitempty"`
 
 	// Used as the maximum number of retries when a
 	// 5xx error code is encountered. Defaults to 2 retries.
 	// +optional
-	MaxRetries int `json:"max_retries, omitempty"`
+	MaxRetries int `json:"max_retries,omitempty"`
 
 	// Maximum number of retries for Client Controlled
 	// Consistency related operations. Defaults to 10 retries.
 	// +optional
-	MaxRetriesCcc int `json:"max_retries_ccc, omitempty"`
+	MaxRetriesCcc int `json:"max_retries_ccc,omitempty"`
 
 	// Set the namespace to use.
 	// +optional
-	Namespace string `json:"namespace, omitempty"`
+	Namespace string `json:"namespace,omitempty"`
 
 	// Skip the dynamic fetching of the Vault server
 	// version. Set to true when the /sys/seal-status API
 	// endpoint is not available.
 	// +optional
-	SkipGetVaultVersion bool `json:"skip_get_vault_version, omitempty"`
+	SkipGetVaultVersion bool `json:"skip_get_vault_version,omitempty"`
 
 	// Override the target Vault server semantic
 	// version. Normally the version is dynamically set
@@ -81,14 +81,14 @@ type ProviderConfigSpec struct {
 	// where this endpoint is not available an override can
 	// be specified here.
 	// +optional
-	VaultVersionOverride string `json:"vault_version_override", omitempty"`
+	VaultVersionOverride string `json:"vault_version_override,omitempty"`
 
 	// A configuration block, described below,
 	// that provides headers to be sent along with all
 	// requests to the Vault server. This block can be
 	// specified multiple times.
 	// +optional
-	Headers ProviderHeaders `json:"headers, omitempty"`
+	Headers ProviderHeaders `json:"headers,omitempty"`
 
 	// Credentials required to authenticate to this provider.
 	// There are many options to authenticate. They include

@@ -48,9 +48,9 @@ spec:
             description: A ProviderConfigSpec defines the desired state of a ProviderConfig.
             properties:
               add_address_to_env:
-                description: Optional. If true the environment variable VAULT_ADDR
-                  in the Terraform process environment will be set to the value of
-                  the address argument from this provider. By default, this is false.
+                description: If true the environment variable VAULT_ADDR in the Terraform
+                  process environment will be set to the value of the address argument
+                  from this provider. By default, this is false.
                 type: boolean
               address:
                 description: Required origin URL of the Vault server. This is a URL
@@ -122,9 +122,9 @@ spec:
                 - source
                 type: object
               headers:
-                description: Optional. A configuration block, described below, that
-                  provides headers to be sent along with all requests to the Vault
-                  server. This block can be specified multiple times.
+                description: A configuration block, described below, that provides
+                  headers to be sent along with all requests to the Vault server.
+                  This block can be specified multiple times.
                 properties:
                   name:
                     description: Required header name
@@ -137,66 +137,51 @@ spec:
                 - value
                 type: object
               max_lease_ttl_seconds:
-                description: Optional. Used as the duration for the intermediate Vault
-                  token Terraform issues itself, which in turn limits the duration
-                  of secret leases issued by Vault. Defaults to 20 minutes.
+                description: Used as the duration for the intermediate Vault token
+                  Terraform issues itself, which in turn limits the duration of secret
+                  leases issued by Vault. Defaults to 20 minutes.
                 type: integer
               max_retries:
-                description: Optional. Used as the maximum number of retries when
-                  a 5xx error code is encountered. Defaults to 2 retries.
+                description: Used as the maximum number of retries when a 5xx error
+                  code is encountered. Defaults to 2 retries.
                 type: integer
               max_retries_ccc:
-                description: Optional. Maximum number of retries for Client Controlled
-                  Consistency related operations. Defaults to 10 retries.
+                description: Maximum number of retries for Client Controlled Consistency
+                  related operations. Defaults to 10 retries.
                 type: integer
               namespace:
-                description: Optional. Set the namespace to use.
+                description: Set the namespace to use.
                 type: string
               skip_child_token:
-                description: Optional. Set this to true to disable creation of an
-                  intermediate ephemeral Vault token for Terraform to use. Enabling
-                  this is strongly discouraged since it increases the potential for
-                  a renewable Vault token being exposed in clear text. Only change
-                  this setting when the provided token cannot be permitted to create
-                  child tokens and there is no risk of exposure from the output of
-                  Terraform.
+                description: Set this to true to disable creation of an intermediate
+                  ephemeral Vault token for Terraform to use. Enabling this is strongly
+                  discouraged since it increases the potential for a renewable Vault
+                  token being exposed in clear text. Only change this setting when
+                  the provided token cannot be permitted to create child tokens and
+                  there is no risk of exposure from the output of Terraform.
                 type: boolean
               skip_get_vault_version:
-                description: Optional. Skip the dynamic fetching of the Vault server
-                  version. Set to true when the /sys/seal-status API endpoint is not
-                  available.
+                description: Skip the dynamic fetching of the Vault server version.
+                  Set to true when the /sys/seal-status API endpoint is not available.
                 type: boolean
               skip_tls_verify:
-                description: Optional. Set this to true to disable verification of
-                  the Vault server's TLS certificate. This is strongly discouraged
-                  except in prototype or development environments, since it exposes
-                  the possibility that Terraform can be tricked into writing secrets
-                  to a server controlled by an intruder.
+                description: Set this to true to disable verification of the Vault
+                  server's TLS certificate. This is strongly discouraged except in
+                  prototype or development environments, since it exposes the possibility
+                  that Terraform can be tricked into writing secrets to a server controlled
+                  by an intruder.
                 type: boolean
               tls_server_name:
-                description: Optional. Name to use as the SNI host when connecting
-                  via TLS.
+                description: Name to use as the SNI host when connecting via TLS.
                 type: string
               vault_version_override:
-                description: Optional. Override the target Vault server semantic version.
-                  Normally the version is dynamically set from the /sys/seal-status
-                  API endpoint. In the case where this endpoint is not available an
-                  override can be specified here.
+                description: Override the target Vault server semantic version. Normally
+                  the version is dynamically set from the /sys/seal-status API endpoint.
+                  In the case where this endpoint is not available an override can
+                  be specified here.
                 type: string
             required:
-            - add_address_to_env
             - address
-            - credentials
-            - headers
-            - max_lease_ttl_seconds
-            - max_retries
-            - max_retries_ccc
-            - namespace
-            - skip_child_token
-            - skip_get_vault_version
-            - skip_tls_verify
-            - tls_server_name
-            - vault_version_override
             type: object
           status:
             description: A ProviderConfigStatus reflects the observed state of a ProviderConfig.

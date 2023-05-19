@@ -44,10 +44,10 @@ const (
 	keyAuthLoginAzure       = "auth_login_azure"
 	keyAuthLogin            = "auth_login"
 	keyClientAuth           = "client_auth"
-	keySkipTlsVerify        = "skip_tls_verify"
-	keyTlsServerName        = "tls_server_name"
+	keySkipTLSVerify        = "skip_tls_verify"
+	keyTLSServerName        = "tls_server_name"
 	keySkipChildToken       = "skip_child_token"
-	keyMaxLeaseTtlSeconds   = "max_lease_ttl_seconds"
+	keyMaxLeaseTTLSeconds   = "max_lease_ttl_seconds"
 	keyMaxRetries           = "max_retries"
 	keyMaxRetriesCcc        = "max_retries_ccc"
 	keyNamespace            = "namespace"
@@ -97,12 +97,12 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 
 		// Assign optional parameters
 		ps.Configuration[keyAddAddressToEnv] = pc.Spec.AddAddressToEnv
-		ps.Configuration[keySkipTlsVerify] = pc.Spec.SkipTlsVerify
-		if len(pc.Spec.TlsServerName) > 0 {
-			ps.Configuration[keyTlsServerName] = pc.Spec.TlsServerName
+		ps.Configuration[keySkipTLSVerify] = pc.Spec.SkipTLSVerify
+		if len(pc.Spec.TLSServerName) > 0 {
+			ps.Configuration[keyTLSServerName] = pc.Spec.TLSServerName
 		}
 		ps.Configuration[keySkipChildToken] = pc.Spec.SkipChildToken
-		ps.Configuration[keyMaxLeaseTtlSeconds] = pc.Spec.MaxLeaseTtlSeconds
+		ps.Configuration[keyMaxLeaseTTLSeconds] = pc.Spec.MaxLeaseTTLSeconds
 		ps.Configuration[keyMaxRetries] = pc.Spec.MaxRetries
 		ps.Configuration[keyMaxRetriesCcc] = pc.Spec.MaxRetriesCcc
 		if len(pc.Spec.Namespace) > 0 {
@@ -128,53 +128,16 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 
 		// Set credentials in Terraform
 		// provider configuration
-		if v, ok := creds[keyToken]; ok {
-			ps.Configuration[keyToken] = v
-		}
-		if v, ok := creds[keyTokenName]; ok {
-			ps.Configuration[keyTokenName] = v
-		}
-		if v, ok := creds[keyCaCertFile]; ok {
-			ps.Configuration[keyCaCertFile] = v
-		}
-		if v, ok := creds[keyCaCertDir]; ok {
-			ps.Configuration[keyCaCertDir] = v
-		}
-		if v, ok := creds[keyAuthLoginUserpass]; ok {
-			ps.Configuration[keyAuthLoginUserpass] = v
-		}
-		if v, ok := creds[keyAuthLoginAWS]; ok {
-			ps.Configuration[keyAuthLoginAWS] = v
-		}
-		if v, ok := creds[keyAuthLoginCert]; ok {
-			ps.Configuration[keyAuthLoginCert] = v
-		}
-		if v, ok := creds[keyAuthLoginGCP]; ok {
-			ps.Configuration[keyAuthLoginGCP] = v
-		}
-		if v, ok := creds[keyAuthLoginKerberos]; ok {
-			ps.Configuration[keyAuthLoginKerberos] = v
-		}
-		if v, ok := creds[keyAuthLoginRadius]; ok {
-			ps.Configuration[keyAuthLoginRadius] = v
-		}
-		if v, ok := creds[keyAuthLoginOCI]; ok {
-			ps.Configuration[keyAuthLoginOCI] = v
-		}
-		if v, ok := creds[keyAuthLoginOIDC]; ok {
-			ps.Configuration[keyAuthLoginOIDC] = v
-		}
-		if v, ok := creds[keyAuthLoginJWT]; ok {
-			ps.Configuration[keyAuthLoginJWT] = v
-		}
-		if v, ok := creds[keyAuthLoginAzure]; ok {
-			ps.Configuration[keyAuthLoginAzure] = v
-		}
-		if v, ok := creds[keyAuthLogin]; ok {
-			ps.Configuration[keyAuthLogin] = v
-		}
-		if v, ok := creds[keyClientAuth]; ok {
-			ps.Configuration[keyClientAuth] = v
+		credsKeys := [...]string{keyToken, keyTokenName, keyCaCertFile,
+			keyCaCertDir, keyAuthLoginUserpass, keyAuthLoginAWS,
+			keyAuthLoginCert, keyAuthLoginGCP, keyAuthLoginKerberos,
+			keyAuthLoginRadius, keyAuthLoginOCI, keyAuthLoginOIDC,
+			keyAuthLoginJWT, keyAuthLoginAzure, keyAuthLogin, keyClientAuth}
+
+		for _, key := range credsKeys {
+			if v, ok := creds[key]; ok {
+				ps.Configuration[key] = v
+			}
 		}
 		return ps, nil
 	}
