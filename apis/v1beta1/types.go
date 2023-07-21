@@ -113,9 +113,9 @@ type ProviderConfigSpec struct {
 // ProviderHeaders optional.
 type ProviderHeaders struct {
 	// Required header name
-	name string `json:"name"`
+	// name string `json:"name"`
 	// Required header value
-	value string `json:"value"`
+	// value string `json:"value"`
 }
 
 // ProviderCredentials required to authenticate.
