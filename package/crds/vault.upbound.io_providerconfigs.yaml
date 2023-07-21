@@ -125,6 +125,16 @@ spec:
                 description: A configuration block, described below, that provides
                   headers to be sent along with all requests to the Vault server.
                   This block can be specified multiple times.
+                properties:
+                  name:
+                    description: Required header name
+                    type: string
+                  value:
+                    description: Required header value
+                    type: string
+                required:
+                - name
+                - value
                 type: object
               max_lease_ttl_seconds:
                 description: Used as the duration for the intermediate Vault token
