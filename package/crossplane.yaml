@@ -1,4 +1,12 @@
-apiVersion: meta.pkg.crossplane.io/v1alpha1
+apiVersion: meta.pkg.crossplane.io/v1
 kind: Provider
 metadata:
   name: provider-vault
+  annotations:
+    meta.crossplane.io/maintainer: Upbound <support@upbound.io>
+    meta.crossplane.io/source: github.com/upbound/provider-vault
+    meta.crossplane.io/license: Apache-2.0
+    meta.crossplane.io/description: |
+      Provider Vault is a Crossplane provider for Hashicorp Vault.
+    meta.crossplane.io/readme: |
+      Provider Vault is a Crossplane provider for Hashicorp Vault.

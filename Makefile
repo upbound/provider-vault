@@ -49,7 +49,7 @@ GO_SUBDIRS += cmd internal apis
 # Setup Kubernetes tools
 
 KIND_VERSION = v0.18.0
-UP_VERSION = v0.15.0
+UP_VERSION = v0.18.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.2.1
 RELDIR = "examples/release"
