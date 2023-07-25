@@ -101,11 +101,6 @@ func (in *AuthBackendConfigObservation) DeepCopyInto(out *AuthBackendConfigObser
 		*out = new(string)
 		**out = **in
 	}
-	if in.KubernetesCACert != nil {
-		in, out := &in.KubernetesCACert, &out.KubernetesCACert
-		*out = new(string)
-		**out = **in
-	}
 	if in.KubernetesHost != nil {
 		in, out := &in.KubernetesHost, &out.KubernetesHost
 		*out = new(string)
@@ -162,9 +157,9 @@ func (in *AuthBackendConfigParameters) DeepCopyInto(out *AuthBackendConfigParame
 		*out = new(string)
 		**out = **in
 	}
-	if in.KubernetesCACert != nil {
-		in, out := &in.KubernetesCACert, &out.KubernetesCACert
-		*out = new(string)
+	if in.KubernetesCACertSecretRef != nil {
+		in, out := &in.KubernetesCACertSecretRef, &out.KubernetesCACertSecretRef
+		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
 	if in.KubernetesHost != nil {

@@ -83,10 +83,24 @@ spec:
                     description: Optional JWT issuer. If no issuer is specified, kubernetes.io/serviceaccount
                       will be used as the default issuer.
                     type: string
-                  kubernetesCaCert:
+                  kubernetesCaCertSecretRef:
                     description: PEM encoded CA cert for use by the TLS client used
                       to talk with the Kubernetes API.
-                    type: string
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
                   kubernetesHost:
                     description: Host must be a host string, a host:port pair, or
                       a URL to the base of the Kubernetes API server.
@@ -332,10 +346,6 @@ spec:
                   issuer:
                     description: Optional JWT issuer. If no issuer is specified, kubernetes.io/serviceaccount
                       will be used as the default issuer.
-                    type: string
-                  kubernetesCaCert:
-                    description: PEM encoded CA cert for use by the TLS client used
-                      to talk with the Kubernetes API.
                     type: string
                   kubernetesHost:
                     description: Host must be a host string, a host:port pair, or

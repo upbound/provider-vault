@@ -29,9 +29,6 @@ type AuthBackendConfigObservation struct {
 	// Optional JWT issuer. If no issuer is specified, kubernetes.io/serviceaccount will be used as the default issuer.
 	Issuer *string `json:"issuer,omitempty" tf:"issuer,omitempty"`
 
-	// PEM encoded CA cert for use by the TLS client used to talk with the Kubernetes API.
-	KubernetesCACert *string `json:"kubernetesCaCert,omitempty" tf:"kubernetes_ca_cert,omitempty"`
-
 	// Host must be a host string, a host:port pair, or a URL to the base of the Kubernetes API server.
 	KubernetesHost *string `json:"kubernetesHost,omitempty" tf:"kubernetes_host,omitempty"`
 
@@ -62,7 +59,7 @@ type AuthBackendConfigParameters struct {
 
 	// PEM encoded CA cert for use by the TLS client used to talk with the Kubernetes API.
 	// +kubebuilder:validation:Optional
-	KubernetesCACert *string `json:"kubernetesCaCert,omitempty" tf:"kubernetes_ca_cert,omitempty"`
+	KubernetesCACertSecretRef *v1.SecretKeySelector `json:"kubernetesCaCertSecretRef,omitempty" tf:"-"`
 
 	// Host must be a host string, a host:port pair, or a URL to the base of the Kubernetes API server.
 	// +kubebuilder:validation:Optional

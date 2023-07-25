@@ -20,7 +20,7 @@ func (mg *AuthBackendConfig) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this AuthBackendConfig
 func (tr *AuthBackendConfig) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"token_reviewer_jwt": "spec.forProvider.tokenReviewerJwtSecretRef"}
+	return map[string]string{"kubernetes_ca_cert": "spec.forProvider.kubernetesCaCertSecretRef", "token_reviewer_jwt": "spec.forProvider.tokenReviewerJwtSecretRef"}
 }
 
 // GetObservation of this AuthBackendConfig
