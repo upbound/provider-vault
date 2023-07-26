@@ -1,0 +1,19 @@
+apiVersion: rgp.vault.upbound.io/v1alpha1
+kind: Policy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: rgp/v1alpha1/policy
+  labels:
+    testing.upbound.io/example-name: allow-all
+  name: allow-all
+spec:
+  forProvider:
+    enforcementLevel: soft-mandatory
+    name: allow-all
+    policy: |
+      main = rule {
+        true
+      }
+
+---
+

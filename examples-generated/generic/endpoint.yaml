@@ -1,0 +1,33 @@
+apiVersion: generic.vault.upbound.io/v1alpha1
+kind: Endpoint
+metadata:
+  annotations:
+    meta.upbound.io/example-id: generic/v1alpha1/endpoint
+  labels:
+    testing.upbound.io/example-name: u1
+  name: u1
+spec:
+  forProvider:
+    dataJsonSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    ignoreAbsentFields: true
+    path: auth/userpass/users/u1
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: generic/v1alpha1/endpoint
+  labels:
+    testing.upbound.io/example-name: userpass
+  name: userpass
+spec:
+  forProvider:
+    type: userpass
+
+---
+

@@ -1,0 +1,14 @@
+apiVersion: jwt.vault.upbound.io/v1alpha1
+kind: AuthBackend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: jwt/v1alpha1/authbackend
+  labels:
+    testing.upbound.io/example-name: jwt
+  name: jwt
+spec:
+  forProvider:
+    path: jwt
+
+---
+

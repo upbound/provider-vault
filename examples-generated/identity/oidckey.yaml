@@ -1,0 +1,30 @@
+apiVersion: identity.vault.upbound.io/v1alpha1
+kind: OidcKey
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/oidckey
+  labels:
+    testing.upbound.io/example-name: key
+  name: key
+spec:
+  forProvider:
+    algorithm: RS256
+    name: key
+
+---
+
+apiVersion: identity.vault.upbound.io/v1alpha1
+kind: OidcRole
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/oidckey
+  labels:
+    testing.upbound.io/example-name: role
+  name: role
+spec:
+  forProvider:
+    key: key
+    name: role
+
+---
+

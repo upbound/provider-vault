@@ -1,0 +1,19 @@
+apiVersion: identity.vault.upbound.io/v1alpha1
+kind: MfaOkta
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/mfaokta
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    apiTokenSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    baseUrl: qux.baz.com
+    orgName: org1
+
+---
+
