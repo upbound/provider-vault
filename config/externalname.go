@@ -148,16 +148,3 @@ func ExternalNameConfigurations() config.ResourceOption {
 		}
 	}
 }
-
-// ExternalNameConfigured returns the list of all resources whose external name
-// is configured manually.
-func ExternalNameConfigured() []string {
-	l := make([]string, len(ExternalNameConfigs))
-	i := 0
-	for name := range ExternalNameConfigs {
-		// $ is added to match the exact string since the format is regex.
-		l[i] = name + "$"
-		i++
-	}
-	return l
-}
