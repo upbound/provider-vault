@@ -8,6 +8,7 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
+	"github.com/upbound/provider-vault/config/kubernetesauthbackendconfig"
 	ujconfig "github.com/upbound/upjet/pkg/config"
 )
 
@@ -33,6 +34,7 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
+		kubernetesauthbackendconfig.Configure,
 	} {
 		configure(pc)
 	}
