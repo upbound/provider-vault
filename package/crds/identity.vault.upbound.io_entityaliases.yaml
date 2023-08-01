@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: entityaliases.identity.vault.upbound.io
 spec:
   group: identity.vault.upbound.io
@@ -35,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: EntityAlias is the Schema for the EntityAliass API. <no value>
+        description: EntityAlias is the Schema for the EntityAliass API. Creates an
+          Identity Entity Alias for Vault.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -57,7 +57,7 @@ spec:
                 description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
                   or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicy field in a future release. Currently,
+                  in favor of the ManagementPolicies field in a future release. Currently,
                   both could be set independently and non-default values would be
                   honored if the feature flag is enabled. See the design doc for more
                   information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
@@ -68,7 +68,8 @@ spec:
               forProvider:
                 properties:
                   canonicalId:
-                    description: ID of the entity to which this is an alias.
+                    description: Entity ID to which this alias belongs to. ID of the
+                      entity to which this is an alias.
                     type: string
                   customMetadata:
                     additionalProperties:
@@ -76,31 +77,95 @@ spec:
                     description: Custom metadata to be associated with this alias.
                     type: object
                   mountAccessor:
-                    description: Mount accessor to which this alias belongs toMount
-                      accessor to which this alias belongs to.
+                    description: Accessor of the mount to which the alias should belong
+                      to. Mount accessor to which this alias belongs toMount accessor
+                      to which this alias belongs to.
                     type: string
                   name:
-                    description: Name of the entity alias.
+                    description: Name of the alias. Name should be the identifier
+                      of the client in the authentication source. For example, if
+                      the alias belongs to userpass backend, the name should be a
+                      valid username within userpass backend. If alias belongs to
+                      GitHub, it should be the GitHub username. Name of the entity
+                      alias.
                     type: string
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                 type: object
-              managementPolicy:
-                default: FullControl
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  canonicalId:
+                    description: Entity ID to which this alias belongs to. ID of the
+                      entity to which this is an alias.
+                    type: string
+                  customMetadata:
+                    additionalProperties:
+                      type: string
+                    description: Custom metadata to be associated with this alias.
+                    type: object
+                  mountAccessor:
+                    description: Accessor of the mount to which the alias should belong
+                      to. Mount accessor to which this alias belongs toMount accessor
+                      to which this alias belongs to.
+                    type: string
+                  name:
+                    description: Name of the alias. Name should be the identifier
+                      of the client in the authentication source. For example, if
+                      the alias belongs to userpass backend, the name should be a
+                      valid username within userpass backend. If alias belongs to
+                      GitHub, it should be the GitHub username. Name of the entity
+                      alias.
+                    type: string
+                  namespace:
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
                 description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
                   It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicy
-                  specifies the level of control Crossplane has over the managed external
-                  resource. This field is planned to replace the DeletionPolicy field
-                  in a future release. Currently, both could be set independently
-                  and non-default values would be honored if the feature flag is enabled.
-                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
-                enum:
-                - FullControl
-                - ObserveOnly
-                - OrphanOnDelete
-                type: string
+                  enabled, and may be changed or removed without notice. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
@@ -274,18 +339,25 @@ spec:
             type: object
             x-kubernetes-validations:
             - message: canonicalId is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.canonicalId)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.canonicalId)
+                || has(self.initProvider.canonicalId)'
             - message: mountAccessor is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.mountAccessor)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.mountAccessor)
+                || has(self.initProvider.mountAccessor)'
             - message: name is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
           status:
             description: EntityAliasStatus defines the observed state of EntityAlias.
             properties:
               atProvider:
                 properties:
                   canonicalId:
-                    description: ID of the entity to which this is an alias.
+                    description: Entity ID to which this alias belongs to. ID of the
+                      entity to which this is an alias.
                     type: string
                   customMetadata:
                     additionalProperties:
@@ -293,16 +365,27 @@ spec:
                     description: Custom metadata to be associated with this alias.
                     type: object
                   id:
+                    description: ID of the entity alias.
                     type: string
                   mountAccessor:
-                    description: Mount accessor to which this alias belongs toMount
-                      accessor to which this alias belongs to.
+                    description: Accessor of the mount to which the alias should belong
+                      to. Mount accessor to which this alias belongs toMount accessor
+                      to which this alias belongs to.
                     type: string
                   name:
-                    description: Name of the entity alias.
+                    description: Name of the alias. Name should be the identifier
+                      of the client in the authentication source. For example, if
+                      the alias belongs to userpass backend, the name should be a
+                      valid username within userpass backend. If alias belongs to
+                      GitHub, it should be the GitHub username. Name of the entity
+                      alias.
                     type: string
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                 type: object
               conditions:

@@ -13,37 +13,73 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type OidcScopeInitParameters struct {
+
+	// A description of the scope.
+	// The scope's description.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The name of the scope. The openid scope name is reserved.
+	// The name of the scope. The openid scope name is reserved.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The template string for the scope. This may be provided as escaped JSON or base64 encoded JSON.
+	// The template string for the scope. This may be provided as escaped JSON or base64 encoded JSON.
+	Template *string `json:"template,omitempty" tf:"template,omitempty"`
+}
+
 type OidcScopeObservation struct {
 
+	// A description of the scope.
 	// The scope's description.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The name of the scope. The openid scope name is reserved.
+	// The name of the scope. The openid scope name is reserved.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The template string for the scope. This may be provided as escaped JSON or base64 encoded JSON.
 	// The template string for the scope. This may be provided as escaped JSON or base64 encoded JSON.
 	Template *string `json:"template,omitempty" tf:"template,omitempty"`
 }
 
 type OidcScopeParameters struct {
 
+	// A description of the scope.
 	// The scope's description.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// The name of the scope. The openid scope name is reserved.
+	// The name of the scope. The openid scope name is reserved.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The template string for the scope. This may be provided as escaped JSON or base64 encoded JSON.
 	// The template string for the scope. This may be provided as escaped JSON or base64 encoded JSON.
 	// +kubebuilder:validation:Optional
 	Template *string `json:"template,omitempty" tf:"template,omitempty"`
@@ -53,6 +89,18 @@ type OidcScopeParameters struct {
 type OidcScopeSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OidcScopeParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider OidcScopeInitParameters `json:"initProvider,omitempty"`
 }
 
 // OidcScopeStatus defines the observed state of OidcScope.
@@ -63,7 +111,7 @@ type OidcScopeStatus struct {
 
 // +kubebuilder:object:root=true
 
-// OidcScope is the Schema for the OidcScopes API. <no value>
+// OidcScope is the Schema for the OidcScopes API. Provision OIDC Scopes in Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -73,7 +121,7 @@ type OidcScopeStatus struct {
 type OidcScope struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
 	Spec   OidcScopeSpec   `json:"spec"`
 	Status OidcScopeStatus `json:"status,omitempty"`
 }

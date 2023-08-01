@@ -69,6 +69,16 @@ func (tr *Secret) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this Secret
+func (tr *Secret) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this Secret using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *Secret) LateInitialize(attrs []byte) (bool, error) {
@@ -143,6 +153,16 @@ func (tr *SecretBackendV2) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this SecretBackendV2
+func (tr *SecretBackendV2) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this SecretBackendV2 using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *SecretBackendV2) LateInitialize(attrs []byte) (bool, error) {
@@ -215,6 +235,16 @@ func (tr *SecretV2) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this SecretV2
+func (tr *SecretV2) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this SecretV2 using its observed tfState.

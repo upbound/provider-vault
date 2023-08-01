@@ -13,157 +13,394 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type PolicyIdentifierObservation struct {
+type PolicyIdentifierInitParameters struct {
 
+	// The URL of the CPS for the policy identifier
 	// Optional CPS URL
 	Cps *string `json:"cps,omitempty" tf:"cps,omitempty"`
 
+	// A notice for the policy identifier
 	// Optional notice
 	Notice *string `json:"notice,omitempty" tf:"notice,omitempty"`
 
+	// The OID for the policy identifier
+	// OID
+	Oid *string `json:"oid,omitempty" tf:"oid,omitempty"`
+}
+
+type PolicyIdentifierObservation struct {
+
+	// The URL of the CPS for the policy identifier
+	// Optional CPS URL
+	Cps *string `json:"cps,omitempty" tf:"cps,omitempty"`
+
+	// A notice for the policy identifier
+	// Optional notice
+	Notice *string `json:"notice,omitempty" tf:"notice,omitempty"`
+
+	// The OID for the policy identifier
 	// OID
 	Oid *string `json:"oid,omitempty" tf:"oid,omitempty"`
 }
 
 type PolicyIdentifierParameters struct {
 
+	// The URL of the CPS for the policy identifier
 	// Optional CPS URL
 	// +kubebuilder:validation:Optional
 	Cps *string `json:"cps,omitempty" tf:"cps,omitempty"`
 
+	// A notice for the policy identifier
 	// Optional notice
 	// +kubebuilder:validation:Optional
 	Notice *string `json:"notice,omitempty" tf:"notice,omitempty"`
 
+	// The OID for the policy identifier
 	// OID
-	// +kubebuilder:validation:Required
-	Oid *string `json:"oid" tf:"oid,omitempty"`
+	// +kubebuilder:validation:Optional
+	Oid *string `json:"oid,omitempty" tf:"oid,omitempty"`
+}
+
+type SecretBackendRoleInitParameters struct {
+
+	// Flag to allow any name
+	// Flag to allow any name
+	AllowAnyName *bool `json:"allowAnyName,omitempty" tf:"allow_any_name,omitempty"`
+
+	// Flag to allow certificates matching the actual domain
+	// Flag to allow certificates matching the actual domain.
+	AllowBareDomains *bool `json:"allowBareDomains,omitempty" tf:"allow_bare_domains,omitempty"`
+
+	// Flag to allow names containing glob patterns.
+	// Flag to allow names containing glob patterns.
+	AllowGlobDomains *bool `json:"allowGlobDomains,omitempty" tf:"allow_glob_domains,omitempty"`
+
+	// Flag to allow IP SANs
+	// Flag to allow IP SANs
+	AllowIPSans *bool `json:"allowIpSans,omitempty" tf:"allow_ip_sans,omitempty"`
+
+	// Flag to allow certificates for localhost
+	// Flag to allow certificates for localhost.
+	AllowLocalhost *bool `json:"allowLocalhost,omitempty" tf:"allow_localhost,omitempty"`
+
+	// Flag to allow certificates matching subdomains
+	// Flag to allow certificates matching subdomains.
+	AllowSubdomains *bool `json:"allowSubdomains,omitempty" tf:"allow_subdomains,omitempty"`
+
+	// List of allowed domains for certificates
+	// The domains of the role.
+	AllowedDomains []*string `json:"allowedDomains,omitempty" tf:"allowed_domains,omitempty"`
+
+	// Flag, if set, allowed_domains can be specified using identity template expressions such as {{identity.entity.aliases.<mount accessor>.name}}.
+	// Flag to indicate that `allowed_domains` specifies a template expression (e.g. {{identity.entity.aliases.<mount accessor>.name}})
+	AllowedDomainsTemplate *bool `json:"allowedDomainsTemplate,omitempty" tf:"allowed_domains_template,omitempty"`
+
+	// Defines allowed custom SANs
+	// Defines allowed custom SANs
+	AllowedOtherSans []*string `json:"allowedOtherSans,omitempty" tf:"allowed_other_sans,omitempty"`
+
+	// An array of allowed serial numbers to put in Subject
+	// Defines allowed Subject serial numbers.
+	AllowedSerialNumbers []*string `json:"allowedSerialNumbers,omitempty" tf:"allowed_serial_numbers,omitempty"`
+
+	// Defines allowed URI SANs
+	// Defines allowed URI SANs
+	AllowedURISans []*string `json:"allowedUriSans,omitempty" tf:"allowed_uri_sans,omitempty"`
+
+	// The path the PKI secret backend is mounted at, with no leading or trailing /s.
+	// The path of the PKI secret backend the resource belongs to.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Flag to mark basic constraints valid when issuing non-CA certificates
+	// Flag to mark basic constraints valid when issuing non-CA certificates.
+	BasicConstraintsValidForNonCA *bool `json:"basicConstraintsValidForNonCa,omitempty" tf:"basic_constraints_valid_for_non_ca,omitempty"`
+
+	// Flag to specify certificates for client use
+	// Flag to specify certificates for client use.
+	ClientFlag *bool `json:"clientFlag,omitempty" tf:"client_flag,omitempty"`
+
+	// Flag to specify certificates for code signing use
+	// Flag to specify certificates for code signing use.
+	CodeSigningFlag *bool `json:"codeSigningFlag,omitempty" tf:"code_signing_flag,omitempty"`
+
+	// The country of generated certificates
+	// The country of generated certificates.
+	Country []*string `json:"country,omitempty" tf:"country,omitempty"`
+
+	// Flag to specify certificates for email protection use
+	// Flag to specify certificates for email protection use.
+	EmailProtectionFlag *bool `json:"emailProtectionFlag,omitempty" tf:"email_protection_flag,omitempty"`
+
+	// Flag to allow only valid host names
+	// Flag to allow only valid host names
+	EnforceHostnames *bool `json:"enforceHostnames,omitempty" tf:"enforce_hostnames,omitempty"`
+
+	// Specify the allowed extended key usage constraint on issued certificates
+	// Specify the allowed extended key usage constraint on issued certificates.
+	ExtKeyUsage []*string `json:"extKeyUsage,omitempty" tf:"ext_key_usage,omitempty"`
+
+	// Flag to generate leases with certificates
+	// Flag to generate leases with certificates.
+	GenerateLease *bool `json:"generateLease,omitempty" tf:"generate_lease,omitempty"`
+
+	// The number of bits of generated keys
+	// The number of bits of generated keys.
+	KeyBits *float64 `json:"keyBits,omitempty" tf:"key_bits,omitempty"`
+
+	// The generated key type, choices: rsa, ec, ed25519, any
+	// Defaults to rsa
+	// The generated key type.
+	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
+
+	// Specify the allowed key usage constraint on issued certificates
+	// Specify the allowed key usage constraint on issued certificates.
+	KeyUsage []*string `json:"keyUsage,omitempty" tf:"key_usage,omitempty"`
+
+	// The locality of generated certificates
+	// The locality of generated certificates.
+	Locality []*string `json:"locality,omitempty" tf:"locality,omitempty"`
+
+	// The maximum lease TTL, in seconds, for the role.
+	// The maximum TTL.
+	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
+
+	// The name to identify this role within the backend. Must be unique within the backend.
+	// Unique name for the role.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Flag to not store certificates in the storage backend
+	// Flag to not store certificates in the storage backend.
+	NoStore *bool `json:"noStore,omitempty" tf:"no_store,omitempty"`
+
+	// Specifies the duration by which to backdate the NotBefore property.
+	// Specifies the duration by which to backdate the NotBefore property.
+	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
+
+	// The organization of generated certificates
+	// The organization of generated certificates.
+	Organization []*string `json:"organization,omitempty" tf:"organization,omitempty"`
+
+	// The organization unit of generated certificates
+	// The organization unit of generated certificates.
+	Ou []*string `json:"ou,omitempty" tf:"ou,omitempty"`
+
+	// (Vault 1.11+ only) A block for specifying policy identifers. The policy_identifier block can be repeated, and supports the following arguments:
+	// Policy identifier block; can only be used with Vault 1.11+
+	PolicyIdentifier []PolicyIdentifierInitParameters `json:"policyIdentifier,omitempty" tf:"policy_identifier,omitempty"`
+
+	// Specify the list of allowed policies OIDs. Use with Vault 1.10 or before. For Vault 1.11+, use policy_identifier blocks instead
+	// Specify the list of allowed policies OIDs.
+	PolicyIdentifiers []*string `json:"policyIdentifiers,omitempty" tf:"policy_identifiers,omitempty"`
+
+	// The postal code of generated certificates
+	// The postal code of generated certificates.
+	PostalCode []*string `json:"postalCode,omitempty" tf:"postal_code,omitempty"`
+
+	// The province of generated certificates
+	// The province of generated certificates.
+	Province []*string `json:"province,omitempty" tf:"province,omitempty"`
+
+	// Flag to force CN usage
+	// Flag to force CN usage.
+	RequireCn *bool `json:"requireCn,omitempty" tf:"require_cn,omitempty"`
+
+	// Flag to specify certificates for server use
+	// Flag to specify certificates for server use.
+	ServerFlag *bool `json:"serverFlag,omitempty" tf:"server_flag,omitempty"`
+
+	// The street address of generated certificates
+	// The street address of generated certificates.
+	StreetAddress []*string `json:"streetAddress,omitempty" tf:"street_address,omitempty"`
+
+	// The TTL, in seconds, for any certificate issued against this role.
+	// The TTL.
+	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// Flag to use the CN in the CSR
+	// Flag to use the CN in the CSR.
+	UseCsrCommonName *bool `json:"useCsrCommonName,omitempty" tf:"use_csr_common_name,omitempty"`
+
+	// Flag to use the SANs in the CSR
+	// Flag to use the SANs in the CSR.
+	UseCsrSans *bool `json:"useCsrSans,omitempty" tf:"use_csr_sans,omitempty"`
 }
 
 type SecretBackendRoleObservation struct {
 
 	// Flag to allow any name
+	// Flag to allow any name
 	AllowAnyName *bool `json:"allowAnyName,omitempty" tf:"allow_any_name,omitempty"`
 
+	// Flag to allow certificates matching the actual domain
 	// Flag to allow certificates matching the actual domain.
 	AllowBareDomains *bool `json:"allowBareDomains,omitempty" tf:"allow_bare_domains,omitempty"`
 
 	// Flag to allow names containing glob patterns.
+	// Flag to allow names containing glob patterns.
 	AllowGlobDomains *bool `json:"allowGlobDomains,omitempty" tf:"allow_glob_domains,omitempty"`
 
 	// Flag to allow IP SANs
+	// Flag to allow IP SANs
 	AllowIPSans *bool `json:"allowIpSans,omitempty" tf:"allow_ip_sans,omitempty"`
 
+	// Flag to allow certificates for localhost
 	// Flag to allow certificates for localhost.
 	AllowLocalhost *bool `json:"allowLocalhost,omitempty" tf:"allow_localhost,omitempty"`
 
+	// Flag to allow certificates matching subdomains
 	// Flag to allow certificates matching subdomains.
 	AllowSubdomains *bool `json:"allowSubdomains,omitempty" tf:"allow_subdomains,omitempty"`
 
+	// List of allowed domains for certificates
 	// The domains of the role.
 	AllowedDomains []*string `json:"allowedDomains,omitempty" tf:"allowed_domains,omitempty"`
 
+	// Flag, if set, allowed_domains can be specified using identity template expressions such as {{identity.entity.aliases.<mount accessor>.name}}.
 	// Flag to indicate that `allowed_domains` specifies a template expression (e.g. {{identity.entity.aliases.<mount accessor>.name}})
 	AllowedDomainsTemplate *bool `json:"allowedDomainsTemplate,omitempty" tf:"allowed_domains_template,omitempty"`
 
 	// Defines allowed custom SANs
+	// Defines allowed custom SANs
 	AllowedOtherSans []*string `json:"allowedOtherSans,omitempty" tf:"allowed_other_sans,omitempty"`
 
+	// An array of allowed serial numbers to put in Subject
 	// Defines allowed Subject serial numbers.
 	AllowedSerialNumbers []*string `json:"allowedSerialNumbers,omitempty" tf:"allowed_serial_numbers,omitempty"`
 
 	// Defines allowed URI SANs
+	// Defines allowed URI SANs
 	AllowedURISans []*string `json:"allowedUriSans,omitempty" tf:"allowed_uri_sans,omitempty"`
 
+	// The path the PKI secret backend is mounted at, with no leading or trailing /s.
 	// The path of the PKI secret backend the resource belongs to.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// Flag to mark basic constraints valid when issuing non-CA certificates
 	// Flag to mark basic constraints valid when issuing non-CA certificates.
 	BasicConstraintsValidForNonCA *bool `json:"basicConstraintsValidForNonCa,omitempty" tf:"basic_constraints_valid_for_non_ca,omitempty"`
 
+	// Flag to specify certificates for client use
 	// Flag to specify certificates for client use.
 	ClientFlag *bool `json:"clientFlag,omitempty" tf:"client_flag,omitempty"`
 
+	// Flag to specify certificates for code signing use
 	// Flag to specify certificates for code signing use.
 	CodeSigningFlag *bool `json:"codeSigningFlag,omitempty" tf:"code_signing_flag,omitempty"`
 
+	// The country of generated certificates
 	// The country of generated certificates.
 	Country []*string `json:"country,omitempty" tf:"country,omitempty"`
 
+	// Flag to specify certificates for email protection use
 	// Flag to specify certificates for email protection use.
 	EmailProtectionFlag *bool `json:"emailProtectionFlag,omitempty" tf:"email_protection_flag,omitempty"`
 
 	// Flag to allow only valid host names
+	// Flag to allow only valid host names
 	EnforceHostnames *bool `json:"enforceHostnames,omitempty" tf:"enforce_hostnames,omitempty"`
 
+	// Specify the allowed extended key usage constraint on issued certificates
 	// Specify the allowed extended key usage constraint on issued certificates.
 	ExtKeyUsage []*string `json:"extKeyUsage,omitempty" tf:"ext_key_usage,omitempty"`
 
+	// Flag to generate leases with certificates
 	// Flag to generate leases with certificates.
 	GenerateLease *bool `json:"generateLease,omitempty" tf:"generate_lease,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The number of bits of generated keys
 	// The number of bits of generated keys.
 	KeyBits *float64 `json:"keyBits,omitempty" tf:"key_bits,omitempty"`
 
+	// The generated key type, choices: rsa, ec, ed25519, any
+	// Defaults to rsa
 	// The generated key type.
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
+	// Specify the allowed key usage constraint on issued certificates
 	// Specify the allowed key usage constraint on issued certificates.
 	KeyUsage []*string `json:"keyUsage,omitempty" tf:"key_usage,omitempty"`
 
+	// The locality of generated certificates
 	// The locality of generated certificates.
 	Locality []*string `json:"locality,omitempty" tf:"locality,omitempty"`
 
+	// The maximum lease TTL, in seconds, for the role.
 	// The maximum TTL.
 	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
 
+	// The name to identify this role within the backend. Must be unique within the backend.
 	// Unique name for the role.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Flag to not store certificates in the storage backend
 	// Flag to not store certificates in the storage backend.
 	NoStore *bool `json:"noStore,omitempty" tf:"no_store,omitempty"`
 
 	// Specifies the duration by which to backdate the NotBefore property.
+	// Specifies the duration by which to backdate the NotBefore property.
 	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
 
+	// The organization of generated certificates
 	// The organization of generated certificates.
 	Organization []*string `json:"organization,omitempty" tf:"organization,omitempty"`
 
+	// The organization unit of generated certificates
 	// The organization unit of generated certificates.
 	Ou []*string `json:"ou,omitempty" tf:"ou,omitempty"`
 
+	// (Vault 1.11+ only) A block for specifying policy identifers. The policy_identifier block can be repeated, and supports the following arguments:
 	// Policy identifier block; can only be used with Vault 1.11+
 	PolicyIdentifier []PolicyIdentifierObservation `json:"policyIdentifier,omitempty" tf:"policy_identifier,omitempty"`
 
+	// Specify the list of allowed policies OIDs. Use with Vault 1.10 or before. For Vault 1.11+, use policy_identifier blocks instead
 	// Specify the list of allowed policies OIDs.
 	PolicyIdentifiers []*string `json:"policyIdentifiers,omitempty" tf:"policy_identifiers,omitempty"`
 
+	// The postal code of generated certificates
 	// The postal code of generated certificates.
 	PostalCode []*string `json:"postalCode,omitempty" tf:"postal_code,omitempty"`
 
+	// The province of generated certificates
 	// The province of generated certificates.
 	Province []*string `json:"province,omitempty" tf:"province,omitempty"`
 
+	// Flag to force CN usage
 	// Flag to force CN usage.
 	RequireCn *bool `json:"requireCn,omitempty" tf:"require_cn,omitempty"`
 
+	// Flag to specify certificates for server use
 	// Flag to specify certificates for server use.
 	ServerFlag *bool `json:"serverFlag,omitempty" tf:"server_flag,omitempty"`
 
+	// The street address of generated certificates
 	// The street address of generated certificates.
 	StreetAddress []*string `json:"streetAddress,omitempty" tf:"street_address,omitempty"`
 
+	// The TTL, in seconds, for any certificate issued against this role.
 	// The TTL.
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
+	// Flag to use the CN in the CSR
 	// Flag to use the CN in the CSR.
 	UseCsrCommonName *bool `json:"useCsrCommonName,omitempty" tf:"use_csr_common_name,omitempty"`
 
+	// Flag to use the SANs in the CSR
 	// Flag to use the SANs in the CSR.
 	UseCsrSans *bool `json:"useCsrSans,omitempty" tf:"use_csr_sans,omitempty"`
 }
@@ -171,165 +408,210 @@ type SecretBackendRoleObservation struct {
 type SecretBackendRoleParameters struct {
 
 	// Flag to allow any name
+	// Flag to allow any name
 	// +kubebuilder:validation:Optional
 	AllowAnyName *bool `json:"allowAnyName,omitempty" tf:"allow_any_name,omitempty"`
 
+	// Flag to allow certificates matching the actual domain
 	// Flag to allow certificates matching the actual domain.
 	// +kubebuilder:validation:Optional
 	AllowBareDomains *bool `json:"allowBareDomains,omitempty" tf:"allow_bare_domains,omitempty"`
 
 	// Flag to allow names containing glob patterns.
+	// Flag to allow names containing glob patterns.
 	// +kubebuilder:validation:Optional
 	AllowGlobDomains *bool `json:"allowGlobDomains,omitempty" tf:"allow_glob_domains,omitempty"`
 
 	// Flag to allow IP SANs
+	// Flag to allow IP SANs
 	// +kubebuilder:validation:Optional
 	AllowIPSans *bool `json:"allowIpSans,omitempty" tf:"allow_ip_sans,omitempty"`
 
+	// Flag to allow certificates for localhost
 	// Flag to allow certificates for localhost.
 	// +kubebuilder:validation:Optional
 	AllowLocalhost *bool `json:"allowLocalhost,omitempty" tf:"allow_localhost,omitempty"`
 
+	// Flag to allow certificates matching subdomains
 	// Flag to allow certificates matching subdomains.
 	// +kubebuilder:validation:Optional
 	AllowSubdomains *bool `json:"allowSubdomains,omitempty" tf:"allow_subdomains,omitempty"`
 
+	// List of allowed domains for certificates
 	// The domains of the role.
 	// +kubebuilder:validation:Optional
 	AllowedDomains []*string `json:"allowedDomains,omitempty" tf:"allowed_domains,omitempty"`
 
+	// Flag, if set, allowed_domains can be specified using identity template expressions such as {{identity.entity.aliases.<mount accessor>.name}}.
 	// Flag to indicate that `allowed_domains` specifies a template expression (e.g. {{identity.entity.aliases.<mount accessor>.name}})
 	// +kubebuilder:validation:Optional
 	AllowedDomainsTemplate *bool `json:"allowedDomainsTemplate,omitempty" tf:"allowed_domains_template,omitempty"`
 
 	// Defines allowed custom SANs
+	// Defines allowed custom SANs
 	// +kubebuilder:validation:Optional
 	AllowedOtherSans []*string `json:"allowedOtherSans,omitempty" tf:"allowed_other_sans,omitempty"`
 
+	// An array of allowed serial numbers to put in Subject
 	// Defines allowed Subject serial numbers.
 	// +kubebuilder:validation:Optional
 	AllowedSerialNumbers []*string `json:"allowedSerialNumbers,omitempty" tf:"allowed_serial_numbers,omitempty"`
 
 	// Defines allowed URI SANs
+	// Defines allowed URI SANs
 	// +kubebuilder:validation:Optional
 	AllowedURISans []*string `json:"allowedUriSans,omitempty" tf:"allowed_uri_sans,omitempty"`
 
+	// The path the PKI secret backend is mounted at, with no leading or trailing /s.
 	// The path of the PKI secret backend the resource belongs to.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// Flag to mark basic constraints valid when issuing non-CA certificates
 	// Flag to mark basic constraints valid when issuing non-CA certificates.
 	// +kubebuilder:validation:Optional
 	BasicConstraintsValidForNonCA *bool `json:"basicConstraintsValidForNonCa,omitempty" tf:"basic_constraints_valid_for_non_ca,omitempty"`
 
+	// Flag to specify certificates for client use
 	// Flag to specify certificates for client use.
 	// +kubebuilder:validation:Optional
 	ClientFlag *bool `json:"clientFlag,omitempty" tf:"client_flag,omitempty"`
 
+	// Flag to specify certificates for code signing use
 	// Flag to specify certificates for code signing use.
 	// +kubebuilder:validation:Optional
 	CodeSigningFlag *bool `json:"codeSigningFlag,omitempty" tf:"code_signing_flag,omitempty"`
 
+	// The country of generated certificates
 	// The country of generated certificates.
 	// +kubebuilder:validation:Optional
 	Country []*string `json:"country,omitempty" tf:"country,omitempty"`
 
+	// Flag to specify certificates for email protection use
 	// Flag to specify certificates for email protection use.
 	// +kubebuilder:validation:Optional
 	EmailProtectionFlag *bool `json:"emailProtectionFlag,omitempty" tf:"email_protection_flag,omitempty"`
 
 	// Flag to allow only valid host names
+	// Flag to allow only valid host names
 	// +kubebuilder:validation:Optional
 	EnforceHostnames *bool `json:"enforceHostnames,omitempty" tf:"enforce_hostnames,omitempty"`
 
+	// Specify the allowed extended key usage constraint on issued certificates
 	// Specify the allowed extended key usage constraint on issued certificates.
 	// +kubebuilder:validation:Optional
 	ExtKeyUsage []*string `json:"extKeyUsage,omitempty" tf:"ext_key_usage,omitempty"`
 
+	// Flag to generate leases with certificates
 	// Flag to generate leases with certificates.
 	// +kubebuilder:validation:Optional
 	GenerateLease *bool `json:"generateLease,omitempty" tf:"generate_lease,omitempty"`
 
+	// The number of bits of generated keys
 	// The number of bits of generated keys.
 	// +kubebuilder:validation:Optional
 	KeyBits *float64 `json:"keyBits,omitempty" tf:"key_bits,omitempty"`
 
+	// The generated key type, choices: rsa, ec, ed25519, any
+	// Defaults to rsa
 	// The generated key type.
 	// +kubebuilder:validation:Optional
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
+	// Specify the allowed key usage constraint on issued certificates
 	// Specify the allowed key usage constraint on issued certificates.
 	// +kubebuilder:validation:Optional
 	KeyUsage []*string `json:"keyUsage,omitempty" tf:"key_usage,omitempty"`
 
+	// The locality of generated certificates
 	// The locality of generated certificates.
 	// +kubebuilder:validation:Optional
 	Locality []*string `json:"locality,omitempty" tf:"locality,omitempty"`
 
+	// The maximum lease TTL, in seconds, for the role.
 	// The maximum TTL.
 	// +kubebuilder:validation:Optional
 	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
 
+	// The name to identify this role within the backend. Must be unique within the backend.
 	// Unique name for the role.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Flag to not store certificates in the storage backend
 	// Flag to not store certificates in the storage backend.
 	// +kubebuilder:validation:Optional
 	NoStore *bool `json:"noStore,omitempty" tf:"no_store,omitempty"`
 
 	// Specifies the duration by which to backdate the NotBefore property.
+	// Specifies the duration by which to backdate the NotBefore property.
 	// +kubebuilder:validation:Optional
 	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
 
+	// The organization of generated certificates
 	// The organization of generated certificates.
 	// +kubebuilder:validation:Optional
 	Organization []*string `json:"organization,omitempty" tf:"organization,omitempty"`
 
+	// The organization unit of generated certificates
 	// The organization unit of generated certificates.
 	// +kubebuilder:validation:Optional
 	Ou []*string `json:"ou,omitempty" tf:"ou,omitempty"`
 
+	// (Vault 1.11+ only) A block for specifying policy identifers. The policy_identifier block can be repeated, and supports the following arguments:
 	// Policy identifier block; can only be used with Vault 1.11+
 	// +kubebuilder:validation:Optional
 	PolicyIdentifier []PolicyIdentifierParameters `json:"policyIdentifier,omitempty" tf:"policy_identifier,omitempty"`
 
+	// Specify the list of allowed policies OIDs. Use with Vault 1.10 or before. For Vault 1.11+, use policy_identifier blocks instead
 	// Specify the list of allowed policies OIDs.
 	// +kubebuilder:validation:Optional
 	PolicyIdentifiers []*string `json:"policyIdentifiers,omitempty" tf:"policy_identifiers,omitempty"`
 
+	// The postal code of generated certificates
 	// The postal code of generated certificates.
 	// +kubebuilder:validation:Optional
 	PostalCode []*string `json:"postalCode,omitempty" tf:"postal_code,omitempty"`
 
+	// The province of generated certificates
 	// The province of generated certificates.
 	// +kubebuilder:validation:Optional
 	Province []*string `json:"province,omitempty" tf:"province,omitempty"`
 
+	// Flag to force CN usage
 	// Flag to force CN usage.
 	// +kubebuilder:validation:Optional
 	RequireCn *bool `json:"requireCn,omitempty" tf:"require_cn,omitempty"`
 
+	// Flag to specify certificates for server use
 	// Flag to specify certificates for server use.
 	// +kubebuilder:validation:Optional
 	ServerFlag *bool `json:"serverFlag,omitempty" tf:"server_flag,omitempty"`
 
+	// The street address of generated certificates
 	// The street address of generated certificates.
 	// +kubebuilder:validation:Optional
 	StreetAddress []*string `json:"streetAddress,omitempty" tf:"street_address,omitempty"`
 
+	// The TTL, in seconds, for any certificate issued against this role.
 	// The TTL.
 	// +kubebuilder:validation:Optional
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
+	// Flag to use the CN in the CSR
 	// Flag to use the CN in the CSR.
 	// +kubebuilder:validation:Optional
 	UseCsrCommonName *bool `json:"useCsrCommonName,omitempty" tf:"use_csr_common_name,omitempty"`
 
+	// Flag to use the SANs in the CSR
 	// Flag to use the SANs in the CSR.
 	// +kubebuilder:validation:Optional
 	UseCsrSans *bool `json:"useCsrSans,omitempty" tf:"use_csr_sans,omitempty"`
@@ -339,6 +621,18 @@ type SecretBackendRoleParameters struct {
 type SecretBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendRoleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SecretBackendRoleInitParameters `json:"initProvider,omitempty"`
 }
 
 // SecretBackendRoleStatus defines the observed state of SecretBackendRole.
@@ -349,7 +643,7 @@ type SecretBackendRoleStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SecretBackendRole is the Schema for the SecretBackendRoles API. <no value>
+// SecretBackendRole is the Schema for the SecretBackendRoles API. Create a role on an PKI Secret Backend for Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -359,8 +653,8 @@ type SecretBackendRoleStatus struct {
 type SecretBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
 	Spec   SecretBackendRoleSpec   `json:"spec"`
 	Status SecretBackendRoleStatus `json:"status,omitempty"`
 }

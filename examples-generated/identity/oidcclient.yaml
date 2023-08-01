@@ -1,0 +1,37 @@
+apiVersion: identity.vault.upbound.io/v1alpha1
+kind: OidcClient
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/oidcclient
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    accessTokenTtl: 7200
+    assignments:
+    - ${vault_identity_oidc_assignment.test.name}
+    idTokenTtl: 2400
+    name: my-app
+    redirectUris:
+    - http://127.0.0.1:9200/v1/auth-methods/oidc:authenticate:callback
+    - http://127.0.0.1:8251/callback
+    - http://127.0.0.1:8080/callback
+
+---
+
+apiVersion: identity.vault.upbound.io/v1alpha1
+kind: OidcAssignment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/oidcclient
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    entityIds:
+    - ascbascas-2231a-sdfaa
+    groupIds:
+    - sajkdsad-32414-sfsada
+    name: my-assignment

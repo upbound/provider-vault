@@ -13,16 +13,42 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type MfaDuoInitParameters struct {
+
+	// API hostname for Duo
+	// API hostname for Duo
+	APIHostname *string `json:"apiHostname,omitempty" tf:"api_hostname,omitempty"`
+
+	// Target namespace. (requires Enterprise)
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Push information for Duo.
+	// Push information for Duo.
+	PushInfo *string `json:"pushInfo,omitempty" tf:"push_info,omitempty"`
+
+	// Require passcode upon MFA validation.
+	// Require passcode upon MFA validation.
+	UsePasscode *bool `json:"usePasscode,omitempty" tf:"use_passcode,omitempty"`
+
+	// A template string for mapping Identity names to MFA methods.
+	// A template string for mapping Identity names to MFA methods.
+	UsernameFormat *string `json:"usernameFormat,omitempty" tf:"username_format,omitempty"`
+}
+
 type MfaDuoObservation struct {
 
+	// API hostname for Duo
 	// API hostname for Duo
 	APIHostname *string `json:"apiHostname,omitempty" tf:"api_hostname,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Method ID.
+	// Method ID.
 	MethodID *string `json:"methodId,omitempty" tf:"method_id,omitempty"`
 
+	// Mount accessor.
 	// Mount accessor.
 	MountAccessor *string `json:"mountAccessor,omitempty" tf:"mount_accessor,omitempty"`
 
@@ -30,26 +56,34 @@ type MfaDuoObservation struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Target namespace. (requires Enterprise)
+	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Method's namespace ID.
 	// Method's namespace ID.
 	NamespaceID *string `json:"namespaceId,omitempty" tf:"namespace_id,omitempty"`
 
 	// Method's namespace path.
+	// Method's namespace path.
 	NamespacePath *string `json:"namespacePath,omitempty" tf:"namespace_path,omitempty"`
 
+	// Push information for Duo.
 	// Push information for Duo.
 	PushInfo *string `json:"pushInfo,omitempty" tf:"push_info,omitempty"`
 
 	// MFA type.
+	// MFA type.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
+	// Resource UUID.
 	// Resource UUID.
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 
 	// Require passcode upon MFA validation.
+	// Require passcode upon MFA validation.
 	UsePasscode *bool `json:"usePasscode,omitempty" tf:"use_passcode,omitempty"`
 
+	// A template string for mapping Identity names to MFA methods.
 	// A template string for mapping Identity names to MFA methods.
 	UsernameFormat *string `json:"usernameFormat,omitempty" tf:"username_format,omitempty"`
 }
@@ -57,29 +91,36 @@ type MfaDuoObservation struct {
 type MfaDuoParameters struct {
 
 	// API hostname for Duo
+	// API hostname for Duo
 	// +kubebuilder:validation:Optional
 	APIHostname *string `json:"apiHostname,omitempty" tf:"api_hostname,omitempty"`
 
+	// Integration key for Duo
 	// Integration key for Duo
 	// +kubebuilder:validation:Optional
 	IntegrationKeySecretRef v1.SecretKeySelector `json:"integrationKeySecretRef" tf:"-"`
 
 	// Target namespace. (requires Enterprise)
+	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Push information for Duo.
 	// Push information for Duo.
 	// +kubebuilder:validation:Optional
 	PushInfo *string `json:"pushInfo,omitempty" tf:"push_info,omitempty"`
 
 	// Secret key for Duo
+	// Secret key for Duo
 	// +kubebuilder:validation:Optional
 	SecretKeySecretRef v1.SecretKeySelector `json:"secretKeySecretRef" tf:"-"`
 
 	// Require passcode upon MFA validation.
+	// Require passcode upon MFA validation.
 	// +kubebuilder:validation:Optional
 	UsePasscode *bool `json:"usePasscode,omitempty" tf:"use_passcode,omitempty"`
 
+	// A template string for mapping Identity names to MFA methods.
 	// A template string for mapping Identity names to MFA methods.
 	// +kubebuilder:validation:Optional
 	UsernameFormat *string `json:"usernameFormat,omitempty" tf:"username_format,omitempty"`
@@ -89,6 +130,18 @@ type MfaDuoParameters struct {
 type MfaDuoSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     MfaDuoParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider MfaDuoInitParameters `json:"initProvider,omitempty"`
 }
 
 // MfaDuoStatus defines the observed state of MfaDuo.
@@ -99,7 +152,7 @@ type MfaDuoStatus struct {
 
 // +kubebuilder:object:root=true
 
-// MfaDuo is the Schema for the MfaDuos API. <no value>
+// MfaDuo is the Schema for the MfaDuos API. Resource for configuring the duo MFA method.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -109,9 +162,9 @@ type MfaDuoStatus struct {
 type MfaDuo struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.apiHostname)",message="apiHostname is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.integrationKeySecretRef)",message="integrationKeySecretRef is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.secretKeySecretRef)",message="secretKeySecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.apiHostname) || has(self.initProvider.apiHostname)",message="apiHostname is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.integrationKeySecretRef)",message="integrationKeySecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.secretKeySecretRef)",message="secretKeySecretRef is a required parameter"
 	Spec   MfaDuoSpec   `json:"spec"`
 	Status MfaDuoStatus `json:"status,omitempty"`
 }

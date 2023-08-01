@@ -69,6 +69,16 @@ func (tr *AuthBackend) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this AuthBackend
+func (tr *AuthBackend) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this AuthBackend using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *AuthBackend) LateInitialize(attrs []byte) (bool, error) {
@@ -141,6 +151,16 @@ func (tr *AuthBackendRole) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this AuthBackendRole
+func (tr *AuthBackendRole) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this AuthBackendRole using its observed tfState.
@@ -217,6 +237,16 @@ func (tr *SecretBackend) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this SecretBackend
+func (tr *SecretBackend) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this SecretBackend using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *SecretBackend) LateInitialize(attrs []byte) (bool, error) {
@@ -289,6 +319,16 @@ func (tr *SecretImpersonatedAccount) SetParameters(params map[string]any) error 
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this SecretImpersonatedAccount
+func (tr *SecretImpersonatedAccount) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this SecretImpersonatedAccount using its observed tfState.
@@ -365,6 +405,16 @@ func (tr *SecretRoleset) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this SecretRoleset
+func (tr *SecretRoleset) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this SecretRoleset using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *SecretRoleset) LateInitialize(attrs []byte) (bool, error) {
@@ -437,6 +487,16 @@ func (tr *SecretStaticAccount) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this SecretStaticAccount
+func (tr *SecretStaticAccount) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this SecretStaticAccount using its observed tfState.

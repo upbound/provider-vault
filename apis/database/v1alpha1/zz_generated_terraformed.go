@@ -69,6 +69,16 @@ func (tr *SecretBackendConnection) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this SecretBackendConnection
+func (tr *SecretBackendConnection) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this SecretBackendConnection using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *SecretBackendConnection) LateInitialize(attrs []byte) (bool, error) {
@@ -141,6 +151,16 @@ func (tr *SecretBackendRole) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this SecretBackendRole
+func (tr *SecretBackendRole) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this SecretBackendRole using its observed tfState.
@@ -217,6 +237,16 @@ func (tr *SecretBackendStaticRole) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this SecretBackendStaticRole
+func (tr *SecretBackendStaticRole) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this SecretBackendStaticRole using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *SecretBackendStaticRole) LateInitialize(attrs []byte) (bool, error) {
@@ -289,6 +319,16 @@ func (tr *SecretsMount) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this SecretsMount
+func (tr *SecretsMount) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this SecretsMount using its observed tfState.

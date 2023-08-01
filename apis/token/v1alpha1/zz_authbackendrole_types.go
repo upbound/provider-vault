@@ -13,130 +13,294 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AuthBackendRoleObservation struct {
+type AuthBackendRoleInitParameters struct {
 
+	// List of allowed entity aliases.
 	// Set of allowed entity aliases for this role.
 	AllowedEntityAliases []*string `json:"allowedEntityAliases,omitempty" tf:"allowed_entity_aliases,omitempty"`
 
 	// List of allowed policies for given role.
+	// List of allowed policies for given role.
 	AllowedPolicies []*string `json:"allowedPolicies,omitempty" tf:"allowed_policies,omitempty"`
 
+	// Set of allowed policies with glob match for given role.
 	// Set of allowed policies with glob match for given role.
 	AllowedPoliciesGlob []*string `json:"allowedPoliciesGlob,omitempty" tf:"allowed_policies_glob,omitempty"`
 
 	// List of disallowed policies for given role.
+	// List of disallowed policies for given role.
 	DisallowedPolicies []*string `json:"disallowedPolicies,omitempty" tf:"disallowed_policies,omitempty"`
 
 	// Set of disallowed policies with glob match for given role.
+	// Set of disallowed policies with glob match for given role.
 	DisallowedPoliciesGlob []*string `json:"disallowedPoliciesGlob,omitempty" tf:"disallowed_policies_glob,omitempty"`
 
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// If true, tokens created against this policy will be orphan tokens.
+	// If true, tokens created against this policy will be orphan tokens.
 	Orphan *bool `json:"orphan,omitempty" tf:"orphan,omitempty"`
 
+	// Tokens created against this role will have the given suffix as part of their path in addition to the role name.
 	// Tokens created against this role will have the given suffix as part of their path in addition to the role name.
 	PathSuffix *string `json:"pathSuffix,omitempty" tf:"path_suffix,omitempty"`
 
 	// Whether to disable the ability of the token to be renewed past its initial TTL.
+	// Whether to disable the ability of the token to be renewed past its initial TTL.
 	Renewable *bool `json:"renewable,omitempty" tf:"renewable,omitempty"`
 
+	// The name of the role.
 	// Name of the role.
 	RoleName *string `json:"roleName,omitempty" tf:"role_name,omitempty"`
 
+	// List of CIDR blocks; if set, specifies blocks of IP
+	// addresses which can authenticate successfully, and ties the resulting token to these blocks
+	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
+	// If set, will encode an
+	// explicit max TTL
+	// onto the token in number of seconds. This is a hard cap even if token_ttl and
+	// token_max_ttl would otherwise allow a renewal.
 	// Generated Token's Explicit Maximum TTL in seconds
 	TokenExplicitMaxTTL *float64 `json:"tokenExplicitMaxTtl,omitempty" tf:"token_explicit_max_ttl,omitempty"`
 
+	// The maximum lifetime for generated tokens in number of seconds.
+	// Its current value will be referenced at renewal time.
 	// The maximum lifetime of the generated token
 	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
 
+	// If set, the default policy will not be set on
+	// generated tokens; otherwise it will be added to the policies set in token_policies.
 	// If true, the 'default' policy will not automatically be added to generated tokens
 	TokenNoDefaultPolicy *bool `json:"tokenNoDefaultPolicy,omitempty" tf:"token_no_default_policy,omitempty"`
 
+	// The maximum number
+	// of times a generated token may be used (within its lifetime); 0 means unlimited.
 	// The maximum number of times a token may be used, a value of zero means unlimited
 	TokenNumUses *float64 `json:"tokenNumUses,omitempty" tf:"token_num_uses,omitempty"`
 
+	// If set, indicates that the
+	// token generated using this role should never expire. The token should be renewed within the
+	// duration specified by this value. At each renewal, the token's TTL will be set to the
+	// value of this field. Specified in seconds.
 	// Generated Token's Period
 	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
 
 	// Generated Token's Policies
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
+	// The incremental lifetime for generated tokens in number of seconds.
+	// Its current value will be referenced at renewal time.
 	// The initial ttl of the token to generate in seconds
 	TokenTTL *float64 `json:"tokenTtl,omitempty" tf:"token_ttl,omitempty"`
 
+	// The type of token that should be generated. Can be service,
+	// batch, or default to use the mount's tuned default (which unless changed will be
+	// service tokens). For token store roles, there are two additional possibilities:
+	// default-service and default-batch which specify the type to return unless the client
+	// requests a different type at generation time.
+	// The type of token to generate, service or batch
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
+}
+
+type AuthBackendRoleObservation struct {
+
+	// List of allowed entity aliases.
+	// Set of allowed entity aliases for this role.
+	AllowedEntityAliases []*string `json:"allowedEntityAliases,omitempty" tf:"allowed_entity_aliases,omitempty"`
+
+	// List of allowed policies for given role.
+	// List of allowed policies for given role.
+	AllowedPolicies []*string `json:"allowedPolicies,omitempty" tf:"allowed_policies,omitempty"`
+
+	// Set of allowed policies with glob match for given role.
+	// Set of allowed policies with glob match for given role.
+	AllowedPoliciesGlob []*string `json:"allowedPoliciesGlob,omitempty" tf:"allowed_policies_glob,omitempty"`
+
+	// List of disallowed policies for given role.
+	// List of disallowed policies for given role.
+	DisallowedPolicies []*string `json:"disallowedPolicies,omitempty" tf:"disallowed_policies,omitempty"`
+
+	// Set of disallowed policies with glob match for given role.
+	// Set of disallowed policies with glob match for given role.
+	DisallowedPoliciesGlob []*string `json:"disallowedPoliciesGlob,omitempty" tf:"disallowed_policies_glob,omitempty"`
+
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// If true, tokens created against this policy will be orphan tokens.
+	// If true, tokens created against this policy will be orphan tokens.
+	Orphan *bool `json:"orphan,omitempty" tf:"orphan,omitempty"`
+
+	// Tokens created against this role will have the given suffix as part of their path in addition to the role name.
+	// Tokens created against this role will have the given suffix as part of their path in addition to the role name.
+	PathSuffix *string `json:"pathSuffix,omitempty" tf:"path_suffix,omitempty"`
+
+	// Whether to disable the ability of the token to be renewed past its initial TTL.
+	// Whether to disable the ability of the token to be renewed past its initial TTL.
+	Renewable *bool `json:"renewable,omitempty" tf:"renewable,omitempty"`
+
+	// The name of the role.
+	// Name of the role.
+	RoleName *string `json:"roleName,omitempty" tf:"role_name,omitempty"`
+
+	// List of CIDR blocks; if set, specifies blocks of IP
+	// addresses which can authenticate successfully, and ties the resulting token to these blocks
+	// as well.
+	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
+
+	// If set, will encode an
+	// explicit max TTL
+	// onto the token in number of seconds. This is a hard cap even if token_ttl and
+	// token_max_ttl would otherwise allow a renewal.
+	// Generated Token's Explicit Maximum TTL in seconds
+	TokenExplicitMaxTTL *float64 `json:"tokenExplicitMaxTtl,omitempty" tf:"token_explicit_max_ttl,omitempty"`
+
+	// The maximum lifetime for generated tokens in number of seconds.
+	// Its current value will be referenced at renewal time.
+	// The maximum lifetime of the generated token
+	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
+
+	// If set, the default policy will not be set on
+	// generated tokens; otherwise it will be added to the policies set in token_policies.
+	// If true, the 'default' policy will not automatically be added to generated tokens
+	TokenNoDefaultPolicy *bool `json:"tokenNoDefaultPolicy,omitempty" tf:"token_no_default_policy,omitempty"`
+
+	// The maximum number
+	// of times a generated token may be used (within its lifetime); 0 means unlimited.
+	// The maximum number of times a token may be used, a value of zero means unlimited
+	TokenNumUses *float64 `json:"tokenNumUses,omitempty" tf:"token_num_uses,omitempty"`
+
+	// If set, indicates that the
+	// token generated using this role should never expire. The token should be renewed within the
+	// duration specified by this value. At each renewal, the token's TTL will be set to the
+	// value of this field. Specified in seconds.
+	// Generated Token's Period
+	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
+
+	// Generated Token's Policies
+	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
+
+	// The incremental lifetime for generated tokens in number of seconds.
+	// Its current value will be referenced at renewal time.
+	// The initial ttl of the token to generate in seconds
+	TokenTTL *float64 `json:"tokenTtl,omitempty" tf:"token_ttl,omitempty"`
+
+	// The type of token that should be generated. Can be service,
+	// batch, or default to use the mount's tuned default (which unless changed will be
+	// service tokens). For token store roles, there are two additional possibilities:
+	// default-service and default-batch which specify the type to return unless the client
+	// requests a different type at generation time.
 	// The type of token to generate, service or batch
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 }
 
 type AuthBackendRoleParameters struct {
 
+	// List of allowed entity aliases.
 	// Set of allowed entity aliases for this role.
 	// +kubebuilder:validation:Optional
 	AllowedEntityAliases []*string `json:"allowedEntityAliases,omitempty" tf:"allowed_entity_aliases,omitempty"`
 
 	// List of allowed policies for given role.
+	// List of allowed policies for given role.
 	// +kubebuilder:validation:Optional
 	AllowedPolicies []*string `json:"allowedPolicies,omitempty" tf:"allowed_policies,omitempty"`
 
+	// Set of allowed policies with glob match for given role.
 	// Set of allowed policies with glob match for given role.
 	// +kubebuilder:validation:Optional
 	AllowedPoliciesGlob []*string `json:"allowedPoliciesGlob,omitempty" tf:"allowed_policies_glob,omitempty"`
 
 	// List of disallowed policies for given role.
+	// List of disallowed policies for given role.
 	// +kubebuilder:validation:Optional
 	DisallowedPolicies []*string `json:"disallowedPolicies,omitempty" tf:"disallowed_policies,omitempty"`
 
 	// Set of disallowed policies with glob match for given role.
+	// Set of disallowed policies with glob match for given role.
 	// +kubebuilder:validation:Optional
 	DisallowedPoliciesGlob []*string `json:"disallowedPoliciesGlob,omitempty" tf:"disallowed_policies_glob,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// If true, tokens created against this policy will be orphan tokens.
+	// If true, tokens created against this policy will be orphan tokens.
 	// +kubebuilder:validation:Optional
 	Orphan *bool `json:"orphan,omitempty" tf:"orphan,omitempty"`
 
+	// Tokens created against this role will have the given suffix as part of their path in addition to the role name.
 	// Tokens created against this role will have the given suffix as part of their path in addition to the role name.
 	// +kubebuilder:validation:Optional
 	PathSuffix *string `json:"pathSuffix,omitempty" tf:"path_suffix,omitempty"`
 
 	// Whether to disable the ability of the token to be renewed past its initial TTL.
+	// Whether to disable the ability of the token to be renewed past its initial TTL.
 	// +kubebuilder:validation:Optional
 	Renewable *bool `json:"renewable,omitempty" tf:"renewable,omitempty"`
 
+	// The name of the role.
 	// Name of the role.
 	// +kubebuilder:validation:Optional
 	RoleName *string `json:"roleName,omitempty" tf:"role_name,omitempty"`
 
+	// List of CIDR blocks; if set, specifies blocks of IP
+	// addresses which can authenticate successfully, and ties the resulting token to these blocks
+	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
 	// +kubebuilder:validation:Optional
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
+	// If set, will encode an
+	// explicit max TTL
+	// onto the token in number of seconds. This is a hard cap even if token_ttl and
+	// token_max_ttl would otherwise allow a renewal.
 	// Generated Token's Explicit Maximum TTL in seconds
 	// +kubebuilder:validation:Optional
 	TokenExplicitMaxTTL *float64 `json:"tokenExplicitMaxTtl,omitempty" tf:"token_explicit_max_ttl,omitempty"`
 
+	// The maximum lifetime for generated tokens in number of seconds.
+	// Its current value will be referenced at renewal time.
 	// The maximum lifetime of the generated token
 	// +kubebuilder:validation:Optional
 	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
 
+	// If set, the default policy will not be set on
+	// generated tokens; otherwise it will be added to the policies set in token_policies.
 	// If true, the 'default' policy will not automatically be added to generated tokens
 	// +kubebuilder:validation:Optional
 	TokenNoDefaultPolicy *bool `json:"tokenNoDefaultPolicy,omitempty" tf:"token_no_default_policy,omitempty"`
 
+	// The maximum number
+	// of times a generated token may be used (within its lifetime); 0 means unlimited.
 	// The maximum number of times a token may be used, a value of zero means unlimited
 	// +kubebuilder:validation:Optional
 	TokenNumUses *float64 `json:"tokenNumUses,omitempty" tf:"token_num_uses,omitempty"`
 
+	// If set, indicates that the
+	// token generated using this role should never expire. The token should be renewed within the
+	// duration specified by this value. At each renewal, the token's TTL will be set to the
+	// value of this field. Specified in seconds.
 	// Generated Token's Period
 	// +kubebuilder:validation:Optional
 	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
@@ -145,10 +309,17 @@ type AuthBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
+	// The incremental lifetime for generated tokens in number of seconds.
+	// Its current value will be referenced at renewal time.
 	// The initial ttl of the token to generate in seconds
 	// +kubebuilder:validation:Optional
 	TokenTTL *float64 `json:"tokenTtl,omitempty" tf:"token_ttl,omitempty"`
 
+	// The type of token that should be generated. Can be service,
+	// batch, or default to use the mount's tuned default (which unless changed will be
+	// service tokens). For token store roles, there are two additional possibilities:
+	// default-service and default-batch which specify the type to return unless the client
+	// requests a different type at generation time.
 	// The type of token to generate, service or batch
 	// +kubebuilder:validation:Optional
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
@@ -158,6 +329,18 @@ type AuthBackendRoleParameters struct {
 type AuthBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendRoleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AuthBackendRoleInitParameters `json:"initProvider,omitempty"`
 }
 
 // AuthBackendRoleStatus defines the observed state of AuthBackendRole.
@@ -168,7 +351,7 @@ type AuthBackendRoleStatus struct {
 
 // +kubebuilder:object:root=true
 
-// AuthBackendRole is the Schema for the AuthBackendRoles API. <no value>
+// AuthBackendRole is the Schema for the AuthBackendRoles API. Manages Token auth backend roles in Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -178,7 +361,7 @@ type AuthBackendRoleStatus struct {
 type AuthBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.roleName)",message="roleName is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.roleName) || has(self.initProvider.roleName)",message="roleName is a required parameter"
 	Spec   AuthBackendRoleSpec   `json:"spec"`
 	Status AuthBackendRoleStatus `json:"status,omitempty"`
 }

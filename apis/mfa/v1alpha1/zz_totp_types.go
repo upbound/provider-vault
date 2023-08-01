@@ -13,72 +13,147 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type TotpObservation struct {
+type TotpInitParameters struct {
 
+	// Specifies the hashing algorithm used to generate the TOTP code.
+	// Options include SHA1, SHA256 and SHA512
 	// Specifies the hashing algorithm used to generate the TOTP code. Options include 'SHA1', 'SHA256' and 'SHA512'.
 	Algorithm *string `json:"algorithm,omitempty" tf:"algorithm,omitempty"`
 
+	// The number of digits in the generated TOTP token.
+	// This value can either be 6 or 8.
+	// The number of digits in the generated TOTP token. This value can either be 6 or 8.
+	Digits *float64 `json:"digits,omitempty" tf:"digits,omitempty"`
+
+	// The name of the key's issuing organization.
+	// The name of the key's issuing organization.
+	Issuer *string `json:"issuer,omitempty" tf:"issuer,omitempty"`
+
+	// Specifies the size in bytes of the generated key.
+	// Specifies the size in bytes of the generated key.
+	KeySize *float64 `json:"keySize,omitempty" tf:"key_size,omitempty"`
+
+	// (string: <required>) – Name of the MFA method.
+	// Name of the MFA method.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The length of time used to generate a counter for the TOTP token calculation.
+	// The length of time used to generate a counter for the TOTP token calculation.
+	Period *float64 `json:"period,omitempty" tf:"period,omitempty"`
+
+	// The pixel size of the generated square QR code.
+	// The pixel size of the generated square QR code.
+	QrSize *float64 `json:"qrSize,omitempty" tf:"qr_size,omitempty"`
+
+	// The number of delay periods that are allowed when validating a TOTP token.
+	// This value can either be 0 or 1.
+	// The number of delay periods that are allowed when validating a TOTP token. This value can either be 0 or 1.
+	Skew *float64 `json:"skew,omitempty" tf:"skew,omitempty"`
+}
+
+type TotpObservation struct {
+
+	// Specifies the hashing algorithm used to generate the TOTP code.
+	// Options include SHA1, SHA256 and SHA512
+	// Specifies the hashing algorithm used to generate the TOTP code. Options include 'SHA1', 'SHA256' and 'SHA512'.
+	Algorithm *string `json:"algorithm,omitempty" tf:"algorithm,omitempty"`
+
+	// The number of digits in the generated TOTP token.
+	// This value can either be 6 or 8.
 	// The number of digits in the generated TOTP token. This value can either be 6 or 8.
 	Digits *float64 `json:"digits,omitempty" tf:"digits,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The name of the key's issuing organization.
+	// The name of the key's issuing organization.
 	Issuer *string `json:"issuer,omitempty" tf:"issuer,omitempty"`
 
 	// Specifies the size in bytes of the generated key.
+	// Specifies the size in bytes of the generated key.
 	KeySize *float64 `json:"keySize,omitempty" tf:"key_size,omitempty"`
 
+	// (string: <required>) – Name of the MFA method.
 	// Name of the MFA method.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// The length of time used to generate a counter for the TOTP token calculation.
+	// The length of time used to generate a counter for the TOTP token calculation.
 	Period *float64 `json:"period,omitempty" tf:"period,omitempty"`
 
 	// The pixel size of the generated square QR code.
+	// The pixel size of the generated square QR code.
 	QrSize *float64 `json:"qrSize,omitempty" tf:"qr_size,omitempty"`
 
+	// The number of delay periods that are allowed when validating a TOTP token.
+	// This value can either be 0 or 1.
 	// The number of delay periods that are allowed when validating a TOTP token. This value can either be 0 or 1.
 	Skew *float64 `json:"skew,omitempty" tf:"skew,omitempty"`
 }
 
 type TotpParameters struct {
 
+	// Specifies the hashing algorithm used to generate the TOTP code.
+	// Options include SHA1, SHA256 and SHA512
 	// Specifies the hashing algorithm used to generate the TOTP code. Options include 'SHA1', 'SHA256' and 'SHA512'.
 	// +kubebuilder:validation:Optional
 	Algorithm *string `json:"algorithm,omitempty" tf:"algorithm,omitempty"`
 
+	// The number of digits in the generated TOTP token.
+	// This value can either be 6 or 8.
 	// The number of digits in the generated TOTP token. This value can either be 6 or 8.
 	// +kubebuilder:validation:Optional
 	Digits *float64 `json:"digits,omitempty" tf:"digits,omitempty"`
 
 	// The name of the key's issuing organization.
+	// The name of the key's issuing organization.
 	// +kubebuilder:validation:Optional
 	Issuer *string `json:"issuer,omitempty" tf:"issuer,omitempty"`
 
 	// Specifies the size in bytes of the generated key.
+	// Specifies the size in bytes of the generated key.
 	// +kubebuilder:validation:Optional
 	KeySize *float64 `json:"keySize,omitempty" tf:"key_size,omitempty"`
 
+	// (string: <required>) – Name of the MFA method.
 	// Name of the MFA method.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// The length of time used to generate a counter for the TOTP token calculation.
+	// The length of time used to generate a counter for the TOTP token calculation.
 	// +kubebuilder:validation:Optional
 	Period *float64 `json:"period,omitempty" tf:"period,omitempty"`
 
 	// The pixel size of the generated square QR code.
+	// The pixel size of the generated square QR code.
 	// +kubebuilder:validation:Optional
 	QrSize *float64 `json:"qrSize,omitempty" tf:"qr_size,omitempty"`
 
+	// The number of delay periods that are allowed when validating a TOTP token.
+	// This value can either be 0 or 1.
 	// The number of delay periods that are allowed when validating a TOTP token. This value can either be 0 or 1.
 	// +kubebuilder:validation:Optional
 	Skew *float64 `json:"skew,omitempty" tf:"skew,omitempty"`
@@ -88,6 +163,18 @@ type TotpParameters struct {
 type TotpSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     TotpParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider TotpInitParameters `json:"initProvider,omitempty"`
 }
 
 // TotpStatus defines the observed state of Totp.
@@ -98,7 +185,7 @@ type TotpStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Totp is the Schema for the Totps API. <no value>
+// Totp is the Schema for the Totps API. Managing the MFA TOTP method configuration
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -108,8 +195,8 @@ type TotpStatus struct {
 type Totp struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.issuer)",message="issuer is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.issuer) || has(self.initProvider.issuer)",message="issuer is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
 	Spec   TotpSpec   `json:"spec"`
 	Status TotpStatus `json:"status,omitempty"`
 }

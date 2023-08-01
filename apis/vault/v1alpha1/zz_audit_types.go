@@ -13,25 +13,64 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AuditInitParameters struct {
+
+	// Human-friendly description of the audit device.
+	// Human-friendly description of the audit device.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Specifies if the audit device is a local only. Local audit devices are not replicated nor (if a secondary) removed by replication.
+	// Specifies if the audit device is a local only. Local audit devices are not replicated nor (if a secondary) removed by replication.
+	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Configuration options to pass to the audit device itself.
+	// Configuration options to pass to the audit device itself.
+	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
+
+	// The path to mount the audit device. This defaults to the type.
+	// Path in which to enable the audit device.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Type of the audit device, such as 'file'.
+	// Type of the audit device, such as 'file'.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type AuditObservation struct {
 
+	// Human-friendly description of the audit device.
 	// Human-friendly description of the audit device.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Specifies if the audit device is a local only. Local audit devices are not replicated nor (if a secondary) removed by replication.
+	// Specifies if the audit device is a local only. Local audit devices are not replicated nor (if a secondary) removed by replication.
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Configuration options to pass to the audit device itself.
+	// Configuration options to pass to the audit device itself.
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 
+	// The path to mount the audit device. This defaults to the type.
 	// Path in which to enable the audit device.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Type of the audit device, such as 'file'.
 	// Type of the audit device, such as 'file'.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
@@ -39,25 +78,34 @@ type AuditObservation struct {
 type AuditParameters struct {
 
 	// Human-friendly description of the audit device.
+	// Human-friendly description of the audit device.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// Specifies if the audit device is a local only. Local audit devices are not replicated nor (if a secondary) removed by replication.
+	// Specifies if the audit device is a local only. Local audit devices are not replicated nor (if a secondary) removed by replication.
 	// +kubebuilder:validation:Optional
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Configuration options to pass to the audit device itself.
+	// Configuration options to pass to the audit device itself.
 	// +kubebuilder:validation:Optional
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 
+	// The path to mount the audit device. This defaults to the type.
 	// Path in which to enable the audit device.
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Type of the audit device, such as 'file'.
 	// Type of the audit device, such as 'file'.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -67,6 +115,18 @@ type AuditParameters struct {
 type AuditSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuditParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AuditInitParameters `json:"initProvider,omitempty"`
 }
 
 // AuditStatus defines the observed state of Audit.
@@ -77,7 +137,7 @@ type AuditStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Audit is the Schema for the Audits API. <no value>
+// Audit is the Schema for the Audits API. Writes audit backends for Vault
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -87,8 +147,8 @@ type AuditStatus struct {
 type Audit struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.options)",message="options is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.type)",message="type is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.options) || has(self.initProvider.options)",message="options is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || has(self.initProvider.type)",message="type is a required parameter"
 	Spec   AuditSpec   `json:"spec"`
 	Status AuditStatus `json:"status,omitempty"`
 }

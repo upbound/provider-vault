@@ -13,121 +13,221 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type SecretBackendKeyObservation struct {
+type SecretBackendKeyInitParameters struct {
 
+	// Enables taking backup of entire keyring in the plaintext format. Once set, this cannot be disabled.
 	// If set, enables taking backup of named key in the plaintext format. Once set, this cannot be disabled.
 	AllowPlaintextBackup *bool `json:"allowPlaintextBackup,omitempty" tf:"allow_plaintext_backup,omitempty"`
 
+	// Replaced by auto_rotate_period.
 	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
 	AutoRotateInterval *float64 `json:"autoRotateInterval,omitempty" tf:"auto_rotate_interval,omitempty"`
 
+	// Amount of time the key should live before being automatically rotated.
+	// A value of 0 disables automatic rotation for the key.
 	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
 	AutoRotatePeriod *float64 `json:"autoRotatePeriod,omitempty" tf:"auto_rotate_period,omitempty"`
 
+	// The path the transit secret backend is mounted at, with no leading or trailing /s.
 	// The Transit secret backend the resource belongs to.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
 	// Whether or not to support convergent encryption, where the same plaintext creates the same ciphertext. This requires derived to be set to true.
+	// Whether or not to support convergent encryption, where the same plaintext creates the same ciphertext. This requires derived to be set to true.
 	ConvergentEncryption *bool `json:"convergentEncryption,omitempty" tf:"convergent_encryption,omitempty"`
 
+	// Specifies if the keyring is allowed to be deleted.
 	// Specifies if the key is allowed to be deleted.
 	DeletionAllowed *bool `json:"deletionAllowed,omitempty" tf:"deletion_allowed,omitempty"`
 
 	// Specifies if key derivation is to be used. If enabled, all encrypt/decrypt requests to this key must provide a context which is used for key derivation.
+	// Specifies if key derivation is to be used. If enabled, all encrypt/decrypt requests to this key must provide a context which is used for key derivation.
 	Derived *bool `json:"derived,omitempty" tf:"derived,omitempty"`
 
+	// Enables keys to be exportable. This allows for all valid private keys in the keyring to be exported. Once set, this cannot be disabled.
+	// Enables keys to be exportable. This allows for all the valid keys in the key ring to be exported. Once set, this cannot be disabled.
+	Exportable *bool `json:"exportable,omitempty" tf:"exportable,omitempty"`
+
+	// Minimum key version to use for decryption.
+	// Minimum key version to use for decryption.
+	MinDecryptionVersion *float64 `json:"minDecryptionVersion,omitempty" tf:"min_decryption_version,omitempty"`
+
+	// Minimum key version to use for encryption
+	// Minimum key version to use for encryption
+	MinEncryptionVersion *float64 `json:"minEncryptionVersion,omitempty" tf:"min_encryption_version,omitempty"`
+
+	// The name to identify this key within the backend. Must be unique within the backend.
+	// Name of the encryption key to create.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96 (default), chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, rsa-2048, rsa-3072 and rsa-4096.
+	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96, chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, rsa-2048, rsa-3072, rsa-4096
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type SecretBackendKeyObservation struct {
+
+	// Enables taking backup of entire keyring in the plaintext format. Once set, this cannot be disabled.
+	// If set, enables taking backup of named key in the plaintext format. Once set, this cannot be disabled.
+	AllowPlaintextBackup *bool `json:"allowPlaintextBackup,omitempty" tf:"allow_plaintext_backup,omitempty"`
+
+	// Replaced by auto_rotate_period.
+	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
+	AutoRotateInterval *float64 `json:"autoRotateInterval,omitempty" tf:"auto_rotate_interval,omitempty"`
+
+	// Amount of time the key should live before being automatically rotated.
+	// A value of 0 disables automatic rotation for the key.
+	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
+	AutoRotatePeriod *float64 `json:"autoRotatePeriod,omitempty" tf:"auto_rotate_period,omitempty"`
+
+	// The path the transit secret backend is mounted at, with no leading or trailing /s.
+	// The Transit secret backend the resource belongs to.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Whether or not to support convergent encryption, where the same plaintext creates the same ciphertext. This requires derived to be set to true.
+	// Whether or not to support convergent encryption, where the same plaintext creates the same ciphertext. This requires derived to be set to true.
+	ConvergentEncryption *bool `json:"convergentEncryption,omitempty" tf:"convergent_encryption,omitempty"`
+
+	// Specifies if the keyring is allowed to be deleted.
+	// Specifies if the key is allowed to be deleted.
+	DeletionAllowed *bool `json:"deletionAllowed,omitempty" tf:"deletion_allowed,omitempty"`
+
+	// Specifies if key derivation is to be used. If enabled, all encrypt/decrypt requests to this key must provide a context which is used for key derivation.
+	// Specifies if key derivation is to be used. If enabled, all encrypt/decrypt requests to this key must provide a context which is used for key derivation.
+	Derived *bool `json:"derived,omitempty" tf:"derived,omitempty"`
+
+	// Enables keys to be exportable. This allows for all valid private keys in the keyring to be exported. Once set, this cannot be disabled.
 	// Enables keys to be exportable. This allows for all the valid keys in the key ring to be exported. Once set, this cannot be disabled.
 	Exportable *bool `json:"exportable,omitempty" tf:"exportable,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// List of key versions in the keyring. This attribute is zero-indexed and will contain a map of values depending on the type of the encryption key.
 	// List of key versions in the keyring.
 	Keys []map[string]*string `json:"keys,omitempty" tf:"keys,omitempty"`
 
+	// Latest key version available. This value is 1-indexed, so if latest_version is 1, then the key's information can be referenced from keys by selecting element 0
 	// Latest key version in use in the keyring
 	LatestVersion *float64 `json:"latestVersion,omitempty" tf:"latest_version,omitempty"`
 
+	// Minimum key version available for use. If keys have been archived by increasing min_decryption_version, this attribute will reflect that change.
 	// Minimum key version available for use.
 	MinAvailableVersion *float64 `json:"minAvailableVersion,omitempty" tf:"min_available_version,omitempty"`
 
 	// Minimum key version to use for decryption.
+	// Minimum key version to use for decryption.
 	MinDecryptionVersion *float64 `json:"minDecryptionVersion,omitempty" tf:"min_decryption_version,omitempty"`
 
 	// Minimum key version to use for encryption
+	// Minimum key version to use for encryption
 	MinEncryptionVersion *float64 `json:"minEncryptionVersion,omitempty" tf:"min_encryption_version,omitempty"`
 
+	// The name to identify this key within the backend. Must be unique within the backend.
 	// Name of the encryption key to create.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Whether or not the key supports decryption, based on key type.
+	// Whether or not the key supports decryption, based on key type.
 	SupportsDecryption *bool `json:"supportsDecryption,omitempty" tf:"supports_decryption,omitempty"`
 
+	// Whether or not the key supports derivation, based on key type.
 	// Whether or not the key supports derivation, based on key type.
 	SupportsDerivation *bool `json:"supportsDerivation,omitempty" tf:"supports_derivation,omitempty"`
 
 	// Whether or not the key supports encryption, based on key type.
+	// Whether or not the key supports encryption, based on key type.
 	SupportsEncryption *bool `json:"supportsEncryption,omitempty" tf:"supports_encryption,omitempty"`
 
 	// Whether or not the key supports signing, based on key type.
+	// Whether or not the key supports signing, based on key type.
 	SupportsSigning *bool `json:"supportsSigning,omitempty" tf:"supports_signing,omitempty"`
 
+	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96 (default), chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, rsa-2048, rsa-3072 and rsa-4096.
 	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96, chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, rsa-2048, rsa-3072, rsa-4096
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type SecretBackendKeyParameters struct {
 
+	// Enables taking backup of entire keyring in the plaintext format. Once set, this cannot be disabled.
 	// If set, enables taking backup of named key in the plaintext format. Once set, this cannot be disabled.
 	// +kubebuilder:validation:Optional
 	AllowPlaintextBackup *bool `json:"allowPlaintextBackup,omitempty" tf:"allow_plaintext_backup,omitempty"`
 
+	// Replaced by auto_rotate_period.
 	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
 	// +kubebuilder:validation:Optional
 	AutoRotateInterval *float64 `json:"autoRotateInterval,omitempty" tf:"auto_rotate_interval,omitempty"`
 
+	// Amount of time the key should live before being automatically rotated.
+	// A value of 0 disables automatic rotation for the key.
 	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
 	// +kubebuilder:validation:Optional
 	AutoRotatePeriod *float64 `json:"autoRotatePeriod,omitempty" tf:"auto_rotate_period,omitempty"`
 
+	// The path the transit secret backend is mounted at, with no leading or trailing /s.
 	// The Transit secret backend the resource belongs to.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
 	// Whether or not to support convergent encryption, where the same plaintext creates the same ciphertext. This requires derived to be set to true.
+	// Whether or not to support convergent encryption, where the same plaintext creates the same ciphertext. This requires derived to be set to true.
 	// +kubebuilder:validation:Optional
 	ConvergentEncryption *bool `json:"convergentEncryption,omitempty" tf:"convergent_encryption,omitempty"`
 
+	// Specifies if the keyring is allowed to be deleted.
 	// Specifies if the key is allowed to be deleted.
 	// +kubebuilder:validation:Optional
 	DeletionAllowed *bool `json:"deletionAllowed,omitempty" tf:"deletion_allowed,omitempty"`
 
 	// Specifies if key derivation is to be used. If enabled, all encrypt/decrypt requests to this key must provide a context which is used for key derivation.
+	// Specifies if key derivation is to be used. If enabled, all encrypt/decrypt requests to this key must provide a context which is used for key derivation.
 	// +kubebuilder:validation:Optional
 	Derived *bool `json:"derived,omitempty" tf:"derived,omitempty"`
 
+	// Enables keys to be exportable. This allows for all valid private keys in the keyring to be exported. Once set, this cannot be disabled.
 	// Enables keys to be exportable. This allows for all the valid keys in the key ring to be exported. Once set, this cannot be disabled.
 	// +kubebuilder:validation:Optional
 	Exportable *bool `json:"exportable,omitempty" tf:"exportable,omitempty"`
 
 	// Minimum key version to use for decryption.
+	// Minimum key version to use for decryption.
 	// +kubebuilder:validation:Optional
 	MinDecryptionVersion *float64 `json:"minDecryptionVersion,omitempty" tf:"min_decryption_version,omitempty"`
 
 	// Minimum key version to use for encryption
+	// Minimum key version to use for encryption
 	// +kubebuilder:validation:Optional
 	MinEncryptionVersion *float64 `json:"minEncryptionVersion,omitempty" tf:"min_encryption_version,omitempty"`
 
+	// The name to identify this key within the backend. Must be unique within the backend.
 	// Name of the encryption key to create.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96 (default), chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, rsa-2048, rsa-3072 and rsa-4096.
 	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96, chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, rsa-2048, rsa-3072, rsa-4096
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -137,6 +237,18 @@ type SecretBackendKeyParameters struct {
 type SecretBackendKeySpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendKeyParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SecretBackendKeyInitParameters `json:"initProvider,omitempty"`
 }
 
 // SecretBackendKeyStatus defines the observed state of SecretBackendKey.
@@ -147,7 +259,7 @@ type SecretBackendKeyStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SecretBackendKey is the Schema for the SecretBackendKeys API. <no value>
+// SecretBackendKey is the Schema for the SecretBackendKeys API. Create an Encryption Keyring on a Transit Secret Backend for Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -157,8 +269,8 @@ type SecretBackendKeyStatus struct {
 type SecretBackendKey struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
 	Spec   SecretBackendKeySpec   `json:"spec"`
 	Status SecretBackendKeyStatus `json:"status,omitempty"`
 }

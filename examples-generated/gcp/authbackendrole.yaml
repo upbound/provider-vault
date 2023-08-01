@@ -1,0 +1,31 @@
+apiVersion: gcp.vault.upbound.io/v1alpha1
+kind: AuthBackendRole
+metadata:
+  annotations:
+    meta.upbound.io/example-id: gcp/v1alpha1/authbackendrole
+  labels:
+    testing.upbound.io/example-name: gcp
+  name: gcp
+spec:
+  forProvider:
+    backend: cert
+    boundServiceAccounts:
+    - database-server@foo-bar-baz.iam.gserviceaccount.com
+    project_id: foo-bar-baz
+    tokenPolicies:
+    - database-server
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: gcp/v1alpha1/authbackendrole
+  labels:
+    testing.upbound.io/example-name: gcp
+  name: gcp
+spec:
+  forProvider:
+    path: gcp
+    type: gcp

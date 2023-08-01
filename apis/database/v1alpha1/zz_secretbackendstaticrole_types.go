@@ -13,58 +13,112 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type SecretBackendStaticRoleObservation struct {
+type SecretBackendStaticRoleInitParameters struct {
 
+	// The unique name of the Vault mount to configure.
 	// The path of the Database Secret Backend the role belongs to.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// The unique name of the database connection to use for the static role.
+	// Database connection to use for this role.
+	DBName *string `json:"dbName,omitempty" tf:"db_name,omitempty"`
+
+	// A unique name to give the static role.
+	// Unique name for the static role.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The amount of time Vault should wait before rotating the password, in seconds.
+	// The amount of time Vault should wait before rotating the password, in seconds.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// Database statements to execute to rotate the password for the configured database user.
+	// Database statements to execute to rotate the password for the configured database user.
+	RotationStatements []*string `json:"rotationStatements,omitempty" tf:"rotation_statements,omitempty"`
+
+	// The database username that this static role corresponds to.
+	// The database username that this role corresponds to.
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+}
+
+type SecretBackendStaticRoleObservation struct {
+
+	// The unique name of the Vault mount to configure.
+	// The path of the Database Secret Backend the role belongs to.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// The unique name of the database connection to use for the static role.
 	// Database connection to use for this role.
 	DBName *string `json:"dbName,omitempty" tf:"db_name,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// A unique name to give the static role.
 	// Unique name for the static role.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// The amount of time Vault should wait before rotating the password, in seconds.
+	// The amount of time Vault should wait before rotating the password, in seconds.
 	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
 
 	// Database statements to execute to rotate the password for the configured database user.
+	// Database statements to execute to rotate the password for the configured database user.
 	RotationStatements []*string `json:"rotationStatements,omitempty" tf:"rotation_statements,omitempty"`
 
+	// The database username that this static role corresponds to.
 	// The database username that this role corresponds to.
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 }
 
 type SecretBackendStaticRoleParameters struct {
 
+	// The unique name of the Vault mount to configure.
 	// The path of the Database Secret Backend the role belongs to.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// The unique name of the database connection to use for the static role.
 	// Database connection to use for this role.
 	// +kubebuilder:validation:Optional
 	DBName *string `json:"dbName,omitempty" tf:"db_name,omitempty"`
 
+	// A unique name to give the static role.
 	// Unique name for the static role.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// The amount of time Vault should wait before rotating the password, in seconds.
+	// The amount of time Vault should wait before rotating the password, in seconds.
 	// +kubebuilder:validation:Optional
 	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
 
 	// Database statements to execute to rotate the password for the configured database user.
+	// Database statements to execute to rotate the password for the configured database user.
 	// +kubebuilder:validation:Optional
 	RotationStatements []*string `json:"rotationStatements,omitempty" tf:"rotation_statements,omitempty"`
 
+	// The database username that this static role corresponds to.
 	// The database username that this role corresponds to.
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -74,6 +128,18 @@ type SecretBackendStaticRoleParameters struct {
 type SecretBackendStaticRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendStaticRoleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SecretBackendStaticRoleInitParameters `json:"initProvider,omitempty"`
 }
 
 // SecretBackendStaticRoleStatus defines the observed state of SecretBackendStaticRole.
@@ -84,7 +150,7 @@ type SecretBackendStaticRoleStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SecretBackendStaticRole is the Schema for the SecretBackendStaticRoles API. <no value>
+// SecretBackendStaticRole is the Schema for the SecretBackendStaticRoles API. Configures a database secret backend static role for Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -94,11 +160,11 @@ type SecretBackendStaticRoleStatus struct {
 type SecretBackendStaticRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.dbName)",message="dbName is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.rotationPeriod)",message="rotationPeriod is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.username)",message="username is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dbName) || has(self.initProvider.dbName)",message="dbName is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.rotationPeriod) || has(self.initProvider.rotationPeriod)",message="rotationPeriod is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.username) || has(self.initProvider.username)",message="username is a required parameter"
 	Spec   SecretBackendStaticRoleSpec   `json:"spec"`
 	Status SecretBackendStaticRoleStatus `json:"status,omitempty"`
 }

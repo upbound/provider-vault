@@ -13,100 +13,232 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type SecretBackendRoleObservation struct {
+type SecretBackendRoleInitParameters struct {
 
+	// The list of Kubernetes namespaces this role
+	// can generate credentials for. If set to * all namespaces are allowed.
 	// The list of Kubernetes namespaces this role can generate credentials for. If set to '*' all namespaces are allowed.
 	AllowedKubernetesNamespaces []*string `json:"allowedKubernetesNamespaces,omitempty" tf:"allowed_kubernetes_namespaces,omitempty"`
 
+	// The path of the Kubernetes Secrets Engine backend mount to create
+	// the role in.
 	// The mount path for the Kubernetes secrets engine.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// Additional annotations to apply to all generated
+	// Kubernetes objects.
 	// Additional annotations to apply to all generated Kubernetes objects.
 	ExtraAnnotations map[string]*string `json:"extraAnnotations,omitempty" tf:"extra_annotations,omitempty"`
 
+	// Additional labels to apply to all generated Kubernetes
+	// objects.
 	// Additional labels to apply to all generated Kubernetes objects.
 	ExtraLabels map[string]*string `json:"extraLabels,omitempty" tf:"extra_labels,omitempty"`
 
+	// The Role or ClusterRole rules to use when generating
+	// a role. Accepts either JSON or YAML formatted rules. Mutually exclusive with service_account_name
+	// and kubernetes_role_name. If set, the entire chain of Kubernetes objects will be generated
+	// when credentials are requested.
+	// The Role or ClusterRole rules to use when generating a role. Accepts either JSON or YAML formatted rules. Mutually exclusive with 'service_account_name' and 'kubernetes_role_name'. If set, the entire chain of Kubernetes objects will be generated when credentials are requested.
+	GeneratedRoleRules *string `json:"generatedRoleRules,omitempty" tf:"generated_role_rules,omitempty"`
+
+	// The pre-existing Role or ClusterRole to bind a
+	// generated service account to. Mutually exclusive with service_account_name and
+	// generated_role_rules. If set, Kubernetes token, service account, and role
+	// binding objects will be created when credentials are requested.
+	// The pre-existing Role or ClusterRole to bind a generated service account to. Mutually exclusive with 'service_account_name' and 'generated_role_rules'. If set, Kubernetes token, service account, and role binding objects will be created when credentials are requested.
+	KubernetesRoleName *string `json:"kubernetesRoleName,omitempty" tf:"kubernetes_role_name,omitempty"`
+
+	// Specifies whether the Kubernetes role is a Role or
+	// ClusterRole.
+	// Specifies whether the Kubernetes role is a Role or ClusterRole.
+	KubernetesRoleType *string `json:"kubernetesRoleType,omitempty" tf:"kubernetes_role_type,omitempty"`
+
+	// The name of the role.
+	// The name of the role.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The name template to use when generating service accounts,
+	// roles and role bindings. If unset, a default template is used.
+	// The name template to use when generating service accounts, roles and role bindings. If unset, a default template is used.
+	NameTemplate *string `json:"nameTemplate,omitempty" tf:"name_template,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The pre-existing service account to generate tokens for.
+	// Mutually exclusive with kubernetes_role_name and generated_role_rules. If set, only a
+	// Kubernetes token will be created when credentials are requested.
+	// The pre-existing service account to generate tokens for. Mutually exclusive with 'kubernetes_role_name' and 'generated_role_rules'. If set, only a Kubernetes token will be created when credentials are requested.
+	ServiceAccountName *string `json:"serviceAccountName,omitempty" tf:"service_account_name,omitempty"`
+
+	// The default TTL for generated Kubernetes tokens in seconds.
+	// The default TTL for generated Kubernetes tokens in seconds.
+	TokenDefaultTTL *float64 `json:"tokenDefaultTtl,omitempty" tf:"token_default_ttl,omitempty"`
+
+	// The maximum TTL for generated Kubernetes tokens in seconds.
+	// The maximum TTL for generated Kubernetes tokens in seconds.
+	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
+}
+
+type SecretBackendRoleObservation struct {
+
+	// The list of Kubernetes namespaces this role
+	// can generate credentials for. If set to * all namespaces are allowed.
+	// The list of Kubernetes namespaces this role can generate credentials for. If set to '*' all namespaces are allowed.
+	AllowedKubernetesNamespaces []*string `json:"allowedKubernetesNamespaces,omitempty" tf:"allowed_kubernetes_namespaces,omitempty"`
+
+	// The path of the Kubernetes Secrets Engine backend mount to create
+	// the role in.
+	// The mount path for the Kubernetes secrets engine.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Additional annotations to apply to all generated
+	// Kubernetes objects.
+	// Additional annotations to apply to all generated Kubernetes objects.
+	ExtraAnnotations map[string]*string `json:"extraAnnotations,omitempty" tf:"extra_annotations,omitempty"`
+
+	// Additional labels to apply to all generated Kubernetes
+	// objects.
+	// Additional labels to apply to all generated Kubernetes objects.
+	ExtraLabels map[string]*string `json:"extraLabels,omitempty" tf:"extra_labels,omitempty"`
+
+	// The Role or ClusterRole rules to use when generating
+	// a role. Accepts either JSON or YAML formatted rules. Mutually exclusive with service_account_name
+	// and kubernetes_role_name. If set, the entire chain of Kubernetes objects will be generated
+	// when credentials are requested.
 	// The Role or ClusterRole rules to use when generating a role. Accepts either JSON or YAML formatted rules. Mutually exclusive with 'service_account_name' and 'kubernetes_role_name'. If set, the entire chain of Kubernetes objects will be generated when credentials are requested.
 	GeneratedRoleRules *string `json:"generatedRoleRules,omitempty" tf:"generated_role_rules,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The pre-existing Role or ClusterRole to bind a
+	// generated service account to. Mutually exclusive with service_account_name and
+	// generated_role_rules. If set, Kubernetes token, service account, and role
+	// binding objects will be created when credentials are requested.
 	// The pre-existing Role or ClusterRole to bind a generated service account to. Mutually exclusive with 'service_account_name' and 'generated_role_rules'. If set, Kubernetes token, service account, and role binding objects will be created when credentials are requested.
 	KubernetesRoleName *string `json:"kubernetesRoleName,omitempty" tf:"kubernetes_role_name,omitempty"`
 
+	// Specifies whether the Kubernetes role is a Role or
+	// ClusterRole.
 	// Specifies whether the Kubernetes role is a Role or ClusterRole.
 	KubernetesRoleType *string `json:"kubernetesRoleType,omitempty" tf:"kubernetes_role_type,omitempty"`
 
 	// The name of the role.
+	// The name of the role.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name template to use when generating service accounts,
+	// roles and role bindings. If unset, a default template is used.
 	// The name template to use when generating service accounts, roles and role bindings. If unset, a default template is used.
 	NameTemplate *string `json:"nameTemplate,omitempty" tf:"name_template,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The pre-existing service account to generate tokens for.
+	// Mutually exclusive with kubernetes_role_name and generated_role_rules. If set, only a
+	// Kubernetes token will be created when credentials are requested.
 	// The pre-existing service account to generate tokens for. Mutually exclusive with 'kubernetes_role_name' and 'generated_role_rules'. If set, only a Kubernetes token will be created when credentials are requested.
 	ServiceAccountName *string `json:"serviceAccountName,omitempty" tf:"service_account_name,omitempty"`
 
 	// The default TTL for generated Kubernetes tokens in seconds.
+	// The default TTL for generated Kubernetes tokens in seconds.
 	TokenDefaultTTL *float64 `json:"tokenDefaultTtl,omitempty" tf:"token_default_ttl,omitempty"`
 
+	// The maximum TTL for generated Kubernetes tokens in seconds.
 	// The maximum TTL for generated Kubernetes tokens in seconds.
 	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
 }
 
 type SecretBackendRoleParameters struct {
 
+	// The list of Kubernetes namespaces this role
+	// can generate credentials for. If set to * all namespaces are allowed.
 	// The list of Kubernetes namespaces this role can generate credentials for. If set to '*' all namespaces are allowed.
 	// +kubebuilder:validation:Optional
 	AllowedKubernetesNamespaces []*string `json:"allowedKubernetesNamespaces,omitempty" tf:"allowed_kubernetes_namespaces,omitempty"`
 
+	// The path of the Kubernetes Secrets Engine backend mount to create
+	// the role in.
 	// The mount path for the Kubernetes secrets engine.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// Additional annotations to apply to all generated
+	// Kubernetes objects.
 	// Additional annotations to apply to all generated Kubernetes objects.
 	// +kubebuilder:validation:Optional
 	ExtraAnnotations map[string]*string `json:"extraAnnotations,omitempty" tf:"extra_annotations,omitempty"`
 
+	// Additional labels to apply to all generated Kubernetes
+	// objects.
 	// Additional labels to apply to all generated Kubernetes objects.
 	// +kubebuilder:validation:Optional
 	ExtraLabels map[string]*string `json:"extraLabels,omitempty" tf:"extra_labels,omitempty"`
 
+	// The Role or ClusterRole rules to use when generating
+	// a role. Accepts either JSON or YAML formatted rules. Mutually exclusive with service_account_name
+	// and kubernetes_role_name. If set, the entire chain of Kubernetes objects will be generated
+	// when credentials are requested.
 	// The Role or ClusterRole rules to use when generating a role. Accepts either JSON or YAML formatted rules. Mutually exclusive with 'service_account_name' and 'kubernetes_role_name'. If set, the entire chain of Kubernetes objects will be generated when credentials are requested.
 	// +kubebuilder:validation:Optional
 	GeneratedRoleRules *string `json:"generatedRoleRules,omitempty" tf:"generated_role_rules,omitempty"`
 
+	// The pre-existing Role or ClusterRole to bind a
+	// generated service account to. Mutually exclusive with service_account_name and
+	// generated_role_rules. If set, Kubernetes token, service account, and role
+	// binding objects will be created when credentials are requested.
 	// The pre-existing Role or ClusterRole to bind a generated service account to. Mutually exclusive with 'service_account_name' and 'generated_role_rules'. If set, Kubernetes token, service account, and role binding objects will be created when credentials are requested.
 	// +kubebuilder:validation:Optional
 	KubernetesRoleName *string `json:"kubernetesRoleName,omitempty" tf:"kubernetes_role_name,omitempty"`
 
+	// Specifies whether the Kubernetes role is a Role or
+	// ClusterRole.
 	// Specifies whether the Kubernetes role is a Role or ClusterRole.
 	// +kubebuilder:validation:Optional
 	KubernetesRoleType *string `json:"kubernetesRoleType,omitempty" tf:"kubernetes_role_type,omitempty"`
 
 	// The name of the role.
+	// The name of the role.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name template to use when generating service accounts,
+	// roles and role bindings. If unset, a default template is used.
 	// The name template to use when generating service accounts, roles and role bindings. If unset, a default template is used.
 	// +kubebuilder:validation:Optional
 	NameTemplate *string `json:"nameTemplate,omitempty" tf:"name_template,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The pre-existing service account to generate tokens for.
+	// Mutually exclusive with kubernetes_role_name and generated_role_rules. If set, only a
+	// Kubernetes token will be created when credentials are requested.
 	// The pre-existing service account to generate tokens for. Mutually exclusive with 'kubernetes_role_name' and 'generated_role_rules'. If set, only a Kubernetes token will be created when credentials are requested.
 	// +kubebuilder:validation:Optional
 	ServiceAccountName *string `json:"serviceAccountName,omitempty" tf:"service_account_name,omitempty"`
 
 	// The default TTL for generated Kubernetes tokens in seconds.
+	// The default TTL for generated Kubernetes tokens in seconds.
 	// +kubebuilder:validation:Optional
 	TokenDefaultTTL *float64 `json:"tokenDefaultTtl,omitempty" tf:"token_default_ttl,omitempty"`
 
+	// The maximum TTL for generated Kubernetes tokens in seconds.
 	// The maximum TTL for generated Kubernetes tokens in seconds.
 	// +kubebuilder:validation:Optional
 	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
@@ -116,6 +248,18 @@ type SecretBackendRoleParameters struct {
 type SecretBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendRoleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SecretBackendRoleInitParameters `json:"initProvider,omitempty"`
 }
 
 // SecretBackendRoleStatus defines the observed state of SecretBackendRole.
@@ -126,7 +270,7 @@ type SecretBackendRoleStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SecretBackendRole is the Schema for the SecretBackendRoles API. <no value>
+// SecretBackendRole is the Schema for the SecretBackendRoles API. Creates a role for the Kubernetes Secrets Engine in Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -136,9 +280,9 @@ type SecretBackendRoleStatus struct {
 type SecretBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.allowedKubernetesNamespaces)",message="allowedKubernetesNamespaces is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.allowedKubernetesNamespaces) || has(self.initProvider.allowedKubernetesNamespaces)",message="allowedKubernetesNamespaces is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
 	Spec   SecretBackendRoleSpec   `json:"spec"`
 	Status SecretBackendRoleStatus `json:"status,omitempty"`
 }

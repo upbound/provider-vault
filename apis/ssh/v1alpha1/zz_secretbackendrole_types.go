@@ -13,11 +13,37 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AllowedUserKeyConfigObservation struct {
+type AllowedUserKeyConfigInitParameters struct {
 
+	// A list of allowed key lengths as integers.
+	// For key types that do not support setting the length a value of [0] should be used.
+	// Setting multiple lengths is only supported on Vault 1.10+. For prior releases length
+	// must be set to a single element list.
 	// List of allowed key lengths, vault-1.10 and above
 	Lengths []*float64 `json:"lengths,omitempty" tf:"lengths,omitempty"`
 
+	// The SSH public key type.
+	// Supported key types are:
+	// rsa, ecdsa, ec, dsa, ed25519, ssh-rsa, ssh-dss, ssh-ed25519,
+	// ecdsa-sha2-nistp256, ecdsa-sha2-nistp384, ecdsa-sha2-nistp521
+	// Key type, choices:
+	// rsa, ecdsa, ec, dsa, ed25519, ssh-rsa, ssh-dss, ssh-ed25519, ecdsa-sha2-nistp256, ecdsa-sha2-nistp384, ecdsa-sha2-nistp521
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type AllowedUserKeyConfigObservation struct {
+
+	// A list of allowed key lengths as integers.
+	// For key types that do not support setting the length a value of [0] should be used.
+	// Setting multiple lengths is only supported on Vault 1.10+. For prior releases length
+	// must be set to a single element list.
+	// List of allowed key lengths, vault-1.10 and above
+	Lengths []*float64 `json:"lengths,omitempty" tf:"lengths,omitempty"`
+
+	// The SSH public key type.
+	// Supported key types are:
+	// rsa, ecdsa, ec, dsa, ed25519, ssh-rsa, ssh-dss, ssh-ed25519,
+	// ecdsa-sha2-nistp256, ecdsa-sha2-nistp384, ecdsa-sha2-nistp521
 	// Key type, choices:
 	// rsa, ecdsa, ec, dsa, ed25519, ssh-rsa, ssh-dss, ssh-ed25519, ecdsa-sha2-nistp256, ecdsa-sha2-nistp384, ecdsa-sha2-nistp521
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -25,150 +51,311 @@ type AllowedUserKeyConfigObservation struct {
 
 type AllowedUserKeyConfigParameters struct {
 
+	// A list of allowed key lengths as integers.
+	// For key types that do not support setting the length a value of [0] should be used.
+	// Setting multiple lengths is only supported on Vault 1.10+. For prior releases length
+	// must be set to a single element list.
 	// List of allowed key lengths, vault-1.10 and above
-	// +kubebuilder:validation:Required
-	Lengths []*float64 `json:"lengths" tf:"lengths,omitempty"`
+	// +kubebuilder:validation:Optional
+	Lengths []*float64 `json:"lengths,omitempty" tf:"lengths,omitempty"`
 
+	// The SSH public key type.
+	// Supported key types are:
+	// rsa, ecdsa, ec, dsa, ed25519, ssh-rsa, ssh-dss, ssh-ed25519,
+	// ecdsa-sha2-nistp256, ecdsa-sha2-nistp384, ecdsa-sha2-nistp521
 	// Key type, choices:
 	// rsa, ecdsa, ec, dsa, ed25519, ssh-rsa, ssh-dss, ssh-ed25519, ecdsa-sha2-nistp256, ecdsa-sha2-nistp384, ecdsa-sha2-nistp521
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type SecretBackendRoleInitParameters struct {
+
+	// When supplied, this value specifies a signing algorithm for the key. Possible values: ssh-rsa, rsa-sha2-256, rsa-sha2-512.
+	AlgorithmSigner *string `json:"algorithmSigner,omitempty" tf:"algorithm_signer,omitempty"`
+
+	// Specifies if host certificates that are requested are allowed to use the base domains listed in allowed_domains.
+	AllowBareDomains *bool `json:"allowBareDomains,omitempty" tf:"allow_bare_domains,omitempty"`
+
+	// Specifies if certificates are allowed to be signed for use as a 'host'.
+	AllowHostCertificates *bool `json:"allowHostCertificates,omitempty" tf:"allow_host_certificates,omitempty"`
+
+	// Specifies if host certificates that are requested are allowed to be subdomains of those listed in allowed_domains.
+	AllowSubdomains *bool `json:"allowSubdomains,omitempty" tf:"allow_subdomains,omitempty"`
+
+	// Specifies if certificates are allowed to be signed for use as a 'user'.
+	AllowUserCertificates *bool `json:"allowUserCertificates,omitempty" tf:"allow_user_certificates,omitempty"`
+
+	// Specifies if users can override the key ID for a signed certificate with the key_id field.
+	AllowUserKeyIds *bool `json:"allowUserKeyIds,omitempty" tf:"allow_user_key_ids,omitempty"`
+
+	// Specifies a comma-separated list of critical options that certificates can have when signed.
+	AllowedCriticalOptions *string `json:"allowedCriticalOptions,omitempty" tf:"allowed_critical_options,omitempty"`
+
+	// The list of domains for which a client can request a host certificate.
+	AllowedDomains *string `json:"allowedDomains,omitempty" tf:"allowed_domains,omitempty"`
+
+	// Specifies a comma-separated list of extensions that certificates can have when signed.
+	AllowedExtensions *string `json:"allowedExtensions,omitempty" tf:"allowed_extensions,omitempty"`
+
+	// Set of configuration blocks to define allowed
+	// user key configuration, like key type and their lengths. Can be specified multiple times.
+	// See
+	// Set of allowed public key types and their relevant configuration
+	AllowedUserKeyConfig []AllowedUserKeyConfigInitParameters `json:"allowedUserKeyConfig,omitempty" tf:"allowed_user_key_config,omitempty"`
+
+	// Specifies a map of ssh key types and their expected sizes which
+	// are allowed to be signed by the CA type.
+	// Deprecated: use allowed_user_key_config instead
+	AllowedUserKeyLengths map[string]*float64 `json:"allowedUserKeyLengths,omitempty" tf:"allowed_user_key_lengths,omitempty"`
+
+	// Specifies a comma-separated list of usernames that are to be allowed, only if certain usernames are to be allowed.
+	AllowedUsers *string `json:"allowedUsers,omitempty" tf:"allowed_users,omitempty"`
+
+	// Specifies if allowed_users can be declared using identity template policies. Non-templated users are also permitted.
+	AllowedUsersTemplate *bool `json:"allowedUsersTemplate,omitempty" tf:"allowed_users_template,omitempty"`
+
+	// The path where the SSH secret backend is mounted.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// The comma-separated string of CIDR blocks for which this role is applicable.
+	CidrList *string `json:"cidrList,omitempty" tf:"cidr_list,omitempty"`
+
+	// Specifies a map of critical options that certificates have when signed.
+	DefaultCriticalOptions map[string]*string `json:"defaultCriticalOptions,omitempty" tf:"default_critical_options,omitempty"`
+
+	// Specifies a map of extensions that certificates have when signed.
+	DefaultExtensions map[string]*string `json:"defaultExtensions,omitempty" tf:"default_extensions,omitempty"`
+
+	// Specifies the default username for which a credential will be generated.
+	DefaultUser *string `json:"defaultUser,omitempty" tf:"default_user,omitempty"`
+
+	// If set, default_users can be specified using identity template values. A non-templated user is also permitted.
+	DefaultUserTemplate *bool `json:"defaultUserTemplate,omitempty" tf:"default_user_template,omitempty"`
+
+	// Specifies a custom format for the key id of a signed certificate.
+	KeyIDFormat *string `json:"keyIdFormat,omitempty" tf:"key_id_format,omitempty"`
+
+	// Specifies the type of credentials generated by this role. This can be either otp, dynamic or ca.
+	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
+
+	// Specifies the maximum Time To Live value.
+	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
+
+	// Specifies the name of the role to create.
+	// Unique name for the role.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Specifies the Time To Live value.
+	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 }
 
 type SecretBackendRoleObservation struct {
+
+	// When supplied, this value specifies a signing algorithm for the key. Possible values: ssh-rsa, rsa-sha2-256, rsa-sha2-512.
 	AlgorithmSigner *string `json:"algorithmSigner,omitempty" tf:"algorithm_signer,omitempty"`
 
+	// Specifies if host certificates that are requested are allowed to use the base domains listed in allowed_domains.
 	AllowBareDomains *bool `json:"allowBareDomains,omitempty" tf:"allow_bare_domains,omitempty"`
 
+	// Specifies if certificates are allowed to be signed for use as a 'host'.
 	AllowHostCertificates *bool `json:"allowHostCertificates,omitempty" tf:"allow_host_certificates,omitempty"`
 
+	// Specifies if host certificates that are requested are allowed to be subdomains of those listed in allowed_domains.
 	AllowSubdomains *bool `json:"allowSubdomains,omitempty" tf:"allow_subdomains,omitempty"`
 
+	// Specifies if certificates are allowed to be signed for use as a 'user'.
 	AllowUserCertificates *bool `json:"allowUserCertificates,omitempty" tf:"allow_user_certificates,omitempty"`
 
+	// Specifies if users can override the key ID for a signed certificate with the key_id field.
 	AllowUserKeyIds *bool `json:"allowUserKeyIds,omitempty" tf:"allow_user_key_ids,omitempty"`
 
+	// Specifies a comma-separated list of critical options that certificates can have when signed.
 	AllowedCriticalOptions *string `json:"allowedCriticalOptions,omitempty" tf:"allowed_critical_options,omitempty"`
 
+	// The list of domains for which a client can request a host certificate.
 	AllowedDomains *string `json:"allowedDomains,omitempty" tf:"allowed_domains,omitempty"`
 
+	// Specifies a comma-separated list of extensions that certificates can have when signed.
 	AllowedExtensions *string `json:"allowedExtensions,omitempty" tf:"allowed_extensions,omitempty"`
 
+	// Set of configuration blocks to define allowed
+	// user key configuration, like key type and their lengths. Can be specified multiple times.
+	// See
 	// Set of allowed public key types and their relevant configuration
 	AllowedUserKeyConfig []AllowedUserKeyConfigObservation `json:"allowedUserKeyConfig,omitempty" tf:"allowed_user_key_config,omitempty"`
 
+	// Specifies a map of ssh key types and their expected sizes which
+	// are allowed to be signed by the CA type.
+	// Deprecated: use allowed_user_key_config instead
 	AllowedUserKeyLengths map[string]*float64 `json:"allowedUserKeyLengths,omitempty" tf:"allowed_user_key_lengths,omitempty"`
 
+	// Specifies a comma-separated list of usernames that are to be allowed, only if certain usernames are to be allowed.
 	AllowedUsers *string `json:"allowedUsers,omitempty" tf:"allowed_users,omitempty"`
 
+	// Specifies if allowed_users can be declared using identity template policies. Non-templated users are also permitted.
 	AllowedUsersTemplate *bool `json:"allowedUsersTemplate,omitempty" tf:"allowed_users_template,omitempty"`
 
+	// The path where the SSH secret backend is mounted.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// The comma-separated string of CIDR blocks for which this role is applicable.
 	CidrList *string `json:"cidrList,omitempty" tf:"cidr_list,omitempty"`
 
+	// Specifies a map of critical options that certificates have when signed.
 	DefaultCriticalOptions map[string]*string `json:"defaultCriticalOptions,omitempty" tf:"default_critical_options,omitempty"`
 
+	// Specifies a map of extensions that certificates have when signed.
 	DefaultExtensions map[string]*string `json:"defaultExtensions,omitempty" tf:"default_extensions,omitempty"`
 
+	// Specifies the default username for which a credential will be generated.
 	DefaultUser *string `json:"defaultUser,omitempty" tf:"default_user,omitempty"`
 
+	// If set, default_users can be specified using identity template values. A non-templated user is also permitted.
 	DefaultUserTemplate *bool `json:"defaultUserTemplate,omitempty" tf:"default_user_template,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Specifies a custom format for the key id of a signed certificate.
 	KeyIDFormat *string `json:"keyIdFormat,omitempty" tf:"key_id_format,omitempty"`
 
+	// Specifies the type of credentials generated by this role. This can be either otp, dynamic or ca.
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
+	// Specifies the maximum Time To Live value.
 	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
 
+	// Specifies the name of the role to create.
 	// Unique name for the role.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Specifies the Time To Live value.
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 }
 
 type SecretBackendRoleParameters struct {
 
+	// When supplied, this value specifies a signing algorithm for the key. Possible values: ssh-rsa, rsa-sha2-256, rsa-sha2-512.
 	// +kubebuilder:validation:Optional
 	AlgorithmSigner *string `json:"algorithmSigner,omitempty" tf:"algorithm_signer,omitempty"`
 
+	// Specifies if host certificates that are requested are allowed to use the base domains listed in allowed_domains.
 	// +kubebuilder:validation:Optional
 	AllowBareDomains *bool `json:"allowBareDomains,omitempty" tf:"allow_bare_domains,omitempty"`
 
+	// Specifies if certificates are allowed to be signed for use as a 'host'.
 	// +kubebuilder:validation:Optional
 	AllowHostCertificates *bool `json:"allowHostCertificates,omitempty" tf:"allow_host_certificates,omitempty"`
 
+	// Specifies if host certificates that are requested are allowed to be subdomains of those listed in allowed_domains.
 	// +kubebuilder:validation:Optional
 	AllowSubdomains *bool `json:"allowSubdomains,omitempty" tf:"allow_subdomains,omitempty"`
 
+	// Specifies if certificates are allowed to be signed for use as a 'user'.
 	// +kubebuilder:validation:Optional
 	AllowUserCertificates *bool `json:"allowUserCertificates,omitempty" tf:"allow_user_certificates,omitempty"`
 
+	// Specifies if users can override the key ID for a signed certificate with the key_id field.
 	// +kubebuilder:validation:Optional
 	AllowUserKeyIds *bool `json:"allowUserKeyIds,omitempty" tf:"allow_user_key_ids,omitempty"`
 
+	// Specifies a comma-separated list of critical options that certificates can have when signed.
 	// +kubebuilder:validation:Optional
 	AllowedCriticalOptions *string `json:"allowedCriticalOptions,omitempty" tf:"allowed_critical_options,omitempty"`
 
+	// The list of domains for which a client can request a host certificate.
 	// +kubebuilder:validation:Optional
 	AllowedDomains *string `json:"allowedDomains,omitempty" tf:"allowed_domains,omitempty"`
 
+	// Specifies a comma-separated list of extensions that certificates can have when signed.
 	// +kubebuilder:validation:Optional
 	AllowedExtensions *string `json:"allowedExtensions,omitempty" tf:"allowed_extensions,omitempty"`
 
+	// Set of configuration blocks to define allowed
+	// user key configuration, like key type and their lengths. Can be specified multiple times.
+	// See
 	// Set of allowed public key types and their relevant configuration
 	// +kubebuilder:validation:Optional
 	AllowedUserKeyConfig []AllowedUserKeyConfigParameters `json:"allowedUserKeyConfig,omitempty" tf:"allowed_user_key_config,omitempty"`
 
+	// Specifies a map of ssh key types and their expected sizes which
+	// are allowed to be signed by the CA type.
+	// Deprecated: use allowed_user_key_config instead
 	// +kubebuilder:validation:Optional
 	AllowedUserKeyLengths map[string]*float64 `json:"allowedUserKeyLengths,omitempty" tf:"allowed_user_key_lengths,omitempty"`
 
+	// Specifies a comma-separated list of usernames that are to be allowed, only if certain usernames are to be allowed.
 	// +kubebuilder:validation:Optional
 	AllowedUsers *string `json:"allowedUsers,omitempty" tf:"allowed_users,omitempty"`
 
+	// Specifies if allowed_users can be declared using identity template policies. Non-templated users are also permitted.
 	// +kubebuilder:validation:Optional
 	AllowedUsersTemplate *bool `json:"allowedUsersTemplate,omitempty" tf:"allowed_users_template,omitempty"`
 
+	// The path where the SSH secret backend is mounted.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// The comma-separated string of CIDR blocks for which this role is applicable.
 	// +kubebuilder:validation:Optional
 	CidrList *string `json:"cidrList,omitempty" tf:"cidr_list,omitempty"`
 
+	// Specifies a map of critical options that certificates have when signed.
 	// +kubebuilder:validation:Optional
 	DefaultCriticalOptions map[string]*string `json:"defaultCriticalOptions,omitempty" tf:"default_critical_options,omitempty"`
 
+	// Specifies a map of extensions that certificates have when signed.
 	// +kubebuilder:validation:Optional
 	DefaultExtensions map[string]*string `json:"defaultExtensions,omitempty" tf:"default_extensions,omitempty"`
 
+	// Specifies the default username for which a credential will be generated.
 	// +kubebuilder:validation:Optional
 	DefaultUser *string `json:"defaultUser,omitempty" tf:"default_user,omitempty"`
 
+	// If set, default_users can be specified using identity template values. A non-templated user is also permitted.
 	// +kubebuilder:validation:Optional
 	DefaultUserTemplate *bool `json:"defaultUserTemplate,omitempty" tf:"default_user_template,omitempty"`
 
+	// Specifies a custom format for the key id of a signed certificate.
 	// +kubebuilder:validation:Optional
 	KeyIDFormat *string `json:"keyIdFormat,omitempty" tf:"key_id_format,omitempty"`
 
+	// Specifies the type of credentials generated by this role. This can be either otp, dynamic or ca.
 	// +kubebuilder:validation:Optional
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
+	// Specifies the maximum Time To Live value.
 	// +kubebuilder:validation:Optional
 	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
 
+	// Specifies the name of the role to create.
 	// Unique name for the role.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Specifies the Time To Live value.
 	// +kubebuilder:validation:Optional
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 }
@@ -177,6 +364,18 @@ type SecretBackendRoleParameters struct {
 type SecretBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendRoleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SecretBackendRoleInitParameters `json:"initProvider,omitempty"`
 }
 
 // SecretBackendRoleStatus defines the observed state of SecretBackendRole.
@@ -187,7 +386,7 @@ type SecretBackendRoleStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SecretBackendRole is the Schema for the SecretBackendRoles API. <no value>
+// SecretBackendRole is the Schema for the SecretBackendRoles API. Managing roles in an SSH secret backend in Vault
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -197,9 +396,9 @@ type SecretBackendRoleStatus struct {
 type SecretBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.keyType)",message="keyType is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.keyType) || has(self.initProvider.keyType)",message="keyType is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
 	Spec   SecretBackendRoleSpec   `json:"spec"`
 	Status SecretBackendRoleStatus `json:"status,omitempty"`
 }

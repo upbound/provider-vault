@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: snapshotagentconfigs.raft.vault.upbound.io
 spec:
   group: raft.vault.upbound.io
@@ -36,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: SnapshotAgentConfig is the Schema for the SnapshotAgentConfigs
-          API. <no value>
+          API. Creates a Raft Snapshot Agent Configuration for Vault.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -58,7 +57,7 @@ spec:
                 description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
                   or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicy field in a future release. Currently,
+                  in favor of the ManagementPolicies field in a future release. Currently,
                   both could be set independently and non-default values would be
                   honored if the feature flag is enabled. See the design doc for more
                   information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
@@ -69,111 +68,306 @@ spec:
               forProvider:
                 properties:
                   awsAccessKeyId:
-                    description: AWS access key ID.
+                    description: AWS access key ID. AWS access key ID.
                     type: string
                   awsS3Bucket:
-                    description: S3 bucket to write snapshots to.
+                    description: S3 bucket to write snapshots to. S3 bucket to write
+                      snapshots to.
                     type: string
                   awsS3DisableTls:
                     description: Disable TLS for the S3 endpoint. This should only
-                      be used for testing purposes.
+                      be used for testing purposes, typically in conjunction with
+                      aws_s3_endpoint. Disable TLS for the S3 endpoint. This should
+                      only be used for testing purposes.
                     type: boolean
                   awsS3EnableKms:
-                    description: Use KMS to encrypt bucket contents.
+                    description: Use KMS to encrypt bucket contents. Use KMS to encrypt
+                      bucket contents.
                     type: boolean
                   awsS3Endpoint:
                     description: AWS endpoint. This is typically only set when using
-                      a non-AWS S3 implementation like Minio.
+                      a non-AWS S3 implementation like Minio. AWS endpoint. This is
+                      typically only set when using a non-AWS S3 implementation like
+                      Minio.
                     type: string
                   awsS3ForcePathStyle:
                     description: Use the endpoint/bucket URL style instead of bucket.endpoint.
+                      May be needed when setting aws_s3_endpoint. Use the endpoint/bucket
+                      URL style instead of bucket.endpoint.
                     type: boolean
                   awsS3KmsKey:
-                    description: Use named KMS key, when aws_s3_enable_kms=true
+                    description: Use named KMS key, when aws_s3_enable_kms = true
+                      Use named KMS key, when aws_s3_enable_kms=true
                     type: string
                   awsS3Region:
-                    description: AWS region bucket is in.
+                    description: AWS region bucket is in. AWS region bucket is in.
                     type: string
                   awsS3ServerSideEncryption:
-                    description: Use AES256 to encrypt bucket contents.
+                    description: Use AES256 to encrypt bucket contents. Use AES256
+                      to encrypt bucket contents.
                     type: boolean
                   awsSecretAccessKey:
-                    description: AWS secret access key.
+                    description: AWS secret access key. AWS secret access key.
                     type: string
                   awsSessionToken:
-                    description: AWS session token.
+                    description: AWS session token. AWS session token.
                     type: string
                   azureAccountKey:
-                    description: Azure account key.
+                    description: Azure account key. Azure account key.
                     type: string
                   azureAccountName:
-                    description: Azure account name.
+                    description: Azure account name. Azure account name.
                     type: string
                   azureBlobEnvironment:
-                    description: Azure blob environment.
+                    description: Azure blob environment. Azure blob environment.
                     type: string
                   azureContainerName:
-                    description: Azure container name to write snapshots to.
+                    description: Azure container name to write snapshots to. Azure
+                      container name to write snapshots to.
                     type: string
                   azureEndpoint:
                     description: Azure blob storage endpoint. This is typically only
-                      set when using a non-Azure implementation like Azurite.
+                      set when using a non-Azure implementation like Azurite. Azure
+                      blob storage endpoint. This is typically only set when using
+                      a non-Azure implementation like Azurite.
                     type: string
                   filePrefix:
-                    description: The file or object name of snapshot files will start
+                    description: Within the directory or bucket prefix given by path_prefix,
+                      the file or object name of snapshot files will start with this
+                      string. The file or object name of snapshot files will start
                       with this string.
                     type: string
                   googleDisableTls:
-                    description: Disable TLS for the GCS endpoint.
+                    description: Disable TLS for the GCS endpoint. This should only
+                      be used for testing purposes, typically in conjunction with
+                      google_endpoint. Disable TLS for the GCS endpoint.
                     type: boolean
                   googleEndpoint:
                     description: GCS endpoint. This is typically only set when using
-                      a non-Google GCS implementation like fake-gcs-server.
+                      a non-Google GCS implementation like fake-gcs-server. GCS endpoint.
+                      This is typically only set when using a non-Google GCS implementation
+                      like fake-gcs-server.
                     type: string
                   googleGcsBucket:
-                    description: GCS bucket to write snapshots to.
+                    description: GCS bucket to write snapshots to. GCS bucket to write
+                      snapshots to.
                     type: string
                   googleServiceAccountKey:
-                    description: Google service account key in JSON format.
+                    description: 'Google service account key in JSON format. The raw
+                      value looks like this: Google service account key in JSON format.'
                     type: string
                   intervalSeconds:
-                    description: Number of seconds between snapshots.
+                    description: Time (in seconds) between snapshots. Number of seconds
+                      between snapshots.
                     type: number
                   localMaxSpace:
-                    description: The maximum space, in bytes, to use for snapshots.
+                    description: For storage_type = local, the maximum space, in bytes,
+                      to use for snapshots. Snapshot attempts will fail if there is
+                      not enough space left in this allowance. The maximum space,
+                      in bytes, to use for snapshots.
                     type: number
                   name:
-                    description: Name of the snapshot agent configuration.
+                    description: <required> – Name of the configuration to modify.
+                      Name of the snapshot agent configuration.
                     type: string
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   pathPrefix:
-                    description: The directory or bucket prefix to to use.
+                    description: For storage_type = "local", the directory to write
+                      the snapshots in. For cloud storage types, the bucket prefix
+                      to use. Types azure-s3 and google-gcs require a trailing / (slash).
+                      Types local and aws-s3 the trailing / is optional. The directory
+                      or bucket prefix to to use.
                     type: string
                   retain:
-                    description: How many snapshots are to be kept.
+                    description: How many snapshots are to be kept; when writing a
+                      snapshot, if there are more snapshots already stored than this
+                      number, the oldest ones will be deleted. How many snapshots
+                      are to be kept.
                     type: number
                   storageType:
-                    description: What storage service to send snapshots to. One of
-                      "local", "azure-blob", "aws-s3", or "google-gcs".
+                    description: One of "local", "azure-blob", "aws-s3", or "google-gcs".
+                      The remaining parameters described below are all specific to
+                      the selected storage_type and prefixed accordingly. What storage
+                      service to send snapshots to. One of "local", "azure-blob",
+                      "aws-s3", or "google-gcs".
                     type: string
                 type: object
-              managementPolicy:
-                default: FullControl
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  awsAccessKeyId:
+                    description: AWS access key ID. AWS access key ID.
+                    type: string
+                  awsS3Bucket:
+                    description: S3 bucket to write snapshots to. S3 bucket to write
+                      snapshots to.
+                    type: string
+                  awsS3DisableTls:
+                    description: Disable TLS for the S3 endpoint. This should only
+                      be used for testing purposes, typically in conjunction with
+                      aws_s3_endpoint. Disable TLS for the S3 endpoint. This should
+                      only be used for testing purposes.
+                    type: boolean
+                  awsS3EnableKms:
+                    description: Use KMS to encrypt bucket contents. Use KMS to encrypt
+                      bucket contents.
+                    type: boolean
+                  awsS3Endpoint:
+                    description: AWS endpoint. This is typically only set when using
+                      a non-AWS S3 implementation like Minio. AWS endpoint. This is
+                      typically only set when using a non-AWS S3 implementation like
+                      Minio.
+                    type: string
+                  awsS3ForcePathStyle:
+                    description: Use the endpoint/bucket URL style instead of bucket.endpoint.
+                      May be needed when setting aws_s3_endpoint. Use the endpoint/bucket
+                      URL style instead of bucket.endpoint.
+                    type: boolean
+                  awsS3KmsKey:
+                    description: Use named KMS key, when aws_s3_enable_kms = true
+                      Use named KMS key, when aws_s3_enable_kms=true
+                    type: string
+                  awsS3Region:
+                    description: AWS region bucket is in. AWS region bucket is in.
+                    type: string
+                  awsS3ServerSideEncryption:
+                    description: Use AES256 to encrypt bucket contents. Use AES256
+                      to encrypt bucket contents.
+                    type: boolean
+                  awsSecretAccessKey:
+                    description: AWS secret access key. AWS secret access key.
+                    type: string
+                  awsSessionToken:
+                    description: AWS session token. AWS session token.
+                    type: string
+                  azureAccountKey:
+                    description: Azure account key. Azure account key.
+                    type: string
+                  azureAccountName:
+                    description: Azure account name. Azure account name.
+                    type: string
+                  azureBlobEnvironment:
+                    description: Azure blob environment. Azure blob environment.
+                    type: string
+                  azureContainerName:
+                    description: Azure container name to write snapshots to. Azure
+                      container name to write snapshots to.
+                    type: string
+                  azureEndpoint:
+                    description: Azure blob storage endpoint. This is typically only
+                      set when using a non-Azure implementation like Azurite. Azure
+                      blob storage endpoint. This is typically only set when using
+                      a non-Azure implementation like Azurite.
+                    type: string
+                  filePrefix:
+                    description: Within the directory or bucket prefix given by path_prefix,
+                      the file or object name of snapshot files will start with this
+                      string. The file or object name of snapshot files will start
+                      with this string.
+                    type: string
+                  googleDisableTls:
+                    description: Disable TLS for the GCS endpoint. This should only
+                      be used for testing purposes, typically in conjunction with
+                      google_endpoint. Disable TLS for the GCS endpoint.
+                    type: boolean
+                  googleEndpoint:
+                    description: GCS endpoint. This is typically only set when using
+                      a non-Google GCS implementation like fake-gcs-server. GCS endpoint.
+                      This is typically only set when using a non-Google GCS implementation
+                      like fake-gcs-server.
+                    type: string
+                  googleGcsBucket:
+                    description: GCS bucket to write snapshots to. GCS bucket to write
+                      snapshots to.
+                    type: string
+                  googleServiceAccountKey:
+                    description: 'Google service account key in JSON format. The raw
+                      value looks like this: Google service account key in JSON format.'
+                    type: string
+                  intervalSeconds:
+                    description: Time (in seconds) between snapshots. Number of seconds
+                      between snapshots.
+                    type: number
+                  localMaxSpace:
+                    description: For storage_type = local, the maximum space, in bytes,
+                      to use for snapshots. Snapshot attempts will fail if there is
+                      not enough space left in this allowance. The maximum space,
+                      in bytes, to use for snapshots.
+                    type: number
+                  name:
+                    description: <required> – Name of the configuration to modify.
+                      Name of the snapshot agent configuration.
+                    type: string
+                  namespace:
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
+                    type: string
+                  pathPrefix:
+                    description: For storage_type = "local", the directory to write
+                      the snapshots in. For cloud storage types, the bucket prefix
+                      to use. Types azure-s3 and google-gcs require a trailing / (slash).
+                      Types local and aws-s3 the trailing / is optional. The directory
+                      or bucket prefix to to use.
+                    type: string
+                  retain:
+                    description: How many snapshots are to be kept; when writing a
+                      snapshot, if there are more snapshots already stored than this
+                      number, the oldest ones will be deleted. How many snapshots
+                      are to be kept.
+                    type: number
+                  storageType:
+                    description: One of "local", "azure-blob", "aws-s3", or "google-gcs".
+                      The remaining parameters described below are all specific to
+                      the selected storage_type and prefixed accordingly. What storage
+                      service to send snapshots to. One of "local", "azure-blob",
+                      "aws-s3", or "google-gcs".
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
                 description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
                   It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicy
-                  specifies the level of control Crossplane has over the managed external
-                  resource. This field is planned to replace the DeletionPolicy field
-                  in a future release. Currently, both could be set independently
-                  and non-default values would be honored if the feature flag is enabled.
-                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
-                enum:
-                - FullControl
-                - ObserveOnly
-                - OrphanOnDelete
-                type: string
+                  enabled, and may be changed or removed without notice. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
@@ -347,109 +541,157 @@ spec:
             type: object
             x-kubernetes-validations:
             - message: intervalSeconds is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.intervalSeconds)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.intervalSeconds)
+                || has(self.initProvider.intervalSeconds)'
             - message: name is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
             - message: pathPrefix is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.pathPrefix)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.pathPrefix)
+                || has(self.initProvider.pathPrefix)'
             - message: storageType is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.storageType)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.storageType)
+                || has(self.initProvider.storageType)'
           status:
             description: SnapshotAgentConfigStatus defines the observed state of SnapshotAgentConfig.
             properties:
               atProvider:
                 properties:
                   awsAccessKeyId:
-                    description: AWS access key ID.
+                    description: AWS access key ID. AWS access key ID.
                     type: string
                   awsS3Bucket:
-                    description: S3 bucket to write snapshots to.
+                    description: S3 bucket to write snapshots to. S3 bucket to write
+                      snapshots to.
                     type: string
                   awsS3DisableTls:
                     description: Disable TLS for the S3 endpoint. This should only
-                      be used for testing purposes.
+                      be used for testing purposes, typically in conjunction with
+                      aws_s3_endpoint. Disable TLS for the S3 endpoint. This should
+                      only be used for testing purposes.
                     type: boolean
                   awsS3EnableKms:
-                    description: Use KMS to encrypt bucket contents.
+                    description: Use KMS to encrypt bucket contents. Use KMS to encrypt
+                      bucket contents.
                     type: boolean
                   awsS3Endpoint:
                     description: AWS endpoint. This is typically only set when using
-                      a non-AWS S3 implementation like Minio.
+                      a non-AWS S3 implementation like Minio. AWS endpoint. This is
+                      typically only set when using a non-AWS S3 implementation like
+                      Minio.
                     type: string
                   awsS3ForcePathStyle:
                     description: Use the endpoint/bucket URL style instead of bucket.endpoint.
+                      May be needed when setting aws_s3_endpoint. Use the endpoint/bucket
+                      URL style instead of bucket.endpoint.
                     type: boolean
                   awsS3KmsKey:
-                    description: Use named KMS key, when aws_s3_enable_kms=true
+                    description: Use named KMS key, when aws_s3_enable_kms = true
+                      Use named KMS key, when aws_s3_enable_kms=true
                     type: string
                   awsS3Region:
-                    description: AWS region bucket is in.
+                    description: AWS region bucket is in. AWS region bucket is in.
                     type: string
                   awsS3ServerSideEncryption:
-                    description: Use AES256 to encrypt bucket contents.
+                    description: Use AES256 to encrypt bucket contents. Use AES256
+                      to encrypt bucket contents.
                     type: boolean
                   awsSecretAccessKey:
-                    description: AWS secret access key.
+                    description: AWS secret access key. AWS secret access key.
                     type: string
                   awsSessionToken:
-                    description: AWS session token.
+                    description: AWS session token. AWS session token.
                     type: string
                   azureAccountKey:
-                    description: Azure account key.
+                    description: Azure account key. Azure account key.
                     type: string
                   azureAccountName:
-                    description: Azure account name.
+                    description: Azure account name. Azure account name.
                     type: string
                   azureBlobEnvironment:
-                    description: Azure blob environment.
+                    description: Azure blob environment. Azure blob environment.
                     type: string
                   azureContainerName:
-                    description: Azure container name to write snapshots to.
+                    description: Azure container name to write snapshots to. Azure
+                      container name to write snapshots to.
                     type: string
                   azureEndpoint:
                     description: Azure blob storage endpoint. This is typically only
-                      set when using a non-Azure implementation like Azurite.
+                      set when using a non-Azure implementation like Azurite. Azure
+                      blob storage endpoint. This is typically only set when using
+                      a non-Azure implementation like Azurite.
                     type: string
                   filePrefix:
-                    description: The file or object name of snapshot files will start
+                    description: Within the directory or bucket prefix given by path_prefix,
+                      the file or object name of snapshot files will start with this
+                      string. The file or object name of snapshot files will start
                       with this string.
                     type: string
                   googleDisableTls:
-                    description: Disable TLS for the GCS endpoint.
+                    description: Disable TLS for the GCS endpoint. This should only
+                      be used for testing purposes, typically in conjunction with
+                      google_endpoint. Disable TLS for the GCS endpoint.
                     type: boolean
                   googleEndpoint:
                     description: GCS endpoint. This is typically only set when using
-                      a non-Google GCS implementation like fake-gcs-server.
+                      a non-Google GCS implementation like fake-gcs-server. GCS endpoint.
+                      This is typically only set when using a non-Google GCS implementation
+                      like fake-gcs-server.
                     type: string
                   googleGcsBucket:
-                    description: GCS bucket to write snapshots to.
+                    description: GCS bucket to write snapshots to. GCS bucket to write
+                      snapshots to.
                     type: string
                   googleServiceAccountKey:
-                    description: Google service account key in JSON format.
+                    description: 'Google service account key in JSON format. The raw
+                      value looks like this: Google service account key in JSON format.'
                     type: string
                   id:
                     type: string
                   intervalSeconds:
-                    description: Number of seconds between snapshots.
+                    description: Time (in seconds) between snapshots. Number of seconds
+                      between snapshots.
                     type: number
                   localMaxSpace:
-                    description: The maximum space, in bytes, to use for snapshots.
+                    description: For storage_type = local, the maximum space, in bytes,
+                      to use for snapshots. Snapshot attempts will fail if there is
+                      not enough space left in this allowance. The maximum space,
+                      in bytes, to use for snapshots.
                     type: number
                   name:
-                    description: Name of the snapshot agent configuration.
+                    description: <required> – Name of the configuration to modify.
+                      Name of the snapshot agent configuration.
                     type: string
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   pathPrefix:
-                    description: The directory or bucket prefix to to use.
+                    description: For storage_type = "local", the directory to write
+                      the snapshots in. For cloud storage types, the bucket prefix
+                      to use. Types azure-s3 and google-gcs require a trailing / (slash).
+                      Types local and aws-s3 the trailing / is optional. The directory
+                      or bucket prefix to to use.
                     type: string
                   retain:
-                    description: How many snapshots are to be kept.
+                    description: How many snapshots are to be kept; when writing a
+                      snapshot, if there are more snapshots already stored than this
+                      number, the oldest ones will be deleted. How many snapshots
+                      are to be kept.
                     type: number
                   storageType:
-                    description: What storage service to send snapshots to. One of
-                      "local", "azure-blob", "aws-s3", or "google-gcs".
+                    description: One of "local", "azure-blob", "aws-s3", or "google-gcs".
+                      The remaining parameters described below are all specific to
+                      the selected storage_type and prefixed accordingly. What storage
+                      service to send snapshots to. One of "local", "azure-blob",
+                      "aws-s3", or "google-gcs".
                     type: string
                 type: object
               conditions:

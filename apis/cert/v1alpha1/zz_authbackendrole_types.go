@@ -13,6 +13,62 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AuthBackendRoleInitParameters struct {
+	AllowedCommonNames []*string `json:"allowedCommonNames,omitempty" tf:"allowed_common_names,omitempty"`
+
+	AllowedDNSSans []*string `json:"allowedDnsSans,omitempty" tf:"allowed_dns_sans,omitempty"`
+
+	AllowedEmailSans []*string `json:"allowedEmailSans,omitempty" tf:"allowed_email_sans,omitempty"`
+
+	AllowedNames []*string `json:"allowedNames,omitempty" tf:"allowed_names,omitempty"`
+
+	AllowedOrganizationUnits []*string `json:"allowedOrganizationUnits,omitempty" tf:"allowed_organization_units,omitempty"`
+
+	AllowedOrganizationalUnits []*string `json:"allowedOrganizationalUnits,omitempty" tf:"allowed_organizational_units,omitempty"`
+
+	AllowedURISans []*string `json:"allowedUriSans,omitempty" tf:"allowed_uri_sans,omitempty"`
+
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	RequiredExtensions []*string `json:"requiredExtensions,omitempty" tf:"required_extensions,omitempty"`
+
+	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
+
+	// Generated Token's Explicit Maximum TTL in seconds
+	TokenExplicitMaxTTL *float64 `json:"tokenExplicitMaxTtl,omitempty" tf:"token_explicit_max_ttl,omitempty"`
+
+	// The maximum lifetime of the generated token
+	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
+
+	// If true, the 'default' policy will not automatically be added to generated tokens
+	TokenNoDefaultPolicy *bool `json:"tokenNoDefaultPolicy,omitempty" tf:"token_no_default_policy,omitempty"`
+
+	// The maximum number of times a token may be used, a value of zero means unlimited
+	TokenNumUses *float64 `json:"tokenNumUses,omitempty" tf:"token_num_uses,omitempty"`
+
+	// Generated Token's Period
+	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
+
+	// Generated Token's Policies
+	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
+
+	// The initial ttl of the token to generate in seconds
+	TokenTTL *float64 `json:"tokenTtl,omitempty" tf:"token_ttl,omitempty"`
+
+	// The type of token to generate, service or batch
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
+}
+
 type AuthBackendRoleObservation struct {
 	AllowedCommonNames []*string `json:"allowedCommonNames,omitempty" tf:"allowed_common_names,omitempty"`
 
@@ -154,6 +210,18 @@ type AuthBackendRoleParameters struct {
 type AuthBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendRoleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AuthBackendRoleInitParameters `json:"initProvider,omitempty"`
 }
 
 // AuthBackendRoleStatus defines the observed state of AuthBackendRole.
@@ -174,8 +242,8 @@ type AuthBackendRoleStatus struct {
 type AuthBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.certificate)",message="certificate is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.certificate) || has(self.initProvider.certificate)",message="certificate is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
 	Spec   AuthBackendRoleSpec   `json:"spec"`
 	Status AuthBackendRoleStatus `json:"status,omitempty"`
 }

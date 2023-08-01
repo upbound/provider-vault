@@ -13,51 +13,115 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type OidcRoleObservation struct {
+type OidcRoleInitParameters struct {
 
+	// The value that will be included in the aud field of all the OIDC identity
+	// tokens issued by this role
 	// The value that will be included in the `aud` field of all the OIDC identity tokens issued by this role
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
 
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-
+	// A configured named key, the key must already exist
+	// before tokens can be issued.
 	// A configured named key, the key must already exist.
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
+	// Name of the OIDC Role to create.
 	// Name of the role.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// TTL of the tokens generated against the role in number of seconds.
+	// TTL of the tokens generated against the role in number of seconds.
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
+	// The template string to use for generating tokens. This may be in
+	// string-ified JSON or base64 format. See the
+	// documentation
+	// for the template format.
+	// The template string to use for generating tokens. This may be in string-ified JSON or base64 format.
+	Template *string `json:"template,omitempty" tf:"template,omitempty"`
+}
+
+type OidcRoleObservation struct {
+
+	// The value that will be included in the aud field of all the OIDC identity
+	// tokens issued by this role
+	// The value that will be included in the `aud` field of all the OIDC identity tokens issued by this role
+	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
+
+	// The name of the created role.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// A configured named key, the key must already exist
+	// before tokens can be issued.
+	// A configured named key, the key must already exist.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Name of the OIDC Role to create.
+	// Name of the role.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// TTL of the tokens generated against the role in number of seconds.
+	// TTL of the tokens generated against the role in number of seconds.
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// The template string to use for generating tokens. This may be in
+	// string-ified JSON or base64 format. See the
+	// documentation
+	// for the template format.
 	// The template string to use for generating tokens. This may be in string-ified JSON or base64 format.
 	Template *string `json:"template,omitempty" tf:"template,omitempty"`
 }
 
 type OidcRoleParameters struct {
 
+	// The value that will be included in the aud field of all the OIDC identity
+	// tokens issued by this role
 	// The value that will be included in the `aud` field of all the OIDC identity tokens issued by this role
 	// +kubebuilder:validation:Optional
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
 
+	// A configured named key, the key must already exist
+	// before tokens can be issued.
 	// A configured named key, the key must already exist.
 	// +kubebuilder:validation:Optional
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
+	// Name of the OIDC Role to create.
 	// Name of the role.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// TTL of the tokens generated against the role in number of seconds.
+	// TTL of the tokens generated against the role in number of seconds.
 	// +kubebuilder:validation:Optional
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
+	// The template string to use for generating tokens. This may be in
+	// string-ified JSON or base64 format. See the
+	// documentation
+	// for the template format.
 	// The template string to use for generating tokens. This may be in string-ified JSON or base64 format.
 	// +kubebuilder:validation:Optional
 	Template *string `json:"template,omitempty" tf:"template,omitempty"`
@@ -67,6 +131,18 @@ type OidcRoleParameters struct {
 type OidcRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OidcRoleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider OidcRoleInitParameters `json:"initProvider,omitempty"`
 }
 
 // OidcRoleStatus defines the observed state of OidcRole.
@@ -77,7 +153,7 @@ type OidcRoleStatus struct {
 
 // +kubebuilder:object:root=true
 
-// OidcRole is the Schema for the OidcRoles API. <no value>
+// OidcRole is the Schema for the OidcRoles API. Creates an Identity OIDC Role for Vault
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -87,8 +163,8 @@ type OidcRoleStatus struct {
 type OidcRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.key)",message="key is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.key) || has(self.initProvider.key)",message="key is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
 	Spec   OidcRoleSpec   `json:"spec"`
 	Status OidcRoleStatus `json:"status,omitempty"`
 }

@@ -13,100 +13,199 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type SecretBackendCrlConfigObservation struct {
+type SecretBackendCrlConfigInitParameters struct {
 
+	// Enables periodic rebuilding of the CRL upon expiry. Vault 1.12+
 	// Enables or disables periodic rebuilding of the CRL upon expiry.
 	AutoRebuild *bool `json:"autoRebuild,omitempty" tf:"auto_rebuild,omitempty"`
 
+	// Grace period before CRL expiry to attempt rebuild of CRL. Vault 1.12+
 	// Grace period before CRL expiry to attempt rebuild of CRL.
 	AutoRebuildGracePeriod *string `json:"autoRebuildGracePeriod,omitempty" tf:"auto_rebuild_grace_period,omitempty"`
 
+	// The path the PKI secret backend is mounted at, with no leading or trailing /s.
 	// The path of the PKI secret backend the resource belongs to.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// Enable cross-cluster revocation request queues. Vault 1.13+
 	// Enable cross-cluster revocation request queues.
 	CrossClusterRevocation *bool `json:"crossClusterRevocation,omitempty" tf:"cross_cluster_revocation,omitempty"`
 
 	// Interval to check for new revocations on, to regenerate the delta CRL.
+	// Interval to check for new revocations on, to regenerate the delta CRL.
 	DeltaRebuildInterval *string `json:"deltaRebuildInterval,omitempty" tf:"delta_rebuild_interval,omitempty"`
 
+	// Disables or enables CRL building.
 	// Disables or enables CRL building
 	Disable *bool `json:"disable,omitempty" tf:"disable,omitempty"`
 
+	// Enables building of delta CRLs with up-to-date revocation information,
+	// augmenting the last complete CRL.  Vault 1.12+
 	// Enables or disables building of delta CRLs with up-to-date revocation information, augmenting the last complete CRL.
 	EnableDelta *bool `json:"enableDelta,omitempty" tf:"enable_delta,omitempty"`
 
+	// Specifies the time until expiration.
+	// Specifies the time until expiration.
+	Expiry *string `json:"expiry,omitempty" tf:"expiry,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Disables the OCSP responder in Vault. Vault 1.12+
+	// Disables or enables the OCSP responder in Vault.
+	OcspDisable *bool `json:"ocspDisable,omitempty" tf:"ocsp_disable,omitempty"`
+
+	// The amount of time an OCSP response can be cached for, useful for OCSP stapling
+	// refresh durations. Vault 1.12+
+	// The amount of time an OCSP response can be cached for, useful for OCSP stapling refresh durations.
+	OcspExpiry *string `json:"ocspExpiry,omitempty" tf:"ocsp_expiry,omitempty"`
+
+	// Enables unified CRL and OCSP building. Vault 1.13+
+	// Enables unified CRL and OCSP building.
+	UnifiedCrl *bool `json:"unifiedCrl,omitempty" tf:"unified_crl,omitempty"`
+
+	// Enables serving the unified CRL and OCSP on the existing, previously
+	// cluster-local paths. Vault 1.13+
+	// Enables serving the unified CRL and OCSP on the existing, previously cluster-local paths.
+	UnifiedCrlOnExistingPaths *bool `json:"unifiedCrlOnExistingPaths,omitempty" tf:"unified_crl_on_existing_paths,omitempty"`
+}
+
+type SecretBackendCrlConfigObservation struct {
+
+	// Enables periodic rebuilding of the CRL upon expiry. Vault 1.12+
+	// Enables or disables periodic rebuilding of the CRL upon expiry.
+	AutoRebuild *bool `json:"autoRebuild,omitempty" tf:"auto_rebuild,omitempty"`
+
+	// Grace period before CRL expiry to attempt rebuild of CRL. Vault 1.12+
+	// Grace period before CRL expiry to attempt rebuild of CRL.
+	AutoRebuildGracePeriod *string `json:"autoRebuildGracePeriod,omitempty" tf:"auto_rebuild_grace_period,omitempty"`
+
+	// The path the PKI secret backend is mounted at, with no leading or trailing /s.
+	// The path of the PKI secret backend the resource belongs to.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Enable cross-cluster revocation request queues. Vault 1.13+
+	// Enable cross-cluster revocation request queues.
+	CrossClusterRevocation *bool `json:"crossClusterRevocation,omitempty" tf:"cross_cluster_revocation,omitempty"`
+
+	// Interval to check for new revocations on, to regenerate the delta CRL.
+	// Interval to check for new revocations on, to regenerate the delta CRL.
+	DeltaRebuildInterval *string `json:"deltaRebuildInterval,omitempty" tf:"delta_rebuild_interval,omitempty"`
+
+	// Disables or enables CRL building.
+	// Disables or enables CRL building
+	Disable *bool `json:"disable,omitempty" tf:"disable,omitempty"`
+
+	// Enables building of delta CRLs with up-to-date revocation information,
+	// augmenting the last complete CRL.  Vault 1.12+
+	// Enables or disables building of delta CRLs with up-to-date revocation information, augmenting the last complete CRL.
+	EnableDelta *bool `json:"enableDelta,omitempty" tf:"enable_delta,omitempty"`
+
+	// Specifies the time until expiration.
 	// Specifies the time until expiration.
 	Expiry *string `json:"expiry,omitempty" tf:"expiry,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Disables the OCSP responder in Vault. Vault 1.12+
 	// Disables or enables the OCSP responder in Vault.
 	OcspDisable *bool `json:"ocspDisable,omitempty" tf:"ocsp_disable,omitempty"`
 
+	// The amount of time an OCSP response can be cached for, useful for OCSP stapling
+	// refresh durations. Vault 1.12+
 	// The amount of time an OCSP response can be cached for, useful for OCSP stapling refresh durations.
 	OcspExpiry *string `json:"ocspExpiry,omitempty" tf:"ocsp_expiry,omitempty"`
 
+	// Enables unified CRL and OCSP building. Vault 1.13+
 	// Enables unified CRL and OCSP building.
 	UnifiedCrl *bool `json:"unifiedCrl,omitempty" tf:"unified_crl,omitempty"`
 
+	// Enables serving the unified CRL and OCSP on the existing, previously
+	// cluster-local paths. Vault 1.13+
 	// Enables serving the unified CRL and OCSP on the existing, previously cluster-local paths.
 	UnifiedCrlOnExistingPaths *bool `json:"unifiedCrlOnExistingPaths,omitempty" tf:"unified_crl_on_existing_paths,omitempty"`
 }
 
 type SecretBackendCrlConfigParameters struct {
 
+	// Enables periodic rebuilding of the CRL upon expiry. Vault 1.12+
 	// Enables or disables periodic rebuilding of the CRL upon expiry.
 	// +kubebuilder:validation:Optional
 	AutoRebuild *bool `json:"autoRebuild,omitempty" tf:"auto_rebuild,omitempty"`
 
+	// Grace period before CRL expiry to attempt rebuild of CRL. Vault 1.12+
 	// Grace period before CRL expiry to attempt rebuild of CRL.
 	// +kubebuilder:validation:Optional
 	AutoRebuildGracePeriod *string `json:"autoRebuildGracePeriod,omitempty" tf:"auto_rebuild_grace_period,omitempty"`
 
+	// The path the PKI secret backend is mounted at, with no leading or trailing /s.
 	// The path of the PKI secret backend the resource belongs to.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// Enable cross-cluster revocation request queues. Vault 1.13+
 	// Enable cross-cluster revocation request queues.
 	// +kubebuilder:validation:Optional
 	CrossClusterRevocation *bool `json:"crossClusterRevocation,omitempty" tf:"cross_cluster_revocation,omitempty"`
 
 	// Interval to check for new revocations on, to regenerate the delta CRL.
+	// Interval to check for new revocations on, to regenerate the delta CRL.
 	// +kubebuilder:validation:Optional
 	DeltaRebuildInterval *string `json:"deltaRebuildInterval,omitempty" tf:"delta_rebuild_interval,omitempty"`
 
+	// Disables or enables CRL building.
 	// Disables or enables CRL building
 	// +kubebuilder:validation:Optional
 	Disable *bool `json:"disable,omitempty" tf:"disable,omitempty"`
 
+	// Enables building of delta CRLs with up-to-date revocation information,
+	// augmenting the last complete CRL.  Vault 1.12+
 	// Enables or disables building of delta CRLs with up-to-date revocation information, augmenting the last complete CRL.
 	// +kubebuilder:validation:Optional
 	EnableDelta *bool `json:"enableDelta,omitempty" tf:"enable_delta,omitempty"`
 
 	// Specifies the time until expiration.
+	// Specifies the time until expiration.
 	// +kubebuilder:validation:Optional
 	Expiry *string `json:"expiry,omitempty" tf:"expiry,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Disables the OCSP responder in Vault. Vault 1.12+
 	// Disables or enables the OCSP responder in Vault.
 	// +kubebuilder:validation:Optional
 	OcspDisable *bool `json:"ocspDisable,omitempty" tf:"ocsp_disable,omitempty"`
 
+	// The amount of time an OCSP response can be cached for, useful for OCSP stapling
+	// refresh durations. Vault 1.12+
 	// The amount of time an OCSP response can be cached for, useful for OCSP stapling refresh durations.
 	// +kubebuilder:validation:Optional
 	OcspExpiry *string `json:"ocspExpiry,omitempty" tf:"ocsp_expiry,omitempty"`
 
+	// Enables unified CRL and OCSP building. Vault 1.13+
 	// Enables unified CRL and OCSP building.
 	// +kubebuilder:validation:Optional
 	UnifiedCrl *bool `json:"unifiedCrl,omitempty" tf:"unified_crl,omitempty"`
 
+	// Enables serving the unified CRL and OCSP on the existing, previously
+	// cluster-local paths. Vault 1.13+
 	// Enables serving the unified CRL and OCSP on the existing, previously cluster-local paths.
 	// +kubebuilder:validation:Optional
 	UnifiedCrlOnExistingPaths *bool `json:"unifiedCrlOnExistingPaths,omitempty" tf:"unified_crl_on_existing_paths,omitempty"`
@@ -116,6 +215,18 @@ type SecretBackendCrlConfigParameters struct {
 type SecretBackendCrlConfigSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendCrlConfigParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SecretBackendCrlConfigInitParameters `json:"initProvider,omitempty"`
 }
 
 // SecretBackendCrlConfigStatus defines the observed state of SecretBackendCrlConfig.
@@ -126,7 +237,7 @@ type SecretBackendCrlConfigStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SecretBackendCrlConfig is the Schema for the SecretBackendCrlConfigs API. <no value>
+// SecretBackendCrlConfig is the Schema for the SecretBackendCrlConfigs API. Sets the CRL config on an PKI Secret Backend for Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -136,7 +247,7 @@ type SecretBackendCrlConfigStatus struct {
 type SecretBackendCrlConfig struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.backend)",message="backend is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
 	Spec   SecretBackendCrlConfigSpec   `json:"spec"`
 	Status SecretBackendCrlConfigStatus `json:"status,omitempty"`
 }

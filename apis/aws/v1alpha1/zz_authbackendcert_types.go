@@ -13,44 +13,104 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AuthBackendCertObservation struct {
+type AuthBackendCertInitParameters struct {
 
+	// The  Base64 encoded AWS Public key required to
+	// verify PKCS7 signature of the EC2 instance metadata. You can find this key in
+	// the AWS
+	// documentation.
 	// Base64 encoded AWS Public key required to verify PKCS7 signature of the EC2 instance metadata.
 	AwsPublicCert *string `json:"awsPublicCert,omitempty" tf:"aws_public_cert,omitempty"`
 
+	// The path the AWS auth backend being configured was
+	// mounted at.  Defaults to aws.
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// The name of the certificate.
+	// Name of the certificate to configure.
+	CertName *string `json:"certName,omitempty" tf:"cert_name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Either "pkcs7" or "identity", indicating the type of
+	// document which can be verified using the given certificate. Defaults to
+	// "pkcs7".
+	// The type of document that can be verified using the certificate. Must be either "pkcs7" or "identity".
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type AuthBackendCertObservation struct {
+
+	// The  Base64 encoded AWS Public key required to
+	// verify PKCS7 signature of the EC2 instance metadata. You can find this key in
+	// the AWS
+	// documentation.
+	// Base64 encoded AWS Public key required to verify PKCS7 signature of the EC2 instance metadata.
+	AwsPublicCert *string `json:"awsPublicCert,omitempty" tf:"aws_public_cert,omitempty"`
+
+	// The path the AWS auth backend being configured was
+	// mounted at.  Defaults to aws.
+	// Unique name of the auth backend to configure.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// The name of the certificate.
 	// Name of the certificate to configure.
 	CertName *string `json:"certName,omitempty" tf:"cert_name,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Either "pkcs7" or "identity", indicating the type of
+	// document which can be verified using the given certificate. Defaults to
+	// "pkcs7".
 	// The type of document that can be verified using the certificate. Must be either "pkcs7" or "identity".
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type AuthBackendCertParameters struct {
 
+	// The  Base64 encoded AWS Public key required to
+	// verify PKCS7 signature of the EC2 instance metadata. You can find this key in
+	// the AWS
+	// documentation.
 	// Base64 encoded AWS Public key required to verify PKCS7 signature of the EC2 instance metadata.
 	// +kubebuilder:validation:Optional
 	AwsPublicCert *string `json:"awsPublicCert,omitempty" tf:"aws_public_cert,omitempty"`
 
+	// The path the AWS auth backend being configured was
+	// mounted at.  Defaults to aws.
 	// Unique name of the auth backend to configure.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// The name of the certificate.
 	// Name of the certificate to configure.
 	// +kubebuilder:validation:Optional
 	CertName *string `json:"certName,omitempty" tf:"cert_name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Either "pkcs7" or "identity", indicating the type of
+	// document which can be verified using the given certificate. Defaults to
+	// "pkcs7".
 	// The type of document that can be verified using the certificate. Must be either "pkcs7" or "identity".
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -60,6 +120,18 @@ type AuthBackendCertParameters struct {
 type AuthBackendCertSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendCertParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AuthBackendCertInitParameters `json:"initProvider,omitempty"`
 }
 
 // AuthBackendCertStatus defines the observed state of AuthBackendCert.
@@ -70,7 +142,7 @@ type AuthBackendCertStatus struct {
 
 // +kubebuilder:object:root=true
 
-// AuthBackendCert is the Schema for the AuthBackendCerts API. <no value>
+// AuthBackendCert is the Schema for the AuthBackendCerts API. Manages a certificate for an AWS Auth Backend in Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -80,8 +152,8 @@ type AuthBackendCertStatus struct {
 type AuthBackendCert struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.awsPublicCert)",message="awsPublicCert is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.certName)",message="certName is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.awsPublicCert) || has(self.initProvider.awsPublicCert)",message="awsPublicCert is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.certName) || has(self.initProvider.certName)",message="certName is a required parameter"
 	Spec   AuthBackendCertSpec   `json:"spec"`
 	Status AuthBackendCertStatus `json:"status,omitempty"`
 }

@@ -13,6 +13,10 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AzureGroupsInitParameters struct {
+	GroupName *string `json:"groupName,omitempty" tf:"group_name,omitempty"`
+}
+
 type AzureGroupsObservation struct {
 	GroupName *string `json:"groupName,omitempty" tf:"group_name,omitempty"`
 
@@ -21,8 +25,16 @@ type AzureGroupsObservation struct {
 
 type AzureGroupsParameters struct {
 
-	// +kubebuilder:validation:Required
-	GroupName *string `json:"groupName" tf:"group_name,omitempty"`
+	// +kubebuilder:validation:Optional
+	GroupName *string `json:"groupName,omitempty" tf:"group_name,omitempty"`
+}
+
+type AzureRolesInitParameters struct {
+	RoleID *string `json:"roleId,omitempty" tf:"role_id,omitempty"`
+
+	RoleName *string `json:"roleName,omitempty" tf:"role_name,omitempty"`
+
+	Scope *string `json:"scope,omitempty" tf:"scope,omitempty"`
 }
 
 type AzureRolesObservation struct {
@@ -41,19 +53,66 @@ type AzureRolesParameters struct {
 	// +kubebuilder:validation:Optional
 	RoleName *string `json:"roleName,omitempty" tf:"role_name,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Scope *string `json:"scope" tf:"scope,omitempty"`
+	// +kubebuilder:validation:Optional
+	Scope *string `json:"scope,omitempty" tf:"scope,omitempty"`
+}
+
+type SecretBackendRoleInitParameters struct {
+
+	// Application Object ID for an existing service principal that will
+	// be used instead of creating dynamic service principals. If present, azure_roles will be ignored.
+	// Application Object ID for an existing service principal that will be used instead of creating dynamic service principals.
+	ApplicationObjectID *string `json:"applicationObjectId,omitempty" tf:"application_object_id,omitempty"`
+
+	// List of Azure groups to be assigned to the generated service principal.
+	AzureGroups []AzureGroupsInitParameters `json:"azureGroups,omitempty" tf:"azure_groups,omitempty"`
+
+	// List of Azure roles to be assigned to the generated service principal.
+	AzureRoles []AzureRolesInitParameters `json:"azureRoles,omitempty" tf:"azure_roles,omitempty"`
+
+	// Path to the mounted Azure auth backend
+	// Unique name of the auth backend to configure.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Human-friendly description of the mount for the backend.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// –  Specifies the maximum TTL for service principals generated using this role. Accepts time
+	// suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine max TTL time.
+	// Human-friendly description of the mount for the backend.
+	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Name of the Azure role
+	// Name of the role to create
+	Role *string `json:"role,omitempty" tf:"role,omitempty"`
+
+	// –  Specifies the default TTL for service principals generated using this role.
+	// Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
+	// Human-friendly description of the mount for the backend.
+	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 }
 
 type SecretBackendRoleObservation struct {
 
+	// Application Object ID for an existing service principal that will
+	// be used instead of creating dynamic service principals. If present, azure_roles will be ignored.
 	// Application Object ID for an existing service principal that will be used instead of creating dynamic service principals.
 	ApplicationObjectID *string `json:"applicationObjectId,omitempty" tf:"application_object_id,omitempty"`
 
+	// List of Azure groups to be assigned to the generated service principal.
 	AzureGroups []AzureGroupsObservation `json:"azureGroups,omitempty" tf:"azure_groups,omitempty"`
 
+	// List of Azure roles to be assigned to the generated service principal.
 	AzureRoles []AzureRolesObservation `json:"azureRoles,omitempty" tf:"azure_roles,omitempty"`
 
+	// Path to the mounted Azure auth backend
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -62,31 +121,45 @@ type SecretBackendRoleObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// –  Specifies the maximum TTL for service principals generated using this role. Accepts time
+	// suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine max TTL time.
 	// Human-friendly description of the mount for the backend.
 	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Name of the Azure role
 	// Name of the role to create
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
+	// –  Specifies the default TTL for service principals generated using this role.
+	// Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
 	// Human-friendly description of the mount for the backend.
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 }
 
 type SecretBackendRoleParameters struct {
 
+	// Application Object ID for an existing service principal that will
+	// be used instead of creating dynamic service principals. If present, azure_roles will be ignored.
 	// Application Object ID for an existing service principal that will be used instead of creating dynamic service principals.
 	// +kubebuilder:validation:Optional
 	ApplicationObjectID *string `json:"applicationObjectId,omitempty" tf:"application_object_id,omitempty"`
 
+	// List of Azure groups to be assigned to the generated service principal.
 	// +kubebuilder:validation:Optional
 	AzureGroups []AzureGroupsParameters `json:"azureGroups,omitempty" tf:"azure_groups,omitempty"`
 
+	// List of Azure roles to be assigned to the generated service principal.
 	// +kubebuilder:validation:Optional
 	AzureRoles []AzureRolesParameters `json:"azureRoles,omitempty" tf:"azure_roles,omitempty"`
 
+	// Path to the mounted Azure auth backend
 	// Unique name of the auth backend to configure.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -95,18 +168,27 @@ type SecretBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// –  Specifies the maximum TTL for service principals generated using this role. Accepts time
+	// suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine max TTL time.
 	// Human-friendly description of the mount for the backend.
 	// +kubebuilder:validation:Optional
 	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Name of the Azure role
 	// Name of the role to create
 	// +kubebuilder:validation:Optional
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
+	// –  Specifies the default TTL for service principals generated using this role.
+	// Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
 	// Human-friendly description of the mount for the backend.
 	// +kubebuilder:validation:Optional
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
@@ -116,6 +198,18 @@ type SecretBackendRoleParameters struct {
 type SecretBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendRoleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SecretBackendRoleInitParameters `json:"initProvider,omitempty"`
 }
 
 // SecretBackendRoleStatus defines the observed state of SecretBackendRole.
@@ -126,7 +220,7 @@ type SecretBackendRoleStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SecretBackendRole is the Schema for the SecretBackendRoles API. <no value>
+// SecretBackendRole is the Schema for the SecretBackendRoles API. Creates an azure secret backend role for Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -136,7 +230,7 @@ type SecretBackendRoleStatus struct {
 type SecretBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.role)",message="role is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.role) || has(self.initProvider.role)",message="role is a required parameter"
 	Spec   SecretBackendRoleSpec   `json:"spec"`
 	Status SecretBackendRoleStatus `json:"status,omitempty"`
 }

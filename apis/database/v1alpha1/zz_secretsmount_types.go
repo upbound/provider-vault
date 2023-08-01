@@ -13,982 +13,2118 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type SecretsMountCassandraObservation struct {
+type SecretsMountCassandraInitParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// The number of seconds to use as a connection
+	// timeout.
 	// The number of seconds to use as a connection timeout.
 	ConnectTimeout *float64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The hosts to connect to.
 	// Cassandra hosts to connect to.
 	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
 
+	// Whether to skip verification of the server
+	// certificate when using TLS.
 	// Whether to skip verification of the server certificate when using TLS.
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
+	// The default port to connect to if no port is specified as
+	// part of the host.
 	// The transport port to use to connect to Cassandra.
 	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
 	// The CQL protocol version to use.
+	// The CQL protocol version to use.
 	ProtocolVersion *float64 `json:"protocolVersion,omitempty" tf:"protocol_version,omitempty"`
 
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
+	// Whether to use TLS when connecting to Cassandra.
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
 
+	// The username to authenticate with.
 	// The username to use when authenticating with Cassandra.
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountCassandraObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// The number of seconds to use as a connection
+	// timeout.
+	// The number of seconds to use as a connection timeout.
+	ConnectTimeout *float64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// The hosts to connect to.
+	// Cassandra hosts to connect to.
+	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
+
+	// Whether to skip verification of the server
+	// certificate when using TLS.
+	// Whether to skip verification of the server certificate when using TLS.
+	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// The default port to connect to if no port is specified as
+	// part of the host.
+	// The transport port to use to connect to Cassandra.
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+
+	// The CQL protocol version to use.
+	// The CQL protocol version to use.
+	ProtocolVersion *float64 `json:"protocolVersion,omitempty" tf:"protocol_version,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// Whether to use TLS when connecting to Cassandra.
+	// Whether to use TLS when connecting to Cassandra.
+	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
+
+	// The username to authenticate with.
+	// The username to use when authenticating with Cassandra.
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountCassandraParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// The number of seconds to use as a connection
+	// timeout.
 	// The number of seconds to use as a connection timeout.
 	// +kubebuilder:validation:Optional
 	ConnectTimeout *float64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The hosts to connect to.
 	// Cassandra hosts to connect to.
 	// +kubebuilder:validation:Optional
 	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
 
+	// Whether to skip verification of the server
+	// certificate when using TLS.
 	// Whether to skip verification of the server certificate when using TLS.
 	// +kubebuilder:validation:Optional
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// The password to use when authenticating with Cassandra.
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// Concatenated PEM blocks configuring the certificate
+	// chain.
 	// Concatenated PEM blocks containing a certificate and private key; a certificate, private key, and issuing CA certificate; or just a CA certificate.
 	// +kubebuilder:validation:Optional
 	PemBundleSecretRef *v1.SecretKeySelector `json:"pemBundleSecretRef,omitempty" tf:"-"`
 
+	// A JSON structure configuring the certificate chain.
 	// Specifies JSON containing a certificate and private key; a certificate, private key, and issuing CA certificate; or just a CA certificate.
 	// +kubebuilder:validation:Optional
 	PemJSONSecretRef *v1.SecretKeySelector `json:"pemJsonSecretRef,omitempty" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
+	// The default port to connect to if no port is specified as
+	// part of the host.
 	// The transport port to use to connect to Cassandra.
 	// +kubebuilder:validation:Optional
 	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
 	// The CQL protocol version to use.
+	// The CQL protocol version to use.
 	// +kubebuilder:validation:Optional
 	ProtocolVersion *float64 `json:"protocolVersion,omitempty" tf:"protocol_version,omitempty"`
 
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
+	// Whether to use TLS when connecting to Cassandra.
 	// +kubebuilder:validation:Optional
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
 
+	// The username to authenticate with.
 	// The username to use when authenticating with Cassandra.
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
-type SecretsMountCouchbaseObservation struct {
+type SecretsMountCouchbaseInitParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
 	// Required for Couchbase versions prior to 6.5.0. This is only used to verify vault's connection to the server.
+	// Required for Couchbase versions prior to 6.5.0. This is only used to verify vault's connection to the server.
 	BucketName *string `json:"bucketName,omitempty" tf:"bucket_name,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The hosts to connect to.
 	// A set of Couchbase URIs to connect to. Must use `couchbases://` scheme if `tls` is `true`.
 	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
 
+	// Whether to skip verification of the server
+	// certificate when using TLS.
 	// Specifies whether to skip verification of the server certificate when using TLS.
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Couchbase.
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
 
+	// The username to authenticate with.
 	// Specifies the username for Vault to use.
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
 	// Template describing how dynamic usernames are generated.
+	// Template describing how dynamic usernames are generated.
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountCouchbaseObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// Required for Couchbase versions prior to 6.5.0. This is only used to verify vault's connection to the server.
+	// Required for Couchbase versions prior to 6.5.0. This is only used to verify vault's connection to the server.
+	BucketName *string `json:"bucketName,omitempty" tf:"bucket_name,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// The hosts to connect to.
+	// A set of Couchbase URIs to connect to. Must use `couchbases://` scheme if `tls` is `true`.
+	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
+
+	// Whether to skip verification of the server
+	// certificate when using TLS.
+	// Specifies whether to skip verification of the server certificate when using TLS.
+	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// Whether to use TLS when connecting to Cassandra.
+	// Specifies whether to use TLS when connecting to Couchbase.
+	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
+
+	// The username to authenticate with.
+	// Specifies the username for Vault to use.
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Template describing how dynamic usernames are generated.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountCouchbaseParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// Required if tls is true. Specifies the certificate authority of the Couchbase server, as a PEM certificate that has been base64 encoded.
 	// Required if `tls` is `true`. Specifies the certificate authority of the Couchbase server, as a PEM certificate that has been base64 encoded.
 	// +kubebuilder:validation:Optional
 	Base64PemSecretRef *v1.SecretKeySelector `json:"base64PemSecretRef,omitempty" tf:"-"`
 
 	// Required for Couchbase versions prior to 6.5.0. This is only used to verify vault's connection to the server.
+	// Required for Couchbase versions prior to 6.5.0. This is only used to verify vault's connection to the server.
 	// +kubebuilder:validation:Optional
 	BucketName *string `json:"bucketName,omitempty" tf:"bucket_name,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The hosts to connect to.
 	// A set of Couchbase URIs to connect to. Must use `couchbases://` scheme if `tls` is `true`.
-	// +kubebuilder:validation:Required
-	Hosts []*string `json:"hosts" tf:"hosts,omitempty"`
+	// +kubebuilder:validation:Optional
+	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
 
+	// Whether to skip verification of the server
+	// certificate when using TLS.
 	// Specifies whether to skip verification of the server certificate when using TLS.
 	// +kubebuilder:validation:Optional
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
 	// +kubebuilder:validation:Required
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Couchbase.
 	// +kubebuilder:validation:Optional
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
 
+	// The username to authenticate with.
 	// Specifies the username for Vault to use.
-	// +kubebuilder:validation:Required
-	Username *string `json:"username" tf:"username,omitempty"`
+	// +kubebuilder:validation:Optional
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Template describing how dynamic usernames are generated.
 	// +kubebuilder:validation:Optional
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
-type SecretsMountElasticsearchObservation struct {
+type SecretsMountElasticsearchInitParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// The path to a PEM-encoded CA cert file to use to verify the Elasticsearch server's identity.
 	// The path to a PEM-encoded CA cert file to use to verify the Elasticsearch server's identity
 	CACert *string `json:"caCert,omitempty" tf:"ca_cert,omitempty"`
 
+	// The path to a directory of PEM-encoded CA cert files to use to verify the Elasticsearch server's identity.
 	// The path to a directory of PEM-encoded CA cert files to use to verify the Elasticsearch server's identity
 	CAPath *string `json:"caPath,omitempty" tf:"ca_path,omitempty"`
 
+	// The path to the certificate for the Elasticsearch client to present for communication.
 	// The path to the certificate for the Elasticsearch client to present for communication
 	ClientCert *string `json:"clientCert,omitempty" tf:"client_cert,omitempty"`
 
+	// The path to the key for the Elasticsearch client to use for communication.
 	// The path to the key for the Elasticsearch client to use for communication
 	ClientKey *string `json:"clientKey,omitempty" tf:"client_key,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Whether to disable certificate verification.
 	// Whether to disable certificate verification
 	Insecure *bool `json:"insecure,omitempty" tf:"insecure,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// This, if set, is used to set the SNI host when connecting via TLS.
 	// This, if set, is used to set the SNI host when connecting via TLS
 	TLSServerName *string `json:"tlsServerName,omitempty" tf:"tls_server_name,omitempty"`
 
+	// The URL for Elasticsearch's API. https requires certificate
+	// by trusted CA if used.
 	// The URL for Elasticsearch's API
 	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 
+	// The username to authenticate with.
 	// The username to be used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
 	// Template describing how dynamic usernames are generated.
+	// Template describing how dynamic usernames are generated.
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountElasticsearchObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// The path to a PEM-encoded CA cert file to use to verify the Elasticsearch server's identity.
+	// The path to a PEM-encoded CA cert file to use to verify the Elasticsearch server's identity
+	CACert *string `json:"caCert,omitempty" tf:"ca_cert,omitempty"`
+
+	// The path to a directory of PEM-encoded CA cert files to use to verify the Elasticsearch server's identity.
+	// The path to a directory of PEM-encoded CA cert files to use to verify the Elasticsearch server's identity
+	CAPath *string `json:"caPath,omitempty" tf:"ca_path,omitempty"`
+
+	// The path to the certificate for the Elasticsearch client to present for communication.
+	// The path to the certificate for the Elasticsearch client to present for communication
+	ClientCert *string `json:"clientCert,omitempty" tf:"client_cert,omitempty"`
+
+	// The path to the key for the Elasticsearch client to use for communication.
+	// The path to the key for the Elasticsearch client to use for communication
+	ClientKey *string `json:"clientKey,omitempty" tf:"client_key,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// Whether to disable certificate verification.
+	// Whether to disable certificate verification
+	Insecure *bool `json:"insecure,omitempty" tf:"insecure,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// This, if set, is used to set the SNI host when connecting via TLS.
+	// This, if set, is used to set the SNI host when connecting via TLS
+	TLSServerName *string `json:"tlsServerName,omitempty" tf:"tls_server_name,omitempty"`
+
+	// The URL for Elasticsearch's API. https requires certificate
+	// by trusted CA if used.
+	// The URL for Elasticsearch's API
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+
+	// The username to authenticate with.
+	// The username to be used in the connection URL
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Template describing how dynamic usernames are generated.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountElasticsearchParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// The path to a PEM-encoded CA cert file to use to verify the Elasticsearch server's identity.
 	// The path to a PEM-encoded CA cert file to use to verify the Elasticsearch server's identity
 	// +kubebuilder:validation:Optional
 	CACert *string `json:"caCert,omitempty" tf:"ca_cert,omitempty"`
 
+	// The path to a directory of PEM-encoded CA cert files to use to verify the Elasticsearch server's identity.
 	// The path to a directory of PEM-encoded CA cert files to use to verify the Elasticsearch server's identity
 	// +kubebuilder:validation:Optional
 	CAPath *string `json:"caPath,omitempty" tf:"ca_path,omitempty"`
 
+	// The path to the certificate for the Elasticsearch client to present for communication.
 	// The path to the certificate for the Elasticsearch client to present for communication
 	// +kubebuilder:validation:Optional
 	ClientCert *string `json:"clientCert,omitempty" tf:"client_cert,omitempty"`
 
+	// The path to the key for the Elasticsearch client to use for communication.
 	// The path to the key for the Elasticsearch client to use for communication
 	// +kubebuilder:validation:Optional
 	ClientKey *string `json:"clientKey,omitempty" tf:"client_key,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Whether to disable certificate verification.
 	// Whether to disable certificate verification
 	// +kubebuilder:validation:Optional
 	Insecure *bool `json:"insecure,omitempty" tf:"insecure,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// The password to be used in the connection URL
 	// +kubebuilder:validation:Required
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// This, if set, is used to set the SNI host when connecting via TLS.
 	// This, if set, is used to set the SNI host when connecting via TLS
 	// +kubebuilder:validation:Optional
 	TLSServerName *string `json:"tlsServerName,omitempty" tf:"tls_server_name,omitempty"`
 
+	// The URL for Elasticsearch's API. https requires certificate
+	// by trusted CA if used.
 	// The URL for Elasticsearch's API
-	// +kubebuilder:validation:Required
-	URL *string `json:"url" tf:"url,omitempty"`
+	// +kubebuilder:validation:Optional
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 
+	// The username to authenticate with.
 	// The username to be used in the connection URL
-	// +kubebuilder:validation:Required
-	Username *string `json:"username" tf:"username,omitempty"`
+	// +kubebuilder:validation:Optional
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Template describing how dynamic usernames are generated.
 	// +kubebuilder:validation:Optional
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
-type SecretsMountHanaObservation struct {
+type SecretsMountHanaInitParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountHanaObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// A URL containing connection information.
+	// See Vault docs
+	// Connection string to use to connect to the database.
+	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// Disable special character escaping in username and password.
+	// Disable special character escaping in username and password
+	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
+
+	// The maximum number of seconds to keep
+	// a connection alive for.
+	// Maximum number of seconds a connection may be reused.
+	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
+
+	// The maximum number of idle connections to
+	// maintain.
+	// Maximum number of idle connections to the database.
+	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
+
+	// The maximum number of open connections to
+	// use.
+	// Maximum number of open connections to the database.
+	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The username to authenticate with.
+	// The root credential username used in the connection URL
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountHanaParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	// +kubebuilder:validation:Optional
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	// +kubebuilder:validation:Optional
 	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	// +kubebuilder:validation:Optional
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
-type SecretsMountInfluxdbObservation struct {
+type SecretsMountInfluxdbInitParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// The number of seconds to use as a connection
+	// timeout.
 	// The number of seconds to use as a connection timeout.
 	ConnectTimeout *float64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The host to connect to.
 	// Influxdb host to connect to.
 	Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
+	// Whether to skip verification of the server
+	// certificate when using TLS.
 	// Whether to skip verification of the server certificate when using TLS.
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
+	// The default port to connect to if no port is specified as
+	// part of the host.
 	// The transport port to use to connect to Influxdb.
 	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Influxdb.
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
 
+	// The username to authenticate with.
 	// Specifies the username to use for superuser access.
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
 	// Template describing how dynamic usernames are generated.
+	// Template describing how dynamic usernames are generated.
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountInfluxdbObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// The number of seconds to use as a connection
+	// timeout.
+	// The number of seconds to use as a connection timeout.
+	ConnectTimeout *float64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// The host to connect to.
+	// Influxdb host to connect to.
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+
+	// Whether to skip verification of the server
+	// certificate when using TLS.
+	// Whether to skip verification of the server certificate when using TLS.
+	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// The default port to connect to if no port is specified as
+	// part of the host.
+	// The transport port to use to connect to Influxdb.
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// Whether to use TLS when connecting to Cassandra.
+	// Whether to use TLS when connecting to Influxdb.
+	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
+
+	// The username to authenticate with.
+	// Specifies the username to use for superuser access.
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Template describing how dynamic usernames are generated.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountInfluxdbParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// The number of seconds to use as a connection
+	// timeout.
 	// The number of seconds to use as a connection timeout.
 	// +kubebuilder:validation:Optional
 	ConnectTimeout *float64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The host to connect to.
 	// Influxdb host to connect to.
-	// +kubebuilder:validation:Required
-	Host *string `json:"host" tf:"host,omitempty"`
+	// +kubebuilder:validation:Optional
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
+	// Whether to skip verification of the server
+	// certificate when using TLS.
 	// Whether to skip verification of the server certificate when using TLS.
 	// +kubebuilder:validation:Optional
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
 	// +kubebuilder:validation:Required
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
+	// Concatenated PEM blocks configuring the certificate
+	// chain.
 	// Concatenated PEM blocks containing a certificate and private key; a certificate, private key, and issuing CA certificate; or just a CA certificate.
 	// +kubebuilder:validation:Optional
 	PemBundleSecretRef *v1.SecretKeySelector `json:"pemBundleSecretRef,omitempty" tf:"-"`
 
+	// A JSON structure configuring the certificate chain.
 	// Specifies JSON containing a certificate and private key; a certificate, private key, and issuing CA certificate; or just a CA certificate.
 	// +kubebuilder:validation:Optional
 	PemJSONSecretRef *v1.SecretKeySelector `json:"pemJsonSecretRef,omitempty" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
+	// The default port to connect to if no port is specified as
+	// part of the host.
 	// The transport port to use to connect to Influxdb.
 	// +kubebuilder:validation:Optional
 	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Influxdb.
 	// +kubebuilder:validation:Optional
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
 
+	// The username to authenticate with.
 	// Specifies the username to use for superuser access.
-	// +kubebuilder:validation:Required
-	Username *string `json:"username" tf:"username,omitempty"`
+	// +kubebuilder:validation:Optional
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Template describing how dynamic usernames are generated.
 	// +kubebuilder:validation:Optional
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
-type SecretsMountMongodbObservation struct {
+type SecretsMountInitParameters struct {
 
+	// Set of managed key registry entry names that the mount in question is allowed to access
+	// List of managed key registry entry names that the mount in question is allowed to access
+	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
+
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
+
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
+
+	// A nested block containing configuration options for Cassandra connections.
+	// See
+	// Connection parameters for the cassandra-database-plugin plugin.
+	Cassandra []SecretsMountCassandraInitParameters `json:"cassandra,omitempty" tf:"cassandra,omitempty"`
+
+	// A nested block containing configuration options for Couchbase connections.
+	// See
+	// Connection parameters for the couchbase-database-plugin plugin.
+	Couchbase []SecretsMountCouchbaseInitParameters `json:"couchbase,omitempty" tf:"couchbase,omitempty"`
+
+	// Default lease duration for tokens and secrets in seconds
+	// Default lease duration for tokens and secrets in seconds
+	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
+
+	// Human-friendly description of the mount
+	// Human-friendly description of the mount
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// A nested block containing configuration options for Elasticsearch connections.
+	// See
+	// Connection parameters for the elasticsearch-database-plugin.
+	Elasticsearch []SecretsMountElasticsearchInitParameters `json:"elasticsearch,omitempty" tf:"elasticsearch,omitempty"`
+
+	// Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault's external entropy source
+	// Enable the secrets engine to access Vault's external entropy source
+	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
+
+	// A nested block containing configuration options for SAP HanaDB connections.
+	// See
+	// Connection parameters for the hana-database-plugin plugin.
+	Hana []SecretsMountHanaInitParameters `json:"hana,omitempty" tf:"hana,omitempty"`
+
+	// A nested block containing configuration options for InfluxDB connections.
+	// See
+	// Connection parameters for the influxdb-database-plugin plugin.
+	Influxdb []SecretsMountInfluxdbInitParameters `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
+
+	// Boolean flag that can be explicitly set to true to enforce local mount in HA environment
+	// Local mount flag that can be explicitly set to true to enforce local mount in HA environment
+	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
+
+	// Maximum possible lease duration for tokens and secrets in seconds
+	// Maximum possible lease duration for tokens and secrets in seconds
+	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
+
+	// A nested block containing configuration options for MongoDB connections.
+	// See
+	// Connection parameters for the mongodb-database-plugin plugin.
+	Mongodb []SecretsMountMongodbInitParameters `json:"mongodb,omitempty" tf:"mongodb,omitempty"`
+
+	// A nested block containing configuration options for MongoDB Atlas connections.
+	// See
+	// Connection parameters for the mongodbatlas-database-plugin plugin.
+	Mongodbatlas []SecretsMountMongodbatlasInitParameters `json:"mongodbatlas,omitempty" tf:"mongodbatlas,omitempty"`
+
+	// A nested block containing configuration options for MSSQL connections.
+	// See
+	// Connection parameters for the mssql-database-plugin plugin.
+	Mssql []SecretsMountMssqlInitParameters `json:"mssql,omitempty" tf:"mssql,omitempty"`
+
+	// A nested block containing configuration options for MySQL connections.
+	// See
+	// Connection parameters for the mysql-database-plugin plugin.
+	MySQL []SecretsMountMySQLInitParameters `json:"mysql,omitempty" tf:"mysql,omitempty"`
+
+	// A nested block containing configuration options for Aurora MySQL connections.
+	// See
+	// Connection parameters for the mysql-aurora-database-plugin plugin.
+	MySQLAurora []SecretsMountMySQLAuroraInitParameters `json:"mysqlAurora,omitempty" tf:"mysql_aurora,omitempty"`
+
+	// A nested block containing configuration options for legacy MySQL connections.
+	// See
+	// Connection parameters for the mysql-legacy-database-plugin plugin.
+	MySQLLegacy []SecretsMountMySQLLegacyInitParameters `json:"mysqlLegacy,omitempty" tf:"mysql_legacy,omitempty"`
+
+	// A nested block containing configuration options for RDS MySQL connections.
+	// See
+	// Connection parameters for the mysql-rds-database-plugin plugin.
+	MySQLRDS []SecretsMountMySQLRDSInitParameters `json:"mysqlRds,omitempty" tf:"mysql_rds,omitempty"`
+
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Specifies mount type specific options that are passed to the backend
+	// Specifies mount type specific options that are passed to the backend
+	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
+
+	// A nested block containing configuration options for Oracle connections.
+	// See
+	// Connection parameters for the oracle-database-plugin plugin.
+	Oracle []SecretsMountOracleInitParameters `json:"oracle,omitempty" tf:"oracle,omitempty"`
+
+	// Where the secret backend will be mounted
+	// Where the secret backend will be mounted
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// A nested block containing configuration options for PostgreSQL connections.
+	// See
+	// Connection parameters for the postgresql-database-plugin plugin.
+	Postgresql []SecretsMountPostgresqlInitParameters `json:"postgresql,omitempty" tf:"postgresql,omitempty"`
+
+	// A nested block containing configuration options for Redis connections.
+	// See
+	// Connection parameters for the redis-database-plugin plugin.
+	Redis []SecretsMountRedisInitParameters `json:"redis,omitempty" tf:"redis,omitempty"`
+
+	// A nested block containing configuration options for Redis ElastiCache connections.
+	// See
+	// Connection parameters for the redis-elasticache-database-plugin plugin.
+	RedisElasticache []SecretsMountRedisElasticacheInitParameters `json:"redisElasticache,omitempty" tf:"redis_elasticache,omitempty"`
+
+	// A nested block containing configuration options for AWS Redshift connections.
+	// See
+	// Connection parameters for the redshift-database-plugin plugin.
+	Redshift []SecretsMountRedshiftInitParameters `json:"redshift,omitempty" tf:"redshift,omitempty"`
+
+	// Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
+	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
+	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
+
+	// A nested block containing configuration options for Snowflake connections.
+	// See
+	// Connection parameters for the snowflake-database-plugin plugin.
+	Snowflake []SecretsMountSnowflakeInitParameters `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
+}
+
+type SecretsMountMongodbInitParameters struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountMongodbObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// A URL containing connection information.
+	// See Vault docs
+	// Connection string to use to connect to the database.
+	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// The maximum number of seconds to keep
+	// a connection alive for.
+	// Maximum number of seconds a connection may be reused.
+	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
+
+	// The maximum number of idle connections to
+	// maintain.
+	// Maximum number of idle connections to the database.
+	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
+
+	// The maximum number of open connections to
+	// use.
+	// Maximum number of open connections to the database.
+	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The username to authenticate with.
+	// The root credential username used in the connection URL
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Username generation template.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountMongodbParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	// +kubebuilder:validation:Optional
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	// +kubebuilder:validation:Optional
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	// +kubebuilder:validation:Optional
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
-type SecretsMountMongodbatlasObservation struct {
+type SecretsMountMongodbatlasInitParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// The Project ID the Database User should be created within.
+	// The Project ID the Database User should be created within.
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
+	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
 	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
 	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountMongodbatlasObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// The Project ID the Database User should be created within.
+	// The Project ID the Database User should be created within.
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
+	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
+	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountMongodbatlasParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
+	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
 	// +kubebuilder:validation:Required
 	PrivateKeySecretRef v1.SecretKeySelector `json:"privateKeySecretRef" tf:"-"`
 
 	// The Project ID the Database User should be created within.
-	// +kubebuilder:validation:Required
-	ProjectID *string `json:"projectId" tf:"project_id,omitempty"`
+	// The Project ID the Database User should be created within.
+	// +kubebuilder:validation:Optional
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
 	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
-	// +kubebuilder:validation:Required
-	PublicKey *string `json:"publicKey" tf:"public_key,omitempty"`
+	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
+	// +kubebuilder:validation:Optional
+	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
 
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
-type SecretsMountMssqlObservation struct {
+type SecretsMountMssqlInitParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
+	// For Vault v1.9+. Set to true when the target is a
+	// Contained Database, e.g. AzureSQL.
+	// See Vault docs
 	// Set to true when the target is a Contained Database, e.g. AzureSQL.
 	ContainedDB *bool `json:"containedDb,omitempty" tf:"contained_db,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountMssqlObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// A URL containing connection information.
+	// See Vault docs
+	// Connection string to use to connect to the database.
+	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
+
+	// For Vault v1.9+. Set to true when the target is a
+	// Contained Database, e.g. AzureSQL.
+	// See Vault docs
+	// Set to true when the target is a Contained Database, e.g. AzureSQL.
+	ContainedDB *bool `json:"containedDb,omitempty" tf:"contained_db,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// Disable special character escaping in username and password.
+	// Disable special character escaping in username and password
+	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
+
+	// The maximum number of seconds to keep
+	// a connection alive for.
+	// Maximum number of seconds a connection may be reused.
+	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
+
+	// The maximum number of idle connections to
+	// maintain.
+	// Maximum number of idle connections to the database.
+	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
+
+	// The maximum number of open connections to
+	// use.
+	// Maximum number of open connections to the database.
+	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The username to authenticate with.
+	// The root credential username used in the connection URL
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Username generation template.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountMssqlParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	// +kubebuilder:validation:Optional
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
+	// For Vault v1.9+. Set to true when the target is a
+	// Contained Database, e.g. AzureSQL.
+	// See Vault docs
 	// Set to true when the target is a Contained Database, e.g. AzureSQL.
 	// +kubebuilder:validation:Optional
 	ContainedDB *bool `json:"containedDb,omitempty" tf:"contained_db,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	// +kubebuilder:validation:Optional
 	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	// +kubebuilder:validation:Optional
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	// +kubebuilder:validation:Optional
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
-type SecretsMountMySQLAuroraObservation struct {
+type SecretsMountMySQLAuroraInitParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountMySQLAuroraObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// A URL containing connection information.
+	// See Vault docs
+	// Connection string to use to connect to the database.
+	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// The maximum number of seconds to keep
+	// a connection alive for.
+	// Maximum number of seconds a connection may be reused.
+	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
+
+	// The maximum number of idle connections to
+	// maintain.
+	// Maximum number of idle connections to the database.
+	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
+
+	// The maximum number of open connections to
+	// use.
+	// Maximum number of open connections to the database.
+	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The username to authenticate with.
+	// The root credential username used in the connection URL
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Username generation template.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountMySQLAuroraParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	// +kubebuilder:validation:Optional
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	// +kubebuilder:validation:Optional
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	// +kubebuilder:validation:Optional
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
-type SecretsMountMySQLLegacyObservation struct {
+type SecretsMountMySQLInitParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountMySQLLegacyInitParameters struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// A URL containing connection information.
+	// See Vault docs
+	// Connection string to use to connect to the database.
+	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// The maximum number of seconds to keep
+	// a connection alive for.
+	// Maximum number of seconds a connection may be reused.
+	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
+
+	// The maximum number of idle connections to
+	// maintain.
+	// Maximum number of idle connections to the database.
+	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
+
+	// The maximum number of open connections to
+	// use.
+	// Maximum number of open connections to the database.
+	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The username to authenticate with.
+	// The root credential username used in the connection URL
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Username generation template.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountMySQLLegacyObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// A URL containing connection information.
+	// See Vault docs
+	// Connection string to use to connect to the database.
+	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// The maximum number of seconds to keep
+	// a connection alive for.
+	// Maximum number of seconds a connection may be reused.
+	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
+
+	// The maximum number of idle connections to
+	// maintain.
+	// Maximum number of idle connections to the database.
+	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
+
+	// The maximum number of open connections to
+	// use.
+	// Maximum number of open connections to the database.
+	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The username to authenticate with.
+	// The root credential username used in the connection URL
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Username generation template.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountMySQLLegacyParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	// +kubebuilder:validation:Optional
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	// +kubebuilder:validation:Optional
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	// +kubebuilder:validation:Optional
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
@@ -996,198 +2132,332 @@ type SecretsMountMySQLLegacyParameters struct {
 
 type SecretsMountMySQLObservation struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountMySQLParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	// +kubebuilder:validation:Optional
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	// +kubebuilder:validation:Optional
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// +kubebuilder:validation:Optional
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
 	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
 	// +kubebuilder:validation:Optional
 	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	// +kubebuilder:validation:Optional
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
-type SecretsMountMySQLRDSObservation struct {
+type SecretsMountMySQLRDSInitParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountMySQLRDSObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// A URL containing connection information.
+	// See Vault docs
+	// Connection string to use to connect to the database.
+	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// The maximum number of seconds to keep
+	// a connection alive for.
+	// Maximum number of seconds a connection may be reused.
+	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
+
+	// The maximum number of idle connections to
+	// maintain.
+	// Maximum number of idle connections to the database.
+	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
+
+	// The maximum number of open connections to
+	// use.
+	// Maximum number of open connections to the database.
+	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The username to authenticate with.
+	// The root credential username used in the connection URL
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Username generation template.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountMySQLRDSParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	// +kubebuilder:validation:Optional
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	// +kubebuilder:validation:Optional
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	// +kubebuilder:validation:Optional
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
@@ -1198,68 +2468,101 @@ type SecretsMountObservation struct {
 	// Accessor of the mount
 	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
 
+	// Set of managed key registry entry names that the mount in question is allowed to access
 	// List of managed key registry entry names that the mount in question is allowed to access
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
 
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
 	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
 
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
 	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
 
+	// A nested block containing configuration options for Cassandra connections.
+	// See
 	// Connection parameters for the cassandra-database-plugin plugin.
 	Cassandra []SecretsMountCassandraObservation `json:"cassandra,omitempty" tf:"cassandra,omitempty"`
 
+	// A nested block containing configuration options for Couchbase connections.
+	// See
 	// Connection parameters for the couchbase-database-plugin plugin.
 	Couchbase []SecretsMountCouchbaseObservation `json:"couchbase,omitempty" tf:"couchbase,omitempty"`
 
 	// Default lease duration for tokens and secrets in seconds
+	// Default lease duration for tokens and secrets in seconds
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
 
 	// Human-friendly description of the mount
+	// Human-friendly description of the mount
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// A nested block containing configuration options for Elasticsearch connections.
+	// See
 	// Connection parameters for the elasticsearch-database-plugin.
 	Elasticsearch []SecretsMountElasticsearchObservation `json:"elasticsearch,omitempty" tf:"elasticsearch,omitempty"`
 
+	// The total number of database secrets engines configured.
 	// Total number of database secret engines configured under the mount.
 	EngineCount *float64 `json:"engineCount,omitempty" tf:"engine_count,omitempty"`
 
+	// Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault's external entropy source
 	// Enable the secrets engine to access Vault's external entropy source
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
 
+	// A nested block containing configuration options for SAP HanaDB connections.
+	// See
 	// Connection parameters for the hana-database-plugin plugin.
 	Hana []SecretsMountHanaObservation `json:"hana,omitempty" tf:"hana,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// A nested block containing configuration options for InfluxDB connections.
+	// See
 	// Connection parameters for the influxdb-database-plugin plugin.
 	Influxdb []SecretsMountInfluxdbObservation `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
 
+	// Boolean flag that can be explicitly set to true to enforce local mount in HA environment
 	// Local mount flag that can be explicitly set to true to enforce local mount in HA environment
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
 	// Maximum possible lease duration for tokens and secrets in seconds
+	// Maximum possible lease duration for tokens and secrets in seconds
 	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
 
+	// A nested block containing configuration options for MongoDB connections.
+	// See
 	// Connection parameters for the mongodb-database-plugin plugin.
 	Mongodb []SecretsMountMongodbObservation `json:"mongodb,omitempty" tf:"mongodb,omitempty"`
 
+	// A nested block containing configuration options for MongoDB Atlas connections.
+	// See
 	// Connection parameters for the mongodbatlas-database-plugin plugin.
 	Mongodbatlas []SecretsMountMongodbatlasObservation `json:"mongodbatlas,omitempty" tf:"mongodbatlas,omitempty"`
 
+	// A nested block containing configuration options for MSSQL connections.
+	// See
 	// Connection parameters for the mssql-database-plugin plugin.
 	Mssql []SecretsMountMssqlObservation `json:"mssql,omitempty" tf:"mssql,omitempty"`
 
+	// A nested block containing configuration options for MySQL connections.
+	// See
 	// Connection parameters for the mysql-database-plugin plugin.
 	MySQL []SecretsMountMySQLObservation `json:"mysql,omitempty" tf:"mysql,omitempty"`
 
+	// A nested block containing configuration options for Aurora MySQL connections.
+	// See
 	// Connection parameters for the mysql-aurora-database-plugin plugin.
 	MySQLAurora []SecretsMountMySQLAuroraObservation `json:"mysqlAurora,omitempty" tf:"mysql_aurora,omitempty"`
 
+	// A nested block containing configuration options for legacy MySQL connections.
+	// See
 	// Connection parameters for the mysql-legacy-database-plugin plugin.
 	MySQLLegacy []SecretsMountMySQLLegacyObservation `json:"mysqlLegacy,omitempty" tf:"mysql_legacy,omitempty"`
 
+	// A nested block containing configuration options for RDS MySQL connections.
+	// See
 	// Connection parameters for the mysql-rds-database-plugin plugin.
 	MySQLRDS []SecretsMountMySQLRDSObservation `json:"mysqlRds,omitempty" tf:"mysql_rds,omitempty"`
 
@@ -1267,122 +2570,231 @@ type SecretsMountObservation struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Specifies mount type specific options that are passed to the backend
+	// Specifies mount type specific options that are passed to the backend
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 
+	// A nested block containing configuration options for Oracle connections.
+	// See
 	// Connection parameters for the oracle-database-plugin plugin.
 	Oracle []SecretsMountOracleObservation `json:"oracle,omitempty" tf:"oracle,omitempty"`
 
 	// Where the secret backend will be mounted
+	// Where the secret backend will be mounted
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// A nested block containing configuration options for PostgreSQL connections.
+	// See
 	// Connection parameters for the postgresql-database-plugin plugin.
 	Postgresql []SecretsMountPostgresqlObservation `json:"postgresql,omitempty" tf:"postgresql,omitempty"`
 
+	// A nested block containing configuration options for Redis connections.
+	// See
 	// Connection parameters for the redis-database-plugin plugin.
 	Redis []SecretsMountRedisObservation `json:"redis,omitempty" tf:"redis,omitempty"`
 
+	// A nested block containing configuration options for Redis ElastiCache connections.
+	// See
 	// Connection parameters for the redis-elasticache-database-plugin plugin.
 	RedisElasticache []SecretsMountRedisElasticacheObservation `json:"redisElasticache,omitempty" tf:"redis_elasticache,omitempty"`
 
+	// A nested block containing configuration options for AWS Redshift connections.
+	// See
 	// Connection parameters for the redshift-database-plugin plugin.
 	Redshift []SecretsMountRedshiftObservation `json:"redshift,omitempty" tf:"redshift,omitempty"`
 
+	// Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
 
+	// A nested block containing configuration options for Snowflake connections.
+	// See
 	// Connection parameters for the snowflake-database-plugin plugin.
 	Snowflake []SecretsMountSnowflakeObservation `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
 }
 
-type SecretsMountOracleObservation struct {
+type SecretsMountOracleInitParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountOracleObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// A URL containing connection information.
+	// See Vault docs
+	// Connection string to use to connect to the database.
+	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// The maximum number of seconds to keep
+	// a connection alive for.
+	// Maximum number of seconds a connection may be reused.
+	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
+
+	// The maximum number of idle connections to
+	// maintain.
+	// Maximum number of idle connections to the database.
+	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
+
+	// The maximum number of open connections to
+	// use.
+	// Maximum number of open connections to the database.
+	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The username to authenticate with.
+	// The root credential username used in the connection URL
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Username generation template.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountOracleParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	// +kubebuilder:validation:Optional
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	// +kubebuilder:validation:Optional
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	// +kubebuilder:validation:Optional
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
@@ -1390,82 +2802,114 @@ type SecretsMountOracleParameters struct {
 
 type SecretsMountParameters struct {
 
+	// Set of managed key registry entry names that the mount in question is allowed to access
 	// List of managed key registry entry names that the mount in question is allowed to access
 	// +kubebuilder:validation:Optional
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
 
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
 	// +kubebuilder:validation:Optional
 	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
 
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
 	// +kubebuilder:validation:Optional
 	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
 
+	// A nested block containing configuration options for Cassandra connections.
+	// See
 	// Connection parameters for the cassandra-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	Cassandra []SecretsMountCassandraParameters `json:"cassandra,omitempty" tf:"cassandra,omitempty"`
 
+	// A nested block containing configuration options for Couchbase connections.
+	// See
 	// Connection parameters for the couchbase-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	Couchbase []SecretsMountCouchbaseParameters `json:"couchbase,omitempty" tf:"couchbase,omitempty"`
 
 	// Default lease duration for tokens and secrets in seconds
+	// Default lease duration for tokens and secrets in seconds
 	// +kubebuilder:validation:Optional
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
 
 	// Human-friendly description of the mount
+	// Human-friendly description of the mount
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// A nested block containing configuration options for Elasticsearch connections.
+	// See
 	// Connection parameters for the elasticsearch-database-plugin.
 	// +kubebuilder:validation:Optional
 	Elasticsearch []SecretsMountElasticsearchParameters `json:"elasticsearch,omitempty" tf:"elasticsearch,omitempty"`
 
+	// Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault's external entropy source
 	// Enable the secrets engine to access Vault's external entropy source
 	// +kubebuilder:validation:Optional
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
 
+	// A nested block containing configuration options for SAP HanaDB connections.
+	// See
 	// Connection parameters for the hana-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	Hana []SecretsMountHanaParameters `json:"hana,omitempty" tf:"hana,omitempty"`
 
+	// A nested block containing configuration options for InfluxDB connections.
+	// See
 	// Connection parameters for the influxdb-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	Influxdb []SecretsMountInfluxdbParameters `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
 
+	// Boolean flag that can be explicitly set to true to enforce local mount in HA environment
 	// Local mount flag that can be explicitly set to true to enforce local mount in HA environment
 	// +kubebuilder:validation:Optional
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
 	// Maximum possible lease duration for tokens and secrets in seconds
+	// Maximum possible lease duration for tokens and secrets in seconds
 	// +kubebuilder:validation:Optional
 	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
 
+	// A nested block containing configuration options for MongoDB connections.
+	// See
 	// Connection parameters for the mongodb-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	Mongodb []SecretsMountMongodbParameters `json:"mongodb,omitempty" tf:"mongodb,omitempty"`
 
+	// A nested block containing configuration options for MongoDB Atlas connections.
+	// See
 	// Connection parameters for the mongodbatlas-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	Mongodbatlas []SecretsMountMongodbatlasParameters `json:"mongodbatlas,omitempty" tf:"mongodbatlas,omitempty"`
 
+	// A nested block containing configuration options for MSSQL connections.
+	// See
 	// Connection parameters for the mssql-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	Mssql []SecretsMountMssqlParameters `json:"mssql,omitempty" tf:"mssql,omitempty"`
 
+	// A nested block containing configuration options for MySQL connections.
+	// See
 	// Connection parameters for the mysql-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	MySQL []SecretsMountMySQLParameters `json:"mysql,omitempty" tf:"mysql,omitempty"`
 
+	// A nested block containing configuration options for Aurora MySQL connections.
+	// See
 	// Connection parameters for the mysql-aurora-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	MySQLAurora []SecretsMountMySQLAuroraParameters `json:"mysqlAurora,omitempty" tf:"mysql_aurora,omitempty"`
 
+	// A nested block containing configuration options for legacy MySQL connections.
+	// See
 	// Connection parameters for the mysql-legacy-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	MySQLLegacy []SecretsMountMySQLLegacyParameters `json:"mysqlLegacy,omitempty" tf:"mysql_legacy,omitempty"`
 
+	// A nested block containing configuration options for RDS MySQL connections.
+	// See
 	// Connection parameters for the mysql-rds-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	MySQLRDS []SecretsMountMySQLRDSParameters `json:"mysqlRds,omitempty" tf:"mysql_rds,omitempty"`
@@ -1475,497 +2919,959 @@ type SecretsMountParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Specifies mount type specific options that are passed to the backend
+	// Specifies mount type specific options that are passed to the backend
 	// +kubebuilder:validation:Optional
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 
+	// A nested block containing configuration options for Oracle connections.
+	// See
 	// Connection parameters for the oracle-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	Oracle []SecretsMountOracleParameters `json:"oracle,omitempty" tf:"oracle,omitempty"`
 
 	// Where the secret backend will be mounted
+	// Where the secret backend will be mounted
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// A nested block containing configuration options for PostgreSQL connections.
+	// See
 	// Connection parameters for the postgresql-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	Postgresql []SecretsMountPostgresqlParameters `json:"postgresql,omitempty" tf:"postgresql,omitempty"`
 
+	// A nested block containing configuration options for Redis connections.
+	// See
 	// Connection parameters for the redis-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	Redis []SecretsMountRedisParameters `json:"redis,omitempty" tf:"redis,omitempty"`
 
+	// A nested block containing configuration options for Redis ElastiCache connections.
+	// See
 	// Connection parameters for the redis-elasticache-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	RedisElasticache []SecretsMountRedisElasticacheParameters `json:"redisElasticache,omitempty" tf:"redis_elasticache,omitempty"`
 
+	// A nested block containing configuration options for AWS Redshift connections.
+	// See
 	// Connection parameters for the redshift-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	Redshift []SecretsMountRedshiftParameters `json:"redshift,omitempty" tf:"redshift,omitempty"`
 
+	// Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	// +kubebuilder:validation:Optional
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
 
+	// A nested block containing configuration options for Snowflake connections.
+	// See
 	// Connection parameters for the snowflake-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	Snowflake []SecretsMountSnowflakeParameters `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
 }
 
-type SecretsMountPostgresqlObservation struct {
+type SecretsMountPostgresqlInitParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountPostgresqlObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// A URL containing connection information.
+	// See Vault docs
+	// Connection string to use to connect to the database.
+	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// Disable special character escaping in username and password.
+	// Disable special character escaping in username and password
+	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
+
+	// The maximum number of seconds to keep
+	// a connection alive for.
+	// Maximum number of seconds a connection may be reused.
+	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
+
+	// The maximum number of idle connections to
+	// maintain.
+	// Maximum number of idle connections to the database.
+	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
+
+	// The maximum number of open connections to
+	// use.
+	// Maximum number of open connections to the database.
+	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The username to authenticate with.
+	// The root credential username used in the connection URL
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Username generation template.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountPostgresqlParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	// +kubebuilder:validation:Optional
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	// +kubebuilder:validation:Optional
 	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	// +kubebuilder:validation:Optional
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	// +kubebuilder:validation:Optional
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
-type SecretsMountRedisElasticacheObservation struct {
+type SecretsMountRedisElasticacheInitParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
+	// The AWS region where the ElastiCache cluster is hosted.
+	// If omitted the plugin tries to infer the region from the environment.
 	// The AWS region where the ElastiCache cluster is hosted. If omitted the plugin tries to infer the region from the environment.
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The URL for Elasticsearch's API. https requires certificate
+	// by trusted CA if used.
 	// The configuration endpoint for the ElastiCache cluster to connect to.
 	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountRedisElasticacheObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// The AWS region where the ElastiCache cluster is hosted.
+	// If omitted the plugin tries to infer the region from the environment.
+	// The AWS region where the ElastiCache cluster is hosted. If omitted the plugin tries to infer the region from the environment.
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The URL for Elasticsearch's API. https requires certificate
+	// by trusted CA if used.
+	// The configuration endpoint for the ElastiCache cluster to connect to.
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountRedisElasticacheParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// The AWS secret key id to use to talk to ElastiCache. If omitted the credentials chain provider is used instead.
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
+	// The AWS region where the ElastiCache cluster is hosted.
+	// If omitted the plugin tries to infer the region from the environment.
 	// The AWS region where the ElastiCache cluster is hosted. If omitted the plugin tries to infer the region from the environment.
 	// +kubebuilder:validation:Optional
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The URL for Elasticsearch's API. https requires certificate
+	// by trusted CA if used.
 	// The configuration endpoint for the ElastiCache cluster to connect to.
-	// +kubebuilder:validation:Required
-	URL *string `json:"url" tf:"url,omitempty"`
+	// +kubebuilder:validation:Optional
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 
+	// The username to authenticate with.
 	// The AWS access key id to use to talk to ElastiCache. If omitted the credentials chain provider is used instead.
 	// +kubebuilder:validation:Optional
 	UsernameSecretRef *v1.SecretKeySelector `json:"usernameSecretRef,omitempty" tf:"-"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
-type SecretsMountRedisObservation struct {
+type SecretsMountRedisInitParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// The path to a PEM-encoded CA cert file to use to verify the Elasticsearch server's identity.
 	// The contents of a PEM-encoded CA cert file to use to verify the Redis server's identity.
 	CACert *string `json:"caCert,omitempty" tf:"ca_cert,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The host to connect to.
 	// Specifies the host to connect to
 	Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
+	// Whether to skip verification of the server
+	// certificate when using TLS.
 	// Specifies whether to skip verification of the server certificate when using TLS.
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
+	// The default port to connect to if no port is specified as
+	// part of the host.
 	// The transport port to use to connect to Redis.
 	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Redis.
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
 
+	// The username to authenticate with.
 	// Specifies the username for Vault to use.
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountRedisObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// The path to a PEM-encoded CA cert file to use to verify the Elasticsearch server's identity.
+	// The contents of a PEM-encoded CA cert file to use to verify the Redis server's identity.
+	CACert *string `json:"caCert,omitempty" tf:"ca_cert,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// The host to connect to.
+	// Specifies the host to connect to
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+
+	// Whether to skip verification of the server
+	// certificate when using TLS.
+	// Specifies whether to skip verification of the server certificate when using TLS.
+	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// The default port to connect to if no port is specified as
+	// part of the host.
+	// The transport port to use to connect to Redis.
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// Whether to use TLS when connecting to Cassandra.
+	// Specifies whether to use TLS when connecting to Redis.
+	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
+
+	// The username to authenticate with.
+	// Specifies the username for Vault to use.
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountRedisParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// The path to a PEM-encoded CA cert file to use to verify the Elasticsearch server's identity.
 	// The contents of a PEM-encoded CA cert file to use to verify the Redis server's identity.
 	// +kubebuilder:validation:Optional
 	CACert *string `json:"caCert,omitempty" tf:"ca_cert,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The host to connect to.
 	// Specifies the host to connect to
-	// +kubebuilder:validation:Required
-	Host *string `json:"host" tf:"host,omitempty"`
+	// +kubebuilder:validation:Optional
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
+	// Whether to skip verification of the server
+	// certificate when using TLS.
 	// Specifies whether to skip verification of the server certificate when using TLS.
 	// +kubebuilder:validation:Optional
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
 	// +kubebuilder:validation:Required
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
+	// The default port to connect to if no port is specified as
+	// part of the host.
 	// The transport port to use to connect to Redis.
 	// +kubebuilder:validation:Optional
 	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Redis.
 	// +kubebuilder:validation:Optional
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
 
+	// The username to authenticate with.
 	// Specifies the username for Vault to use.
-	// +kubebuilder:validation:Required
-	Username *string `json:"username" tf:"username,omitempty"`
+	// +kubebuilder:validation:Optional
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
-type SecretsMountRedshiftObservation struct {
+type SecretsMountRedshiftInitParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountRedshiftObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// A URL containing connection information.
+	// See Vault docs
+	// Connection string to use to connect to the database.
+	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// Disable special character escaping in username and password.
+	// Disable special character escaping in username and password
+	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
+
+	// The maximum number of seconds to keep
+	// a connection alive for.
+	// Maximum number of seconds a connection may be reused.
+	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
+
+	// The maximum number of idle connections to
+	// maintain.
+	// Maximum number of idle connections to the database.
+	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
+
+	// The maximum number of open connections to
+	// use.
+	// Maximum number of open connections to the database.
+	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The username to authenticate with.
+	// The root credential username used in the connection URL
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Username generation template.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountRedshiftParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	// +kubebuilder:validation:Optional
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	// +kubebuilder:validation:Optional
 	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	// +kubebuilder:validation:Optional
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	// +kubebuilder:validation:Optional
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
-type SecretsMountSnowflakeObservation struct {
+type SecretsMountSnowflakeInitParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
+	// Specifies if the connection is verified during initial configuration.
+	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+}
+
+type SecretsMountSnowflakeObservation struct {
+
+	// A list of roles that are allowed to use this
+	// connection.
+	// A list of roles that are allowed to use this connection.
+	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// A URL containing connection information.
+	// See Vault docs
+	// Connection string to use to connect to the database.
+	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
+
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// The maximum number of seconds to keep
+	// a connection alive for.
+	// Maximum number of seconds a connection may be reused.
+	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
+
+	// The maximum number of idle connections to
+	// maintain.
+	// Maximum number of idle connections to the database.
+	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
+
+	// The maximum number of open connections to
+	// use.
+	// Maximum number of open connections to the database.
+	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// for any configured database engine is changed
+	// Name of the database connection.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specifies the name of the plugin to use.
+	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
+	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
+	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The username to authenticate with.
+	// The root credential username used in the connection URL
+	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Username generation template.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
 }
 
 type SecretsMountSnowflakeParameters struct {
 
+	// A list of roles that are allowed to use this
+	// connection.
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// A URL containing connection information.
+	// See Vault docs
 	// Connection string to use to connect to the database.
 	// +kubebuilder:validation:Optional
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// The maximum number of seconds to keep
+	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
 	// +kubebuilder:validation:Optional
 	MaxConnectionLifetime *float64 `json:"maxConnectionLifetime,omitempty" tf:"max_connection_lifetime,omitempty"`
 
+	// The maximum number of idle connections to
+	// maintain.
 	// Maximum number of idle connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxIdleConnections *float64 `json:"maxIdleConnections,omitempty" tf:"max_idle_connections,omitempty"`
 
+	// The maximum number of open connections to
+	// use.
 	// Maximum number of open connections to the database.
 	// +kubebuilder:validation:Optional
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// for any configured database engine is changed
 	// Name of the database connection.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
+	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 
+	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	// +kubebuilder:validation:Optional
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
+	// Whether the connection should be verified on
+	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
@@ -1975,6 +3881,18 @@ type SecretsMountSnowflakeParameters struct {
 type SecretsMountSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretsMountParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SecretsMountInitParameters `json:"initProvider,omitempty"`
 }
 
 // SecretsMountStatus defines the observed state of SecretsMount.
@@ -1985,7 +3903,7 @@ type SecretsMountStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SecretsMount is the Schema for the SecretsMounts API. <no value>
+// SecretsMount is the Schema for the SecretsMounts API. Configures any number of database secrets engines under a single mount resource
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -1995,7 +3913,7 @@ type SecretsMountStatus struct {
 type SecretsMount struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.path)",message="path is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || has(self.initProvider.path)",message="path is a required parameter"
 	Spec   SecretsMountSpec   `json:"spec"`
 	Status SecretsMountStatus `json:"status,omitempty"`
 }

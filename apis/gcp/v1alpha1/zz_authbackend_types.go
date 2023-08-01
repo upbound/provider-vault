@@ -13,6 +13,32 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AuthBackendInitParameters struct {
+	ClientEmail *string `json:"clientEmail,omitempty" tf:"client_email,omitempty"`
+
+	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
+
+	// Specifies overrides to service endpoints used when making API requests to GCP.
+	CustomEndpoint []CustomEndpointInitParameters `json:"customEndpoint,omitempty" tf:"custom_endpoint,omitempty"`
+
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// If set, opts out of mount migration on path updates.
+	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
+
+	// Specifies if the auth method is local only
+	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
+
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	PrivateKeyID *string `json:"privateKeyId,omitempty" tf:"private_key_id,omitempty"`
+
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+}
+
 type AuthBackendObservation struct {
 	ClientEmail *string `json:"clientEmail,omitempty" tf:"client_email,omitempty"`
 
@@ -81,6 +107,21 @@ type AuthBackendParameters struct {
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 }
 
+type CustomEndpointInitParameters struct {
+
+	// Replaces the service endpoint used in API requests to https://www.googleapis.com.
+	API *string `json:"api,omitempty" tf:"api,omitempty"`
+
+	// Replaces the service endpoint used in API requests to `https://compute.googleapis.com`.
+	Compute *string `json:"compute,omitempty" tf:"compute,omitempty"`
+
+	// Replaces the service endpoint used in API requests to `https://cloudresourcemanager.googleapis.com`.
+	Crm *string `json:"crm,omitempty" tf:"crm,omitempty"`
+
+	// Replaces the service endpoint used in API requests to `https://iam.googleapis.com`.
+	IAM *string `json:"iam,omitempty" tf:"iam,omitempty"`
+}
+
 type CustomEndpointObservation struct {
 
 	// Replaces the service endpoint used in API requests to https://www.googleapis.com.
@@ -119,6 +160,18 @@ type CustomEndpointParameters struct {
 type AuthBackendSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AuthBackendInitParameters `json:"initProvider,omitempty"`
 }
 
 // AuthBackendStatus defines the observed state of AuthBackend.

@@ -13,6 +13,89 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AuthBackendInitParameters struct {
+	Binddn *string `json:"binddn,omitempty" tf:"binddn,omitempty"`
+
+	CaseSensitiveNames *bool `json:"caseSensitiveNames,omitempty" tf:"case_sensitive_names,omitempty"`
+
+	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	ClientTLSCert *string `json:"clientTlsCert,omitempty" tf:"client_tls_cert,omitempty"`
+
+	DenyNullBind *bool `json:"denyNullBind,omitempty" tf:"deny_null_bind,omitempty"`
+
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// If set, opts out of mount migration on path updates.
+	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
+
+	Discoverdn *bool `json:"discoverdn,omitempty" tf:"discoverdn,omitempty"`
+
+	Groupattr *string `json:"groupattr,omitempty" tf:"groupattr,omitempty"`
+
+	Groupdn *string `json:"groupdn,omitempty" tf:"groupdn,omitempty"`
+
+	Groupfilter *string `json:"groupfilter,omitempty" tf:"groupfilter,omitempty"`
+
+	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
+
+	// Specifies if the auth method is local only
+	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
+
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	Starttls *bool `json:"starttls,omitempty" tf:"starttls,omitempty"`
+
+	TLSMaxVersion *string `json:"tlsMaxVersion,omitempty" tf:"tls_max_version,omitempty"`
+
+	TLSMinVersion *string `json:"tlsMinVersion,omitempty" tf:"tls_min_version,omitempty"`
+
+	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
+
+	// Generated Token's Explicit Maximum TTL in seconds
+	TokenExplicitMaxTTL *float64 `json:"tokenExplicitMaxTtl,omitempty" tf:"token_explicit_max_ttl,omitempty"`
+
+	// The maximum lifetime of the generated token
+	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
+
+	// If true, the 'default' policy will not automatically be added to generated tokens
+	TokenNoDefaultPolicy *bool `json:"tokenNoDefaultPolicy,omitempty" tf:"token_no_default_policy,omitempty"`
+
+	// The maximum number of times a token may be used, a value of zero means unlimited
+	TokenNumUses *float64 `json:"tokenNumUses,omitempty" tf:"token_num_uses,omitempty"`
+
+	// Generated Token's Period
+	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
+
+	// Generated Token's Policies
+	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
+
+	// The initial ttl of the token to generate in seconds
+	TokenTTL *float64 `json:"tokenTtl,omitempty" tf:"token_ttl,omitempty"`
+
+	// The type of token to generate, service or batch
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
+
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+
+	Upndomain *string `json:"upndomain,omitempty" tf:"upndomain,omitempty"`
+
+	UseTokenGroups *bool `json:"useTokenGroups,omitempty" tf:"use_token_groups,omitempty"`
+
+	Userattr *string `json:"userattr,omitempty" tf:"userattr,omitempty"`
+
+	Userdn *string `json:"userdn,omitempty" tf:"userdn,omitempty"`
+
+	Userfilter *string `json:"userfilter,omitempty" tf:"userfilter,omitempty"`
+
+	// Force the auth method to use the username passed by the user as the alias name.
+	UsernameAsAlias *bool `json:"usernameAsAlias,omitempty" tf:"username_as_alias,omitempty"`
+}
+
 type AuthBackendObservation struct {
 
 	// The accessor of the LDAP auth backend
@@ -230,6 +313,18 @@ type AuthBackendParameters struct {
 type AuthBackendSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AuthBackendInitParameters `json:"initProvider,omitempty"`
 }
 
 // AuthBackendStatus defines the observed state of AuthBackend.
@@ -250,7 +345,7 @@ type AuthBackendStatus struct {
 type AuthBackend struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.url)",message="url is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.url) || has(self.initProvider.url)",message="url is a required parameter"
 	Spec   AuthBackendSpec   `json:"spec"`
 	Status AuthBackendStatus `json:"status,omitempty"`
 }

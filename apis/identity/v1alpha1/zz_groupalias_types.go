@@ -13,19 +13,49 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type GroupAliasObservation struct {
+type GroupAliasInitParameters struct {
 
+	// ID of the group to which this is an alias.
 	// ID of the group to which this is an alias.
 	CanonicalID *string `json:"canonicalId,omitempty" tf:"canonical_id,omitempty"`
 
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-
+	// Mount accessor of the authentication backend to which this alias belongs to.
 	// Mount accessor to which this alias belongs to.
 	MountAccessor *string `json:"mountAccessor,omitempty" tf:"mount_accessor,omitempty"`
 
+	// Name of the group alias to create.
 	// Name of the group alias.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+}
+
+type GroupAliasObservation struct {
+
+	// ID of the group to which this is an alias.
+	// ID of the group to which this is an alias.
+	CanonicalID *string `json:"canonicalId,omitempty" tf:"canonical_id,omitempty"`
+
+	// The id of the created group alias.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Mount accessor of the authentication backend to which this alias belongs to.
+	// Mount accessor to which this alias belongs to.
+	MountAccessor *string `json:"mountAccessor,omitempty" tf:"mount_accessor,omitempty"`
+
+	// Name of the group alias to create.
+	// Name of the group alias.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 }
@@ -33,17 +63,24 @@ type GroupAliasObservation struct {
 type GroupAliasParameters struct {
 
 	// ID of the group to which this is an alias.
+	// ID of the group to which this is an alias.
 	// +kubebuilder:validation:Optional
 	CanonicalID *string `json:"canonicalId,omitempty" tf:"canonical_id,omitempty"`
 
+	// Mount accessor of the authentication backend to which this alias belongs to.
 	// Mount accessor to which this alias belongs to.
 	// +kubebuilder:validation:Optional
 	MountAccessor *string `json:"mountAccessor,omitempty" tf:"mount_accessor,omitempty"`
 
+	// Name of the group alias to create.
 	// Name of the group alias.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
@@ -53,6 +90,18 @@ type GroupAliasParameters struct {
 type GroupAliasSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     GroupAliasParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider GroupAliasInitParameters `json:"initProvider,omitempty"`
 }
 
 // GroupAliasStatus defines the observed state of GroupAlias.
@@ -63,7 +112,7 @@ type GroupAliasStatus struct {
 
 // +kubebuilder:object:root=true
 
-// GroupAlias is the Schema for the GroupAliass API. <no value>
+// GroupAlias is the Schema for the GroupAliass API. Creates an Identity Group Alias for Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -73,9 +122,9 @@ type GroupAliasStatus struct {
 type GroupAlias struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.canonicalId)",message="canonicalId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.mountAccessor)",message="mountAccessor is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.canonicalId) || has(self.initProvider.canonicalId)",message="canonicalId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mountAccessor) || has(self.initProvider.mountAccessor)",message="mountAccessor is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
 	Spec   GroupAliasSpec   `json:"spec"`
 	Status GroupAliasStatus `json:"status,omitempty"`
 }

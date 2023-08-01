@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: authbackendroles.alicloud.vault.upbound.io
 spec:
   group: alicloud.vault.upbound.io
@@ -35,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: AuthBackendRole is the Schema for the AuthBackendRoles API. <no
-          value>
+        description: AuthBackendRole is the Schema for the AuthBackendRoles API. Managing
+          roles in an AliCloud auth backend in Vault
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -58,7 +57,7 @@ spec:
                 description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
                   or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicy field in a future release. Currently,
+                  in favor of the ManagementPolicies field in a future release. Currently,
                   both could be set independently and non-default values would be
                   honored if the feature flag is enabled. See the design doc for more
                   information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
@@ -69,68 +68,200 @@ spec:
               forProvider:
                 properties:
                   arn:
-                    description: The role's arn.
+                    description: The role's arn. The role's arn.
                     type: string
                   backend:
-                    description: Auth backend.
+                    description: Path to the mounted AliCloud auth backend. Defaults
+                      to alicloud Auth backend.
                     type: string
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   role:
                     description: Name of the role. Must correspond with the name of
-                      the role reflected in the arn.
+                      the role reflected in the arn. Name of the role. Must correspond
+                      with the name of the role reflected in the arn.
                     type: string
                   tokenBoundCidrs:
-                    description: Specifies the blocks of IP addresses which are allowed
-                      to use the generated token
+                    description: List of CIDR blocks; if set, specifies blocks of
+                      IP addresses which can authenticate successfully, and ties the
+                      resulting token to these blocks as well. Specifies the blocks
+                      of IP addresses which are allowed to use the generated token
                     items:
                       type: string
                     type: array
                   tokenExplicitMaxTtl:
-                    description: Generated Token's Explicit Maximum TTL in seconds
+                    description: If set, will encode an explicit max TTL onto the
+                      token in number of seconds. This is a hard cap even if token_ttl
+                      and token_max_ttl would otherwise allow a renewal. Generated
+                      Token's Explicit Maximum TTL in seconds
                     type: number
                   tokenMaxTtl:
-                    description: The maximum lifetime of the generated token
+                    description: The maximum lifetime for generated tokens in number
+                      of seconds. Its current value will be referenced at renewal
+                      time. The maximum lifetime of the generated token
                     type: number
                   tokenNoDefaultPolicy:
-                    description: If true, the 'default' policy will not automatically
-                      be added to generated tokens
+                    description: If set, the default policy will not be set on generated
+                      tokens; otherwise it will be added to the policies set in token_policies.
+                      If true, the 'default' policy will not automatically be added
+                      to generated tokens
                     type: boolean
                   tokenNumUses:
-                    description: The maximum number of times a token may be used,
-                      a value of zero means unlimited
+                    description: The maximum number of times a generated token may
+                      be used (within its lifetime); 0 means unlimited. The maximum
+                      number of times a token may be used, a value of zero means unlimited
                     type: number
                   tokenPeriod:
-                    description: Generated Token's Period
+                    description: If set, indicates that the token generated using
+                      this role should never expire. The token should be renewed within
+                      the duration specified by this value. At each renewal, the token's
+                      TTL will be set to the value of this field. Specified in seconds.
+                      Generated Token's Period
                     type: number
                   tokenPolicies:
-                    description: Generated Token's Policies
+                    description: List of policies to encode onto generated tokens.
+                      Depending on the auth method, this list may be supplemented
+                      by user/group/other values. Generated Token's Policies
                     items:
                       type: string
                     type: array
                   tokenTtl:
-                    description: The initial ttl of the token to generate in seconds
+                    description: The incremental lifetime for generated tokens in
+                      number of seconds. Its current value will be referenced at renewal
+                      time. The initial ttl of the token to generate in seconds
                     type: number
                   tokenType:
-                    description: The type of token to generate, service or batch
+                    description: 'The type of token that should be generated. Can
+                      be service, batch, or default to use the mount''s tuned default
+                      (which unless changed will be service tokens). For token store
+                      roles, there are two additional possibilities: default-service
+                      and default-batch which specify the type to return unless the
+                      client requests a different type at generation time. The type
+                      of token to generate, service or batch'
                     type: string
                 type: object
-              managementPolicy:
-                default: FullControl
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  arn:
+                    description: The role's arn. The role's arn.
+                    type: string
+                  backend:
+                    description: Path to the mounted AliCloud auth backend. Defaults
+                      to alicloud Auth backend.
+                    type: string
+                  namespace:
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
+                    type: string
+                  role:
+                    description: Name of the role. Must correspond with the name of
+                      the role reflected in the arn. Name of the role. Must correspond
+                      with the name of the role reflected in the arn.
+                    type: string
+                  tokenBoundCidrs:
+                    description: List of CIDR blocks; if set, specifies blocks of
+                      IP addresses which can authenticate successfully, and ties the
+                      resulting token to these blocks as well. Specifies the blocks
+                      of IP addresses which are allowed to use the generated token
+                    items:
+                      type: string
+                    type: array
+                  tokenExplicitMaxTtl:
+                    description: If set, will encode an explicit max TTL onto the
+                      token in number of seconds. This is a hard cap even if token_ttl
+                      and token_max_ttl would otherwise allow a renewal. Generated
+                      Token's Explicit Maximum TTL in seconds
+                    type: number
+                  tokenMaxTtl:
+                    description: The maximum lifetime for generated tokens in number
+                      of seconds. Its current value will be referenced at renewal
+                      time. The maximum lifetime of the generated token
+                    type: number
+                  tokenNoDefaultPolicy:
+                    description: If set, the default policy will not be set on generated
+                      tokens; otherwise it will be added to the policies set in token_policies.
+                      If true, the 'default' policy will not automatically be added
+                      to generated tokens
+                    type: boolean
+                  tokenNumUses:
+                    description: The maximum number of times a generated token may
+                      be used (within its lifetime); 0 means unlimited. The maximum
+                      number of times a token may be used, a value of zero means unlimited
+                    type: number
+                  tokenPeriod:
+                    description: If set, indicates that the token generated using
+                      this role should never expire. The token should be renewed within
+                      the duration specified by this value. At each renewal, the token's
+                      TTL will be set to the value of this field. Specified in seconds.
+                      Generated Token's Period
+                    type: number
+                  tokenPolicies:
+                    description: List of policies to encode onto generated tokens.
+                      Depending on the auth method, this list may be supplemented
+                      by user/group/other values. Generated Token's Policies
+                    items:
+                      type: string
+                    type: array
+                  tokenTtl:
+                    description: The incremental lifetime for generated tokens in
+                      number of seconds. Its current value will be referenced at renewal
+                      time. The initial ttl of the token to generate in seconds
+                    type: number
+                  tokenType:
+                    description: 'The type of token that should be generated. Can
+                      be service, batch, or default to use the mount''s tuned default
+                      (which unless changed will be service tokens). For token store
+                      roles, there are two additional possibilities: default-service
+                      and default-batch which specify the type to return unless the
+                      client requests a different type at generation time. The type
+                      of token to generate, service or batch'
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
                 description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
                   It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicy
-                  specifies the level of control Crossplane has over the managed external
-                  resource. This field is planned to replace the DeletionPolicy field
-                  in a future release. Currently, both could be set independently
-                  and non-default values would be honored if the feature flag is enabled.
-                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
-                enum:
-                - FullControl
-                - ObserveOnly
-                - OrphanOnDelete
-                type: string
+                  enabled, and may be changed or removed without notice. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
@@ -304,62 +435,96 @@ spec:
             type: object
             x-kubernetes-validations:
             - message: arn is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.arn)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.arn)
+                || has(self.initProvider.arn)'
             - message: role is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.role)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.role)
+                || has(self.initProvider.role)'
           status:
             description: AuthBackendRoleStatus defines the observed state of AuthBackendRole.
             properties:
               atProvider:
                 properties:
                   arn:
-                    description: The role's arn.
+                    description: The role's arn. The role's arn.
                     type: string
                   backend:
-                    description: Auth backend.
+                    description: Path to the mounted AliCloud auth backend. Defaults
+                      to alicloud Auth backend.
                     type: string
                   id:
                     type: string
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   role:
                     description: Name of the role. Must correspond with the name of
-                      the role reflected in the arn.
+                      the role reflected in the arn. Name of the role. Must correspond
+                      with the name of the role reflected in the arn.
                     type: string
                   tokenBoundCidrs:
-                    description: Specifies the blocks of IP addresses which are allowed
-                      to use the generated token
+                    description: List of CIDR blocks; if set, specifies blocks of
+                      IP addresses which can authenticate successfully, and ties the
+                      resulting token to these blocks as well. Specifies the blocks
+                      of IP addresses which are allowed to use the generated token
                     items:
                       type: string
                     type: array
                   tokenExplicitMaxTtl:
-                    description: Generated Token's Explicit Maximum TTL in seconds
+                    description: If set, will encode an explicit max TTL onto the
+                      token in number of seconds. This is a hard cap even if token_ttl
+                      and token_max_ttl would otherwise allow a renewal. Generated
+                      Token's Explicit Maximum TTL in seconds
                     type: number
                   tokenMaxTtl:
-                    description: The maximum lifetime of the generated token
+                    description: The maximum lifetime for generated tokens in number
+                      of seconds. Its current value will be referenced at renewal
+                      time. The maximum lifetime of the generated token
                     type: number
                   tokenNoDefaultPolicy:
-                    description: If true, the 'default' policy will not automatically
-                      be added to generated tokens
+                    description: If set, the default policy will not be set on generated
+                      tokens; otherwise it will be added to the policies set in token_policies.
+                      If true, the 'default' policy will not automatically be added
+                      to generated tokens
                     type: boolean
                   tokenNumUses:
-                    description: The maximum number of times a token may be used,
-                      a value of zero means unlimited
+                    description: The maximum number of times a generated token may
+                      be used (within its lifetime); 0 means unlimited. The maximum
+                      number of times a token may be used, a value of zero means unlimited
                     type: number
                   tokenPeriod:
-                    description: Generated Token's Period
+                    description: If set, indicates that the token generated using
+                      this role should never expire. The token should be renewed within
+                      the duration specified by this value. At each renewal, the token's
+                      TTL will be set to the value of this field. Specified in seconds.
+                      Generated Token's Period
                     type: number
                   tokenPolicies:
-                    description: Generated Token's Policies
+                    description: List of policies to encode onto generated tokens.
+                      Depending on the auth method, this list may be supplemented
+                      by user/group/other values. Generated Token's Policies
                     items:
                       type: string
                     type: array
                   tokenTtl:
-                    description: The initial ttl of the token to generate in seconds
+                    description: The incremental lifetime for generated tokens in
+                      number of seconds. Its current value will be referenced at renewal
+                      time. The initial ttl of the token to generate in seconds
                     type: number
                   tokenType:
-                    description: The type of token to generate, service or batch
+                    description: 'The type of token that should be generated. Can
+                      be service, batch, or default to use the mount''s tuned default
+                      (which unless changed will be service tokens). For token store
+                      roles, there are two additional possibilities: default-service
+                      and default-batch which specify the type to return unless the
+                      client requests a different type at generation time. The type
+                      of token to generate, service or batch'
                     type: string
                 type: object
               conditions:

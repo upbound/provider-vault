@@ -13,13 +13,32 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type SecretBackendConfigCAInitParameters struct {
+
+	// The PKI secret backend the resource belongs to.
+	// The PKI secret backend the resource belongs to.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+}
+
 type SecretBackendConfigCAObservation struct {
 
+	// The PKI secret backend the resource belongs to.
 	// The PKI secret backend the resource belongs to.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 }
@@ -27,13 +46,19 @@ type SecretBackendConfigCAObservation struct {
 type SecretBackendConfigCAParameters struct {
 
 	// The PKI secret backend the resource belongs to.
+	// The PKI secret backend the resource belongs to.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The key and certificate PEM bundle
 	// The key and certificate PEM bundle.
 	// +kubebuilder:validation:Optional
 	PemBundleSecretRef v1.SecretKeySelector `json:"pemBundleSecretRef" tf:"-"`
@@ -43,6 +68,18 @@ type SecretBackendConfigCAParameters struct {
 type SecretBackendConfigCASpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendConfigCAParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SecretBackendConfigCAInitParameters `json:"initProvider,omitempty"`
 }
 
 // SecretBackendConfigCAStatus defines the observed state of SecretBackendConfigCA.
@@ -53,7 +90,7 @@ type SecretBackendConfigCAStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SecretBackendConfigCA is the Schema for the SecretBackendConfigCAs API. <no value>
+// SecretBackendConfigCA is the Schema for the SecretBackendConfigCAs API. Submit the CA information to PKI.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -63,8 +100,8 @@ type SecretBackendConfigCAStatus struct {
 type SecretBackendConfigCA struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.pemBundleSecretRef)",message="pemBundleSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.pemBundleSecretRef)",message="pemBundleSecretRef is a required parameter"
 	Spec   SecretBackendConfigCASpec   `json:"spec"`
 	Status SecretBackendConfigCAStatus `json:"status,omitempty"`
 }

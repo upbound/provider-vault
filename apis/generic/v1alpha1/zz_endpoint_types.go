@@ -13,61 +13,181 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type EndpointObservation struct {
+type EndpointInitParameters struct {
 
+	// True/false. Set this to true if your
+	// vault authentication is not able to delete the data or if the endpoint
+	// does not support the DELETE method. Defaults to false.
 	// Don't attempt to delete the path from Vault if true
 	DisableDelete *bool `json:"disableDelete,omitempty" tf:"disable_delete,omitempty"`
 
+	// True/false. Set this to true if your vault
+	// authentication is not able to read the data or if the endpoint does
+	// not support the GET method. Setting this to true will break drift
+	// detection. You should set this to true for endpoints that are
+	// write-only. Defaults to false.
+	// Don't attempt to read the path from Vault if true; drift won't be detected
+	DisableRead *bool `json:"disableRead,omitempty" tf:"disable_read,omitempty"`
+
+	// True/false. If set to true,
+	// ignore any fields present when the endpoint is read but that were not
+	// in data_json. Also, if a field that was written is not returned when
+	// the endpoint is read, treat that field as being up to date. You should
+	// set this to true when writing to endpoint that, when read, returns a
+	// different set of fields from the ones you wrote, as is common with
+	// many configuration endpoints. Defaults to false.
+	// When reading, disregard fields not present in data_json
+	IgnoreAbsentFields *bool `json:"ignoreAbsentFields,omitempty" tf:"ignore_absent_fields,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The full logical path at which to write the given
+	// data. Consult each backend's documentation to see which endpoints
+	// support the PUT methods and to determine whether they also support
+	// DELETE and GET.
+	// Full path where to the endpoint that will be written
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// . A list of fields that should be returned
+	// in write_data_json and write_data. If omitted, data returned by
+	// the write operation is not available to the resource or included in
+	// state. This helps to avoid accidental storage of sensitive values in
+	// state. Some endpoints, such as many dynamic secrets endpoints, return
+	// data from writing to an endpoint rather than reading it. You should
+	// use write_fields if you need information returned in this way.
+	// Top-level fields returned by write to persist in state
+	WriteFields []*string `json:"writeFields,omitempty" tf:"write_fields,omitempty"`
+}
+
+type EndpointObservation struct {
+
+	// True/false. Set this to true if your
+	// vault authentication is not able to delete the data or if the endpoint
+	// does not support the DELETE method. Defaults to false.
+	// Don't attempt to delete the path from Vault if true
+	DisableDelete *bool `json:"disableDelete,omitempty" tf:"disable_delete,omitempty"`
+
+	// True/false. Set this to true if your vault
+	// authentication is not able to read the data or if the endpoint does
+	// not support the GET method. Setting this to true will break drift
+	// detection. You should set this to true for endpoints that are
+	// write-only. Defaults to false.
 	// Don't attempt to read the path from Vault if true; drift won't be detected
 	DisableRead *bool `json:"disableRead,omitempty" tf:"disable_read,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// True/false. If set to true,
+	// ignore any fields present when the endpoint is read but that were not
+	// in data_json. Also, if a field that was written is not returned when
+	// the endpoint is read, treat that field as being up to date. You should
+	// set this to true when writing to endpoint that, when read, returns a
+	// different set of fields from the ones you wrote, as is common with
+	// many configuration endpoints. Defaults to false.
 	// When reading, disregard fields not present in data_json
 	IgnoreAbsentFields *bool `json:"ignoreAbsentFields,omitempty" tf:"ignore_absent_fields,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The full logical path at which to write the given
+	// data. Consult each backend's documentation to see which endpoints
+	// support the PUT methods and to determine whether they also support
+	// DELETE and GET.
 	// Full path where to the endpoint that will be written
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// A map whose keys are the top-level data keys
+	// returned from Vault by the write operation and whose values are the
+	// corresponding values. This map can only represent string data, so
+	// any non-string values returned from Vault are serialized as JSON.
+	// Only fields set in write_fields are present in the JSON data.
 	// Map of strings returned by write operation
 	WriteData map[string]*string `json:"writeData,omitempty" tf:"write_data,omitempty"`
 
+	// The JSON data returned by the write operation.
+	// Only fields set in write_fields are present in the JSON data.
 	// JSON data returned by write operation
 	WriteDataJSON *string `json:"writeDataJson,omitempty" tf:"write_data_json,omitempty"`
 
+	// . A list of fields that should be returned
+	// in write_data_json and write_data. If omitted, data returned by
+	// the write operation is not available to the resource or included in
+	// state. This helps to avoid accidental storage of sensitive values in
+	// state. Some endpoints, such as many dynamic secrets endpoints, return
+	// data from writing to an endpoint rather than reading it. You should
+	// use write_fields if you need information returned in this way.
 	// Top-level fields returned by write to persist in state
 	WriteFields []*string `json:"writeFields,omitempty" tf:"write_fields,omitempty"`
 }
 
 type EndpointParameters struct {
 
+	// String containing a JSON-encoded object that will be
+	// written to the given path as the secret data.
 	// JSON-encoded data to write.
 	// +kubebuilder:validation:Optional
 	DataJSONSecretRef v1.SecretKeySelector `json:"dataJsonSecretRef" tf:"-"`
 
+	// True/false. Set this to true if your
+	// vault authentication is not able to delete the data or if the endpoint
+	// does not support the DELETE method. Defaults to false.
 	// Don't attempt to delete the path from Vault if true
 	// +kubebuilder:validation:Optional
 	DisableDelete *bool `json:"disableDelete,omitempty" tf:"disable_delete,omitempty"`
 
+	// True/false. Set this to true if your vault
+	// authentication is not able to read the data or if the endpoint does
+	// not support the GET method. Setting this to true will break drift
+	// detection. You should set this to true for endpoints that are
+	// write-only. Defaults to false.
 	// Don't attempt to read the path from Vault if true; drift won't be detected
 	// +kubebuilder:validation:Optional
 	DisableRead *bool `json:"disableRead,omitempty" tf:"disable_read,omitempty"`
 
+	// True/false. If set to true,
+	// ignore any fields present when the endpoint is read but that were not
+	// in data_json. Also, if a field that was written is not returned when
+	// the endpoint is read, treat that field as being up to date. You should
+	// set this to true when writing to endpoint that, when read, returns a
+	// different set of fields from the ones you wrote, as is common with
+	// many configuration endpoints. Defaults to false.
 	// When reading, disregard fields not present in data_json
 	// +kubebuilder:validation:Optional
 	IgnoreAbsentFields *bool `json:"ignoreAbsentFields,omitempty" tf:"ignore_absent_fields,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The full logical path at which to write the given
+	// data. Consult each backend's documentation to see which endpoints
+	// support the PUT methods and to determine whether they also support
+	// DELETE and GET.
 	// Full path where to the endpoint that will be written
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// . A list of fields that should be returned
+	// in write_data_json and write_data. If omitted, data returned by
+	// the write operation is not available to the resource or included in
+	// state. This helps to avoid accidental storage of sensitive values in
+	// state. Some endpoints, such as many dynamic secrets endpoints, return
+	// data from writing to an endpoint rather than reading it. You should
+	// use write_fields if you need information returned in this way.
 	// Top-level fields returned by write to persist in state
 	// +kubebuilder:validation:Optional
 	WriteFields []*string `json:"writeFields,omitempty" tf:"write_fields,omitempty"`
@@ -77,6 +197,18 @@ type EndpointParameters struct {
 type EndpointSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     EndpointParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider EndpointInitParameters `json:"initProvider,omitempty"`
 }
 
 // EndpointStatus defines the observed state of Endpoint.
@@ -87,7 +219,7 @@ type EndpointStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Endpoint is the Schema for the Endpoints API. <no value>
+// Endpoint is the Schema for the Endpoints API. Writes arbitrary data to a given path in Vault
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -97,8 +229,8 @@ type EndpointStatus struct {
 type Endpoint struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.dataJsonSecretRef)",message="dataJsonSecretRef is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.path)",message="path is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dataJsonSecretRef)",message="dataJsonSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || has(self.initProvider.path)",message="path is a required parameter"
 	Spec   EndpointSpec   `json:"spec"`
 	Status EndpointStatus `json:"status,omitempty"`
 }

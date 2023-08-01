@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: authbackendlogins.aws.vault.upbound.io
 spec:
   group: aws.vault.upbound.io
@@ -36,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: AuthBackendLogin is the Schema for the AuthBackendLogins API.
-          <no value>
+          Manages Vault tokens acquired using the AWS auth backend.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -58,7 +57,7 @@ spec:
                 description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
                   or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicy field in a future release. Currently,
+                  in favor of the ManagementPolicies field in a future release. Currently,
                   both could be set independently and non-default values would be
                   honored if the feature flag is enabled. See the design doc for more
                   information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
@@ -69,58 +68,168 @@ spec:
               forProvider:
                 properties:
                   backend:
-                    description: AWS Auth Backend to read the token from.
+                    description: The unique name of the AWS auth backend. Defaults
+                      to 'aws'. AWS Auth Backend to read the token from.
                     type: string
                   iamHttpRequestMethod:
-                    description: The HTTP method used in the signed request.
+                    description: The HTTP method used in the signed IAM request. The
+                      HTTP method used in the signed request.
                     type: string
                   iamRequestBody:
-                    description: The Base64-encoded body of the signed request.
+                    description: The base64-encoded body of the signed request. The
+                      Base64-encoded body of the signed request.
                     type: string
                   iamRequestHeaders:
-                    description: The Base64-encoded, JSON serialized representation
-                      of the sts:GetCallerIdentity HTTP request headers.
+                    description: The base64-encoded, JSON serialized representation
+                      of the GetCallerIdentity HTTP request headers. The Base64-encoded,
+                      JSON serialized representation of the sts:GetCallerIdentity
+                      HTTP request headers.
                     type: string
                   iamRequestUrl:
-                    description: The Base64-encoded HTTP URL used in the signed request.
+                    description: The base64-encoded HTTP URL used in the signed request.
+                      The Base64-encoded HTTP URL used in the signed request.
                     type: string
                   identity:
-                    description: Base64-encoded EC2 instance identity document to
-                      authenticate with.
+                    description: The base64-encoded EC2 instance identity document
+                      to authenticate with. Can be retrieved from the EC2 metadata
+                      server. Base64-encoded EC2 instance identity document to authenticate
+                      with.
                     type: string
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   nonce:
-                    description: The nonce to be used for subsequent login requests.
+                    description: The unique nonce to be used for login requests. Can
+                      be set to a user-specified value, or will contain the server-generated
+                      value once a token is issued. EC2 instances can only acquire
+                      a single token until the whitelist is tidied again unless they
+                      keep track of this nonce. The nonce to be used for subsequent
+                      login requests.
                     type: string
                   pkcs7:
-                    description: PKCS7 signature of the identity document to authenticate
-                      with, with all newline characters removed.
+                    description: The PKCS#7 signature of the identity document to
+                      authenticate with, with all newline characters removed. Can
+                      be retrieved from the EC2 metadata server. PKCS7 signature of
+                      the identity document to authenticate with, with all newline
+                      characters removed.
                     type: string
                   role:
-                    description: AWS Auth Role to read the token from.
+                    description: The name of the AWS auth backend role to create tokens
+                      against. AWS Auth Role to read the token from.
                     type: string
                   signature:
-                    description: Base64-encoded SHA256 RSA signature of the instance
-                      identtiy document to authenticate with.
+                    description: The base64-encoded SHA256 RSA signature of the instance
+                      identity document to authenticate with, with all newline characters
+                      removed. Can be retrieved from the EC2 metadata server. Base64-encoded
+                      SHA256 RSA signature of the instance identtiy document to authenticate
+                      with.
                     type: string
                 type: object
-              managementPolicy:
-                default: FullControl
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  backend:
+                    description: The unique name of the AWS auth backend. Defaults
+                      to 'aws'. AWS Auth Backend to read the token from.
+                    type: string
+                  iamHttpRequestMethod:
+                    description: The HTTP method used in the signed IAM request. The
+                      HTTP method used in the signed request.
+                    type: string
+                  iamRequestBody:
+                    description: The base64-encoded body of the signed request. The
+                      Base64-encoded body of the signed request.
+                    type: string
+                  iamRequestHeaders:
+                    description: The base64-encoded, JSON serialized representation
+                      of the GetCallerIdentity HTTP request headers. The Base64-encoded,
+                      JSON serialized representation of the sts:GetCallerIdentity
+                      HTTP request headers.
+                    type: string
+                  iamRequestUrl:
+                    description: The base64-encoded HTTP URL used in the signed request.
+                      The Base64-encoded HTTP URL used in the signed request.
+                    type: string
+                  identity:
+                    description: The base64-encoded EC2 instance identity document
+                      to authenticate with. Can be retrieved from the EC2 metadata
+                      server. Base64-encoded EC2 instance identity document to authenticate
+                      with.
+                    type: string
+                  namespace:
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
+                    type: string
+                  nonce:
+                    description: The unique nonce to be used for login requests. Can
+                      be set to a user-specified value, or will contain the server-generated
+                      value once a token is issued. EC2 instances can only acquire
+                      a single token until the whitelist is tidied again unless they
+                      keep track of this nonce. The nonce to be used for subsequent
+                      login requests.
+                    type: string
+                  pkcs7:
+                    description: The PKCS#7 signature of the identity document to
+                      authenticate with, with all newline characters removed. Can
+                      be retrieved from the EC2 metadata server. PKCS7 signature of
+                      the identity document to authenticate with, with all newline
+                      characters removed.
+                    type: string
+                  role:
+                    description: The name of the AWS auth backend role to create tokens
+                      against. AWS Auth Role to read the token from.
+                    type: string
+                  signature:
+                    description: The base64-encoded SHA256 RSA signature of the instance
+                      identity document to authenticate with, with all newline characters
+                      removed. Can be retrieved from the EC2 metadata server. Base64-encoded
+                      SHA256 RSA signature of the instance identtiy document to authenticate
+                      with.
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
                 description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
                   It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicy
-                  specifies the level of control Crossplane has over the managed external
-                  resource. This field is planned to replace the DeletionPolicy field
-                  in a future release. Currently, both could be set independently
-                  and non-default values would be honored if the feature flag is enabled.
-                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
-                enum:
-                - FullControl
-                - ObserveOnly
-                - OrphanOnDelete
-                type: string
+                  enabled, and may be changed or removed without notice. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
@@ -298,71 +407,104 @@ spec:
               atProvider:
                 properties:
                   accessor:
-                    description: The accessor returned from Vault for this token.
+                    description: The token's accessor. The accessor returned from
+                      Vault for this token.
                     type: string
                   authType:
-                    description: The auth method used to generate this token.
+                    description: The authentication type used to generate this token.
+                      The auth method used to generate this token.
                     type: string
                   backend:
-                    description: AWS Auth Backend to read the token from.
+                    description: The unique name of the AWS auth backend. Defaults
+                      to 'aws'. AWS Auth Backend to read the token from.
                     type: string
                   iamHttpRequestMethod:
-                    description: The HTTP method used in the signed request.
+                    description: The HTTP method used in the signed IAM request. The
+                      HTTP method used in the signed request.
                     type: string
                   iamRequestBody:
-                    description: The Base64-encoded body of the signed request.
+                    description: The base64-encoded body of the signed request. The
+                      Base64-encoded body of the signed request.
                     type: string
                   iamRequestHeaders:
-                    description: The Base64-encoded, JSON serialized representation
-                      of the sts:GetCallerIdentity HTTP request headers.
+                    description: The base64-encoded, JSON serialized representation
+                      of the GetCallerIdentity HTTP request headers. The Base64-encoded,
+                      JSON serialized representation of the sts:GetCallerIdentity
+                      HTTP request headers.
                     type: string
                   iamRequestUrl:
-                    description: The Base64-encoded HTTP URL used in the signed request.
+                    description: The base64-encoded HTTP URL used in the signed request.
+                      The Base64-encoded HTTP URL used in the signed request.
                     type: string
                   id:
                     type: string
                   identity:
-                    description: Base64-encoded EC2 instance identity document to
-                      authenticate with.
+                    description: The base64-encoded EC2 instance identity document
+                      to authenticate with. Can be retrieved from the EC2 metadata
+                      server. Base64-encoded EC2 instance identity document to authenticate
+                      with.
                     type: string
                   leaseDuration:
-                    description: Lease duration in seconds relative to the time in
-                      lease_start_time.
+                    description: The duration in seconds the token will be valid,
+                      relative to the time in lease_start_time. Lease duration in
+                      seconds relative to the time in lease_start_time.
                     type: number
                   leaseStartTime:
-                    description: time at which the lease was read, using the clock
+                    description: the approximate time at which the token was created,
+                      using the clock of the system where Upbound official provider
+                      was running. time at which the lease was read, using the clock
                       of the system where Upbound official provider was running
                     type: string
                   metadata:
                     additionalProperties:
                       type: string
-                    description: The metadata reported by the Vault server.
+                    description: A map of information returned by the Vault server
+                      about the authentication used to generate this token. The metadata
+                      reported by the Vault server.
                     type: object
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   nonce:
-                    description: The nonce to be used for subsequent login requests.
+                    description: The unique nonce to be used for login requests. Can
+                      be set to a user-specified value, or will contain the server-generated
+                      value once a token is issued. EC2 instances can only acquire
+                      a single token until the whitelist is tidied again unless they
+                      keep track of this nonce. The nonce to be used for subsequent
+                      login requests.
                     type: string
                   pkcs7:
-                    description: PKCS7 signature of the identity document to authenticate
-                      with, with all newline characters removed.
+                    description: The PKCS#7 signature of the identity document to
+                      authenticate with, with all newline characters removed. Can
+                      be retrieved from the EC2 metadata server. PKCS7 signature of
+                      the identity document to authenticate with, with all newline
+                      characters removed.
                     type: string
                   policies:
-                    description: The policies assigned to this token.
+                    description: The Vault policies assigned to this token. The policies
+                      assigned to this token.
                     items:
                       type: string
                     type: array
                   renewable:
-                    description: True if the duration of this lease can be extended
+                    description: Set to true if the token can be extended through
+                      renewal. True if the duration of this lease can be extended
                       through renewal.
                     type: boolean
                   role:
-                    description: AWS Auth Role to read the token from.
+                    description: The name of the AWS auth backend role to create tokens
+                      against. AWS Auth Role to read the token from.
                     type: string
                   signature:
-                    description: Base64-encoded SHA256 RSA signature of the instance
-                      identtiy document to authenticate with.
+                    description: The base64-encoded SHA256 RSA signature of the instance
+                      identity document to authenticate with, with all newline characters
+                      removed. Can be retrieved from the EC2 metadata server. Base64-encoded
+                      SHA256 RSA signature of the instance identtiy document to authenticate
+                      with.
                     type: string
                 type: object
               conditions:

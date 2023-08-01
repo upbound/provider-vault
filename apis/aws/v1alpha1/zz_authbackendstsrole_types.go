@@ -13,37 +13,79 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AuthBackendStsRoleObservation struct {
+type AuthBackendStsRoleInitParameters struct {
 
+	// The AWS account ID to configure the STS role for.
 	// AWS account ID to be associated with STS role.
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
+	// The path the AWS auth backend being configured was
+	// mounted at.  Defaults to aws.
+	// Unique name of the auth backend to configure.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The STS role to assume when verifying requests made
+	// by EC2 instances in the account specified by account_id.
+	// AWS ARN for STS role to be assumed when interacting with the account specified.
+	StsRole *string `json:"stsRole,omitempty" tf:"sts_role,omitempty"`
+}
+
+type AuthBackendStsRoleObservation struct {
+
+	// The AWS account ID to configure the STS role for.
+	// AWS account ID to be associated with STS role.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// The path the AWS auth backend being configured was
+	// mounted at.  Defaults to aws.
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The STS role to assume when verifying requests made
+	// by EC2 instances in the account specified by account_id.
 	// AWS ARN for STS role to be assumed when interacting with the account specified.
 	StsRole *string `json:"stsRole,omitempty" tf:"sts_role,omitempty"`
 }
 
 type AuthBackendStsRoleParameters struct {
 
+	// The AWS account ID to configure the STS role for.
 	// AWS account ID to be associated with STS role.
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
+	// The path the AWS auth backend being configured was
+	// mounted at.  Defaults to aws.
 	// Unique name of the auth backend to configure.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The STS role to assume when verifying requests made
+	// by EC2 instances in the account specified by account_id.
 	// AWS ARN for STS role to be assumed when interacting with the account specified.
 	// +kubebuilder:validation:Optional
 	StsRole *string `json:"stsRole,omitempty" tf:"sts_role,omitempty"`
@@ -53,6 +95,18 @@ type AuthBackendStsRoleParameters struct {
 type AuthBackendStsRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendStsRoleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AuthBackendStsRoleInitParameters `json:"initProvider,omitempty"`
 }
 
 // AuthBackendStsRoleStatus defines the observed state of AuthBackendStsRole.
@@ -63,7 +117,7 @@ type AuthBackendStsRoleStatus struct {
 
 // +kubebuilder:object:root=true
 
-// AuthBackendStsRole is the Schema for the AuthBackendStsRoles API. <no value>
+// AuthBackendStsRole is the Schema for the AuthBackendStsRoles API. Configures an STS role in the Vault AWS Auth backend.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -73,8 +127,8 @@ type AuthBackendStsRoleStatus struct {
 type AuthBackendStsRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.accountId)",message="accountId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.stsRole)",message="stsRole is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.accountId) || has(self.initProvider.accountId)",message="accountId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.stsRole) || has(self.initProvider.stsRole)",message="stsRole is a required parameter"
 	Spec   AuthBackendStsRoleSpec   `json:"spec"`
 	Status AuthBackendStsRoleStatus `json:"status,omitempty"`
 }

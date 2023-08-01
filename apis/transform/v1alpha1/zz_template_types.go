@@ -13,15 +13,62 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type TemplateObservation struct {
+type TemplateInitParameters struct {
 
+	// The alphabet to use for this template. This is only used during FPE transformations.
 	// The alphabet to use for this template. This is only used during FPE transformations.
 	Alphabet *string `json:"alphabet,omitempty" tf:"alphabet,omitempty"`
 
+	// - Optional mapping of name to regular expression template, used to customize
+	// the decoded output. (requires Vault Enterprise 1.9+)
 	// The map of regular expression templates used to customize decoded outputs.
 	// Only applicable to FPE transformations.
 	DecodeFormats map[string]*string `json:"decodeFormats,omitempty" tf:"decode_formats,omitempty"`
 
+	// - The regular expression template used to format encoded values.
+	// (requires Vault Enterprise 1.9+)
+	// The regular expression template used for encoding values.
+	// Only applicable to FPE transformations.
+	EncodeFormat *string `json:"encodeFormat,omitempty" tf:"encode_format,omitempty"`
+
+	// The name of the template.
+	// The name of the template.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Path to where the back-end is mounted within Vault.
+	// The mount path for a back-end, for example, the path given in "$ vault auth enable -path=my-aws aws".
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// The pattern used for matching. Currently, only regular expression pattern is supported.
+	// The pattern used for matching. Currently, only regular expression pattern is supported.
+	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
+
+	// The pattern type to use for match detection. Currently, only regex is supported.
+	// The pattern type to use for match detection. Currently, only regex is supported.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type TemplateObservation struct {
+
+	// The alphabet to use for this template. This is only used during FPE transformations.
+	// The alphabet to use for this template. This is only used during FPE transformations.
+	Alphabet *string `json:"alphabet,omitempty" tf:"alphabet,omitempty"`
+
+	// - Optional mapping of name to regular expression template, used to customize
+	// the decoded output. (requires Vault Enterprise 1.9+)
+	// The map of regular expression templates used to customize decoded outputs.
+	// Only applicable to FPE transformations.
+	DecodeFormats map[string]*string `json:"decodeFormats,omitempty" tf:"decode_formats,omitempty"`
+
+	// - The regular expression template used to format encoded values.
+	// (requires Vault Enterprise 1.9+)
 	// The regular expression template used for encoding values.
 	// Only applicable to FPE transformations.
 	EncodeFormat *string `json:"encodeFormat,omitempty" tf:"encode_format,omitempty"`
@@ -29,17 +76,25 @@ type TemplateObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The name of the template.
+	// The name of the template.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Path to where the back-end is mounted within Vault.
 	// The mount path for a back-end, for example, the path given in "$ vault auth enable -path=my-aws aws".
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
 	// The pattern used for matching. Currently, only regular expression pattern is supported.
+	// The pattern used for matching. Currently, only regular expression pattern is supported.
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 
+	// The pattern type to use for match detection. Currently, only regex is supported.
 	// The pattern type to use for match detection. Currently, only regex is supported.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
@@ -47,35 +102,48 @@ type TemplateObservation struct {
 type TemplateParameters struct {
 
 	// The alphabet to use for this template. This is only used during FPE transformations.
+	// The alphabet to use for this template. This is only used during FPE transformations.
 	// +kubebuilder:validation:Optional
 	Alphabet *string `json:"alphabet,omitempty" tf:"alphabet,omitempty"`
 
+	// - Optional mapping of name to regular expression template, used to customize
+	// the decoded output. (requires Vault Enterprise 1.9+)
 	// The map of regular expression templates used to customize decoded outputs.
 	// Only applicable to FPE transformations.
 	// +kubebuilder:validation:Optional
 	DecodeFormats map[string]*string `json:"decodeFormats,omitempty" tf:"decode_formats,omitempty"`
 
+	// - The regular expression template used to format encoded values.
+	// (requires Vault Enterprise 1.9+)
 	// The regular expression template used for encoding values.
 	// Only applicable to FPE transformations.
 	// +kubebuilder:validation:Optional
 	EncodeFormat *string `json:"encodeFormat,omitempty" tf:"encode_format,omitempty"`
 
 	// The name of the template.
+	// The name of the template.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Path to where the back-end is mounted within Vault.
 	// The mount path for a back-end, for example, the path given in "$ vault auth enable -path=my-aws aws".
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
 	// The pattern used for matching. Currently, only regular expression pattern is supported.
+	// The pattern used for matching. Currently, only regular expression pattern is supported.
 	// +kubebuilder:validation:Optional
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 
+	// The pattern type to use for match detection. Currently, only regex is supported.
 	// The pattern type to use for match detection. Currently, only regex is supported.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -85,6 +153,18 @@ type TemplateParameters struct {
 type TemplateSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     TemplateParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider TemplateInitParameters `json:"initProvider,omitempty"`
 }
 
 // TemplateStatus defines the observed state of Template.
@@ -95,7 +175,7 @@ type TemplateStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Template is the Schema for the Templates API. <no value>
+// Template is the Schema for the Templates API. "/transform/template/{name}"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -105,8 +185,8 @@ type TemplateStatus struct {
 type Template struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.path)",message="path is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || has(self.initProvider.path)",message="path is a required parameter"
 	Spec   TemplateSpec   `json:"spec"`
 	Status TemplateStatus `json:"status,omitempty"`
 }

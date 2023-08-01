@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: pingids.mfa.vault.upbound.io
 spec:
   group: mfa.vault.upbound.io
@@ -35,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Pingid is the Schema for the Pingids API. <no value>
+        description: Pingid is the Schema for the Pingids API. Managing the MFA PingID
+          method configuration
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -57,7 +57,7 @@ spec:
                 description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
                   or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicy field in a future release. Currently,
+                  in favor of the ManagementPolicies field in a future release. Currently,
                   both could be set independently and non-default values would be
                   honored if the feature flag is enabled. See the design doc for more
                   information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
@@ -70,38 +70,108 @@ spec:
                   mountAccessor:
                     description: The mount to tie this method to for use in automatic
                       mappings. The mapping will use the Name field of Aliases associated
-                      with this mount as the username in the mapping.
+                      with this mount as the username in the mapping. The mount to
+                      tie this method to for use in automatic mappings. The mapping
+                      will use the Name field of Aliases associated with this mount
+                      as the username in the mapping.
                     type: string
                   name:
-                    description: Name of the MFA method.
+                    description: '(string: <required>) – Name of the MFA method. Name
+                      of the MFA method.'
                     type: string
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   settingsFileBase64:
                     description: A base64-encoded third-party settings file retrieved
-                      from PingID's configuration page.
+                      from PingID's configuration page. A base64-encoded third-party
+                      settings file retrieved from PingID's configuration page.
                     type: string
                   usernameFormat:
-                    description: A format string for mapping Identity names to MFA
-                      method names. Values to substitute should be placed in `{{}}`.
+                    description: 'A format string for mapping Identity names to MFA
+                      method names. Values to substitute should be placed in {{}}.
+                      For example, "{{alias.name}}@example.com". If blank, the Alias''s
+                      Name field will be used as-is. Currently-supported mappings:
+                      A format string for mapping Identity names to MFA method names.
+                      Values to substitute should be placed in `{{}}`.'
                     type: string
                 type: object
-              managementPolicy:
-                default: FullControl
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  mountAccessor:
+                    description: The mount to tie this method to for use in automatic
+                      mappings. The mapping will use the Name field of Aliases associated
+                      with this mount as the username in the mapping. The mount to
+                      tie this method to for use in automatic mappings. The mapping
+                      will use the Name field of Aliases associated with this mount
+                      as the username in the mapping.
+                    type: string
+                  name:
+                    description: '(string: <required>) – Name of the MFA method. Name
+                      of the MFA method.'
+                    type: string
+                  namespace:
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
+                    type: string
+                  settingsFileBase64:
+                    description: A base64-encoded third-party settings file retrieved
+                      from PingID's configuration page. A base64-encoded third-party
+                      settings file retrieved from PingID's configuration page.
+                    type: string
+                  usernameFormat:
+                    description: 'A format string for mapping Identity names to MFA
+                      method names. Values to substitute should be placed in {{}}.
+                      For example, "{{alias.name}}@example.com". If blank, the Alias''s
+                      Name field will be used as-is. Currently-supported mappings:
+                      A format string for mapping Identity names to MFA method names.
+                      Values to substitute should be placed in `{{}}`.'
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
                 description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
                   It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicy
-                  specifies the level of control Crossplane has over the managed external
-                  resource. This field is planned to replace the DeletionPolicy field
-                  in a future release. Currently, both could be set independently
-                  and non-default values would be honored if the feature flag is enabled.
-                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
-                enum:
-                - FullControl
-                - ObserveOnly
-                - OrphanOnDelete
-                type: string
+                  enabled, and may be changed or removed without notice. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
@@ -275,58 +345,85 @@ spec:
             type: object
             x-kubernetes-validations:
             - message: mountAccessor is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.mountAccessor)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.mountAccessor)
+                || has(self.initProvider.mountAccessor)'
             - message: name is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
             - message: settingsFileBase64 is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.settingsFileBase64)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.settingsFileBase64)
+                || has(self.initProvider.settingsFileBase64)'
           status:
             description: PingidStatus defines the observed state of Pingid.
             properties:
               atProvider:
                 properties:
                   adminUrl:
-                    description: Admin URL computed by Vault.
+                    description: (string) – Admin URL computed by Vault Admin URL
+                      computed by Vault.
                     type: string
                   authenticatorUrl:
-                    description: Authenticator URL computed by Vault.
+                    description: (string) – Authenticator URL computed by Vault Authenticator
+                      URL computed by Vault.
                     type: string
                   id:
+                    description: (string) – ID computed by Vault
                     type: string
                   idpUrl:
-                    description: IDP URL computed by Vault.
+                    description: (string) – IDP URL computed by Vault IDP URL computed
+                      by Vault.
                     type: string
                   mountAccessor:
                     description: The mount to tie this method to for use in automatic
                       mappings. The mapping will use the Name field of Aliases associated
-                      with this mount as the username in the mapping.
+                      with this mount as the username in the mapping. The mount to
+                      tie this method to for use in automatic mappings. The mapping
+                      will use the Name field of Aliases associated with this mount
+                      as the username in the mapping.
                     type: string
                   name:
-                    description: Name of the MFA method.
+                    description: '(string: <required>) – Name of the MFA method. Name
+                      of the MFA method.'
                     type: string
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   namespaceId:
-                    description: Namespace ID computed by Vault.
+                    description: (string) – Namespace ID computed by Vault Namespace
+                      ID computed by Vault.
                     type: string
                   orgAlias:
-                    description: Org Alias computed by Vault.
+                    description: (string) – Org Alias computed by Vault Org Alias
+                      computed by Vault.
                     type: string
                   settingsFileBase64:
                     description: A base64-encoded third-party settings file retrieved
-                      from PingID's configuration page.
+                      from PingID's configuration page. A base64-encoded third-party
+                      settings file retrieved from PingID's configuration page.
                     type: string
                   type:
-                    description: Type of configuration computed by Vault.
+                    description: (string) – Type of configuration computed by Vault
+                      Type of configuration computed by Vault.
                     type: string
                   useSignature:
-                    description: If set, enables use of PingID signature. Computed
-                      by Vault
+                    description: (string) – If set to true, enables use of PingID
+                      signature. Computed by Vault If set, enables use of PingID signature.
+                      Computed by Vault
                     type: boolean
                   usernameFormat:
-                    description: A format string for mapping Identity names to MFA
-                      method names. Values to substitute should be placed in `{{}}`.
+                    description: 'A format string for mapping Identity names to MFA
+                      method names. Values to substitute should be placed in {{}}.
+                      For example, "{{alias.name}}@example.com". If blank, the Alias''s
+                      Name field will be used as-is. Currently-supported mappings:
+                      A format string for mapping Identity names to MFA method names.
+                      Values to substitute should be placed in `{{}}`.'
                     type: string
                 type: object
               conditions:

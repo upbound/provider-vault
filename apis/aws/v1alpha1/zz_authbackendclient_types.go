@@ -13,66 +13,145 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AuthBackendClientObservation struct {
+type AuthBackendClientInitParameters struct {
 
+	// The path the AWS auth backend being configured was
+	// mounted at.  Defaults to aws.
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// Override the URL Vault uses when making EC2 API
+	// calls.
 	// URL to override the default generated endpoint for making AWS EC2 API calls.
 	EC2Endpoint *string `json:"ec2Endpoint,omitempty" tf:"ec2_endpoint,omitempty"`
 
+	// Override the URL Vault uses when making IAM API
+	// calls.
 	// URL to override the default generated endpoint for making AWS IAM API calls.
 	IAMEndpoint *string `json:"iamEndpoint,omitempty" tf:"iam_endpoint,omitempty"`
 
+	// The value to require in the
+	// X-Vault-AWS-IAM-Server-ID header as part of GetCallerIdentity requests
+	// that are used in the IAM auth method.
+	// The value to require in the X-Vault-AWS-IAM-Server-ID header as part of GetCallerIdentity requests that are used in the iam auth method.
+	IAMServerIDHeaderValue *string `json:"iamServerIdHeaderValue,omitempty" tf:"iam_server_id_header_value,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Override the URL Vault uses when making STS API
+	// calls.
+	// URL to override the default generated endpoint for making AWS STS API calls.
+	StsEndpoint *string `json:"stsEndpoint,omitempty" tf:"sts_endpoint,omitempty"`
+
+	// Override the default region when making STS API
+	// calls. The sts_endpoint argument must be set when using sts_region.
+	// Region to override the default region for making AWS STS API calls.
+	StsRegion *string `json:"stsRegion,omitempty" tf:"sts_region,omitempty"`
+}
+
+type AuthBackendClientObservation struct {
+
+	// The path the AWS auth backend being configured was
+	// mounted at.  Defaults to aws.
+	// Unique name of the auth backend to configure.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Override the URL Vault uses when making EC2 API
+	// calls.
+	// URL to override the default generated endpoint for making AWS EC2 API calls.
+	EC2Endpoint *string `json:"ec2Endpoint,omitempty" tf:"ec2_endpoint,omitempty"`
+
+	// Override the URL Vault uses when making IAM API
+	// calls.
+	// URL to override the default generated endpoint for making AWS IAM API calls.
+	IAMEndpoint *string `json:"iamEndpoint,omitempty" tf:"iam_endpoint,omitempty"`
+
+	// The value to require in the
+	// X-Vault-AWS-IAM-Server-ID header as part of GetCallerIdentity requests
+	// that are used in the IAM auth method.
 	// The value to require in the X-Vault-AWS-IAM-Server-ID header as part of GetCallerIdentity requests that are used in the iam auth method.
 	IAMServerIDHeaderValue *string `json:"iamServerIdHeaderValue,omitempty" tf:"iam_server_id_header_value,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Override the URL Vault uses when making STS API
+	// calls.
 	// URL to override the default generated endpoint for making AWS STS API calls.
 	StsEndpoint *string `json:"stsEndpoint,omitempty" tf:"sts_endpoint,omitempty"`
 
+	// Override the default region when making STS API
+	// calls. The sts_endpoint argument must be set when using sts_region.
 	// Region to override the default region for making AWS STS API calls.
 	StsRegion *string `json:"stsRegion,omitempty" tf:"sts_region,omitempty"`
 }
 
 type AuthBackendClientParameters struct {
 
+	// The AWS access key that Vault should use for the
+	// auth backend.
 	// AWS Access key with permissions to query AWS APIs.
 	// +kubebuilder:validation:Optional
 	AccessKeySecretRef *v1.SecretKeySelector `json:"accessKeySecretRef,omitempty" tf:"-"`
 
+	// The path the AWS auth backend being configured was
+	// mounted at.  Defaults to aws.
 	// Unique name of the auth backend to configure.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// Override the URL Vault uses when making EC2 API
+	// calls.
 	// URL to override the default generated endpoint for making AWS EC2 API calls.
 	// +kubebuilder:validation:Optional
 	EC2Endpoint *string `json:"ec2Endpoint,omitempty" tf:"ec2_endpoint,omitempty"`
 
+	// Override the URL Vault uses when making IAM API
+	// calls.
 	// URL to override the default generated endpoint for making AWS IAM API calls.
 	// +kubebuilder:validation:Optional
 	IAMEndpoint *string `json:"iamEndpoint,omitempty" tf:"iam_endpoint,omitempty"`
 
+	// The value to require in the
+	// X-Vault-AWS-IAM-Server-ID header as part of GetCallerIdentity requests
+	// that are used in the IAM auth method.
 	// The value to require in the X-Vault-AWS-IAM-Server-ID header as part of GetCallerIdentity requests that are used in the iam auth method.
 	// +kubebuilder:validation:Optional
 	IAMServerIDHeaderValue *string `json:"iamServerIdHeaderValue,omitempty" tf:"iam_server_id_header_value,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The AWS secret key that Vault should use for the
+	// auth backend.
 	// AWS Secret key with permissions to query AWS APIs.
 	// +kubebuilder:validation:Optional
 	SecretKeySecretRef *v1.SecretKeySelector `json:"secretKeySecretRef,omitempty" tf:"-"`
 
+	// Override the URL Vault uses when making STS API
+	// calls.
 	// URL to override the default generated endpoint for making AWS STS API calls.
 	// +kubebuilder:validation:Optional
 	StsEndpoint *string `json:"stsEndpoint,omitempty" tf:"sts_endpoint,omitempty"`
 
+	// Override the default region when making STS API
+	// calls. The sts_endpoint argument must be set when using sts_region.
 	// Region to override the default region for making AWS STS API calls.
 	// +kubebuilder:validation:Optional
 	StsRegion *string `json:"stsRegion,omitempty" tf:"sts_region,omitempty"`
@@ -82,6 +161,18 @@ type AuthBackendClientParameters struct {
 type AuthBackendClientSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendClientParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AuthBackendClientInitParameters `json:"initProvider,omitempty"`
 }
 
 // AuthBackendClientStatus defines the observed state of AuthBackendClient.
@@ -92,7 +183,7 @@ type AuthBackendClientStatus struct {
 
 // +kubebuilder:object:root=true
 
-// AuthBackendClient is the Schema for the AuthBackendClients API. <no value>
+// AuthBackendClient is the Schema for the AuthBackendClients API. Configures the client used by an AWS Auth Backend in Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
