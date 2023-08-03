@@ -17,6 +17,7 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/ratelimiter"
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	tjcontroller "github.com/upbound/upjet/pkg/controller"
+	"github.com/upbound/upjet/pkg/controller/handler"
 	"github.com/upbound/upjet/pkg/terraform"
 	"gopkg.in/alecthomas/kingpin.v2"
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
@@ -90,6 +91,7 @@ func main() {
 		Provider:       config.GetProvider(),
 		SetupFn:        clients.TerraformSetupBuilder(*terraformVersion, *nativeProviderSource, *providerVersion),
 		WorkspaceStore: terraform.NewWorkspaceStore(log, terraform.WithDisableInit(len(*nativeProviderPath) != 0), terraform.WithProcessReportInterval(*pollInterval), terraform.WithFeatures(featureFlags)),
+		EventHandler:   handler.NewEventHandler(),
 	}
 
 	if *enableExternalSecretStores {
