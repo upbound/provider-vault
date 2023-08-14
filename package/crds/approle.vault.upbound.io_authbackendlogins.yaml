@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: authbackendlogins.approle.vault.upbound.io
 spec:
   group: approle.vault.upbound.io
@@ -36,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: AuthBackendLogin is the Schema for the AuthBackendLogins API.
-          <no value>
+          Log into Vault using the AppRole auth backend.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -58,7 +57,7 @@ spec:
                 description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
                   or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicy field in a future release. Currently,
+                  in favor of the ManagementPolicies field in a future release. Currently,
                   both could be set independently and non-default values would be
                   honored if the feature flag is enabled. See the design doc for more
                   information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
@@ -69,33 +68,86 @@ spec:
               forProvider:
                 properties:
                   backend:
-                    description: Unique name of the auth backend to configure.
+                    description: The unique path of the Vault backend to log in with.
+                      Unique name of the auth backend to configure.
                     type: string
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   roleId:
-                    description: The RoleID to log in with.
+                    description: The ID of the role to log in with. The RoleID to
+                      log in with.
                     type: string
                   secretId:
-                    description: The SecretID to log in with.
+                    description: The secret ID of the role to log in with. Required
+                      unless bind_secret_id is set to false on the role. The SecretID
+                      to log in with.
                     type: string
                 type: object
-              managementPolicy:
-                default: FullControl
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  backend:
+                    description: The unique path of the Vault backend to log in with.
+                      Unique name of the auth backend to configure.
+                    type: string
+                  namespace:
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
+                    type: string
+                  roleId:
+                    description: The ID of the role to log in with. The RoleID to
+                      log in with.
+                    type: string
+                  secretId:
+                    description: The secret ID of the role to log in with. Required
+                      unless bind_secret_id is set to false on the role. The SecretID
+                      to log in with.
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
                 description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
                   It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicy
-                  specifies the level of control Crossplane has over the managed external
-                  resource. This field is planned to replace the DeletionPolicy field
-                  in a future release. Currently, both could be set independently
-                  and non-default values would be honored if the feature flag is enabled.
-                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
-                enum:
-                - FullControl
-                - ObserveOnly
-                - OrphanOnDelete
-                type: string
+                  enabled, and may be changed or removed without notice. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
@@ -269,49 +321,66 @@ spec:
             type: object
             x-kubernetes-validations:
             - message: roleId is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.roleId)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.roleId)
+                || has(self.initProvider.roleId)'
           status:
             description: AuthBackendLoginStatus defines the observed state of AuthBackendLogin.
             properties:
               atProvider:
                 properties:
                   accessor:
-                    description: The accessor for the token.
+                    description: The accessor for the token. The accessor for the
+                      token.
                     type: string
                   backend:
-                    description: Unique name of the auth backend to configure.
+                    description: The unique path of the Vault backend to log in with.
+                      Unique name of the auth backend to configure.
                     type: string
                   clientToken:
-                    description: The token.
+                    description: The Vault token created. The token.
                     type: string
                   id:
                     type: string
                   leaseDuration:
-                    description: How long the token is valid for.
+                    description: How long the token is valid for, in seconds. How
+                      long the token is valid for.
                     type: number
                   leaseStarted:
+                    description: The date and time the lease started, in RFC 3339
+                      format.
                     type: string
                   metadata:
                     additionalProperties:
                       type: string
-                    description: Metadata associated with the token.
+                    description: The metadata associated with the token. Metadata
+                      associated with the token.
                     type: object
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   policies:
-                    description: Policies set on the token.
+                    description: A list of policies applied to the token. Policies
+                      set on the token.
                     items:
                       type: string
                     type: array
                   renewable:
-                    description: Whether the token is renewable or not.
+                    description: Whether the token is renewable or not. Whether the
+                      token is renewable or not.
                     type: boolean
                   roleId:
-                    description: The RoleID to log in with.
+                    description: The ID of the role to log in with. The RoleID to
+                      log in with.
                     type: string
                   secretId:
-                    description: The SecretID to log in with.
+                    description: The secret ID of the role to log in with. Required
+                      unless bind_secret_id is set to false on the role. The SecretID
+                      to log in with.
                     type: string
                 type: object
               conditions:

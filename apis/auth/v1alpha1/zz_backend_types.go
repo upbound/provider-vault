@@ -13,6 +13,33 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type BackendInitParameters struct {
+
+	// The description of the auth backend
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// If set, opts out of mount migration on path updates.
+	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
+
+	// Specifies if the auth method is local only
+	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// path to mount the backend. This defaults to the type.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	Tune []TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
+
+	// Name of the auth backend
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type BackendObservation struct {
 
 	// The accessor of the auth backend
@@ -29,6 +56,10 @@ type BackendObservation struct {
 	// Specifies if the auth method is local only
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
@@ -55,6 +86,10 @@ type BackendParameters struct {
 	// +kubebuilder:validation:Optional
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
@@ -69,6 +104,29 @@ type BackendParameters struct {
 	// Name of the auth backend
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type TuneInitParameters struct {
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers"`
+
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys"`
+
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys"`
+
+	DefaultLeaseTTL *string `json:"defaultLeaseTtl,omitempty" tf:"default_lease_ttl"`
+
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility"`
+
+	MaxLeaseTTL *string `json:"maxLeaseTtl,omitempty" tf:"max_lease_ttl"`
+
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers"`
+
+	// The type of token that should be generated. Can be service,
+	// batch, or default to use the mount's tuned default (which unless changed will be
+	// service tokens). For token store roles, there are two additional possibilities:
+	// default-service and default-batch which specify the type to return unless the client
+	// requests a different type at generation time.
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type"`
 }
 
 type TuneObservation struct {
@@ -86,6 +144,11 @@ type TuneObservation struct {
 
 	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
 
+	// The type of token that should be generated. Can be service,
+	// batch, or default to use the mount's tuned default (which unless changed will be
+	// service tokens). For token store roles, there are two additional possibilities:
+	// default-service and default-batch which specify the type to return unless the client
+	// requests a different type at generation time.
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 }
 
@@ -112,6 +175,11 @@ type TuneParameters struct {
 	// +kubebuilder:validation:Optional
 	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers"`
 
+	// The type of token that should be generated. Can be service,
+	// batch, or default to use the mount's tuned default (which unless changed will be
+	// service tokens). For token store roles, there are two additional possibilities:
+	// default-service and default-batch which specify the type to return unless the client
+	// requests a different type at generation time.
 	// +kubebuilder:validation:Optional
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type"`
 }
@@ -120,6 +188,18 @@ type TuneParameters struct {
 type BackendSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     BackendParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider BackendInitParameters `json:"initProvider,omitempty"`
 }
 
 // BackendStatus defines the observed state of Backend.
@@ -130,7 +210,7 @@ type BackendStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Backend is the Schema for the Backends API. <no value>
+// Backend is the Schema for the Backends API. Managing roles in an Cert auth backend in Vault
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -140,7 +220,7 @@ type BackendStatus struct {
 type Backend struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.type)",message="type is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || has(self.initProvider.type)",message="type is a required parameter"
 	Spec   BackendSpec   `json:"spec"`
 	Status BackendStatus `json:"status,omitempty"`
 }

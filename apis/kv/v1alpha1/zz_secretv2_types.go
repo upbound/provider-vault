@@ -13,109 +13,236 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type CustomMetadataObservation struct {
+type CustomMetadataInitParameters struct {
 
+	// If true, all keys will require the cas
+	// parameter to be set on all write requests.
 	// If true, all keys will require the cas parameter to be set on all write requests.
 	CasRequired *bool `json:"casRequired,omitempty" tf:"cas_required,omitempty"`
 
+	// A string to string map describing the secret.
 	// A map of arbitrary string to string valued user-provided metadata meant to describe the secret.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// If set, specifies the length of time before
+	// a version is deleted. Accepts duration in integer seconds.
 	// If set, specifies the length of time before a version is deleted.
 	DeleteVersionAfter *float64 `json:"deleteVersionAfter,omitempty" tf:"delete_version_after,omitempty"`
 
+	// The number of versions to keep per key.
+	// The number of versions to keep per key.
+	MaxVersions *float64 `json:"maxVersions,omitempty" tf:"max_versions,omitempty"`
+}
+
+type CustomMetadataObservation struct {
+
+	// If true, all keys will require the cas
+	// parameter to be set on all write requests.
+	// If true, all keys will require the cas parameter to be set on all write requests.
+	CasRequired *bool `json:"casRequired,omitempty" tf:"cas_required,omitempty"`
+
+	// A string to string map describing the secret.
+	// A map of arbitrary string to string valued user-provided metadata meant to describe the secret.
+	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// If set, specifies the length of time before
+	// a version is deleted. Accepts duration in integer seconds.
+	// If set, specifies the length of time before a version is deleted.
+	DeleteVersionAfter *float64 `json:"deleteVersionAfter,omitempty" tf:"delete_version_after,omitempty"`
+
+	// The number of versions to keep per key.
 	// The number of versions to keep per key.
 	MaxVersions *float64 `json:"maxVersions,omitempty" tf:"max_versions,omitempty"`
 }
 
 type CustomMetadataParameters struct {
 
+	// If true, all keys will require the cas
+	// parameter to be set on all write requests.
 	// If true, all keys will require the cas parameter to be set on all write requests.
 	// +kubebuilder:validation:Optional
 	CasRequired *bool `json:"casRequired,omitempty" tf:"cas_required,omitempty"`
 
+	// A string to string map describing the secret.
 	// A map of arbitrary string to string valued user-provided metadata meant to describe the secret.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// If set, specifies the length of time before
+	// a version is deleted. Accepts duration in integer seconds.
 	// If set, specifies the length of time before a version is deleted.
 	// +kubebuilder:validation:Optional
 	DeleteVersionAfter *float64 `json:"deleteVersionAfter,omitempty" tf:"delete_version_after,omitempty"`
 
 	// The number of versions to keep per key.
+	// The number of versions to keep per key.
 	// +kubebuilder:validation:Optional
 	MaxVersions *float64 `json:"maxVersions,omitempty" tf:"max_versions,omitempty"`
 }
 
-type SecretV2Observation struct {
+type SecretV2InitParameters struct {
 
+	// This flag is required if cas_required is set to true
+	// on either the secret or the engine's config. In order for a
+	// write operation to be successful, cas must be set to the current version
+	// of the secret.
 	// This flag is required if cas_required is set to true on either the secret or the engine's config. In order for a write to be successful, cas must be set to the current version of the secret.
 	Cas *float64 `json:"cas,omitempty" tf:"cas,omitempty"`
 
+	// A nested block that allows configuring metadata for the
+	// KV secret. Refer to the
+	// Configuration Options for more info.
 	// Custom metadata to be set for the secret.
-	CustomMetadata []CustomMetadataObservation `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
+	CustomMetadata []CustomMetadataInitParameters `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
+	// If set to true, permanently deletes all
+	// versions for the specified key.
 	// If set to true, permanently deletes all versions for the specified key.
 	DeleteAllVersions *bool `json:"deleteAllVersions,omitempty" tf:"delete_all_versions,omitempty"`
 
+	// If set to true, disables reading secret from Vault;
+	// note: drift won't be detected.
+	// If set to true, disables reading secret from Vault; note: drift won't be detected.
+	DisableRead *bool `json:"disableRead,omitempty" tf:"disable_read,omitempty"`
+
+	// Path where KV-V2 engine is mounted.
+	// Path where KV-V2 engine is mounted.
+	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`
+
+	// Full name of the secret. For a nested secret
+	// the name is the nested path excluding the mount and data
+	// prefix. For example, for a secret at kvv2/data/foo/bar/baz
+	// the name is foo/bar/baz.
+	// Full name of the secret. For a nested secret, the name is the nested path excluding the mount and data prefix. For example, for a secret at 'kvv2/data/foo/bar/baz', the name is 'foo/bar/baz'
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// An object that holds option settings.
+	// An object that holds option settings.
+	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
+}
+
+type SecretV2Observation struct {
+
+	// This flag is required if cas_required is set to true
+	// on either the secret or the engine's config. In order for a
+	// write operation to be successful, cas must be set to the current version
+	// of the secret.
+	// This flag is required if cas_required is set to true on either the secret or the engine's config. In order for a write to be successful, cas must be set to the current version of the secret.
+	Cas *float64 `json:"cas,omitempty" tf:"cas,omitempty"`
+
+	// A nested block that allows configuring metadata for the
+	// KV secret. Refer to the
+	// Configuration Options for more info.
+	// Custom metadata to be set for the secret.
+	CustomMetadata []CustomMetadataObservation `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
+
+	// If set to true, permanently deletes all
+	// versions for the specified key.
+	// If set to true, permanently deletes all versions for the specified key.
+	DeleteAllVersions *bool `json:"deleteAllVersions,omitempty" tf:"delete_all_versions,omitempty"`
+
+	// If set to true, disables reading secret from Vault;
+	// note: drift won't be detected.
 	// If set to true, disables reading secret from Vault; note: drift won't be detected.
 	DisableRead *bool `json:"disableRead,omitempty" tf:"disable_read,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Metadata associated with this secret read from Vault.
+	// Metadata associated with this secret read from Vault.
 	Metadata map[string]*string `json:"metadata,omitempty" tf:"metadata,omitempty"`
 
 	// Path where KV-V2 engine is mounted.
+	// Path where KV-V2 engine is mounted.
 	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`
 
+	// Full name of the secret. For a nested secret
+	// the name is the nested path excluding the mount and data
+	// prefix. For example, for a secret at kvv2/data/foo/bar/baz
+	// the name is foo/bar/baz.
 	// Full name of the secret. For a nested secret, the name is the nested path excluding the mount and data prefix. For example, for a secret at 'kvv2/data/foo/bar/baz', the name is 'foo/bar/baz'
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// An object that holds option settings.
+	// An object that holds option settings.
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 
+	// Full path where the KV-V2 secret will be written.
 	// Full path where the KV-V2 secret will be written.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 }
 
 type SecretV2Parameters struct {
 
+	// This flag is required if cas_required is set to true
+	// on either the secret or the engine's config. In order for a
+	// write operation to be successful, cas must be set to the current version
+	// of the secret.
 	// This flag is required if cas_required is set to true on either the secret or the engine's config. In order for a write to be successful, cas must be set to the current version of the secret.
 	// +kubebuilder:validation:Optional
 	Cas *float64 `json:"cas,omitempty" tf:"cas,omitempty"`
 
+	// A nested block that allows configuring metadata for the
+	// KV secret. Refer to the
+	// Configuration Options for more info.
 	// Custom metadata to be set for the secret.
 	// +kubebuilder:validation:Optional
 	CustomMetadata []CustomMetadataParameters `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
+	// JSON-encoded string that will be
+	// written as the secret data at the given path.
 	// JSON-encoded secret data to write.
 	// +kubebuilder:validation:Optional
 	DataJSONSecretRef v1.SecretKeySelector `json:"dataJsonSecretRef" tf:"-"`
 
+	// If set to true, permanently deletes all
+	// versions for the specified key.
 	// If set to true, permanently deletes all versions for the specified key.
 	// +kubebuilder:validation:Optional
 	DeleteAllVersions *bool `json:"deleteAllVersions,omitempty" tf:"delete_all_versions,omitempty"`
 
+	// If set to true, disables reading secret from Vault;
+	// note: drift won't be detected.
 	// If set to true, disables reading secret from Vault; note: drift won't be detected.
 	// +kubebuilder:validation:Optional
 	DisableRead *bool `json:"disableRead,omitempty" tf:"disable_read,omitempty"`
 
 	// Path where KV-V2 engine is mounted.
+	// Path where KV-V2 engine is mounted.
 	// +kubebuilder:validation:Optional
 	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`
 
+	// Full name of the secret. For a nested secret
+	// the name is the nested path excluding the mount and data
+	// prefix. For example, for a secret at kvv2/data/foo/bar/baz
+	// the name is foo/bar/baz.
 	// Full name of the secret. For a nested secret, the name is the nested path excluding the mount and data prefix. For example, for a secret at 'kvv2/data/foo/bar/baz', the name is 'foo/bar/baz'
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// An object that holds option settings.
 	// An object that holds option settings.
 	// +kubebuilder:validation:Optional
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
@@ -125,6 +252,18 @@ type SecretV2Parameters struct {
 type SecretV2Spec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretV2Parameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SecretV2InitParameters `json:"initProvider,omitempty"`
 }
 
 // SecretV2Status defines the observed state of SecretV2.
@@ -135,7 +274,7 @@ type SecretV2Status struct {
 
 // +kubebuilder:object:root=true
 
-// SecretV2 is the Schema for the SecretV2s API. <no value>
+// SecretV2 is the Schema for the SecretV2s API. Writes a KV-V2 secret to a given path in Vault
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -145,9 +284,9 @@ type SecretV2Status struct {
 type SecretV2 struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.dataJsonSecretRef)",message="dataJsonSecretRef is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.mount)",message="mount is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dataJsonSecretRef)",message="dataJsonSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mount) || has(self.initProvider.mount)",message="mount is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
 	Spec   SecretV2Spec   `json:"spec"`
 	Status SecretV2Status `json:"status,omitempty"`
 }

@@ -1,0 +1,14 @@
+apiVersion: jwt.vault.upbound.io/v1alpha1
+kind: AuthBackend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: jwt/v1alpha1/authbackend
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    boundIssuer: https://myco.auth0.com/
+    description: Demonstration of the Terraform JWT auth backend
+    oidcDiscoveryUrl: https://myco.auth0.com/
+    path: jwt

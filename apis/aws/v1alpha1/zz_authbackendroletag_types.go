@@ -13,69 +13,137 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AuthBackendRoleTagObservation struct {
+type AuthBackendRoleTagInitParameters struct {
 
+	// If set, allows migration of the underlying instances where the client resides. Use with caution.
 	// Allows migration of the underlying instance where the client resides.
 	AllowInstanceMigration *bool `json:"allowInstanceMigration,omitempty" tf:"allow_instance_migration,omitempty"`
 
+	// The path to the AWS auth backend to
+	// read role tags from, with no leading or trailing /s. Defaults to "aws".
 	// AWS auth backend to read tags from.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// If set, only allows a single token to be granted per instance ID.
+	// Only allow a single token to be granted per instance ID.
+	DisallowReauthentication *bool `json:"disallowReauthentication,omitempty" tf:"disallow_reauthentication,omitempty"`
+
+	// Instance ID for which this tag is intended for. If set, the created tag can only be used by the instance with the given ID.
+	// Instance ID for which this tag is intended. The created tag can only be used by the instance with the given ID.
+	InstanceID *string `json:"instanceId,omitempty" tf:"instance_id,omitempty"`
+
+	// The maximum TTL of the tokens issued using this role.
+	// The maximum allowed lifetime of tokens issued using this role.
+	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The policies to be associated with the tag. Must be a subset of the policies associated with the role.
+	// Policies to be associated with the tag.
+	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
+
+	// The name of the AWS auth backend role to read
+	// role tags from, with no leading or trailing /s.
+	// Name of the role.
+	Role *string `json:"role,omitempty" tf:"role,omitempty"`
+}
+
+type AuthBackendRoleTagObservation struct {
+
+	// If set, allows migration of the underlying instances where the client resides. Use with caution.
+	// Allows migration of the underlying instance where the client resides.
+	AllowInstanceMigration *bool `json:"allowInstanceMigration,omitempty" tf:"allow_instance_migration,omitempty"`
+
+	// The path to the AWS auth backend to
+	// read role tags from, with no leading or trailing /s. Defaults to "aws".
+	// AWS auth backend to read tags from.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// If set, only allows a single token to be granted per instance ID.
 	// Only allow a single token to be granted per instance ID.
 	DisallowReauthentication *bool `json:"disallowReauthentication,omitempty" tf:"disallow_reauthentication,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Instance ID for which this tag is intended for. If set, the created tag can only be used by the instance with the given ID.
 	// Instance ID for which this tag is intended. The created tag can only be used by the instance with the given ID.
 	InstanceID *string `json:"instanceId,omitempty" tf:"instance_id,omitempty"`
 
+	// The maximum TTL of the tokens issued using this role.
 	// The maximum allowed lifetime of tokens issued using this role.
 	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The policies to be associated with the tag. Must be a subset of the policies associated with the role.
 	// Policies to be associated with the tag.
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 
+	// The name of the AWS auth backend role to read
+	// role tags from, with no leading or trailing /s.
 	// Name of the role.
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
+	// The key of the role tag.
 	TagKey *string `json:"tagKey,omitempty" tf:"tag_key,omitempty"`
 
+	// The value to set the role key.
 	TagValue *string `json:"tagValue,omitempty" tf:"tag_value,omitempty"`
 }
 
 type AuthBackendRoleTagParameters struct {
 
+	// If set, allows migration of the underlying instances where the client resides. Use with caution.
 	// Allows migration of the underlying instance where the client resides.
 	// +kubebuilder:validation:Optional
 	AllowInstanceMigration *bool `json:"allowInstanceMigration,omitempty" tf:"allow_instance_migration,omitempty"`
 
+	// The path to the AWS auth backend to
+	// read role tags from, with no leading or trailing /s. Defaults to "aws".
 	// AWS auth backend to read tags from.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// If set, only allows a single token to be granted per instance ID.
 	// Only allow a single token to be granted per instance ID.
 	// +kubebuilder:validation:Optional
 	DisallowReauthentication *bool `json:"disallowReauthentication,omitempty" tf:"disallow_reauthentication,omitempty"`
 
+	// Instance ID for which this tag is intended for. If set, the created tag can only be used by the instance with the given ID.
 	// Instance ID for which this tag is intended. The created tag can only be used by the instance with the given ID.
 	// +kubebuilder:validation:Optional
 	InstanceID *string `json:"instanceId,omitempty" tf:"instance_id,omitempty"`
 
+	// The maximum TTL of the tokens issued using this role.
 	// The maximum allowed lifetime of tokens issued using this role.
 	// +kubebuilder:validation:Optional
 	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The policies to be associated with the tag. Must be a subset of the policies associated with the role.
 	// Policies to be associated with the tag.
 	// +kubebuilder:validation:Optional
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 
+	// The name of the AWS auth backend role to read
+	// role tags from, with no leading or trailing /s.
 	// Name of the role.
 	// +kubebuilder:validation:Optional
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
@@ -85,6 +153,18 @@ type AuthBackendRoleTagParameters struct {
 type AuthBackendRoleTagSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendRoleTagParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AuthBackendRoleTagInitParameters `json:"initProvider,omitempty"`
 }
 
 // AuthBackendRoleTagStatus defines the observed state of AuthBackendRoleTag.
@@ -95,7 +175,7 @@ type AuthBackendRoleTagStatus struct {
 
 // +kubebuilder:object:root=true
 
-// AuthBackendRoleTag is the Schema for the AuthBackendRoleTags API. <no value>
+// AuthBackendRoleTag is the Schema for the AuthBackendRoleTags API. Reads role tags from a Vault AWS auth backend.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -105,7 +185,7 @@ type AuthBackendRoleTagStatus struct {
 type AuthBackendRoleTag struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.role)",message="role is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.role) || has(self.initProvider.role)",message="role is a required parameter"
 	Spec   AuthBackendRoleTagSpec   `json:"spec"`
 	Status AuthBackendRoleTagStatus `json:"status,omitempty"`
 }

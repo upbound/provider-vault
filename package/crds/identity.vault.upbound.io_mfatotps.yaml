@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: mfatotps.identity.vault.upbound.io
 spec:
   group: identity.vault.upbound.io
@@ -35,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: MfaTotp is the Schema for the MfaTotps API. <no value>
+        description: MfaTotp is the Schema for the MfaTotps API. Resource for configuring
+          the totp MFA method.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -57,7 +57,7 @@ spec:
                 description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
                   or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicy field in a future release. Currently,
+                  in favor of the ManagementPolicies field in a future release. Currently,
                   both could be set independently and non-default values would be
                   honored if the feature flag is enabled. See the design doc for more
                   information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
@@ -69,52 +69,131 @@ spec:
                 properties:
                   algorithm:
                     description: Specifies the hashing algorithm used to generate
-                      the TOTP code. Options include SHA1, SHA256, SHA512.
+                      the TOTP code. Options include SHA1, SHA256, SHA512. Specifies
+                      the hashing algorithm used to generate the TOTP code. Options
+                      include SHA1, SHA256, SHA512.
                     type: string
                   digits:
                     description: The number of digits in the generated TOTP token.
-                      This value can either be 6 or 8
+                      This value can either be 6 or 8 The number of digits in the
+                      generated TOTP token. This value can either be 6 or 8
                     type: number
                   issuer:
-                    description: The name of the key's issuing organization.
+                    description: The name of the key's issuing organization. The name
+                      of the key's issuing organization.
                     type: string
                   keySize:
                     description: Specifies the size in bytes of the generated key.
+                      Specifies the size in bytes of the generated key.
                     type: number
                   maxValidationAttempts:
                     description: The maximum number of consecutive failed validation
+                      attempts allowed. The maximum number of consecutive failed validation
                       attempts allowed.
                     type: number
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: Target namespace. (requires Enterprise) Target namespace.
+                      (requires Enterprise)
                     type: string
                   period:
                     description: The length of time in seconds used to generate a
-                      counter for the TOTP token calculation.
+                      counter for the TOTP token calculation. The length of time in
+                      seconds used to generate a counter for the TOTP token calculation.
                     type: number
                   qrSize:
-                    description: The pixel size of the generated square QR code.
+                    description: The pixel size of the generated square QR code. The
+                      pixel size of the generated square QR code.
                     type: number
                   skew:
                     description: The number of delay periods that are allowed when
-                      validating a TOTP token. This value can either be 0 or 1.
+                      validating a TOTP token. This value can either be 0 or 1. The
+                      number of delay periods that are allowed when validating a TOTP
+                      token. This value can either be 0 or 1.
                     type: number
                 type: object
-              managementPolicy:
-                default: FullControl
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  algorithm:
+                    description: Specifies the hashing algorithm used to generate
+                      the TOTP code. Options include SHA1, SHA256, SHA512. Specifies
+                      the hashing algorithm used to generate the TOTP code. Options
+                      include SHA1, SHA256, SHA512.
+                    type: string
+                  digits:
+                    description: The number of digits in the generated TOTP token.
+                      This value can either be 6 or 8 The number of digits in the
+                      generated TOTP token. This value can either be 6 or 8
+                    type: number
+                  issuer:
+                    description: The name of the key's issuing organization. The name
+                      of the key's issuing organization.
+                    type: string
+                  keySize:
+                    description: Specifies the size in bytes of the generated key.
+                      Specifies the size in bytes of the generated key.
+                    type: number
+                  maxValidationAttempts:
+                    description: The maximum number of consecutive failed validation
+                      attempts allowed. The maximum number of consecutive failed validation
+                      attempts allowed.
+                    type: number
+                  namespace:
+                    description: Target namespace. (requires Enterprise) Target namespace.
+                      (requires Enterprise)
+                    type: string
+                  period:
+                    description: The length of time in seconds used to generate a
+                      counter for the TOTP token calculation. The length of time in
+                      seconds used to generate a counter for the TOTP token calculation.
+                    type: number
+                  qrSize:
+                    description: The pixel size of the generated square QR code. The
+                      pixel size of the generated square QR code.
+                    type: number
+                  skew:
+                    description: The number of delay periods that are allowed when
+                      validating a TOTP token. This value can either be 0 or 1. The
+                      number of delay periods that are allowed when validating a TOTP
+                      token. This value can either be 0 or 1.
+                    type: number
+                type: object
+              managementPolicies:
+                default:
+                - '*'
                 description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
                   It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicy
-                  specifies the level of control Crossplane has over the managed external
-                  resource. This field is planned to replace the DeletionPolicy field
-                  in a future release. Currently, both could be set independently
-                  and non-default values would be honored if the feature flag is enabled.
-                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
-                enum:
-                - FullControl
-                - ObserveOnly
-                - OrphanOnDelete
-                type: string
+                  enabled, and may be changed or removed without notice. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
@@ -288,7 +367,9 @@ spec:
             type: object
             x-kubernetes-validations:
             - message: issuer is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.issuer)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.issuer)
+                || has(self.initProvider.issuer)'
           status:
             description: MfaTotpStatus defines the observed state of MfaTotp.
             properties:
@@ -296,58 +377,69 @@ spec:
                 properties:
                   algorithm:
                     description: Specifies the hashing algorithm used to generate
-                      the TOTP code. Options include SHA1, SHA256, SHA512.
+                      the TOTP code. Options include SHA1, SHA256, SHA512. Specifies
+                      the hashing algorithm used to generate the TOTP code. Options
+                      include SHA1, SHA256, SHA512.
                     type: string
                   digits:
                     description: The number of digits in the generated TOTP token.
-                      This value can either be 6 or 8
+                      This value can either be 6 or 8 The number of digits in the
+                      generated TOTP token. This value can either be 6 or 8
                     type: number
                   id:
                     type: string
                   issuer:
-                    description: The name of the key's issuing organization.
+                    description: The name of the key's issuing organization. The name
+                      of the key's issuing organization.
                     type: string
                   keySize:
                     description: Specifies the size in bytes of the generated key.
+                      Specifies the size in bytes of the generated key.
                     type: number
                   maxValidationAttempts:
                     description: The maximum number of consecutive failed validation
+                      attempts allowed. The maximum number of consecutive failed validation
                       attempts allowed.
                     type: number
                   methodId:
-                    description: Method ID.
+                    description: Method ID. Method ID.
                     type: string
                   mountAccessor:
-                    description: Mount accessor.
+                    description: Mount accessor. Mount accessor.
                     type: string
                   name:
                     description: Method name.
                     type: string
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: Target namespace. (requires Enterprise) Target namespace.
+                      (requires Enterprise)
                     type: string
                   namespaceId:
-                    description: Method's namespace ID.
+                    description: Method's namespace ID. Method's namespace ID.
                     type: string
                   namespacePath:
-                    description: Method's namespace path.
+                    description: Method's namespace path. Method's namespace path.
                     type: string
                   period:
                     description: The length of time in seconds used to generate a
-                      counter for the TOTP token calculation.
+                      counter for the TOTP token calculation. The length of time in
+                      seconds used to generate a counter for the TOTP token calculation.
                     type: number
                   qrSize:
-                    description: The pixel size of the generated square QR code.
+                    description: The pixel size of the generated square QR code. The
+                      pixel size of the generated square QR code.
                     type: number
                   skew:
                     description: The number of delay periods that are allowed when
-                      validating a TOTP token. This value can either be 0 or 1.
+                      validating a TOTP token. This value can either be 0 or 1. The
+                      number of delay periods that are allowed when validating a TOTP
+                      token. This value can either be 0 or 1.
                     type: number
                   type:
-                    description: MFA type.
+                    description: MFA type. MFA type.
                     type: string
                   uuid:
-                    description: Resource UUID.
+                    description: Resource UUID. Resource UUID.
                     type: string
                 type: object
               conditions:

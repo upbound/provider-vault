@@ -17,9 +17,9 @@ func (mg *CloudSecretBackend) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this CloudSecretBackend.
-func (mg *CloudSecretBackend) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this CloudSecretBackend.
+func (mg *CloudSecretBackend) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this CloudSecretBackend.
@@ -55,9 +55,9 @@ func (mg *CloudSecretBackend) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this CloudSecretBackend.
-func (mg *CloudSecretBackend) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this CloudSecretBackend.
+func (mg *CloudSecretBackend) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this CloudSecretBackend.
@@ -93,9 +93,9 @@ func (mg *CloudSecretCreds) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this CloudSecretCreds.
-func (mg *CloudSecretCreds) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this CloudSecretCreds.
+func (mg *CloudSecretCreds) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this CloudSecretCreds.
@@ -131,9 +131,9 @@ func (mg *CloudSecretCreds) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this CloudSecretCreds.
-func (mg *CloudSecretCreds) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this CloudSecretCreds.
+func (mg *CloudSecretCreds) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this CloudSecretCreds.
@@ -169,9 +169,9 @@ func (mg *CloudSecretRole) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this CloudSecretRole.
-func (mg *CloudSecretRole) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this CloudSecretRole.
+func (mg *CloudSecretRole) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this CloudSecretRole.
@@ -207,9 +207,9 @@ func (mg *CloudSecretRole) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this CloudSecretRole.
-func (mg *CloudSecretRole) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this CloudSecretRole.
+func (mg *CloudSecretRole) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this CloudSecretRole.

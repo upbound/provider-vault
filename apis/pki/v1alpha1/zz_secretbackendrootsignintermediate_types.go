@@ -13,6 +13,75 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type SecretBackendRootSignIntermediateInitParameters struct {
+
+	// List of alternative names.
+	AltNames []*string `json:"altNames,omitempty" tf:"alt_names,omitempty"`
+
+	// The PKI secret backend the resource belongs to.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// CN of intermediate to create.
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	// The country.
+	Country *string `json:"country,omitempty" tf:"country,omitempty"`
+
+	// The CSR.
+	Csr *string `json:"csr,omitempty" tf:"csr,omitempty"`
+
+	// Flag to exclude CN from SANs.
+	ExcludeCnFromSans *bool `json:"excludeCnFromSans,omitempty" tf:"exclude_cn_from_sans,omitempty"`
+
+	// The format of data.
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// List of alternative IPs.
+	IPSans []*string `json:"ipSans,omitempty" tf:"ip_sans,omitempty"`
+
+	// The locality.
+	Locality *string `json:"locality,omitempty" tf:"locality,omitempty"`
+
+	// The maximum path length to encode in the generated certificate.
+	MaxPathLength *float64 `json:"maxPathLength,omitempty" tf:"max_path_length,omitempty"`
+
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The organization.
+	Organization *string `json:"organization,omitempty" tf:"organization,omitempty"`
+
+	// List of other SANs.
+	OtherSans []*string `json:"otherSans,omitempty" tf:"other_sans,omitempty"`
+
+	// The organization unit.
+	Ou *string `json:"ou,omitempty" tf:"ou,omitempty"`
+
+	// List of domains for which certificates are allowed to be issued.
+	PermittedDNSDomains []*string `json:"permittedDnsDomains,omitempty" tf:"permitted_dns_domains,omitempty"`
+
+	// The postal code.
+	PostalCode *string `json:"postalCode,omitempty" tf:"postal_code,omitempty"`
+
+	// The province.
+	Province *string `json:"province,omitempty" tf:"province,omitempty"`
+
+	// Revoke the certificate upon resource destruction.
+	Revoke *bool `json:"revoke,omitempty" tf:"revoke,omitempty"`
+
+	// The street address.
+	StreetAddress *string `json:"streetAddress,omitempty" tf:"street_address,omitempty"`
+
+	// Time to live.
+	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// List of alternative URIs.
+	URISans []*string `json:"uriSans,omitempty" tf:"uri_sans,omitempty"`
+
+	// Preserve CSR values.
+	UseCsrValues *bool `json:"useCsrValues,omitempty" tf:"use_csr_values,omitempty"`
+}
+
 type SecretBackendRootSignIntermediateObservation struct {
 
 	// List of alternative names.
@@ -197,6 +266,18 @@ type SecretBackendRootSignIntermediateParameters struct {
 type SecretBackendRootSignIntermediateSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendRootSignIntermediateParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SecretBackendRootSignIntermediateInitParameters `json:"initProvider,omitempty"`
 }
 
 // SecretBackendRootSignIntermediateStatus defines the observed state of SecretBackendRootSignIntermediate.
@@ -217,9 +298,9 @@ type SecretBackendRootSignIntermediateStatus struct {
 type SecretBackendRootSignIntermediate struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.commonName)",message="commonName is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.csr)",message="csr is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.commonName) || has(self.initProvider.commonName)",message="commonName is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.csr) || has(self.initProvider.csr)",message="csr is a required parameter"
 	Spec   SecretBackendRootSignIntermediateSpec   `json:"spec"`
 	Status SecretBackendRootSignIntermediateStatus `json:"status,omitempty"`
 }

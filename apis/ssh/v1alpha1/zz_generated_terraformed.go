@@ -69,6 +69,16 @@ func (tr *SecretBackendCA) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this SecretBackendCA
+func (tr *SecretBackendCA) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this SecretBackendCA using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *SecretBackendCA) LateInitialize(attrs []byte) (bool, error) {
@@ -141,6 +151,16 @@ func (tr *SecretBackendRole) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this SecretBackendRole
+func (tr *SecretBackendRole) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this SecretBackendRole using its observed tfState.

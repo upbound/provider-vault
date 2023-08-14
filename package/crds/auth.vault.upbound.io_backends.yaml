@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: backends.auth.vault.upbound.io
 spec:
   group: auth.vault.upbound.io
@@ -35,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Backend is the Schema for the Backends API. <no value>
+        description: Backend is the Schema for the Backends API. Managing roles in
+          an Cert auth backend in Vault
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -57,7 +57,7 @@ spec:
                 description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
                   or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicy field in a future release. Currently,
+                  in favor of the ManagementPolicies field in a future release. Currently,
                   both could be set independently and non-default values would be
                   honored if the feature flag is enabled. See the design doc for more
                   information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
@@ -77,7 +77,11 @@ spec:
                     description: Specifies if the auth method is local only
                     type: boolean
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   path:
                     description: path to mount the backend. This defaults to the type.
@@ -108,6 +112,13 @@ spec:
                             type: string
                           type: array
                         tokenType:
+                          description: 'The type of token that should be generated.
+                            Can be service, batch, or default to use the mount''s
+                            tuned default (which unless changed will be service tokens).
+                            For token store roles, there are two additional possibilities:
+                            default-service and default-batch which specify the type
+                            to return unless the client requests a different type
+                            at generation time.'
                           type: string
                       type: object
                     type: array
@@ -115,21 +126,104 @@ spec:
                     description: Name of the auth backend
                     type: string
                 type: object
-              managementPolicy:
-                default: FullControl
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  description:
+                    description: The description of the auth backend
+                    type: string
+                  disableRemount:
+                    description: If set, opts out of mount migration on path updates.
+                    type: boolean
+                  local:
+                    description: Specifies if the auth method is local only
+                    type: boolean
+                  namespace:
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
+                    type: string
+                  path:
+                    description: path to mount the backend. This defaults to the type.
+                    type: string
+                  tune:
+                    items:
+                      properties:
+                        allowedResponseHeaders:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacRequestKeys:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacResponseKeys:
+                          items:
+                            type: string
+                          type: array
+                        defaultLeaseTtl:
+                          type: string
+                        listingVisibility:
+                          type: string
+                        maxLeaseTtl:
+                          type: string
+                        passthroughRequestHeaders:
+                          items:
+                            type: string
+                          type: array
+                        tokenType:
+                          description: 'The type of token that should be generated.
+                            Can be service, batch, or default to use the mount''s
+                            tuned default (which unless changed will be service tokens).
+                            For token store roles, there are two additional possibilities:
+                            default-service and default-batch which specify the type
+                            to return unless the client requests a different type
+                            at generation time.'
+                          type: string
+                      type: object
+                    type: array
+                  type:
+                    description: Name of the auth backend
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
                 description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
                   It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicy
-                  specifies the level of control Crossplane has over the managed external
-                  resource. This field is planned to replace the DeletionPolicy field
-                  in a future release. Currently, both could be set independently
-                  and non-default values would be honored if the feature flag is enabled.
-                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
-                enum:
-                - FullControl
-                - ObserveOnly
-                - OrphanOnDelete
-                type: string
+                  enabled, and may be changed or removed without notice. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
@@ -303,7 +397,9 @@ spec:
             type: object
             x-kubernetes-validations:
             - message: type is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.type)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || has(self.initProvider.type)'
           status:
             description: BackendStatus defines the observed state of Backend.
             properties:
@@ -324,7 +420,11 @@ spec:
                     description: Specifies if the auth method is local only
                     type: boolean
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   path:
                     description: path to mount the backend. This defaults to the type.
@@ -355,6 +455,13 @@ spec:
                             type: string
                           type: array
                         tokenType:
+                          description: 'The type of token that should be generated.
+                            Can be service, batch, or default to use the mount''s
+                            tuned default (which unless changed will be service tokens).
+                            For token store roles, there are two additional possibilities:
+                            default-service and default-batch which specify the type
+                            to return unless the client requests a different type
+                            at generation time.'
                           type: string
                       type: object
                     type: array

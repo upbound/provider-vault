@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: transformations.transform.vault.upbound.io
 spec:
   group: transform.vault.upbound.io
@@ -35,8 +34,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Transformation is the Schema for the Transformations API. <no
-          value>
+        description: Transformation is the Schema for the Transformations API. "/transform/transformation/{name}"
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -58,7 +56,7 @@ spec:
                 description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
                   or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicy field in a future release. Currently,
+                  in favor of the ManagementPolicies field in a future release. Currently,
                   both could be set independently and non-default values would be
                   honored if the feature flag is enabled. See the design doc for more
                   information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
@@ -70,58 +68,147 @@ spec:
                 properties:
                   allowedRoles:
                     description: The set of roles allowed to perform this transformation.
+                      The set of roles allowed to perform this transformation.
                     items:
                       type: string
                     type: array
                   deletionAllowed:
-                    description: If true, this transform can be deleted. Otherwise
-                      deletion is blocked while this value remains false.
+                    description: 'If true, this transform can be deleted. Otherwise,
+                      deletion is blocked while this value remains false. Default:
+                      false Only supported on vault-1.12+ If true, this transform
+                      can be deleted. Otherwise deletion is blocked while this value
+                      remains false.'
                     type: boolean
                   maskingCharacter:
                     description: The character used to replace data when in masking
-                      mode
+                      mode The character used to replace data when in masking mode
                     type: string
                   name:
-                    description: The name of the transformation.
+                    description: The name of the transformation. The name of the transformation.
                     type: string
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   path:
-                    description: The mount path for a back-end, for example, the path
-                      given in "$ vault auth enable -path=my-aws aws".
+                    description: Path to where the back-end is mounted within Vault.
+                      The mount path for a back-end, for example, the path given in
+                      "$ vault auth enable -path=my-aws aws".
                     type: string
                   template:
-                    description: The name of the template to use.
+                    description: The name of the template to use. The name of the
+                      template to use.
                     type: string
                   templates:
-                    description: Templates configured for transformation.
+                    description: Templates configured for transformation. Templates
+                      configured for transformation.
                     items:
                       type: string
                     type: array
                   tweakSource:
                     description: The source of where the tweak value comes from. Only
-                      valid when in FPE mode.
+                      valid when in FPE mode. The source of where the tweak value
+                      comes from. Only valid when in FPE mode.
                     type: string
                   type:
-                    description: The type of transformation to perform.
+                    description: The type of transformation to perform. The type of
+                      transformation to perform.
                     type: string
                 type: object
-              managementPolicy:
-                default: FullControl
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  allowedRoles:
+                    description: The set of roles allowed to perform this transformation.
+                      The set of roles allowed to perform this transformation.
+                    items:
+                      type: string
+                    type: array
+                  deletionAllowed:
+                    description: 'If true, this transform can be deleted. Otherwise,
+                      deletion is blocked while this value remains false. Default:
+                      false Only supported on vault-1.12+ If true, this transform
+                      can be deleted. Otherwise deletion is blocked while this value
+                      remains false.'
+                    type: boolean
+                  maskingCharacter:
+                    description: The character used to replace data when in masking
+                      mode The character used to replace data when in masking mode
+                    type: string
+                  name:
+                    description: The name of the transformation. The name of the transformation.
+                    type: string
+                  namespace:
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
+                    type: string
+                  path:
+                    description: Path to where the back-end is mounted within Vault.
+                      The mount path for a back-end, for example, the path given in
+                      "$ vault auth enable -path=my-aws aws".
+                    type: string
+                  template:
+                    description: The name of the template to use. The name of the
+                      template to use.
+                    type: string
+                  templates:
+                    description: Templates configured for transformation. Templates
+                      configured for transformation.
+                    items:
+                      type: string
+                    type: array
+                  tweakSource:
+                    description: The source of where the tweak value comes from. Only
+                      valid when in FPE mode. The source of where the tweak value
+                      comes from. Only valid when in FPE mode.
+                    type: string
+                  type:
+                    description: The type of transformation to perform. The type of
+                      transformation to perform.
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
                 description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
                   It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicy
-                  specifies the level of control Crossplane has over the managed external
-                  resource. This field is planned to replace the DeletionPolicy field
-                  in a future release. Currently, both could be set independently
-                  and non-default values would be honored if the feature flag is enabled.
-                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
-                enum:
-                - FullControl
-                - ObserveOnly
-                - OrphanOnDelete
-                type: string
+                  enabled, and may be changed or removed without notice. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
@@ -295,9 +382,13 @@ spec:
             type: object
             x-kubernetes-validations:
             - message: name is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
             - message: path is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.path)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.path)
+                || has(self.initProvider.path)'
           status:
             description: TransformationStatus defines the observed state of Transformation.
             properties:
@@ -305,43 +396,56 @@ spec:
                 properties:
                   allowedRoles:
                     description: The set of roles allowed to perform this transformation.
+                      The set of roles allowed to perform this transformation.
                     items:
                       type: string
                     type: array
                   deletionAllowed:
-                    description: If true, this transform can be deleted. Otherwise
-                      deletion is blocked while this value remains false.
+                    description: 'If true, this transform can be deleted. Otherwise,
+                      deletion is blocked while this value remains false. Default:
+                      false Only supported on vault-1.12+ If true, this transform
+                      can be deleted. Otherwise deletion is blocked while this value
+                      remains false.'
                     type: boolean
                   id:
                     type: string
                   maskingCharacter:
                     description: The character used to replace data when in masking
-                      mode
+                      mode The character used to replace data when in masking mode
                     type: string
                   name:
-                    description: The name of the transformation.
+                    description: The name of the transformation. The name of the transformation.
                     type: string
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   path:
-                    description: The mount path for a back-end, for example, the path
-                      given in "$ vault auth enable -path=my-aws aws".
+                    description: Path to where the back-end is mounted within Vault.
+                      The mount path for a back-end, for example, the path given in
+                      "$ vault auth enable -path=my-aws aws".
                     type: string
                   template:
-                    description: The name of the template to use.
+                    description: The name of the template to use. The name of the
+                      template to use.
                     type: string
                   templates:
-                    description: Templates configured for transformation.
+                    description: Templates configured for transformation. Templates
+                      configured for transformation.
                     items:
                       type: string
                     type: array
                   tweakSource:
                     description: The source of where the tweak value comes from. Only
-                      valid when in FPE mode.
+                      valid when in FPE mode. The source of where the tweak value
+                      comes from. Only valid when in FPE mode.
                     type: string
                   type:
-                    description: The type of transformation to perform.
+                    description: The type of transformation to perform. The type of
+                      transformation to perform.
                     type: string
                 type: object
               conditions:

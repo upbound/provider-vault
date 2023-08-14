@@ -13,19 +13,48 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AlphabetInitParameters struct {
+
+	// A string of characters that contains the alphabet set.
+	// A string of characters that contains the alphabet set.
+	Alphabet *string `json:"alphabet,omitempty" tf:"alphabet,omitempty"`
+
+	// The name of the alphabet.
+	// The name of the alphabet.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Path to where the back-end is mounted within Vault.
+	// The mount path for a back-end, for example, the path given in "$ vault auth enable -path=my-aws aws".
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+}
+
 type AlphabetObservation struct {
 
+	// A string of characters that contains the alphabet set.
 	// A string of characters that contains the alphabet set.
 	Alphabet *string `json:"alphabet,omitempty" tf:"alphabet,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The name of the alphabet.
+	// The name of the alphabet.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Path to where the back-end is mounted within Vault.
 	// The mount path for a back-end, for example, the path given in "$ vault auth enable -path=my-aws aws".
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 }
@@ -33,17 +62,24 @@ type AlphabetObservation struct {
 type AlphabetParameters struct {
 
 	// A string of characters that contains the alphabet set.
+	// A string of characters that contains the alphabet set.
 	// +kubebuilder:validation:Optional
 	Alphabet *string `json:"alphabet,omitempty" tf:"alphabet,omitempty"`
 
 	// The name of the alphabet.
+	// The name of the alphabet.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Path to where the back-end is mounted within Vault.
 	// The mount path for a back-end, for example, the path given in "$ vault auth enable -path=my-aws aws".
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
@@ -53,6 +89,18 @@ type AlphabetParameters struct {
 type AlphabetSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AlphabetParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AlphabetInitParameters `json:"initProvider,omitempty"`
 }
 
 // AlphabetStatus defines the observed state of Alphabet.
@@ -63,7 +111,7 @@ type AlphabetStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Alphabet is the Schema for the Alphabets API. <no value>
+// Alphabet is the Schema for the Alphabets API. "/transform/alphabet/{name}"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -73,8 +121,8 @@ type AlphabetStatus struct {
 type Alphabet struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.path)",message="path is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || has(self.initProvider.path)",message="path is a required parameter"
 	Spec   AlphabetSpec   `json:"spec"`
 	Status AlphabetStatus `json:"status,omitempty"`
 }

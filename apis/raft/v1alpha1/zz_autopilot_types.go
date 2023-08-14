@@ -13,65 +13,146 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AutopilotObservation struct {
+type AutopilotInitParameters struct {
 
+	// quorum is also set.
 	// Specifies whether to remove dead server nodes periodically or when a new server joins. This requires that min-quorum is also set.
 	CleanupDeadServers *bool `json:"cleanupDeadServers,omitempty" tf:"cleanup_dead_servers,omitempty"`
 
+	// Limit the amount of time a
+	// server can go without leader contact before being considered failed. This only takes
+	// effect when cleanup_dead_servers is set.
 	// Limit the amount of time a server can go without leader contact before being considered failed. This only takes effect when cleanup_dead_servers is set.
 	DeadServerLastContactThreshold *string `json:"deadServerLastContactThreshold,omitempty" tf:"dead_server_last_contact_threshold,omitempty"`
 
+	// only)
+	// Disables automatically upgrading Vault using autopilot. (Enterprise-only)
+	DisableUpgradeMigration *bool `json:"disableUpgradeMigration,omitempty" tf:"disable_upgrade_migration,omitempty"`
+
+	// Limit the amount of time a server can go
+	// without leader contact before being considered unhealthy.
+	// Limit the amount of time a server can go without leader contact before being considered unhealthy.
+	LastContactThreshold *string `json:"lastContactThreshold,omitempty" tf:"last_contact_threshold,omitempty"`
+
+	// Maximum number of log entries in the Raft log
+	// that a server can be behind its leader before being considered unhealthy.
+	// Maximum number of log entries in the Raft log that a server can be behind its leader before being considered unhealthy.
+	MaxTrailingLogs *float64 `json:"maxTrailingLogs,omitempty" tf:"max_trailing_logs,omitempty"`
+
+	// Minimum number of servers allowed in a cluster before
+	// autopilot can prune dead servers. This should at least be 3. Applicable only for
+	// voting nodes.
+	// Minimum number of servers allowed in a cluster before autopilot can prune dead servers. This should at least be 3. Applicable only for voting nodes.
+	MinQuorum *float64 `json:"minQuorum,omitempty" tf:"min_quorum,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Minimum amount of time a server must be
+	// stable in the 'healthy' state before being added to the cluster.
+	// Minimum amount of time a server must be stable in the 'healthy' state before being added to the cluster.
+	ServerStabilizationTime *string `json:"serverStabilizationTime,omitempty" tf:"server_stabilization_time,omitempty"`
+}
+
+type AutopilotObservation struct {
+
+	// quorum is also set.
+	// Specifies whether to remove dead server nodes periodically or when a new server joins. This requires that min-quorum is also set.
+	CleanupDeadServers *bool `json:"cleanupDeadServers,omitempty" tf:"cleanup_dead_servers,omitempty"`
+
+	// Limit the amount of time a
+	// server can go without leader contact before being considered failed. This only takes
+	// effect when cleanup_dead_servers is set.
+	// Limit the amount of time a server can go without leader contact before being considered failed. This only takes effect when cleanup_dead_servers is set.
+	DeadServerLastContactThreshold *string `json:"deadServerLastContactThreshold,omitempty" tf:"dead_server_last_contact_threshold,omitempty"`
+
+	// only)
 	// Disables automatically upgrading Vault using autopilot. (Enterprise-only)
 	DisableUpgradeMigration *bool `json:"disableUpgradeMigration,omitempty" tf:"disable_upgrade_migration,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Limit the amount of time a server can go
+	// without leader contact before being considered unhealthy.
 	// Limit the amount of time a server can go without leader contact before being considered unhealthy.
 	LastContactThreshold *string `json:"lastContactThreshold,omitempty" tf:"last_contact_threshold,omitempty"`
 
+	// Maximum number of log entries in the Raft log
+	// that a server can be behind its leader before being considered unhealthy.
 	// Maximum number of log entries in the Raft log that a server can be behind its leader before being considered unhealthy.
 	MaxTrailingLogs *float64 `json:"maxTrailingLogs,omitempty" tf:"max_trailing_logs,omitempty"`
 
+	// Minimum number of servers allowed in a cluster before
+	// autopilot can prune dead servers. This should at least be 3. Applicable only for
+	// voting nodes.
 	// Minimum number of servers allowed in a cluster before autopilot can prune dead servers. This should at least be 3. Applicable only for voting nodes.
 	MinQuorum *float64 `json:"minQuorum,omitempty" tf:"min_quorum,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Minimum amount of time a server must be
+	// stable in the 'healthy' state before being added to the cluster.
 	// Minimum amount of time a server must be stable in the 'healthy' state before being added to the cluster.
 	ServerStabilizationTime *string `json:"serverStabilizationTime,omitempty" tf:"server_stabilization_time,omitempty"`
 }
 
 type AutopilotParameters struct {
 
+	// quorum is also set.
 	// Specifies whether to remove dead server nodes periodically or when a new server joins. This requires that min-quorum is also set.
 	// +kubebuilder:validation:Optional
 	CleanupDeadServers *bool `json:"cleanupDeadServers,omitempty" tf:"cleanup_dead_servers,omitempty"`
 
+	// Limit the amount of time a
+	// server can go without leader contact before being considered failed. This only takes
+	// effect when cleanup_dead_servers is set.
 	// Limit the amount of time a server can go without leader contact before being considered failed. This only takes effect when cleanup_dead_servers is set.
 	// +kubebuilder:validation:Optional
 	DeadServerLastContactThreshold *string `json:"deadServerLastContactThreshold,omitempty" tf:"dead_server_last_contact_threshold,omitempty"`
 
+	// only)
 	// Disables automatically upgrading Vault using autopilot. (Enterprise-only)
 	// +kubebuilder:validation:Optional
 	DisableUpgradeMigration *bool `json:"disableUpgradeMigration,omitempty" tf:"disable_upgrade_migration,omitempty"`
 
+	// Limit the amount of time a server can go
+	// without leader contact before being considered unhealthy.
 	// Limit the amount of time a server can go without leader contact before being considered unhealthy.
 	// +kubebuilder:validation:Optional
 	LastContactThreshold *string `json:"lastContactThreshold,omitempty" tf:"last_contact_threshold,omitempty"`
 
+	// Maximum number of log entries in the Raft log
+	// that a server can be behind its leader before being considered unhealthy.
 	// Maximum number of log entries in the Raft log that a server can be behind its leader before being considered unhealthy.
 	// +kubebuilder:validation:Optional
 	MaxTrailingLogs *float64 `json:"maxTrailingLogs,omitempty" tf:"max_trailing_logs,omitempty"`
 
+	// Minimum number of servers allowed in a cluster before
+	// autopilot can prune dead servers. This should at least be 3. Applicable only for
+	// voting nodes.
 	// Minimum number of servers allowed in a cluster before autopilot can prune dead servers. This should at least be 3. Applicable only for voting nodes.
 	// +kubebuilder:validation:Optional
 	MinQuorum *float64 `json:"minQuorum,omitempty" tf:"min_quorum,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Minimum amount of time a server must be
+	// stable in the 'healthy' state before being added to the cluster.
 	// Minimum amount of time a server must be stable in the 'healthy' state before being added to the cluster.
 	// +kubebuilder:validation:Optional
 	ServerStabilizationTime *string `json:"serverStabilizationTime,omitempty" tf:"server_stabilization_time,omitempty"`
@@ -81,6 +162,18 @@ type AutopilotParameters struct {
 type AutopilotSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AutopilotParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AutopilotInitParameters `json:"initProvider,omitempty"`
 }
 
 // AutopilotStatus defines the observed state of Autopilot.
@@ -91,7 +184,7 @@ type AutopilotStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Autopilot is the Schema for the Autopilots API. <no value>
+// Autopilot is the Schema for the Autopilots API. Configures Raft's Autopilot capabilities.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

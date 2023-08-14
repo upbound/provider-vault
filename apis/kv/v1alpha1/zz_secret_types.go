@@ -13,26 +13,52 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type SecretObservation struct {
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+type SecretInitParameters struct {
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Full path of the KV-V1 secret.
+	// Full path of the KV-V1 secret.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+}
+
+type SecretObservation struct {
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Full path of the KV-V1 secret.
 	// Full path of the KV-V1 secret.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 }
 
 type SecretParameters struct {
 
+	// JSON-encoded string that will be
+	// written as the secret data at the given path.
 	// JSON-encoded secret data to write.
 	// +kubebuilder:validation:Optional
 	DataJSONSecretRef v1.SecretKeySelector `json:"dataJsonSecretRef" tf:"-"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Full path of the KV-V1 secret.
 	// Full path of the KV-V1 secret.
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
@@ -42,6 +68,18 @@ type SecretParameters struct {
 type SecretSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SecretInitParameters `json:"initProvider,omitempty"`
 }
 
 // SecretStatus defines the observed state of Secret.
@@ -52,7 +90,7 @@ type SecretStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Secret is the Schema for the Secrets API. <no value>
+// Secret is the Schema for the Secrets API. Writes a KV-V1 secret to a given path in Vault
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -62,8 +100,8 @@ type SecretStatus struct {
 type Secret struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.dataJsonSecretRef)",message="dataJsonSecretRef is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.path)",message="path is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dataJsonSecretRef)",message="dataJsonSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || has(self.initProvider.path)",message="path is a required parameter"
 	Spec   SecretSpec   `json:"spec"`
 	Status SecretStatus `json:"status,omitempty"`
 }

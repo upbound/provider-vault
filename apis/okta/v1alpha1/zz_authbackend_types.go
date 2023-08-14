@@ -13,6 +13,40 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AuthBackendInitParameters struct {
+
+	// The Okta url. Examples: oktapreview.com, okta.com (default)
+	BaseURL *string `json:"baseUrl,omitempty" tf:"base_url,omitempty"`
+
+	// When true, requests by Okta for a MFA check will be bypassed. This also disallows certain status checks on the account, such as whether the password is expired.
+	BypassOktaMfa *bool `json:"bypassOktaMfa,omitempty" tf:"bypass_okta_mfa,omitempty"`
+
+	// The description of the auth backend
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// If set, opts out of mount migration on path updates.
+	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
+
+	Group []GroupInitParameters `json:"group,omitempty" tf:"group,omitempty"`
+
+	// Maximum duration after which authentication will be expired
+	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
+
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The Okta organization. This will be the first part of the url https://XXX.okta.com.
+	Organization *string `json:"organization,omitempty" tf:"organization,omitempty"`
+
+	// path to mount the backend
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Duration after which authentication will be expired
+	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	User []UserInitParameters `json:"user,omitempty" tf:"user,omitempty"`
+}
+
 type AuthBackendObservation struct {
 
 	// The mount accessor related to the auth mount.
@@ -101,6 +135,12 @@ type AuthBackendParameters struct {
 	User []UserParameters `json:"user,omitempty" tf:"user,omitempty"`
 }
 
+type GroupInitParameters struct {
+	GroupName *string `json:"groupName,omitempty" tf:"group_name"`
+
+	Policies []*string `json:"policies,omitempty" tf:"policies"`
+}
+
 type GroupObservation struct {
 	GroupName *string `json:"groupName,omitempty" tf:"group_name,omitempty"`
 
@@ -114,6 +154,14 @@ type GroupParameters struct {
 
 	// +kubebuilder:validation:Optional
 	Policies []*string `json:"policies,omitempty" tf:"policies"`
+}
+
+type UserInitParameters struct {
+	Groups []*string `json:"groups,omitempty" tf:"groups"`
+
+	Policies []*string `json:"policies,omitempty" tf:"policies"`
+
+	Username *string `json:"username,omitempty" tf:"username"`
 }
 
 type UserObservation struct {
@@ -140,6 +188,18 @@ type UserParameters struct {
 type AuthBackendSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AuthBackendInitParameters `json:"initProvider,omitempty"`
 }
 
 // AuthBackendStatus defines the observed state of AuthBackend.
@@ -160,7 +220,7 @@ type AuthBackendStatus struct {
 type AuthBackend struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.organization)",message="organization is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.organization) || has(self.initProvider.organization)",message="organization is a required parameter"
 	Spec   AuthBackendSpec   `json:"spec"`
 	Status AuthBackendStatus `json:"status,omitempty"`
 }

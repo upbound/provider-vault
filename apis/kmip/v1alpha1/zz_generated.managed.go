@@ -17,9 +17,9 @@ func (mg *SecretBackend) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this SecretBackend.
-func (mg *SecretBackend) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this SecretBackend.
+func (mg *SecretBackend) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this SecretBackend.
@@ -55,9 +55,9 @@ func (mg *SecretBackend) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this SecretBackend.
-func (mg *SecretBackend) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this SecretBackend.
+func (mg *SecretBackend) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this SecretBackend.
@@ -93,9 +93,9 @@ func (mg *SecretRole) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this SecretRole.
-func (mg *SecretRole) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this SecretRole.
+func (mg *SecretRole) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this SecretRole.
@@ -131,9 +131,9 @@ func (mg *SecretRole) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this SecretRole.
-func (mg *SecretRole) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this SecretRole.
+func (mg *SecretRole) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this SecretRole.
@@ -169,9 +169,9 @@ func (mg *SecretScope) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this SecretScope.
-func (mg *SecretScope) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this SecretScope.
+func (mg *SecretScope) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this SecretScope.
@@ -207,9 +207,9 @@ func (mg *SecretScope) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this SecretScope.
-func (mg *SecretScope) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this SecretScope.
+func (mg *SecretScope) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this SecretScope.

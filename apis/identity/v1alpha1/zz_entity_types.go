@@ -13,51 +13,100 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type EntityObservation struct {
+type EntityInitParameters struct {
 
+	// True/false Is this entity currently disabled. Defaults to false
 	// Whether the entity is disabled. Disabled entities' associated tokens cannot be used, but are not revoked.
 	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
 
+	// false by default. If set to true, this resource will ignore any policies return from Vault or specified in the resource. You can use vault_identity_entity_policies to manage policies for this entity in a decoupled manner.
 	// Manage policies externally through `vault_identity_entity_policies`.
 	ExternalPolicies *bool `json:"externalPolicies,omitempty" tf:"external_policies,omitempty"`
 
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-
+	// A Map of additional metadata to associate with the user.
 	// Metadata to be associated with the entity.
 	Metadata map[string]*string `json:"metadata,omitempty" tf:"metadata,omitempty"`
 
+	// Name of the identity entity to create.
 	// Name of the entity.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// A list of policies to apply to the entity.
+	// Policies to be tied to the entity.
+	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
+}
+
+type EntityObservation struct {
+
+	// True/false Is this entity currently disabled. Defaults to false
+	// Whether the entity is disabled. Disabled entities' associated tokens cannot be used, but are not revoked.
+	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
+
+	// false by default. If set to true, this resource will ignore any policies return from Vault or specified in the resource. You can use vault_identity_entity_policies to manage policies for this entity in a decoupled manner.
+	// Manage policies externally through `vault_identity_entity_policies`.
+	ExternalPolicies *bool `json:"externalPolicies,omitempty" tf:"external_policies,omitempty"`
+
+	// The id of the created entity.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// A Map of additional metadata to associate with the user.
+	// Metadata to be associated with the entity.
+	Metadata map[string]*string `json:"metadata,omitempty" tf:"metadata,omitempty"`
+
+	// Name of the identity entity to create.
+	// Name of the entity.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// A list of policies to apply to the entity.
 	// Policies to be tied to the entity.
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 }
 
 type EntityParameters struct {
 
+	// True/false Is this entity currently disabled. Defaults to false
 	// Whether the entity is disabled. Disabled entities' associated tokens cannot be used, but are not revoked.
 	// +kubebuilder:validation:Optional
 	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
 
+	// false by default. If set to true, this resource will ignore any policies return from Vault or specified in the resource. You can use vault_identity_entity_policies to manage policies for this entity in a decoupled manner.
 	// Manage policies externally through `vault_identity_entity_policies`.
 	// +kubebuilder:validation:Optional
 	ExternalPolicies *bool `json:"externalPolicies,omitempty" tf:"external_policies,omitempty"`
 
+	// A Map of additional metadata to associate with the user.
 	// Metadata to be associated with the entity.
 	// +kubebuilder:validation:Optional
 	Metadata map[string]*string `json:"metadata,omitempty" tf:"metadata,omitempty"`
 
+	// Name of the identity entity to create.
 	// Name of the entity.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// A list of policies to apply to the entity.
 	// Policies to be tied to the entity.
 	// +kubebuilder:validation:Optional
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
@@ -67,6 +116,18 @@ type EntityParameters struct {
 type EntitySpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     EntityParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider EntityInitParameters `json:"initProvider,omitempty"`
 }
 
 // EntityStatus defines the observed state of Entity.
@@ -77,7 +138,7 @@ type EntityStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Entity is the Schema for the Entitys API. <no value>
+// Entity is the Schema for the Entitys API. Creates an Identity Entity for Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

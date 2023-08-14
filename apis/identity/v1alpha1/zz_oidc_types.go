@@ -13,22 +13,55 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type OidcObservation struct {
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+type OidcInitParameters struct {
 
+	// Issuer URL to be used in the iss claim of the token. If not set, Vault's
+	// api_addr will be used. The issuer is a case sensitive URL using the https scheme that contains
+	// scheme, host, and optionally, port number and path components, but no query or fragment
+	// components.
 	// Issuer URL to be used in the iss claim of the token. If not set, Vault's api_addr will be used. The issuer is a case sensitive URL using the https scheme that contains scheme, host, and optionally, port number and path components, but no query or fragment components.
 	Issuer *string `json:"issuer,omitempty" tf:"issuer,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+}
+
+type OidcObservation struct {
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Issuer URL to be used in the iss claim of the token. If not set, Vault's
+	// api_addr will be used. The issuer is a case sensitive URL using the https scheme that contains
+	// scheme, host, and optionally, port number and path components, but no query or fragment
+	// components.
+	// Issuer URL to be used in the iss claim of the token. If not set, Vault's api_addr will be used. The issuer is a case sensitive URL using the https scheme that contains scheme, host, and optionally, port number and path components, but no query or fragment components.
+	Issuer *string `json:"issuer,omitempty" tf:"issuer,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 }
 
 type OidcParameters struct {
 
+	// Issuer URL to be used in the iss claim of the token. If not set, Vault's
+	// api_addr will be used. The issuer is a case sensitive URL using the https scheme that contains
+	// scheme, host, and optionally, port number and path components, but no query or fragment
+	// components.
 	// Issuer URL to be used in the iss claim of the token. If not set, Vault's api_addr will be used. The issuer is a case sensitive URL using the https scheme that contains scheme, host, and optionally, port number and path components, but no query or fragment components.
 	// +kubebuilder:validation:Optional
 	Issuer *string `json:"issuer,omitempty" tf:"issuer,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
@@ -38,6 +71,18 @@ type OidcParameters struct {
 type OidcSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OidcParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider OidcInitParameters `json:"initProvider,omitempty"`
 }
 
 // OidcStatus defines the observed state of Oidc.
@@ -48,7 +93,7 @@ type OidcStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Oidc is the Schema for the Oidcs API. <no value>
+// Oidc is the Schema for the Oidcs API. Configure the Identity Tokens Backend for Vault
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

@@ -13,69 +13,178 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AuthBackendObservation struct {
+type AuthBackendInitParameters struct {
 
-	// The accessor of the JWT auth backend
-	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
-
+	// The value against which to match the iss claim in a JWT
 	// The value against which to match the iss claim in a JWT
 	BoundIssuer *string `json:"boundIssuer,omitempty" tf:"bound_issuer,omitempty"`
 
 	// The default role to use if none is provided during login
+	// The default role to use if none is provided during login
 	DefaultRole *string `json:"defaultRole,omitempty" tf:"default_role,omitempty"`
 
 	// The description of the auth backend
+	// The description of the auth backend
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// If set, opts out of mount migration on path updates.
+	// See here for more info on Mount Migration
+	// If set, opts out of mount migration on path updates.
+	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
+
+	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the JWKS URL. If not set, system certificates are used.
+	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the JWKS URL. If not set, system certificates are used.
+	JwksCAPem *string `json:"jwksCaPem,omitempty" tf:"jwks_ca_pem,omitempty"`
+
+	// JWKS URL to use to authenticate signatures. Cannot be used with "oidc_discovery_url" or "jwt_validation_pubkeys".
+	// JWKS URL to use to authenticate signatures. Cannot be used with 'oidc_discovery_url' or 'jwt_validation_pubkeys'.
+	JwksURL *string `json:"jwksUrl,omitempty" tf:"jwks_url,omitempty"`
+
+	// A list of supported signing algorithms. Vault 1.1.0 defaults to [RS256] but future or past versions of Vault may differ
+	// A list of supported signing algorithms. Defaults to [RS256]
+	JwtSupportedAlgs []*string `json:"jwtSupportedAlgs,omitempty" tf:"jwt_supported_algs,omitempty"`
+
+	// A list of PEM-encoded public keys to use to authenticate signatures locally. Cannot be used in combination with oidc_discovery_url
+	// A list of PEM-encoded public keys to use to authenticate signatures locally. Cannot be used with 'jwks_url' or 'oidc_discovery_url'.
+	JwtValidationPubkeys []*string `json:"jwtValidationPubkeys,omitempty" tf:"jwt_validation_pubkeys,omitempty"`
+
+	// Specifies if the auth method is local only.
+	// Specifies if the auth method is local only
+	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Pass namespace in the OIDC state parameter instead of as a separate query parameter. With this setting, the allowed redirect URL(s) in Vault and on the provider side should not contain a namespace query parameter. This means only one redirect URL entry needs to be maintained on the OIDC provider side for all vault namespaces that will be authenticating against it. Defaults to true for new configs
+	// Pass namespace in the OIDC state parameter instead of as a separate query parameter. With this setting, the allowed redirect URL(s) in Vault and on the provider side should not contain a namespace query parameter. This means only one redirect URL entry needs to be maintained on the OIDC provider side for all vault namespaces that will be authenticating against it. Defaults to true for new configs.
+	NamespaceInState *bool `json:"namespaceInState,omitempty" tf:"namespace_in_state,omitempty"`
+
+	// Client ID used for OIDC backends
+	// Client ID used for OIDC
+	OidcClientID *string `json:"oidcClientId,omitempty" tf:"oidc_client_id,omitempty"`
+
+	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the OIDC Discovery URL. If not set, system certificates are used
+	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the OIDC Discovery URL. If not set, system certificates are used
+	OidcDiscoveryCAPem *string `json:"oidcDiscoveryCaPem,omitempty" tf:"oidc_discovery_ca_pem,omitempty"`
+
+	// The OIDC Discovery URL, without any .well-known component (base path). Cannot be used in combination with jwt_validation_pubkeys
+	// The OIDC Discovery URL, without any .well-known component (base path). Cannot be used with 'jwks_url' or 'jwt_validation_pubkeys'.
+	OidcDiscoveryURL *string `json:"oidcDiscoveryUrl,omitempty" tf:"oidc_discovery_url,omitempty"`
+
+	// The response mode to be used in the OAuth2 request. Allowed values are query and form_post. Defaults to query. If using Vault namespaces, and oidc_response_mode is form_post, then namespace_in_state should be set to false.
+	// The response mode to be used in the OAuth2 request. Allowed values are 'query' and 'form_post'. Defaults to 'query'. If using Vault namespaces, and oidc_response_mode is 'form_post', then 'namespace_in_state' should be set to false.
+	OidcResponseMode *string `json:"oidcResponseMode,omitempty" tf:"oidc_response_mode,omitempty"`
+
+	// List of response types to request. Allowed values are 'code' and 'id_token'. Defaults to ["code"]. Note: id_token may only be used if oidc_response_mode is set to form_post.
+	// The response types to request. Allowed values are 'code' and 'id_token'. Defaults to 'code'. Note: 'id_token' may only be used if 'oidc_response_mode' is set to 'form_post'.
+	OidcResponseTypes []*string `json:"oidcResponseTypes,omitempty" tf:"oidc_response_types,omitempty"`
+
+	// Path to mount the JWT/OIDC auth backend
+	// path to mount the backend
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Provider specific handling configuration. All values may be strings, and the provider will convert to the appropriate type when configuring Vault.
+	// Provider specific handling configuration
+	ProviderConfig map[string]*string `json:"providerConfig,omitempty" tf:"provider_config,omitempty"`
+
+	Tune []TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
+
+	// Type of auth backend. Should be one of jwt or oidc. Default - jwt
+	// Type of backend. Can be either 'jwt' or 'oidc'
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type AuthBackendObservation struct {
+
+	// The accessor for this auth method
+	// The accessor of the JWT auth backend
+	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
+
+	// The value against which to match the iss claim in a JWT
+	// The value against which to match the iss claim in a JWT
+	BoundIssuer *string `json:"boundIssuer,omitempty" tf:"bound_issuer,omitempty"`
+
+	// The default role to use if none is provided during login
+	// The default role to use if none is provided during login
+	DefaultRole *string `json:"defaultRole,omitempty" tf:"default_role,omitempty"`
+
+	// The description of the auth backend
+	// The description of the auth backend
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// If set, opts out of mount migration on path updates.
+	// See here for more info on Mount Migration
 	// If set, opts out of mount migration on path updates.
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the JWKS URL. If not set, system certificates are used.
+	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the JWKS URL. If not set, system certificates are used.
 	JwksCAPem *string `json:"jwksCaPem,omitempty" tf:"jwks_ca_pem,omitempty"`
 
+	// JWKS URL to use to authenticate signatures. Cannot be used with "oidc_discovery_url" or "jwt_validation_pubkeys".
 	// JWKS URL to use to authenticate signatures. Cannot be used with 'oidc_discovery_url' or 'jwt_validation_pubkeys'.
 	JwksURL *string `json:"jwksUrl,omitempty" tf:"jwks_url,omitempty"`
 
+	// A list of supported signing algorithms. Vault 1.1.0 defaults to [RS256] but future or past versions of Vault may differ
 	// A list of supported signing algorithms. Defaults to [RS256]
 	JwtSupportedAlgs []*string `json:"jwtSupportedAlgs,omitempty" tf:"jwt_supported_algs,omitempty"`
 
+	// A list of PEM-encoded public keys to use to authenticate signatures locally. Cannot be used in combination with oidc_discovery_url
 	// A list of PEM-encoded public keys to use to authenticate signatures locally. Cannot be used with 'jwks_url' or 'oidc_discovery_url'.
 	JwtValidationPubkeys []*string `json:"jwtValidationPubkeys,omitempty" tf:"jwt_validation_pubkeys,omitempty"`
 
+	// Specifies if the auth method is local only.
 	// Specifies if the auth method is local only
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Pass namespace in the OIDC state parameter instead of as a separate query parameter. With this setting, the allowed redirect URL(s) in Vault and on the provider side should not contain a namespace query parameter. This means only one redirect URL entry needs to be maintained on the OIDC provider side for all vault namespaces that will be authenticating against it. Defaults to true for new configs
 	// Pass namespace in the OIDC state parameter instead of as a separate query parameter. With this setting, the allowed redirect URL(s) in Vault and on the provider side should not contain a namespace query parameter. This means only one redirect URL entry needs to be maintained on the OIDC provider side for all vault namespaces that will be authenticating against it. Defaults to true for new configs.
 	NamespaceInState *bool `json:"namespaceInState,omitempty" tf:"namespace_in_state,omitempty"`
 
+	// Client ID used for OIDC backends
 	// Client ID used for OIDC
 	OidcClientID *string `json:"oidcClientId,omitempty" tf:"oidc_client_id,omitempty"`
 
 	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the OIDC Discovery URL. If not set, system certificates are used
+	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the OIDC Discovery URL. If not set, system certificates are used
 	OidcDiscoveryCAPem *string `json:"oidcDiscoveryCaPem,omitempty" tf:"oidc_discovery_ca_pem,omitempty"`
 
+	// The OIDC Discovery URL, without any .well-known component (base path). Cannot be used in combination with jwt_validation_pubkeys
 	// The OIDC Discovery URL, without any .well-known component (base path). Cannot be used with 'jwks_url' or 'jwt_validation_pubkeys'.
 	OidcDiscoveryURL *string `json:"oidcDiscoveryUrl,omitempty" tf:"oidc_discovery_url,omitempty"`
 
+	// The response mode to be used in the OAuth2 request. Allowed values are query and form_post. Defaults to query. If using Vault namespaces, and oidc_response_mode is form_post, then namespace_in_state should be set to false.
 	// The response mode to be used in the OAuth2 request. Allowed values are 'query' and 'form_post'. Defaults to 'query'. If using Vault namespaces, and oidc_response_mode is 'form_post', then 'namespace_in_state' should be set to false.
 	OidcResponseMode *string `json:"oidcResponseMode,omitempty" tf:"oidc_response_mode,omitempty"`
 
+	// List of response types to request. Allowed values are 'code' and 'id_token'. Defaults to ["code"]. Note: id_token may only be used if oidc_response_mode is set to form_post.
 	// The response types to request. Allowed values are 'code' and 'id_token'. Defaults to 'code'. Note: 'id_token' may only be used if 'oidc_response_mode' is set to 'form_post'.
 	OidcResponseTypes []*string `json:"oidcResponseTypes,omitempty" tf:"oidc_response_types,omitempty"`
 
+	// Path to mount the JWT/OIDC auth backend
 	// path to mount the backend
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Provider specific handling configuration. All values may be strings, and the provider will convert to the appropriate type when configuring Vault.
 	// Provider specific handling configuration
 	ProviderConfig map[string]*string `json:"providerConfig,omitempty" tf:"provider_config,omitempty"`
 
 	Tune []TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
 
+	// Type of auth backend. Should be one of jwt or oidc. Default - jwt
 	// Type of backend. Can be either 'jwt' or 'oidc'
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
@@ -83,77 +192,100 @@ type AuthBackendObservation struct {
 type AuthBackendParameters struct {
 
 	// The value against which to match the iss claim in a JWT
+	// The value against which to match the iss claim in a JWT
 	// +kubebuilder:validation:Optional
 	BoundIssuer *string `json:"boundIssuer,omitempty" tf:"bound_issuer,omitempty"`
 
+	// The default role to use if none is provided during login
 	// The default role to use if none is provided during login
 	// +kubebuilder:validation:Optional
 	DefaultRole *string `json:"defaultRole,omitempty" tf:"default_role,omitempty"`
 
 	// The description of the auth backend
+	// The description of the auth backend
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// If set, opts out of mount migration on path updates.
+	// See here for more info on Mount Migration
 	// If set, opts out of mount migration on path updates.
 	// +kubebuilder:validation:Optional
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
 	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the JWKS URL. If not set, system certificates are used.
+	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the JWKS URL. If not set, system certificates are used.
 	// +kubebuilder:validation:Optional
 	JwksCAPem *string `json:"jwksCaPem,omitempty" tf:"jwks_ca_pem,omitempty"`
 
+	// JWKS URL to use to authenticate signatures. Cannot be used with "oidc_discovery_url" or "jwt_validation_pubkeys".
 	// JWKS URL to use to authenticate signatures. Cannot be used with 'oidc_discovery_url' or 'jwt_validation_pubkeys'.
 	// +kubebuilder:validation:Optional
 	JwksURL *string `json:"jwksUrl,omitempty" tf:"jwks_url,omitempty"`
 
+	// A list of supported signing algorithms. Vault 1.1.0 defaults to [RS256] but future or past versions of Vault may differ
 	// A list of supported signing algorithms. Defaults to [RS256]
 	// +kubebuilder:validation:Optional
 	JwtSupportedAlgs []*string `json:"jwtSupportedAlgs,omitempty" tf:"jwt_supported_algs,omitempty"`
 
+	// A list of PEM-encoded public keys to use to authenticate signatures locally. Cannot be used in combination with oidc_discovery_url
 	// A list of PEM-encoded public keys to use to authenticate signatures locally. Cannot be used with 'jwks_url' or 'oidc_discovery_url'.
 	// +kubebuilder:validation:Optional
 	JwtValidationPubkeys []*string `json:"jwtValidationPubkeys,omitempty" tf:"jwt_validation_pubkeys,omitempty"`
 
+	// Specifies if the auth method is local only.
 	// Specifies if the auth method is local only
 	// +kubebuilder:validation:Optional
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Pass namespace in the OIDC state parameter instead of as a separate query parameter. With this setting, the allowed redirect URL(s) in Vault and on the provider side should not contain a namespace query parameter. This means only one redirect URL entry needs to be maintained on the OIDC provider side for all vault namespaces that will be authenticating against it. Defaults to true for new configs
 	// Pass namespace in the OIDC state parameter instead of as a separate query parameter. With this setting, the allowed redirect URL(s) in Vault and on the provider side should not contain a namespace query parameter. This means only one redirect URL entry needs to be maintained on the OIDC provider side for all vault namespaces that will be authenticating against it. Defaults to true for new configs.
 	// +kubebuilder:validation:Optional
 	NamespaceInState *bool `json:"namespaceInState,omitempty" tf:"namespace_in_state,omitempty"`
 
+	// Client ID used for OIDC backends
 	// Client ID used for OIDC
 	// +kubebuilder:validation:Optional
 	OidcClientID *string `json:"oidcClientId,omitempty" tf:"oidc_client_id,omitempty"`
 
+	// Client Secret used for OIDC backends
 	// Client Secret used for OIDC
 	// +kubebuilder:validation:Optional
 	OidcClientSecretSecretRef *v1.SecretKeySelector `json:"oidcClientSecretSecretRef,omitempty" tf:"-"`
 
 	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the OIDC Discovery URL. If not set, system certificates are used
+	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the OIDC Discovery URL. If not set, system certificates are used
 	// +kubebuilder:validation:Optional
 	OidcDiscoveryCAPem *string `json:"oidcDiscoveryCaPem,omitempty" tf:"oidc_discovery_ca_pem,omitempty"`
 
+	// The OIDC Discovery URL, without any .well-known component (base path). Cannot be used in combination with jwt_validation_pubkeys
 	// The OIDC Discovery URL, without any .well-known component (base path). Cannot be used with 'jwks_url' or 'jwt_validation_pubkeys'.
 	// +kubebuilder:validation:Optional
 	OidcDiscoveryURL *string `json:"oidcDiscoveryUrl,omitempty" tf:"oidc_discovery_url,omitempty"`
 
+	// The response mode to be used in the OAuth2 request. Allowed values are query and form_post. Defaults to query. If using Vault namespaces, and oidc_response_mode is form_post, then namespace_in_state should be set to false.
 	// The response mode to be used in the OAuth2 request. Allowed values are 'query' and 'form_post'. Defaults to 'query'. If using Vault namespaces, and oidc_response_mode is 'form_post', then 'namespace_in_state' should be set to false.
 	// +kubebuilder:validation:Optional
 	OidcResponseMode *string `json:"oidcResponseMode,omitempty" tf:"oidc_response_mode,omitempty"`
 
+	// List of response types to request. Allowed values are 'code' and 'id_token'. Defaults to ["code"]. Note: id_token may only be used if oidc_response_mode is set to form_post.
 	// The response types to request. Allowed values are 'code' and 'id_token'. Defaults to 'code'. Note: 'id_token' may only be used if 'oidc_response_mode' is set to 'form_post'.
 	// +kubebuilder:validation:Optional
 	OidcResponseTypes []*string `json:"oidcResponseTypes,omitempty" tf:"oidc_response_types,omitempty"`
 
+	// Path to mount the JWT/OIDC auth backend
 	// path to mount the backend
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Provider specific handling configuration. All values may be strings, and the provider will convert to the appropriate type when configuring Vault.
 	// Provider specific handling configuration
 	// +kubebuilder:validation:Optional
 	ProviderConfig map[string]*string `json:"providerConfig,omitempty" tf:"provider_config,omitempty"`
@@ -161,52 +293,127 @@ type AuthBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	Tune []TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 
+	// Type of auth backend. Should be one of jwt or oidc. Default - jwt
 	// Type of backend. Can be either 'jwt' or 'oidc'
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
+type TuneInitParameters struct {
+
+	// List of headers to whitelist and allowing
+	// a plugin to include them in the response.
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers"`
+
+	// Specifies the list of keys that will
+	// not be HMAC'd by audit devices in the request data object.
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys"`
+
+	// Specifies the list of keys that will
+	// not be HMAC'd by audit devices in the response data object.
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys"`
+
+	// Specifies the default time-to-live.
+	// If set, this overrides the global default.
+	// Must be a valid duration string
+	DefaultLeaseTTL *string `json:"defaultLeaseTtl,omitempty" tf:"default_lease_ttl"`
+
+	// Specifies whether to show this mount in
+	// the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility"`
+
+	// Specifies the maximum time-to-live.
+	// If set, this overrides the global default.
+	// Must be a valid duration string
+	MaxLeaseTTL *string `json:"maxLeaseTtl,omitempty" tf:"max_lease_ttl"`
+
+	// List of headers to whitelist and
+	// pass from the request to the backend.
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers"`
+
+	// Specifies the type of tokens that should be returned by
+	// the mount. Valid values are "default-service", "default-batch", "service", "batch".
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type"`
+}
+
 type TuneObservation struct {
+
+	// List of headers to whitelist and allowing
+	// a plugin to include them in the response.
 	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
 
+	// Specifies the list of keys that will
+	// not be HMAC'd by audit devices in the request data object.
 	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
 
+	// Specifies the list of keys that will
+	// not be HMAC'd by audit devices in the response data object.
 	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
 
+	// Specifies the default time-to-live.
+	// If set, this overrides the global default.
+	// Must be a valid duration string
 	DefaultLeaseTTL *string `json:"defaultLeaseTtl,omitempty" tf:"default_lease_ttl,omitempty"`
 
+	// Specifies whether to show this mount in
+	// the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
 	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
 
+	// Specifies the maximum time-to-live.
+	// If set, this overrides the global default.
+	// Must be a valid duration string
 	MaxLeaseTTL *string `json:"maxLeaseTtl,omitempty" tf:"max_lease_ttl,omitempty"`
 
+	// List of headers to whitelist and
+	// pass from the request to the backend.
 	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
 
+	// Specifies the type of tokens that should be returned by
+	// the mount. Valid values are "default-service", "default-batch", "service", "batch".
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 }
 
 type TuneParameters struct {
 
+	// List of headers to whitelist and allowing
+	// a plugin to include them in the response.
 	// +kubebuilder:validation:Optional
 	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers"`
 
+	// Specifies the list of keys that will
+	// not be HMAC'd by audit devices in the request data object.
 	// +kubebuilder:validation:Optional
 	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys"`
 
+	// Specifies the list of keys that will
+	// not be HMAC'd by audit devices in the response data object.
 	// +kubebuilder:validation:Optional
 	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys"`
 
+	// Specifies the default time-to-live.
+	// If set, this overrides the global default.
+	// Must be a valid duration string
 	// +kubebuilder:validation:Optional
 	DefaultLeaseTTL *string `json:"defaultLeaseTtl,omitempty" tf:"default_lease_ttl"`
 
+	// Specifies whether to show this mount in
+	// the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
 	// +kubebuilder:validation:Optional
 	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility"`
 
+	// Specifies the maximum time-to-live.
+	// If set, this overrides the global default.
+	// Must be a valid duration string
 	// +kubebuilder:validation:Optional
 	MaxLeaseTTL *string `json:"maxLeaseTtl,omitempty" tf:"max_lease_ttl"`
 
+	// List of headers to whitelist and
+	// pass from the request to the backend.
 	// +kubebuilder:validation:Optional
 	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers"`
 
+	// Specifies the type of tokens that should be returned by
+	// the mount. Valid values are "default-service", "default-batch", "service", "batch".
 	// +kubebuilder:validation:Optional
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type"`
 }
@@ -215,6 +422,18 @@ type TuneParameters struct {
 type AuthBackendSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AuthBackendInitParameters `json:"initProvider,omitempty"`
 }
 
 // AuthBackendStatus defines the observed state of AuthBackend.
@@ -225,7 +444,7 @@ type AuthBackendStatus struct {
 
 // +kubebuilder:object:root=true
 
-// AuthBackend is the Schema for the AuthBackends API. <no value>
+// AuthBackend is the Schema for the AuthBackends API. Managing JWT/OIDC auth backends in Vault
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

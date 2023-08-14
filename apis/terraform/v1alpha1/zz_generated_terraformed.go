@@ -69,6 +69,16 @@ func (tr *CloudSecretBackend) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this CloudSecretBackend
+func (tr *CloudSecretBackend) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this CloudSecretBackend using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *CloudSecretBackend) LateInitialize(attrs []byte) (bool, error) {
@@ -143,6 +153,16 @@ func (tr *CloudSecretCreds) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this CloudSecretCreds
+func (tr *CloudSecretCreds) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this CloudSecretCreds using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *CloudSecretCreds) LateInitialize(attrs []byte) (bool, error) {
@@ -215,6 +235,16 @@ func (tr *CloudSecretRole) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this CloudSecretRole
+func (tr *CloudSecretRole) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this CloudSecretRole using its observed tfState.

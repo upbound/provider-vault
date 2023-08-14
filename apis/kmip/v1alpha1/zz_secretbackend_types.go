@@ -13,56 +13,134 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type SecretBackendObservation struct {
+type SecretBackendInitParameters struct {
 
+	// Client certificate key bits, valid values depend on key type.
 	// Client certificate key bits, valid values depend on key type
 	DefaultTLSClientKeyBits *float64 `json:"defaultTlsClientKeyBits,omitempty" tf:"default_tls_client_key_bits,omitempty"`
 
+	// Client certificate key type, rsa or ec.
 	// Client certificate key type, rsa or ec
 	DefaultTLSClientKeyType *string `json:"defaultTlsClientKeyType,omitempty" tf:"default_tls_client_key_type,omitempty"`
 
 	// Client certificate TTL in seconds
 	DefaultTLSClientTTL *float64 `json:"defaultTlsClientTtl,omitempty" tf:"default_tls_client_ttl,omitempty"`
 
+	// A human-friendly description for this backend.
 	// Human-friendly description of the mount for the backend
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// If set, opts out of mount migration on path updates.
+	// See here for more info on Mount Migration
+	// If set, opts out of mount migration on path updates.
+	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
+
+	// Addresses the KMIP server should listen on (host:port).
+	// Addresses the KMIP server should listen on (host:port)
+	ListenAddrs []*string `json:"listenAddrs,omitempty" tf:"listen_addrs,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The unique path this backend should be mounted at. Must
+	// not begin or end with a /. Defaults to kmip.
+	// Path where KMIP secret backend will be mounted
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Hostnames to include in the server's TLS certificate as SAN DNS names. The first will be used as the common name (CN).
+	// Hostnames to include in the server's TLS certificate as SAN DNS names. The first will be used as the common name (CN)
+	ServerHostnames []*string `json:"serverHostnames,omitempty" tf:"server_hostnames,omitempty"`
+
+	// IPs to include in the server's TLS certificate as SAN IP addresses.
+	// IPs to include in the server's TLS certificate as SAN IP addresses
+	ServerIps []*string `json:"serverIps,omitempty" tf:"server_ips,omitempty"`
+
+	// CA key bits, valid values depend on key type.
+	// CA key bits, valid values depend on key type
+	TLSCAKeyBits *float64 `json:"tlsCaKeyBits,omitempty" tf:"tls_ca_key_bits,omitempty"`
+
+	// CA key type, rsa or ec.
+	// CA key type, rsa or ec
+	TLSCAKeyType *string `json:"tlsCaKeyType,omitempty" tf:"tls_ca_key_type,omitempty"`
+
+	// Minimum TLS version to accept.
+	// Minimum TLS version to accept
+	TLSMinVersion *string `json:"tlsMinVersion,omitempty" tf:"tls_min_version,omitempty"`
+}
+
+type SecretBackendObservation struct {
+
+	// Client certificate key bits, valid values depend on key type.
+	// Client certificate key bits, valid values depend on key type
+	DefaultTLSClientKeyBits *float64 `json:"defaultTlsClientKeyBits,omitempty" tf:"default_tls_client_key_bits,omitempty"`
+
+	// Client certificate key type, rsa or ec.
+	// Client certificate key type, rsa or ec
+	DefaultTLSClientKeyType *string `json:"defaultTlsClientKeyType,omitempty" tf:"default_tls_client_key_type,omitempty"`
+
+	// Client certificate TTL in seconds
+	DefaultTLSClientTTL *float64 `json:"defaultTlsClientTtl,omitempty" tf:"default_tls_client_ttl,omitempty"`
+
+	// A human-friendly description for this backend.
+	// Human-friendly description of the mount for the backend
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// If set, opts out of mount migration on path updates.
+	// See here for more info on Mount Migration
 	// If set, opts out of mount migration on path updates.
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Addresses the KMIP server should listen on (host:port).
 	// Addresses the KMIP server should listen on (host:port)
 	ListenAddrs []*string `json:"listenAddrs,omitempty" tf:"listen_addrs,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The unique path this backend should be mounted at. Must
+	// not begin or end with a /. Defaults to kmip.
 	// Path where KMIP secret backend will be mounted
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Hostnames to include in the server's TLS certificate as SAN DNS names. The first will be used as the common name (CN).
 	// Hostnames to include in the server's TLS certificate as SAN DNS names. The first will be used as the common name (CN)
 	ServerHostnames []*string `json:"serverHostnames,omitempty" tf:"server_hostnames,omitempty"`
 
+	// IPs to include in the server's TLS certificate as SAN IP addresses.
 	// IPs to include in the server's TLS certificate as SAN IP addresses
 	ServerIps []*string `json:"serverIps,omitempty" tf:"server_ips,omitempty"`
 
+	// CA key bits, valid values depend on key type.
 	// CA key bits, valid values depend on key type
 	TLSCAKeyBits *float64 `json:"tlsCaKeyBits,omitempty" tf:"tls_ca_key_bits,omitempty"`
 
+	// CA key type, rsa or ec.
 	// CA key type, rsa or ec
 	TLSCAKeyType *string `json:"tlsCaKeyType,omitempty" tf:"tls_ca_key_type,omitempty"`
 
+	// Minimum TLS version to accept.
 	// Minimum TLS version to accept
 	TLSMinVersion *string `json:"tlsMinVersion,omitempty" tf:"tls_min_version,omitempty"`
 }
 
 type SecretBackendParameters struct {
 
+	// Client certificate key bits, valid values depend on key type.
 	// Client certificate key bits, valid values depend on key type
 	// +kubebuilder:validation:Optional
 	DefaultTLSClientKeyBits *float64 `json:"defaultTlsClientKeyBits,omitempty" tf:"default_tls_client_key_bits,omitempty"`
 
+	// Client certificate key type, rsa or ec.
 	// Client certificate key type, rsa or ec
 	// +kubebuilder:validation:Optional
 	DefaultTLSClientKeyType *string `json:"defaultTlsClientKeyType,omitempty" tf:"default_tls_client_key_type,omitempty"`
@@ -71,42 +149,57 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	DefaultTLSClientTTL *float64 `json:"defaultTlsClientTtl,omitempty" tf:"default_tls_client_ttl,omitempty"`
 
+	// A human-friendly description for this backend.
 	// Human-friendly description of the mount for the backend
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// If set, opts out of mount migration on path updates.
+	// See here for more info on Mount Migration
+	// If set, opts out of mount migration on path updates.
 	// +kubebuilder:validation:Optional
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
+	// Addresses the KMIP server should listen on (host:port).
 	// Addresses the KMIP server should listen on (host:port)
 	// +kubebuilder:validation:Optional
 	ListenAddrs []*string `json:"listenAddrs,omitempty" tf:"listen_addrs,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The unique path this backend should be mounted at. Must
+	// not begin or end with a /. Defaults to kmip.
 	// Path where KMIP secret backend will be mounted
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Hostnames to include in the server's TLS certificate as SAN DNS names. The first will be used as the common name (CN).
 	// Hostnames to include in the server's TLS certificate as SAN DNS names. The first will be used as the common name (CN)
 	// +kubebuilder:validation:Optional
 	ServerHostnames []*string `json:"serverHostnames,omitempty" tf:"server_hostnames,omitempty"`
 
+	// IPs to include in the server's TLS certificate as SAN IP addresses.
 	// IPs to include in the server's TLS certificate as SAN IP addresses
 	// +kubebuilder:validation:Optional
 	ServerIps []*string `json:"serverIps,omitempty" tf:"server_ips,omitempty"`
 
+	// CA key bits, valid values depend on key type.
 	// CA key bits, valid values depend on key type
 	// +kubebuilder:validation:Optional
 	TLSCAKeyBits *float64 `json:"tlsCaKeyBits,omitempty" tf:"tls_ca_key_bits,omitempty"`
 
+	// CA key type, rsa or ec.
 	// CA key type, rsa or ec
 	// +kubebuilder:validation:Optional
 	TLSCAKeyType *string `json:"tlsCaKeyType,omitempty" tf:"tls_ca_key_type,omitempty"`
 
+	// Minimum TLS version to accept.
 	// Minimum TLS version to accept
 	// +kubebuilder:validation:Optional
 	TLSMinVersion *string `json:"tlsMinVersion,omitempty" tf:"tls_min_version,omitempty"`
@@ -116,6 +209,18 @@ type SecretBackendParameters struct {
 type SecretBackendSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SecretBackendInitParameters `json:"initProvider,omitempty"`
 }
 
 // SecretBackendStatus defines the observed state of SecretBackend.
@@ -126,7 +231,7 @@ type SecretBackendStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SecretBackend is the Schema for the SecretBackends API. <no value>
+// SecretBackend is the Schema for the SecretBackends API. Provision KMIP Secret backends in Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -136,7 +241,7 @@ type SecretBackendStatus struct {
 type SecretBackend struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.path)",message="path is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || has(self.initProvider.path)",message="path is a required parameter"
 	Spec   SecretBackendSpec   `json:"spec"`
 	Status SecretBackendStatus `json:"status,omitempty"`
 }

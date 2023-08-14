@@ -13,18 +13,47 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type RoleInitParameters struct {
+
+	// The name of the role.
+	// The name of the role.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Path to where the back-end is mounted within Vault.
+	// The mount path for a back-end, for example, the path given in "$ vault auth enable -path=my-aws aws".
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// A comma separated string or slice of transformations to use.
+	// A comma separated string or slice of transformations to use.
+	Transformations []*string `json:"transformations,omitempty" tf:"transformations,omitempty"`
+}
+
 type RoleObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The name of the role.
+	// The name of the role.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Path to where the back-end is mounted within Vault.
 	// The mount path for a back-end, for example, the path given in "$ vault auth enable -path=my-aws aws".
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// A comma separated string or slice of transformations to use.
 	// A comma separated string or slice of transformations to use.
 	Transformations []*string `json:"transformations,omitempty" tf:"transformations,omitempty"`
 }
@@ -32,17 +61,24 @@ type RoleObservation struct {
 type RoleParameters struct {
 
 	// The name of the role.
+	// The name of the role.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Path to where the back-end is mounted within Vault.
 	// The mount path for a back-end, for example, the path given in "$ vault auth enable -path=my-aws aws".
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// A comma separated string or slice of transformations to use.
 	// A comma separated string or slice of transformations to use.
 	// +kubebuilder:validation:Optional
 	Transformations []*string `json:"transformations,omitempty" tf:"transformations,omitempty"`
@@ -52,6 +88,18 @@ type RoleParameters struct {
 type RoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     RoleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider RoleInitParameters `json:"initProvider,omitempty"`
 }
 
 // RoleStatus defines the observed state of Role.
@@ -62,7 +110,7 @@ type RoleStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Role is the Schema for the Roles API. <no value>
+// Role is the Schema for the Roles API. "/transform/role/{name}"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -72,8 +120,8 @@ type RoleStatus struct {
 type Role struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.path)",message="path is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || has(self.initProvider.path)",message="path is a required parameter"
 	Spec   RoleSpec   `json:"spec"`
 	Status RoleStatus `json:"status,omitempty"`
 }

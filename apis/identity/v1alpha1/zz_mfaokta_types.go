@@ -13,16 +13,42 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type MfaOktaInitParameters struct {
+
+	// The base domain to use for API requests.
+	// The base domain to use for API requests.
+	BaseURL *string `json:"baseUrl,omitempty" tf:"base_url,omitempty"`
+
+	// Target namespace. (requires Enterprise)
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Name of the organization to be used in the Okta API.
+	// Name of the organization to be used in the Okta API.
+	OrgName *string `json:"orgName,omitempty" tf:"org_name,omitempty"`
+
+	// Only match the primary email for the account.
+	// Only match the primary email for the account.
+	PrimaryEmail *bool `json:"primaryEmail,omitempty" tf:"primary_email,omitempty"`
+
+	// A template string for mapping Identity names to MFA methods.
+	// A template string for mapping Identity names to MFA methods.
+	UsernameFormat *string `json:"usernameFormat,omitempty" tf:"username_format,omitempty"`
+}
+
 type MfaOktaObservation struct {
 
+	// The base domain to use for API requests.
 	// The base domain to use for API requests.
 	BaseURL *string `json:"baseUrl,omitempty" tf:"base_url,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Method ID.
+	// Method ID.
 	MethodID *string `json:"methodId,omitempty" tf:"method_id,omitempty"`
 
+	// Mount accessor.
 	// Mount accessor.
 	MountAccessor *string `json:"mountAccessor,omitempty" tf:"mount_accessor,omitempty"`
 
@@ -30,26 +56,34 @@ type MfaOktaObservation struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Target namespace. (requires Enterprise)
+	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Method's namespace ID.
 	// Method's namespace ID.
 	NamespaceID *string `json:"namespaceId,omitempty" tf:"namespace_id,omitempty"`
 
 	// Method's namespace path.
+	// Method's namespace path.
 	NamespacePath *string `json:"namespacePath,omitempty" tf:"namespace_path,omitempty"`
 
+	// Name of the organization to be used in the Okta API.
 	// Name of the organization to be used in the Okta API.
 	OrgName *string `json:"orgName,omitempty" tf:"org_name,omitempty"`
 
 	// Only match the primary email for the account.
+	// Only match the primary email for the account.
 	PrimaryEmail *bool `json:"primaryEmail,omitempty" tf:"primary_email,omitempty"`
 
+	// MFA type.
 	// MFA type.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// Resource UUID.
+	// Resource UUID.
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 
+	// A template string for mapping Identity names to MFA methods.
 	// A template string for mapping Identity names to MFA methods.
 	UsernameFormat *string `json:"usernameFormat,omitempty" tf:"username_format,omitempty"`
 }
@@ -57,25 +91,31 @@ type MfaOktaObservation struct {
 type MfaOktaParameters struct {
 
 	// Okta API token.
+	// Okta API token.
 	// +kubebuilder:validation:Optional
 	APITokenSecretRef v1.SecretKeySelector `json:"apiTokenSecretRef" tf:"-"`
 
+	// The base domain to use for API requests.
 	// The base domain to use for API requests.
 	// +kubebuilder:validation:Optional
 	BaseURL *string `json:"baseUrl,omitempty" tf:"base_url,omitempty"`
 
 	// Target namespace. (requires Enterprise)
+	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Name of the organization to be used in the Okta API.
 	// Name of the organization to be used in the Okta API.
 	// +kubebuilder:validation:Optional
 	OrgName *string `json:"orgName,omitempty" tf:"org_name,omitempty"`
 
 	// Only match the primary email for the account.
+	// Only match the primary email for the account.
 	// +kubebuilder:validation:Optional
 	PrimaryEmail *bool `json:"primaryEmail,omitempty" tf:"primary_email,omitempty"`
 
+	// A template string for mapping Identity names to MFA methods.
 	// A template string for mapping Identity names to MFA methods.
 	// +kubebuilder:validation:Optional
 	UsernameFormat *string `json:"usernameFormat,omitempty" tf:"username_format,omitempty"`
@@ -85,6 +125,18 @@ type MfaOktaParameters struct {
 type MfaOktaSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     MfaOktaParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider MfaOktaInitParameters `json:"initProvider,omitempty"`
 }
 
 // MfaOktaStatus defines the observed state of MfaOkta.
@@ -95,7 +147,7 @@ type MfaOktaStatus struct {
 
 // +kubebuilder:object:root=true
 
-// MfaOkta is the Schema for the MfaOktas API. <no value>
+// MfaOkta is the Schema for the MfaOktas API. Resource for configuring the okta MFA method.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -105,8 +157,8 @@ type MfaOktaStatus struct {
 type MfaOkta struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.apiTokenSecretRef)",message="apiTokenSecretRef is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.orgName)",message="orgName is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.apiTokenSecretRef)",message="apiTokenSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.orgName) || has(self.initProvider.orgName)",message="orgName is a required parameter"
 	Spec   MfaOktaSpec   `json:"spec"`
 	Status MfaOktaStatus `json:"status,omitempty"`
 }

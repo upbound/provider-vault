@@ -13,54 +13,108 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type OidcProviderObservation struct {
+type OidcProviderInitParameters struct {
 
+	// The client IDs that are permitted to use the provider.
+	// If empty, no clients are allowed. If *, all clients are allowed.
 	// The client IDs that are permitted to use the provider. If empty, no clients are allowed. If "*", all clients are allowed.
 	AllowedClientIds []*string `json:"allowedClientIds,omitempty" tf:"allowed_client_ids,omitempty"`
 
+	// Set to true if the issuer endpoint uses HTTPS.
+	// Set to true if the issuer endpoint uses HTTPS.
+	HTTPSEnabled *bool `json:"httpsEnabled,omitempty" tf:"https_enabled,omitempty"`
+
+	// The host for the issuer. Can be either host or host:port.
+	// The host for the issuer. Can be either host or host:port.
+	IssuerHost *string `json:"issuerHost,omitempty" tf:"issuer_host,omitempty"`
+
+	// The name of the provider.
+	// The name of the provider.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The scopes available for requesting on the provider.
+	// The scopes available for requesting on the provider.
+	ScopesSupported []*string `json:"scopesSupported,omitempty" tf:"scopes_supported,omitempty"`
+}
+
+type OidcProviderObservation struct {
+
+	// The client IDs that are permitted to use the provider.
+	// If empty, no clients are allowed. If *, all clients are allowed.
+	// The client IDs that are permitted to use the provider. If empty, no clients are allowed. If "*", all clients are allowed.
+	AllowedClientIds []*string `json:"allowedClientIds,omitempty" tf:"allowed_client_ids,omitempty"`
+
+	// Set to true if the issuer endpoint uses HTTPS.
 	// Set to true if the issuer endpoint uses HTTPS.
 	HTTPSEnabled *bool `json:"httpsEnabled,omitempty" tf:"https_enabled,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Specifies what will be used as the scheme://host:port
+	// component for the iss claim of ID tokens. This value is computed using the
+	// issuer_host and https_enabled fields.
 	// Specifies what will be used as the 'scheme://host:port' component for the 'iss' claim of ID tokens.This value is computed using the issuer_host and https_enabled fields.
 	Issuer *string `json:"issuer,omitempty" tf:"issuer,omitempty"`
 
 	// The host for the issuer. Can be either host or host:port.
+	// The host for the issuer. Can be either host or host:port.
 	IssuerHost *string `json:"issuerHost,omitempty" tf:"issuer_host,omitempty"`
 
 	// The name of the provider.
+	// The name of the provider.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The scopes available for requesting on the provider.
 	// The scopes available for requesting on the provider.
 	ScopesSupported []*string `json:"scopesSupported,omitempty" tf:"scopes_supported,omitempty"`
 }
 
 type OidcProviderParameters struct {
 
+	// The client IDs that are permitted to use the provider.
+	// If empty, no clients are allowed. If *, all clients are allowed.
 	// The client IDs that are permitted to use the provider. If empty, no clients are allowed. If "*", all clients are allowed.
 	// +kubebuilder:validation:Optional
 	AllowedClientIds []*string `json:"allowedClientIds,omitempty" tf:"allowed_client_ids,omitempty"`
 
 	// Set to true if the issuer endpoint uses HTTPS.
+	// Set to true if the issuer endpoint uses HTTPS.
 	// +kubebuilder:validation:Optional
 	HTTPSEnabled *bool `json:"httpsEnabled,omitempty" tf:"https_enabled,omitempty"`
 
+	// The host for the issuer. Can be either host or host:port.
 	// The host for the issuer. Can be either host or host:port.
 	// +kubebuilder:validation:Optional
 	IssuerHost *string `json:"issuerHost,omitempty" tf:"issuer_host,omitempty"`
 
 	// The name of the provider.
+	// The name of the provider.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The scopes available for requesting on the provider.
 	// The scopes available for requesting on the provider.
 	// +kubebuilder:validation:Optional
 	ScopesSupported []*string `json:"scopesSupported,omitempty" tf:"scopes_supported,omitempty"`
@@ -70,6 +124,18 @@ type OidcProviderParameters struct {
 type OidcProviderSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OidcProviderParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider OidcProviderInitParameters `json:"initProvider,omitempty"`
 }
 
 // OidcProviderStatus defines the observed state of OidcProvider.
@@ -80,7 +146,7 @@ type OidcProviderStatus struct {
 
 // +kubebuilder:object:root=true
 
-// OidcProvider is the Schema for the OidcProviders API. <no value>
+// OidcProvider is the Schema for the OidcProviders API. Provision OIDC Providers in Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -90,7 +156,7 @@ type OidcProviderStatus struct {
 type OidcProvider struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
 	Spec   OidcProviderSpec   `json:"spec"`
 	Status OidcProviderStatus `json:"status,omitempty"`
 }

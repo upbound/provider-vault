@@ -13,61 +13,199 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AuthBackendRoleInitParameters struct {
+	AddGroupAliases *bool `json:"addGroupAliases,omitempty" tf:"add_group_aliases,omitempty"`
+
+	// A flag to determine if this role should allow GCE instances to authenticate by inferring service accounts from the GCE identity metadata token.
+	AllowGceInference *bool `json:"allowGceInference,omitempty" tf:"allow_gce_inference,omitempty"`
+
+	// Path to the mounted GCP auth backend
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// The instance groups that an authorized instance must belong to in order to be authenticated. If specified, either bound_zones or bound_regions must be set too.
+	BoundInstanceGroups []*string `json:"boundInstanceGroups,omitempty" tf:"bound_instance_groups,omitempty"`
+
+	// A comma-separated list of GCP labels formatted as "key:value" strings that must be set on authorized GCE instances. Because GCP labels are not currently ACL'd, we recommend that this be used in conjunction with other restrictions.
+	BoundLabels []*string `json:"boundLabels,omitempty" tf:"bound_labels,omitempty"`
+
+	// An array of GCP project IDs. Only entities belonging to this project can authenticate under the role.
+	BoundProjects []*string `json:"boundProjects,omitempty" tf:"bound_projects,omitempty"`
+
+	// The list of regions that a GCE instance must belong to in order to be authenticated. If bound_instance_groups is provided, it is assumed to be a regional group and the group must belong to this region. If bound_zones are provided, this attribute is ignored.
+	BoundRegions []*string `json:"boundRegions,omitempty" tf:"bound_regions,omitempty"`
+
+	// GCP Service Accounts allowed to issue tokens under this role. (Note: Required if role is iam)
+	BoundServiceAccounts []*string `json:"boundServiceAccounts,omitempty" tf:"bound_service_accounts,omitempty"`
+
+	// The list of zones that a GCE instance must belong to in order to be authenticated. If bound_instance_groups is provided, it is assumed to be a zonal group and the group must belong to this zone.
+	BoundZones []*string `json:"boundZones,omitempty" tf:"bound_zones,omitempty"`
+
+	// The number of seconds past the time of authentication that the login param JWT must expire within. For example, if a user attempts to login with a token that expires within an hour and this is set to 15 minutes, Vault will return an error prompting the user to create a new signed JWT with a shorter exp. The GCE metadata tokens currently do not allow the exp claim to be customized.
+	MaxJwtExp *string `json:"maxJwtExp,omitempty" tf:"max_jwt_exp,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Name of the GCP role
+	Role *string `json:"role,omitempty" tf:"role,omitempty"`
+
+	// List of CIDR blocks; if set, specifies blocks of IP
+	// addresses which can authenticate successfully, and ties the resulting token to these blocks
+	// as well.
+	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
+
+	// If set, will encode an
+	// explicit max TTL
+	// onto the token in number of seconds. This is a hard cap even if token_ttl and
+	// token_max_ttl would otherwise allow a renewal.
+	// Generated Token's Explicit Maximum TTL in seconds
+	TokenExplicitMaxTTL *float64 `json:"tokenExplicitMaxTtl,omitempty" tf:"token_explicit_max_ttl,omitempty"`
+
+	// The maximum lifetime for generated tokens in number of seconds.
+	// Its current value will be referenced at renewal time.
+	// The maximum lifetime of the generated token
+	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
+
+	// If set, the default policy will not be set on
+	// generated tokens; otherwise it will be added to the policies set in token_policies.
+	// If true, the 'default' policy will not automatically be added to generated tokens
+	TokenNoDefaultPolicy *bool `json:"tokenNoDefaultPolicy,omitempty" tf:"token_no_default_policy,omitempty"`
+
+	// The maximum number
+	// of times a generated token may be used (within its lifetime); 0 means unlimited.
+	// The maximum number of times a token may be used, a value of zero means unlimited
+	TokenNumUses *float64 `json:"tokenNumUses,omitempty" tf:"token_num_uses,omitempty"`
+
+	// If set, indicates that the
+	// token generated using this role should never expire. The token should be renewed within the
+	// duration specified by this value. At each renewal, the token's TTL will be set to the
+	// value of this field. Specified in seconds.
+	// Generated Token's Period
+	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
+
+	// List of policies to encode onto generated tokens. Depending
+	// on the auth method, this list may be supplemented by user/group/other values.
+	// Generated Token's Policies
+	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
+
+	// The incremental lifetime for generated tokens in number of seconds.
+	// Its current value will be referenced at renewal time.
+	// The initial ttl of the token to generate in seconds
+	TokenTTL *float64 `json:"tokenTtl,omitempty" tf:"token_ttl,omitempty"`
+
+	// The type of token that should be generated. Can be service,
+	// batch, or default to use the mount's tuned default (which unless changed will be
+	// service tokens). For token store roles, there are two additional possibilities:
+	// default-service and default-batch which specify the type to return unless the client
+	// requests a different type at generation time.
+	// The type of token to generate, service or batch
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
+
+	// Type of GCP authentication role (either gce or iam)
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type AuthBackendRoleObservation struct {
 	AddGroupAliases *bool `json:"addGroupAliases,omitempty" tf:"add_group_aliases,omitempty"`
 
+	// A flag to determine if this role should allow GCE instances to authenticate by inferring service accounts from the GCE identity metadata token.
 	AllowGceInference *bool `json:"allowGceInference,omitempty" tf:"allow_gce_inference,omitempty"`
 
+	// Path to the mounted GCP auth backend
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// The instance groups that an authorized instance must belong to in order to be authenticated. If specified, either bound_zones or bound_regions must be set too.
 	BoundInstanceGroups []*string `json:"boundInstanceGroups,omitempty" tf:"bound_instance_groups,omitempty"`
 
+	// A comma-separated list of GCP labels formatted as "key:value" strings that must be set on authorized GCE instances. Because GCP labels are not currently ACL'd, we recommend that this be used in conjunction with other restrictions.
 	BoundLabels []*string `json:"boundLabels,omitempty" tf:"bound_labels,omitempty"`
 
+	// An array of GCP project IDs. Only entities belonging to this project can authenticate under the role.
 	BoundProjects []*string `json:"boundProjects,omitempty" tf:"bound_projects,omitempty"`
 
+	// The list of regions that a GCE instance must belong to in order to be authenticated. If bound_instance_groups is provided, it is assumed to be a regional group and the group must belong to this region. If bound_zones are provided, this attribute is ignored.
 	BoundRegions []*string `json:"boundRegions,omitempty" tf:"bound_regions,omitempty"`
 
+	// GCP Service Accounts allowed to issue tokens under this role. (Note: Required if role is iam)
 	BoundServiceAccounts []*string `json:"boundServiceAccounts,omitempty" tf:"bound_service_accounts,omitempty"`
 
+	// The list of zones that a GCE instance must belong to in order to be authenticated. If bound_instance_groups is provided, it is assumed to be a zonal group and the group must belong to this zone.
 	BoundZones []*string `json:"boundZones,omitempty" tf:"bound_zones,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The number of seconds past the time of authentication that the login param JWT must expire within. For example, if a user attempts to login with a token that expires within an hour and this is set to 15 minutes, Vault will return an error prompting the user to create a new signed JWT with a shorter exp. The GCE metadata tokens currently do not allow the exp claim to be customized.
 	MaxJwtExp *string `json:"maxJwtExp,omitempty" tf:"max_jwt_exp,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Name of the GCP role
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
+	// List of CIDR blocks; if set, specifies blocks of IP
+	// addresses which can authenticate successfully, and ties the resulting token to these blocks
+	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
+	// If set, will encode an
+	// explicit max TTL
+	// onto the token in number of seconds. This is a hard cap even if token_ttl and
+	// token_max_ttl would otherwise allow a renewal.
 	// Generated Token's Explicit Maximum TTL in seconds
 	TokenExplicitMaxTTL *float64 `json:"tokenExplicitMaxTtl,omitempty" tf:"token_explicit_max_ttl,omitempty"`
 
+	// The maximum lifetime for generated tokens in number of seconds.
+	// Its current value will be referenced at renewal time.
 	// The maximum lifetime of the generated token
 	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
 
+	// If set, the default policy will not be set on
+	// generated tokens; otherwise it will be added to the policies set in token_policies.
 	// If true, the 'default' policy will not automatically be added to generated tokens
 	TokenNoDefaultPolicy *bool `json:"tokenNoDefaultPolicy,omitempty" tf:"token_no_default_policy,omitempty"`
 
+	// The maximum number
+	// of times a generated token may be used (within its lifetime); 0 means unlimited.
 	// The maximum number of times a token may be used, a value of zero means unlimited
 	TokenNumUses *float64 `json:"tokenNumUses,omitempty" tf:"token_num_uses,omitempty"`
 
+	// If set, indicates that the
+	// token generated using this role should never expire. The token should be renewed within the
+	// duration specified by this value. At each renewal, the token's TTL will be set to the
+	// value of this field. Specified in seconds.
 	// Generated Token's Period
 	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
 
+	// List of policies to encode onto generated tokens. Depending
+	// on the auth method, this list may be supplemented by user/group/other values.
 	// Generated Token's Policies
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
+	// The incremental lifetime for generated tokens in number of seconds.
+	// Its current value will be referenced at renewal time.
 	// The initial ttl of the token to generate in seconds
 	TokenTTL *float64 `json:"tokenTtl,omitempty" tf:"token_ttl,omitempty"`
 
+	// The type of token that should be generated. Can be service,
+	// batch, or default to use the mount's tuned default (which unless changed will be
+	// service tokens). For token store roles, there are two additional possibilities:
+	// default-service and default-batch which specify the type to return unless the client
+	// requests a different type at generation time.
 	// The type of token to generate, service or batch
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 
+	// Type of GCP authentication role (either gce or iam)
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
@@ -76,76 +214,117 @@ type AuthBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	AddGroupAliases *bool `json:"addGroupAliases,omitempty" tf:"add_group_aliases,omitempty"`
 
+	// A flag to determine if this role should allow GCE instances to authenticate by inferring service accounts from the GCE identity metadata token.
 	// +kubebuilder:validation:Optional
 	AllowGceInference *bool `json:"allowGceInference,omitempty" tf:"allow_gce_inference,omitempty"`
 
+	// Path to the mounted GCP auth backend
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// The instance groups that an authorized instance must belong to in order to be authenticated. If specified, either bound_zones or bound_regions must be set too.
 	// +kubebuilder:validation:Optional
 	BoundInstanceGroups []*string `json:"boundInstanceGroups,omitempty" tf:"bound_instance_groups,omitempty"`
 
+	// A comma-separated list of GCP labels formatted as "key:value" strings that must be set on authorized GCE instances. Because GCP labels are not currently ACL'd, we recommend that this be used in conjunction with other restrictions.
 	// +kubebuilder:validation:Optional
 	BoundLabels []*string `json:"boundLabels,omitempty" tf:"bound_labels,omitempty"`
 
+	// An array of GCP project IDs. Only entities belonging to this project can authenticate under the role.
 	// +kubebuilder:validation:Optional
 	BoundProjects []*string `json:"boundProjects,omitempty" tf:"bound_projects,omitempty"`
 
+	// The list of regions that a GCE instance must belong to in order to be authenticated. If bound_instance_groups is provided, it is assumed to be a regional group and the group must belong to this region. If bound_zones are provided, this attribute is ignored.
 	// +kubebuilder:validation:Optional
 	BoundRegions []*string `json:"boundRegions,omitempty" tf:"bound_regions,omitempty"`
 
+	// GCP Service Accounts allowed to issue tokens under this role. (Note: Required if role is iam)
 	// +kubebuilder:validation:Optional
 	BoundServiceAccounts []*string `json:"boundServiceAccounts,omitempty" tf:"bound_service_accounts,omitempty"`
 
+	// The list of zones that a GCE instance must belong to in order to be authenticated. If bound_instance_groups is provided, it is assumed to be a zonal group and the group must belong to this zone.
 	// +kubebuilder:validation:Optional
 	BoundZones []*string `json:"boundZones,omitempty" tf:"bound_zones,omitempty"`
 
+	// The number of seconds past the time of authentication that the login param JWT must expire within. For example, if a user attempts to login with a token that expires within an hour and this is set to 15 minutes, Vault will return an error prompting the user to create a new signed JWT with a shorter exp. The GCE metadata tokens currently do not allow the exp claim to be customized.
 	// +kubebuilder:validation:Optional
 	MaxJwtExp *string `json:"maxJwtExp,omitempty" tf:"max_jwt_exp,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Name of the GCP role
 	// +kubebuilder:validation:Optional
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
+	// List of CIDR blocks; if set, specifies blocks of IP
+	// addresses which can authenticate successfully, and ties the resulting token to these blocks
+	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
 	// +kubebuilder:validation:Optional
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
+	// If set, will encode an
+	// explicit max TTL
+	// onto the token in number of seconds. This is a hard cap even if token_ttl and
+	// token_max_ttl would otherwise allow a renewal.
 	// Generated Token's Explicit Maximum TTL in seconds
 	// +kubebuilder:validation:Optional
 	TokenExplicitMaxTTL *float64 `json:"tokenExplicitMaxTtl,omitempty" tf:"token_explicit_max_ttl,omitempty"`
 
+	// The maximum lifetime for generated tokens in number of seconds.
+	// Its current value will be referenced at renewal time.
 	// The maximum lifetime of the generated token
 	// +kubebuilder:validation:Optional
 	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
 
+	// If set, the default policy will not be set on
+	// generated tokens; otherwise it will be added to the policies set in token_policies.
 	// If true, the 'default' policy will not automatically be added to generated tokens
 	// +kubebuilder:validation:Optional
 	TokenNoDefaultPolicy *bool `json:"tokenNoDefaultPolicy,omitempty" tf:"token_no_default_policy,omitempty"`
 
+	// The maximum number
+	// of times a generated token may be used (within its lifetime); 0 means unlimited.
 	// The maximum number of times a token may be used, a value of zero means unlimited
 	// +kubebuilder:validation:Optional
 	TokenNumUses *float64 `json:"tokenNumUses,omitempty" tf:"token_num_uses,omitempty"`
 
+	// If set, indicates that the
+	// token generated using this role should never expire. The token should be renewed within the
+	// duration specified by this value. At each renewal, the token's TTL will be set to the
+	// value of this field. Specified in seconds.
 	// Generated Token's Period
 	// +kubebuilder:validation:Optional
 	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
 
+	// List of policies to encode onto generated tokens. Depending
+	// on the auth method, this list may be supplemented by user/group/other values.
 	// Generated Token's Policies
 	// +kubebuilder:validation:Optional
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
+	// The incremental lifetime for generated tokens in number of seconds.
+	// Its current value will be referenced at renewal time.
 	// The initial ttl of the token to generate in seconds
 	// +kubebuilder:validation:Optional
 	TokenTTL *float64 `json:"tokenTtl,omitempty" tf:"token_ttl,omitempty"`
 
+	// The type of token that should be generated. Can be service,
+	// batch, or default to use the mount's tuned default (which unless changed will be
+	// service tokens). For token store roles, there are two additional possibilities:
+	// default-service and default-batch which specify the type to return unless the client
+	// requests a different type at generation time.
 	// The type of token to generate, service or batch
 	// +kubebuilder:validation:Optional
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 
+	// Type of GCP authentication role (either gce or iam)
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
@@ -154,6 +333,18 @@ type AuthBackendRoleParameters struct {
 type AuthBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendRoleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AuthBackendRoleInitParameters `json:"initProvider,omitempty"`
 }
 
 // AuthBackendRoleStatus defines the observed state of AuthBackendRole.
@@ -164,7 +355,7 @@ type AuthBackendRoleStatus struct {
 
 // +kubebuilder:object:root=true
 
-// AuthBackendRole is the Schema for the AuthBackendRoles API. <no value>
+// AuthBackendRole is the Schema for the AuthBackendRoles API. Managing roles in an GCP auth backend in Vault
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -174,8 +365,8 @@ type AuthBackendRoleStatus struct {
 type AuthBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.role)",message="role is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.type)",message="type is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.role) || has(self.initProvider.role)",message="role is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || has(self.initProvider.type)",message="type is a required parameter"
 	Spec   AuthBackendRoleSpec   `json:"spec"`
 	Status AuthBackendRoleStatus `json:"status,omitempty"`
 }

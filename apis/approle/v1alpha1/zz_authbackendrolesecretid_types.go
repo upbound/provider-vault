@@ -13,34 +13,93 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AuthBackendRoleSecretIDInitParameters struct {
+
+	// Unique name of the auth backend to configure.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// If set, specifies blocks of IP addresses which can
+	// perform the login operation using this SecretID.
+	// List of CIDR blocks that can log in using the SecretID.
+	CidrList []*string `json:"cidrList,omitempty" tf:"cidr_list,omitempty"`
+
+	// A JSON-encoded string containing metadata in
+	// key-value pairs to be set on tokens issued with this SecretID.
+	// JSON-encoded secret data to write.
+	Metadata *string `json:"metadata,omitempty" tf:"metadata,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The name of the role to create the SecretID for.
+	// Name of the role.
+	RoleName *string `json:"roleName,omitempty" tf:"role_name,omitempty"`
+
+	// Set to true to use the wrapped secret-id accessor as the resource ID.
+	// If false (default value), a fresh secret ID will be regenerated whenever the wrapping token is expired or
+	// invalidated through unwrapping.
+	// Use the wrapped secret-id accessor as the id of this resource. If false, a fresh secret-id will be regenerated whenever the wrapping token is expired or invalidated through unwrapping.
+	WithWrappedAccessor *bool `json:"withWrappedAccessor,omitempty" tf:"with_wrapped_accessor,omitempty"`
+
+	// If set, the SecretID response will be
+	// response-wrapped
+	// and available for the duration specified. Only a single unwrapping of the
+	// token is allowed.
+	// The TTL duration of the wrapped SecretID.
+	WrappingTTL *string `json:"wrappingTtl,omitempty" tf:"wrapping_ttl,omitempty"`
+}
+
 type AuthBackendRoleSecretIDObservation struct {
 
+	// The unique ID for this SecretID that can be safely logged.
 	// The unique ID used to access this SecretID.
 	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
 
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// If set, specifies blocks of IP addresses which can
+	// perform the login operation using this SecretID.
 	// List of CIDR blocks that can log in using the SecretID.
 	CidrList []*string `json:"cidrList,omitempty" tf:"cidr_list,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// A JSON-encoded string containing metadata in
+	// key-value pairs to be set on tokens issued with this SecretID.
 	// JSON-encoded secret data to write.
 	Metadata *string `json:"metadata,omitempty" tf:"metadata,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The name of the role to create the SecretID for.
 	// Name of the role.
 	RoleName *string `json:"roleName,omitempty" tf:"role_name,omitempty"`
 
+	// Set to true to use the wrapped secret-id accessor as the resource ID.
+	// If false (default value), a fresh secret ID will be regenerated whenever the wrapping token is expired or
+	// invalidated through unwrapping.
 	// Use the wrapped secret-id accessor as the id of this resource. If false, a fresh secret-id will be regenerated whenever the wrapping token is expired or invalidated through unwrapping.
 	WithWrappedAccessor *bool `json:"withWrappedAccessor,omitempty" tf:"with_wrapped_accessor,omitempty"`
 
+	// The unique ID for the response-wrapped SecretID that can
+	// be safely logged.
 	// The wrapped SecretID accessor.
 	WrappingAccessor *string `json:"wrappingAccessor,omitempty" tf:"wrapping_accessor,omitempty"`
 
+	// If set, the SecretID response will be
+	// response-wrapped
+	// and available for the duration specified. Only a single unwrapping of the
+	// token is allowed.
 	// The TTL duration of the wrapped SecretID.
 	WrappingTTL *string `json:"wrappingTtl,omitempty" tf:"wrapping_ttl,omitempty"`
 }
@@ -51,30 +110,48 @@ type AuthBackendRoleSecretIDParameters struct {
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// If set, specifies blocks of IP addresses which can
+	// perform the login operation using this SecretID.
 	// List of CIDR blocks that can log in using the SecretID.
 	// +kubebuilder:validation:Optional
 	CidrList []*string `json:"cidrList,omitempty" tf:"cidr_list,omitempty"`
 
+	// A JSON-encoded string containing metadata in
+	// key-value pairs to be set on tokens issued with this SecretID.
 	// JSON-encoded secret data to write.
 	// +kubebuilder:validation:Optional
 	Metadata *string `json:"metadata,omitempty" tf:"metadata,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The name of the role to create the SecretID for.
 	// Name of the role.
 	// +kubebuilder:validation:Optional
 	RoleName *string `json:"roleName,omitempty" tf:"role_name,omitempty"`
 
+	// The SecretID to be created. If set, uses "Push"
+	// mode.  Defaults to Vault auto-generating SecretIDs.
 	// The SecretID to be managed. If not specified, Vault auto-generates one.
 	// +kubebuilder:validation:Optional
 	SecretIDSecretRef *v1.SecretKeySelector `json:"secretIdSecretRef,omitempty" tf:"-"`
 
+	// Set to true to use the wrapped secret-id accessor as the resource ID.
+	// If false (default value), a fresh secret ID will be regenerated whenever the wrapping token is expired or
+	// invalidated through unwrapping.
 	// Use the wrapped secret-id accessor as the id of this resource. If false, a fresh secret-id will be regenerated whenever the wrapping token is expired or invalidated through unwrapping.
 	// +kubebuilder:validation:Optional
 	WithWrappedAccessor *bool `json:"withWrappedAccessor,omitempty" tf:"with_wrapped_accessor,omitempty"`
 
+	// If set, the SecretID response will be
+	// response-wrapped
+	// and available for the duration specified. Only a single unwrapping of the
+	// token is allowed.
 	// The TTL duration of the wrapped SecretID.
 	// +kubebuilder:validation:Optional
 	WrappingTTL *string `json:"wrappingTtl,omitempty" tf:"wrapping_ttl,omitempty"`
@@ -84,6 +161,18 @@ type AuthBackendRoleSecretIDParameters struct {
 type AuthBackendRoleSecretIDSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendRoleSecretIDParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AuthBackendRoleSecretIDInitParameters `json:"initProvider,omitempty"`
 }
 
 // AuthBackendRoleSecretIDStatus defines the observed state of AuthBackendRoleSecretID.
@@ -94,7 +183,7 @@ type AuthBackendRoleSecretIDStatus struct {
 
 // +kubebuilder:object:root=true
 
-// AuthBackendRoleSecretID is the Schema for the AuthBackendRoleSecretIDs API. <no value>
+// AuthBackendRoleSecretID is the Schema for the AuthBackendRoleSecretIDs API. Manages AppRole auth backend role SecretIDs in Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -104,7 +193,7 @@ type AuthBackendRoleSecretIDStatus struct {
 type AuthBackendRoleSecretID struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.roleName)",message="roleName is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.roleName) || has(self.initProvider.roleName)",message="roleName is a required parameter"
 	Spec   AuthBackendRoleSecretIDSpec   `json:"spec"`
 	Status AuthBackendRoleSecretIDStatus `json:"status,omitempty"`
 }

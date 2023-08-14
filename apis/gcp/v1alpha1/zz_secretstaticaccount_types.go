@@ -13,79 +13,148 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type SecretStaticAccountBindingObservation struct {
+type SecretStaticAccountBindingInitParameters struct {
 
+	// Resource or resource path for which IAM policy information will be bound. The resource path may be specified in a few different formats.
 	// Resource name
 	Resource *string `json:"resource,omitempty" tf:"resource,omitempty"`
 
+	// List of GCP IAM roles for the resource.
+	// List of roles to apply to the resource
+	Roles []*string `json:"roles,omitempty" tf:"roles,omitempty"`
+}
+
+type SecretStaticAccountBindingObservation struct {
+
+	// Resource or resource path for which IAM policy information will be bound. The resource path may be specified in a few different formats.
+	// Resource name
+	Resource *string `json:"resource,omitempty" tf:"resource,omitempty"`
+
+	// List of GCP IAM roles for the resource.
 	// List of roles to apply to the resource
 	Roles []*string `json:"roles,omitempty" tf:"roles,omitempty"`
 }
 
 type SecretStaticAccountBindingParameters struct {
 
+	// Resource or resource path for which IAM policy information will be bound. The resource path may be specified in a few different formats.
 	// Resource name
-	// +kubebuilder:validation:Required
-	Resource *string `json:"resource" tf:"resource,omitempty"`
+	// +kubebuilder:validation:Optional
+	Resource *string `json:"resource,omitempty" tf:"resource,omitempty"`
 
+	// List of GCP IAM roles for the resource.
 	// List of roles to apply to the resource
-	// +kubebuilder:validation:Required
-	Roles []*string `json:"roles" tf:"roles,omitempty"`
+	// +kubebuilder:validation:Optional
+	Roles []*string `json:"roles,omitempty" tf:"roles,omitempty"`
+}
+
+type SecretStaticAccountInitParameters struct {
+
+	// Path where the GCP Secrets Engine is mounted
+	// Path where the GCP secrets engine is mounted.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Bindings to create for this static account. This can be specified multiple times for multiple bindings. Structure is documented below.
+	Binding []SecretStaticAccountBindingInitParameters `json:"binding,omitempty" tf:"binding,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Type of secret generated for this static account. Accepted values: access_token, service_account_key. Defaults to access_token.
+	// Type of secret generated for this static account. Defaults to `access_token`. Accepted values: `access_token`, `service_account_key`
+	SecretType *string `json:"secretType,omitempty" tf:"secret_type,omitempty"`
+
+	// Email of the GCP service account to manage.
+	// Email of the GCP service account.
+	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
+
+	// Name of the Static Account to create
+	// Name of the Static Account to create
+	StaticAccount *string `json:"staticAccount,omitempty" tf:"static_account,omitempty"`
+
+	// List of OAuth scopes to assign to access_token secrets generated under this static account (access_token static accounts only).
+	// List of OAuth scopes to assign to `access_token` secrets generated under this static account (`access_token` static accounts only)
+	TokenScopes []*string `json:"tokenScopes,omitempty" tf:"token_scopes,omitempty"`
 }
 
 type SecretStaticAccountObservation struct {
 
+	// Path where the GCP Secrets Engine is mounted
 	// Path where the GCP secrets engine is mounted.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// Bindings to create for this static account. This can be specified multiple times for multiple bindings. Structure is documented below.
 	Binding []SecretStaticAccountBindingObservation `json:"binding,omitempty" tf:"binding,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Type of secret generated for this static account. Accepted values: access_token, service_account_key. Defaults to access_token.
 	// Type of secret generated for this static account. Defaults to `access_token`. Accepted values: `access_token`, `service_account_key`
 	SecretType *string `json:"secretType,omitempty" tf:"secret_type,omitempty"`
 
+	// Email of the GCP service account to manage.
 	// Email of the GCP service account.
 	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
 
+	// Project the service account belongs to.
 	// Project of the GCP Service Account managed by this static account
 	ServiceAccountProject *string `json:"serviceAccountProject,omitempty" tf:"service_account_project,omitempty"`
 
 	// Name of the Static Account to create
+	// Name of the Static Account to create
 	StaticAccount *string `json:"staticAccount,omitempty" tf:"static_account,omitempty"`
 
+	// List of OAuth scopes to assign to access_token secrets generated under this static account (access_token static accounts only).
 	// List of OAuth scopes to assign to `access_token` secrets generated under this static account (`access_token` static accounts only)
 	TokenScopes []*string `json:"tokenScopes,omitempty" tf:"token_scopes,omitempty"`
 }
 
 type SecretStaticAccountParameters struct {
 
+	// Path where the GCP Secrets Engine is mounted
 	// Path where the GCP secrets engine is mounted.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// Bindings to create for this static account. This can be specified multiple times for multiple bindings. Structure is documented below.
 	// +kubebuilder:validation:Optional
 	Binding []SecretStaticAccountBindingParameters `json:"binding,omitempty" tf:"binding,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Type of secret generated for this static account. Accepted values: access_token, service_account_key. Defaults to access_token.
 	// Type of secret generated for this static account. Defaults to `access_token`. Accepted values: `access_token`, `service_account_key`
 	// +kubebuilder:validation:Optional
 	SecretType *string `json:"secretType,omitempty" tf:"secret_type,omitempty"`
 
+	// Email of the GCP service account to manage.
 	// Email of the GCP service account.
 	// +kubebuilder:validation:Optional
 	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
 
 	// Name of the Static Account to create
+	// Name of the Static Account to create
 	// +kubebuilder:validation:Optional
 	StaticAccount *string `json:"staticAccount,omitempty" tf:"static_account,omitempty"`
 
+	// List of OAuth scopes to assign to access_token secrets generated under this static account (access_token static accounts only).
 	// List of OAuth scopes to assign to `access_token` secrets generated under this static account (`access_token` static accounts only)
 	// +kubebuilder:validation:Optional
 	TokenScopes []*string `json:"tokenScopes,omitempty" tf:"token_scopes,omitempty"`
@@ -95,6 +164,18 @@ type SecretStaticAccountParameters struct {
 type SecretStaticAccountSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretStaticAccountParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SecretStaticAccountInitParameters `json:"initProvider,omitempty"`
 }
 
 // SecretStaticAccountStatus defines the observed state of SecretStaticAccount.
@@ -105,7 +186,7 @@ type SecretStaticAccountStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SecretStaticAccount is the Schema for the SecretStaticAccounts API. <no value>
+// SecretStaticAccount is the Schema for the SecretStaticAccounts API. Creates a Static Account for the GCP Secret Backend for Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -115,9 +196,9 @@ type SecretStaticAccountStatus struct {
 type SecretStaticAccount struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.serviceAccountEmail)",message="serviceAccountEmail is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.staticAccount)",message="staticAccount is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.serviceAccountEmail) || has(self.initProvider.serviceAccountEmail)",message="serviceAccountEmail is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.staticAccount) || has(self.initProvider.staticAccount)",message="staticAccount is a required parameter"
 	Spec   SecretStaticAccountSpec   `json:"spec"`
 	Status SecretStaticAccountStatus `json:"status,omitempty"`
 }

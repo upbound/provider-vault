@@ -13,54 +13,123 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type SecretBackendRoleInitParameters struct {
+
+	// The path the RabbitMQ secret backend is mounted at,
+	// with no leading or trailing /s.
+	// The path of the Rabbitmq Secret Backend the role belongs to.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// The name to identify this role within the backend.
+	// Must be unique within the backend.
+	// Unique name for the role.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Specifies a comma-separated RabbitMQ management tags.
+	// Specifies a comma-separated RabbitMQ management tags.
+	Tags *string `json:"tags,omitempty" tf:"tags,omitempty"`
+
+	// Specifies a map of virtual hosts to permissions.
+	// Specifies a map of virtual hosts to permissions.
+	Vhost []VhostInitParameters `json:"vhost,omitempty" tf:"vhost,omitempty"`
+
+	// Specifies a map of virtual hosts and exchanges to topic permissions. This option requires RabbitMQ 3.7.0 or later.
+	// Specifies a map of virtual hosts and exchanges to topic permissions. This option requires RabbitMQ 3.7.0 or later.
+	VhostTopic []VhostTopicInitParameters `json:"vhostTopic,omitempty" tf:"vhost_topic,omitempty"`
+}
+
 type SecretBackendRoleObservation struct {
 
+	// The path the RabbitMQ secret backend is mounted at,
+	// with no leading or trailing /s.
 	// The path of the Rabbitmq Secret Backend the role belongs to.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The name to identify this role within the backend.
+	// Must be unique within the backend.
 	// Unique name for the role.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Specifies a comma-separated RabbitMQ management tags.
+	// Specifies a comma-separated RabbitMQ management tags.
 	Tags *string `json:"tags,omitempty" tf:"tags,omitempty"`
 
 	// Specifies a map of virtual hosts to permissions.
+	// Specifies a map of virtual hosts to permissions.
 	Vhost []VhostObservation `json:"vhost,omitempty" tf:"vhost,omitempty"`
 
+	// Specifies a map of virtual hosts and exchanges to topic permissions. This option requires RabbitMQ 3.7.0 or later.
 	// Specifies a map of virtual hosts and exchanges to topic permissions. This option requires RabbitMQ 3.7.0 or later.
 	VhostTopic []VhostTopicObservation `json:"vhostTopic,omitempty" tf:"vhost_topic,omitempty"`
 }
 
 type SecretBackendRoleParameters struct {
 
+	// The path the RabbitMQ secret backend is mounted at,
+	// with no leading or trailing /s.
 	// The path of the Rabbitmq Secret Backend the role belongs to.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// The name to identify this role within the backend.
+	// Must be unique within the backend.
 	// Unique name for the role.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Specifies a comma-separated RabbitMQ management tags.
+	// Specifies a comma-separated RabbitMQ management tags.
 	// +kubebuilder:validation:Optional
 	Tags *string `json:"tags,omitempty" tf:"tags,omitempty"`
 
+	// Specifies a map of virtual hosts to permissions.
 	// Specifies a map of virtual hosts to permissions.
 	// +kubebuilder:validation:Optional
 	Vhost []VhostParameters `json:"vhost,omitempty" tf:"vhost,omitempty"`
 
 	// Specifies a map of virtual hosts and exchanges to topic permissions. This option requires RabbitMQ 3.7.0 or later.
+	// Specifies a map of virtual hosts and exchanges to topic permissions. This option requires RabbitMQ 3.7.0 or later.
 	// +kubebuilder:validation:Optional
 	VhostTopic []VhostTopicParameters `json:"vhostTopic,omitempty" tf:"vhost_topic,omitempty"`
+}
+
+type VhostInitParameters struct {
+
+	// The configure permissions for this vhost.
+	Configure *string `json:"configure,omitempty" tf:"configure,omitempty"`
+
+	// The vhost to set permissions for.
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+
+	// The read permissions for this vhost.
+	Read *string `json:"read,omitempty" tf:"read,omitempty"`
+
+	// The write permissions for this vhost.
+	Write *string `json:"write,omitempty" tf:"write,omitempty"`
 }
 
 type VhostObservation struct {
@@ -81,20 +150,30 @@ type VhostObservation struct {
 type VhostParameters struct {
 
 	// The configure permissions for this vhost.
-	// +kubebuilder:validation:Required
-	Configure *string `json:"configure" tf:"configure,omitempty"`
+	// +kubebuilder:validation:Optional
+	Configure *string `json:"configure,omitempty" tf:"configure,omitempty"`
 
 	// The vhost to set permissions for.
-	// +kubebuilder:validation:Required
-	Host *string `json:"host" tf:"host,omitempty"`
+	// +kubebuilder:validation:Optional
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
 	// The read permissions for this vhost.
-	// +kubebuilder:validation:Required
-	Read *string `json:"read" tf:"read,omitempty"`
+	// +kubebuilder:validation:Optional
+	Read *string `json:"read,omitempty" tf:"read,omitempty"`
 
 	// The write permissions for this vhost.
-	// +kubebuilder:validation:Required
-	Write *string `json:"write" tf:"write,omitempty"`
+	// +kubebuilder:validation:Optional
+	Write *string `json:"write,omitempty" tf:"write,omitempty"`
+}
+
+type VhostTopicInitParameters struct {
+
+	// The vhost to set permissions for.
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+
+	// Specifies a map of virtual hosts to permissions.
+	// Specifies a map of virtual hosts to permissions.
+	Vhost []VhostTopicVhostInitParameters `json:"vhost,omitempty" tf:"vhost,omitempty"`
 }
 
 type VhostTopicObservation struct {
@@ -103,18 +182,32 @@ type VhostTopicObservation struct {
 	Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
 	// Specifies a map of virtual hosts to permissions.
+	// Specifies a map of virtual hosts to permissions.
 	Vhost []VhostTopicVhostObservation `json:"vhost,omitempty" tf:"vhost,omitempty"`
 }
 
 type VhostTopicParameters struct {
 
 	// The vhost to set permissions for.
-	// +kubebuilder:validation:Required
-	Host *string `json:"host" tf:"host,omitempty"`
+	// +kubebuilder:validation:Optional
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
+	// Specifies a map of virtual hosts to permissions.
 	// Specifies a map of virtual hosts to permissions.
 	// +kubebuilder:validation:Optional
 	Vhost []VhostTopicVhostParameters `json:"vhost,omitempty" tf:"vhost,omitempty"`
+}
+
+type VhostTopicVhostInitParameters struct {
+
+	// The read permissions for this vhost.
+	Read *string `json:"read,omitempty" tf:"read,omitempty"`
+
+	// The vhost to set permissions for.
+	Topic *string `json:"topic,omitempty" tf:"topic,omitempty"`
+
+	// The write permissions for this vhost.
+	Write *string `json:"write,omitempty" tf:"write,omitempty"`
 }
 
 type VhostTopicVhostObservation struct {
@@ -132,22 +225,34 @@ type VhostTopicVhostObservation struct {
 type VhostTopicVhostParameters struct {
 
 	// The read permissions for this vhost.
-	// +kubebuilder:validation:Required
-	Read *string `json:"read" tf:"read,omitempty"`
+	// +kubebuilder:validation:Optional
+	Read *string `json:"read,omitempty" tf:"read,omitempty"`
 
 	// The vhost to set permissions for.
-	// +kubebuilder:validation:Required
-	Topic *string `json:"topic" tf:"topic,omitempty"`
+	// +kubebuilder:validation:Optional
+	Topic *string `json:"topic,omitempty" tf:"topic,omitempty"`
 
 	// The write permissions for this vhost.
-	// +kubebuilder:validation:Required
-	Write *string `json:"write" tf:"write,omitempty"`
+	// +kubebuilder:validation:Optional
+	Write *string `json:"write,omitempty" tf:"write,omitempty"`
 }
 
 // SecretBackendRoleSpec defines the desired state of SecretBackendRole
 type SecretBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendRoleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SecretBackendRoleInitParameters `json:"initProvider,omitempty"`
 }
 
 // SecretBackendRoleStatus defines the observed state of SecretBackendRole.
@@ -158,7 +263,7 @@ type SecretBackendRoleStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SecretBackendRole is the Schema for the SecretBackendRoles API. <no value>
+// SecretBackendRole is the Schema for the SecretBackendRoles API. Creates a role on an RabbitMQ Secret Backend for Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -168,8 +273,8 @@ type SecretBackendRoleStatus struct {
 type SecretBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
 	Spec   SecretBackendRoleSpec   `json:"spec"`
 	Status SecretBackendRoleStatus `json:"status,omitempty"`
 }

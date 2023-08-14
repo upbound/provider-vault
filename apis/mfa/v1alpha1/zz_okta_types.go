@@ -13,28 +13,82 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type OktaInitParameters struct {
+
+	// If set, will be used as the base domain for API requests. Examples are okta.com,
+	// oktapreview.com, and okta-emea.com.
+	// If set, will be used as the base domain for API requests.
+	BaseURL *string `json:"baseUrl,omitempty" tf:"base_url,omitempty"`
+
+	// The mount to tie this method to for use in automatic mappings.
+	// The mapping will use the Name field of Aliases associated with this mount as the username in the mapping.
+	// The mount to tie this method to for use in automatic mappings. The mapping will use the Name field of Aliases associated with this mount as the username in the mapping.
+	MountAccessor *string `json:"mountAccessor,omitempty" tf:"mount_accessor,omitempty"`
+
+	// (string: <required>) – Name of the MFA method.
+	// Name of the MFA method.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Name of the organization to be used in the Okta API.
+	// Name of the organization to be used in the Okta API.
+	OrgName *string `json:"orgName,omitempty" tf:"org_name,omitempty"`
+
+	// If set to true, the username will only match the
+	// primary email for the account.
+	// If set to true, the username will only match the primary email for the account.
+	PrimaryEmail *bool `json:"primaryEmail,omitempty" tf:"primary_email,omitempty"`
+
+	// A format string for mapping Identity names to MFA method names.
+	// Values to substitute should be placed in {{}}. For example, "{{alias.name}}@example.com".
+	// If blank, the Alias's Name field will be used as-is. Currently-supported mappings:
+	// A format string for mapping Identity names to MFA method names. Values to substitute should be placed in `{{}}`.
+	UsernameFormat *string `json:"usernameFormat,omitempty" tf:"username_format,omitempty"`
+}
+
 type OktaObservation struct {
 
+	// If set, will be used as the base domain for API requests. Examples are okta.com,
+	// oktapreview.com, and okta-emea.com.
 	// If set, will be used as the base domain for API requests.
 	BaseURL *string `json:"baseUrl,omitempty" tf:"base_url,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The mount to tie this method to for use in automatic mappings.
+	// The mapping will use the Name field of Aliases associated with this mount as the username in the mapping.
 	// The mount to tie this method to for use in automatic mappings. The mapping will use the Name field of Aliases associated with this mount as the username in the mapping.
 	MountAccessor *string `json:"mountAccessor,omitempty" tf:"mount_accessor,omitempty"`
 
+	// (string: <required>) – Name of the MFA method.
 	// Name of the MFA method.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Name of the organization to be used in the Okta API.
+	// Name of the organization to be used in the Okta API.
 	OrgName *string `json:"orgName,omitempty" tf:"org_name,omitempty"`
 
+	// If set to true, the username will only match the
+	// primary email for the account.
 	// If set to true, the username will only match the primary email for the account.
 	PrimaryEmail *bool `json:"primaryEmail,omitempty" tf:"primary_email,omitempty"`
 
+	// A format string for mapping Identity names to MFA method names.
+	// Values to substitute should be placed in {{}}. For example, "{{alias.name}}@example.com".
+	// If blank, the Alias's Name field will be used as-is. Currently-supported mappings:
 	// A format string for mapping Identity names to MFA method names. Values to substitute should be placed in `{{}}`.
 	UsernameFormat *string `json:"usernameFormat,omitempty" tf:"username_format,omitempty"`
 }
@@ -42,33 +96,49 @@ type OktaObservation struct {
 type OktaParameters struct {
 
 	// Okta API key.
+	// Okta API key.
 	// +kubebuilder:validation:Optional
 	APITokenSecretRef v1.SecretKeySelector `json:"apiTokenSecretRef" tf:"-"`
 
+	// If set, will be used as the base domain for API requests. Examples are okta.com,
+	// oktapreview.com, and okta-emea.com.
 	// If set, will be used as the base domain for API requests.
 	// +kubebuilder:validation:Optional
 	BaseURL *string `json:"baseUrl,omitempty" tf:"base_url,omitempty"`
 
+	// The mount to tie this method to for use in automatic mappings.
+	// The mapping will use the Name field of Aliases associated with this mount as the username in the mapping.
 	// The mount to tie this method to for use in automatic mappings. The mapping will use the Name field of Aliases associated with this mount as the username in the mapping.
 	// +kubebuilder:validation:Optional
 	MountAccessor *string `json:"mountAccessor,omitempty" tf:"mount_accessor,omitempty"`
 
+	// (string: <required>) – Name of the MFA method.
 	// Name of the MFA method.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Name of the organization to be used in the Okta API.
+	// Name of the organization to be used in the Okta API.
 	// +kubebuilder:validation:Optional
 	OrgName *string `json:"orgName,omitempty" tf:"org_name,omitempty"`
 
+	// If set to true, the username will only match the
+	// primary email for the account.
 	// If set to true, the username will only match the primary email for the account.
 	// +kubebuilder:validation:Optional
 	PrimaryEmail *bool `json:"primaryEmail,omitempty" tf:"primary_email,omitempty"`
 
+	// A format string for mapping Identity names to MFA method names.
+	// Values to substitute should be placed in {{}}. For example, "{{alias.name}}@example.com".
+	// If blank, the Alias's Name field will be used as-is. Currently-supported mappings:
 	// A format string for mapping Identity names to MFA method names. Values to substitute should be placed in `{{}}`.
 	// +kubebuilder:validation:Optional
 	UsernameFormat *string `json:"usernameFormat,omitempty" tf:"username_format,omitempty"`
@@ -78,6 +148,18 @@ type OktaParameters struct {
 type OktaSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OktaParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider OktaInitParameters `json:"initProvider,omitempty"`
 }
 
 // OktaStatus defines the observed state of Okta.
@@ -88,7 +170,7 @@ type OktaStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Okta is the Schema for the Oktas API. <no value>
+// Okta is the Schema for the Oktas API. Managing the MFA Okta method configuration
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -98,10 +180,10 @@ type OktaStatus struct {
 type Okta struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.apiTokenSecretRef)",message="apiTokenSecretRef is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.mountAccessor)",message="mountAccessor is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.orgName)",message="orgName is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.apiTokenSecretRef)",message="apiTokenSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mountAccessor) || has(self.initProvider.mountAccessor)",message="mountAccessor is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.orgName) || has(self.initProvider.orgName)",message="orgName is a required parameter"
 	Spec   OktaSpec   `json:"spec"`
 	Status OktaStatus `json:"status,omitempty"`
 }

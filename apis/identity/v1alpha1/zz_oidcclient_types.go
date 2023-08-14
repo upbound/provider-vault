@@ -13,34 +13,95 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type OidcClientObservation struct {
+type OidcClientInitParameters struct {
 
+	// The time-to-live for access tokens obtained by the client.
 	// The time-to-live for access tokens obtained by the client.
 	AccessTokenTTL *float64 `json:"accessTokenTtl,omitempty" tf:"access_token_ttl,omitempty"`
 
+	// A list of assignment resources associated with the client.
+	// A list of assignment resources associated with the client.
+	Assignments []*string `json:"assignments,omitempty" tf:"assignments,omitempty"`
+
+	// The client type based on its ability to maintain confidentiality of credentials.
+	// The following client types are supported: confidential, public. Defaults to confidential.
+	// The client type based on its ability to maintain confidentiality of credentials.Defaults to 'confidential'.
+	ClientType *string `json:"clientType,omitempty" tf:"client_type,omitempty"`
+
+	// The time-to-live for ID tokens obtained by the client.
+	// The value should be less than the verification_ttl on the key.
+	// The time-to-live for ID tokens obtained by the client. The value should be less than the verification_ttl on the key.
+	IDTokenTTL *float64 `json:"idTokenTtl,omitempty" tf:"id_token_ttl,omitempty"`
+
+	// A reference to a named key resource in Vault.
+	// This cannot be modified after creation. If not provided, the default
+	// key is used.
+	// A reference to a named key resource in Vault. This cannot be modified after creation.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// The name of the client.
+	// The name of the client.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Redirection URI values used by the client.
+	// One of these values must exactly match the redirect_uri parameter value
+	// used in each authentication request.
+	// Redirection URI values used by the client. One of these values must exactly match the redirect_uri parameter value used in each authentication request.
+	RedirectUris []*string `json:"redirectUris,omitempty" tf:"redirect_uris,omitempty"`
+}
+
+type OidcClientObservation struct {
+
+	// The time-to-live for access tokens obtained by the client.
+	// The time-to-live for access tokens obtained by the client.
+	AccessTokenTTL *float64 `json:"accessTokenTtl,omitempty" tf:"access_token_ttl,omitempty"`
+
+	// A list of assignment resources associated with the client.
 	// A list of assignment resources associated with the client.
 	Assignments []*string `json:"assignments,omitempty" tf:"assignments,omitempty"`
 
 	// The Client ID from Vault.
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
 
+	// The client type based on its ability to maintain confidentiality of credentials.
+	// The following client types are supported: confidential, public. Defaults to confidential.
 	// The client type based on its ability to maintain confidentiality of credentials.Defaults to 'confidential'.
 	ClientType *string `json:"clientType,omitempty" tf:"client_type,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The time-to-live for ID tokens obtained by the client.
+	// The value should be less than the verification_ttl on the key.
 	// The time-to-live for ID tokens obtained by the client. The value should be less than the verification_ttl on the key.
 	IDTokenTTL *float64 `json:"idTokenTtl,omitempty" tf:"id_token_ttl,omitempty"`
 
+	// A reference to a named key resource in Vault.
+	// This cannot be modified after creation. If not provided, the default
+	// key is used.
 	// A reference to a named key resource in Vault. This cannot be modified after creation.
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
 	// The name of the client.
+	// The name of the client.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Redirection URI values used by the client.
+	// One of these values must exactly match the redirect_uri parameter value
+	// used in each authentication request.
 	// Redirection URI values used by the client. One of these values must exactly match the redirect_uri parameter value used in each authentication request.
 	RedirectUris []*string `json:"redirectUris,omitempty" tf:"redirect_uris,omitempty"`
 }
@@ -48,33 +109,50 @@ type OidcClientObservation struct {
 type OidcClientParameters struct {
 
 	// The time-to-live for access tokens obtained by the client.
+	// The time-to-live for access tokens obtained by the client.
 	// +kubebuilder:validation:Optional
 	AccessTokenTTL *float64 `json:"accessTokenTtl,omitempty" tf:"access_token_ttl,omitempty"`
 
 	// A list of assignment resources associated with the client.
+	// A list of assignment resources associated with the client.
 	// +kubebuilder:validation:Optional
 	Assignments []*string `json:"assignments,omitempty" tf:"assignments,omitempty"`
 
+	// The client type based on its ability to maintain confidentiality of credentials.
+	// The following client types are supported: confidential, public. Defaults to confidential.
 	// The client type based on its ability to maintain confidentiality of credentials.Defaults to 'confidential'.
 	// +kubebuilder:validation:Optional
 	ClientType *string `json:"clientType,omitempty" tf:"client_type,omitempty"`
 
+	// The time-to-live for ID tokens obtained by the client.
+	// The value should be less than the verification_ttl on the key.
 	// The time-to-live for ID tokens obtained by the client. The value should be less than the verification_ttl on the key.
 	// +kubebuilder:validation:Optional
 	IDTokenTTL *float64 `json:"idTokenTtl,omitempty" tf:"id_token_ttl,omitempty"`
 
+	// A reference to a named key resource in Vault.
+	// This cannot be modified after creation. If not provided, the default
+	// key is used.
 	// A reference to a named key resource in Vault. This cannot be modified after creation.
 	// +kubebuilder:validation:Optional
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
 	// The name of the client.
+	// The name of the client.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Redirection URI values used by the client.
+	// One of these values must exactly match the redirect_uri parameter value
+	// used in each authentication request.
 	// Redirection URI values used by the client. One of these values must exactly match the redirect_uri parameter value used in each authentication request.
 	// +kubebuilder:validation:Optional
 	RedirectUris []*string `json:"redirectUris,omitempty" tf:"redirect_uris,omitempty"`
@@ -84,6 +162,18 @@ type OidcClientParameters struct {
 type OidcClientSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OidcClientParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider OidcClientInitParameters `json:"initProvider,omitempty"`
 }
 
 // OidcClientStatus defines the observed state of OidcClient.
@@ -94,7 +184,7 @@ type OidcClientStatus struct {
 
 // +kubebuilder:object:root=true
 
-// OidcClient is the Schema for the OidcClients API. <no value>
+// OidcClient is the Schema for the OidcClients API. Provision OIDC Clients in Vault.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -104,7 +194,7 @@ type OidcClientStatus struct {
 type OidcClient struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
 	Spec   OidcClientSpec   `json:"spec"`
 	Status OidcClientStatus `json:"status,omitempty"`
 }

@@ -17,9 +17,9 @@ func (mg *SecretBackendConnection) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this SecretBackendConnection.
-func (mg *SecretBackendConnection) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this SecretBackendConnection.
+func (mg *SecretBackendConnection) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this SecretBackendConnection.
@@ -55,9 +55,9 @@ func (mg *SecretBackendConnection) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this SecretBackendConnection.
-func (mg *SecretBackendConnection) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this SecretBackendConnection.
+func (mg *SecretBackendConnection) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this SecretBackendConnection.
@@ -93,9 +93,9 @@ func (mg *SecretBackendRole) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this SecretBackendRole.
-func (mg *SecretBackendRole) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this SecretBackendRole.
+func (mg *SecretBackendRole) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this SecretBackendRole.
@@ -131,9 +131,9 @@ func (mg *SecretBackendRole) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this SecretBackendRole.
-func (mg *SecretBackendRole) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this SecretBackendRole.
+func (mg *SecretBackendRole) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this SecretBackendRole.
@@ -169,9 +169,9 @@ func (mg *SecretBackendStaticRole) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this SecretBackendStaticRole.
-func (mg *SecretBackendStaticRole) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this SecretBackendStaticRole.
+func (mg *SecretBackendStaticRole) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this SecretBackendStaticRole.
@@ -207,9 +207,9 @@ func (mg *SecretBackendStaticRole) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this SecretBackendStaticRole.
-func (mg *SecretBackendStaticRole) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this SecretBackendStaticRole.
+func (mg *SecretBackendStaticRole) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this SecretBackendStaticRole.
@@ -245,9 +245,9 @@ func (mg *SecretsMount) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this SecretsMount.
-func (mg *SecretsMount) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this SecretsMount.
+func (mg *SecretsMount) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this SecretsMount.
@@ -283,9 +283,9 @@ func (mg *SecretsMount) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this SecretsMount.
-func (mg *SecretsMount) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this SecretsMount.
+func (mg *SecretsMount) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this SecretsMount.

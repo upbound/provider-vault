@@ -69,6 +69,16 @@ func (tr *AuthBackend) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this AuthBackend
+func (tr *AuthBackend) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this AuthBackend using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *AuthBackend) LateInitialize(attrs []byte) (bool, error) {
@@ -143,6 +153,16 @@ func (tr *AuthBackendGroup) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this AuthBackendGroup
+func (tr *AuthBackendGroup) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this AuthBackendGroup using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *AuthBackendGroup) LateInitialize(attrs []byte) (bool, error) {
@@ -215,6 +235,16 @@ func (tr *AuthBackendUser) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this AuthBackendUser
+func (tr *AuthBackendUser) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this AuthBackendUser using its observed tfState.

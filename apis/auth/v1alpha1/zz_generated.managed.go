@@ -17,9 +17,9 @@ func (mg *Backend) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this Backend.
-func (mg *Backend) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this Backend.
+func (mg *Backend) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this Backend.
@@ -55,9 +55,9 @@ func (mg *Backend) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this Backend.
-func (mg *Backend) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this Backend.
+func (mg *Backend) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this Backend.

@@ -12,10 +12,12 @@ import (
 
 	xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 	xpcontroller "github.com/crossplane/crossplane-runtime/pkg/controller"
+	"github.com/crossplane/crossplane-runtime/pkg/feature"
 	"github.com/crossplane/crossplane-runtime/pkg/logging"
 	"github.com/crossplane/crossplane-runtime/pkg/ratelimiter"
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	tjcontroller "github.com/upbound/upjet/pkg/controller"
+	"github.com/upbound/upjet/pkg/controller/handler"
 	"github.com/upbound/upjet/pkg/terraform"
 	"gopkg.in/alecthomas/kingpin.v2"
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
@@ -34,14 +36,15 @@ import (
 
 func main() {
 	var (
-		app              = kingpin.New(filepath.Base(os.Args[0]), "Terraform based Crossplane provider for Vault").DefaultEnvars()
-		debug            = app.Flag("debug", "Run with debug logging.").Short('d').Bool()
-		syncPeriod       = app.Flag("sync", "Controller manager sync period such as 300ms, 1.5h, or 2h45m").Short('s').Default("1h").Duration()
-		leaderElection   = app.Flag("leader-election", "Use leader election for the controller manager.").Short('l').Default("false").OverrideDefaultFromEnvar("LEADER_ELECTION").Bool()
-		terraformVersion = app.Flag("terraform-version", "Terraform version.").Required().Envar("TERRAFORM_VERSION").String()
-		providerSource   = app.Flag("terraform-provider-source", "Terraform provider source.").Required().Envar("TERRAFORM_PROVIDER_SOURCE").String()
-		providerVersion  = app.Flag("terraform-provider-version", "Terraform provider version.").Required().Envar("TERRAFORM_PROVIDER_VERSION").String()
-		maxReconcileRate = app.Flag("max-reconcile-rate", "The global maximum rate per second at which resources may checked for drift from the desired state.").Default("10").Int()
+		app                  = kingpin.New(filepath.Base(os.Args[0]), "Terraform based Crossplane provider for Vault").DefaultEnvars()
+		debug                = app.Flag("debug", "Run with debug logging.").Short('d').Bool()
+		syncPeriod           = app.Flag("sync", "Controller manager sync period such as 300ms, 1.5h, or 2h45m").Short('s').Default("1h").Duration()
+		pollInterval         = app.Flag("poll", "Poll interval controls how often an individual resource should be checked for drift.").Default("10m").Duration()
+		leaderElection       = app.Flag("leader-election", "Use leader election for the controller manager.").Short('l').Default("false").OverrideDefaultFromEnvar("LEADER_ELECTION").Bool()
+		maxReconcileRate     = app.Flag("max-reconcile-rate", "The global maximum rate per second at which resources may checked for drift from the desired state.").Default("10").Int()
+		nativeProviderSource = app.Flag("terraform-provider-source", "Terraform provider source.").Required().Envar("TERRAFORM_PROVIDER_SOURCE").String()
+		terraformVersion     = app.Flag("terraform-version", "Terraform version.").Required().Envar("TERRAFORM_VERSION").String()
+		providerVersion      = app.Flag("terraform-provider-version", "Terraform provider version.").Required().Envar("TERRAFORM_PROVIDER_VERSION").String()
 
 		namespace                  = app.Flag("namespace", "Namespace used to set as default scope in default secret store config.").Default("upbound-system").Envar("POD_NAMESPACE").String()
 		enableExternalSecretStores = app.Flag("enable-external-secret-stores", "Enable support for ExternalSecretStores.").Default("false").Envar("ENABLE_EXTERNAL_SECRET_STORES").Bool()
@@ -59,7 +62,7 @@ func main() {
 		ctrl.SetLogger(zl)
 	}
 
-	log.Debug("Starting", "sync-period", syncPeriod.String())
+	log.Debug("Starting", "sync-period", syncPeriod.String(), "poll-interval", pollInterval.String(), "max-reconcile-rate", *maxReconcileRate)
 
 	cfg, err := ctrl.GetConfig()
 	kingpin.FatalIfError(err, "Cannot get API server rest config")
@@ -74,18 +77,20 @@ func main() {
 	})
 	kingpin.FatalIfError(err, "Cannot create controller manager")
 	kingpin.FatalIfError(apis.AddToScheme(mgr.GetScheme()), "Cannot add Vault APIs to scheme")
+
+	featureFlags := &feature.Flags{}
 	o := tjcontroller.Options{
 		Options: xpcontroller.Options{
 			Logger:                  log,
 			GlobalRateLimiter:       ratelimiter.NewGlobal(*maxReconcileRate),
-			PollInterval:            1 * time.Minute,
-			MaxConcurrentReconciles: 1,
+			PollInterval:            *pollInterval,
+			MaxConcurrentReconciles: *maxReconcileRate,
+			Features:                featureFlags,
 		},
-		Provider: config.GetProvider(),
-		// use the following WorkspaceStoreOption to enable the shared gRPC mode
-		// terraform.WithProviderRunner(terraform.NewSharedProvider(log, os.Getenv("TERRAFORM_NATIVE_PROVIDER_PATH"), terraform.WithNativeProviderArgs("-debuggable")))
-		WorkspaceStore: terraform.NewWorkspaceStore(log),
-		SetupFn:        clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion),
+		Provider:       config.GetProvider(),
+		SetupFn:        clients.TerraformSetupBuilder(*terraformVersion, *nativeProviderSource, *providerVersion),
+		WorkspaceStore: terraform.NewWorkspaceStore(log, terraform.WithFeatures(featureFlags)),
+		EventHandler:   handler.NewEventHandler(),
 	}
 
 	if *enableExternalSecretStores {

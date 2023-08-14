@@ -13,32 +13,65 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type NamespaceObservation struct {
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+type NamespaceInitParameters struct {
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// Namespace ID.
-	NamespaceID *string `json:"namespaceId,omitempty" tf:"namespace_id,omitempty"`
-
+	// The path of the namespace. Must not have a trailing /
 	// Namespace path.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// The fully qualified path to the namespace. Useful when provisioning resources in a child namespace.
+	// The fully qualified namespace path.
+	PathFq *string `json:"pathFq,omitempty" tf:"path_fq,omitempty"`
+}
+
+type NamespaceObservation struct {
+
+	// ID of the namespace.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// ID of the namespace.
+	// Namespace ID.
+	NamespaceID *string `json:"namespaceId,omitempty" tf:"namespace_id,omitempty"`
+
+	// The path of the namespace. Must not have a trailing /
+	// Namespace path.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// The fully qualified path to the namespace. Useful when provisioning resources in a child namespace.
 	// The fully qualified namespace path.
 	PathFq *string `json:"pathFq,omitempty" tf:"path_fq,omitempty"`
 }
 
 type NamespaceParameters struct {
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The path of the namespace. Must not have a trailing /
 	// Namespace path.
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// The fully qualified path to the namespace. Useful when provisioning resources in a child namespace.
 	// The fully qualified namespace path.
 	// +kubebuilder:validation:Optional
 	PathFq *string `json:"pathFq,omitempty" tf:"path_fq,omitempty"`
@@ -48,6 +81,18 @@ type NamespaceParameters struct {
 type NamespaceSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     NamespaceParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider NamespaceInitParameters `json:"initProvider,omitempty"`
 }
 
 // NamespaceStatus defines the observed state of Namespace.
@@ -58,7 +103,7 @@ type NamespaceStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Namespace is the Schema for the Namespaces API. <no value>
+// Namespace is the Schema for the Namespaces API. Writes namespaces for Vault
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -68,7 +113,7 @@ type NamespaceStatus struct {
 type Namespace struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.path)",message="path is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || has(self.initProvider.path)",message="path is a required parameter"
 	Spec   NamespaceSpec   `json:"spec"`
 	Status NamespaceStatus `json:"status,omitempty"`
 }

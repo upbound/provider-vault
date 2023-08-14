@@ -17,9 +17,9 @@ func (mg *Autopilot) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this Autopilot.
-func (mg *Autopilot) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this Autopilot.
+func (mg *Autopilot) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this Autopilot.
@@ -55,9 +55,9 @@ func (mg *Autopilot) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this Autopilot.
-func (mg *Autopilot) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this Autopilot.
+func (mg *Autopilot) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this Autopilot.
@@ -93,9 +93,9 @@ func (mg *SnapshotAgentConfig) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this SnapshotAgentConfig.
-func (mg *SnapshotAgentConfig) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this SnapshotAgentConfig.
+func (mg *SnapshotAgentConfig) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this SnapshotAgentConfig.
@@ -131,9 +131,9 @@ func (mg *SnapshotAgentConfig) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this SnapshotAgentConfig.
-func (mg *SnapshotAgentConfig) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this SnapshotAgentConfig.
+func (mg *SnapshotAgentConfig) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this SnapshotAgentConfig.

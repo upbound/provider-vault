@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: authbackendcerts.aws.vault.upbound.io
 spec:
   group: aws.vault.upbound.io
@@ -35,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: AuthBackendCert is the Schema for the AuthBackendCerts API. <no
-          value>
+        description: AuthBackendCert is the Schema for the AuthBackendCerts API. Manages
+          a certificate for an AWS Auth Backend in Vault.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -58,7 +57,7 @@ spec:
                 description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
                   or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicy field in a future release. Currently,
+                  in favor of the ManagementPolicies field in a future release. Currently,
                   both could be set independently and non-default values would be
                   honored if the feature flag is enabled. See the design doc for more
                   information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
@@ -69,38 +68,102 @@ spec:
               forProvider:
                 properties:
                   awsPublicCert:
-                    description: Base64 encoded AWS Public key required to verify
-                      PKCS7 signature of the EC2 instance metadata.
+                    description: The  Base64 encoded AWS Public key required to verify
+                      PKCS7 signature of the EC2 instance metadata. You can find this
+                      key in the AWS documentation. Base64 encoded AWS Public key
+                      required to verify PKCS7 signature of the EC2 instance metadata.
                     type: string
                   backend:
-                    description: Unique name of the auth backend to configure.
+                    description: The path the AWS auth backend being configured was
+                      mounted at.  Defaults to aws. Unique name of the auth backend
+                      to configure.
                     type: string
                   certName:
-                    description: Name of the certificate to configure.
+                    description: The name of the certificate. Name of the certificate
+                      to configure.
                     type: string
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   type:
-                    description: The type of document that can be verified using the
-                      certificate. Must be either "pkcs7" or "identity".
+                    description: Either "pkcs7" or "identity", indicating the type
+                      of document which can be verified using the given certificate.
+                      Defaults to "pkcs7". The type of document that can be verified
+                      using the certificate. Must be either "pkcs7" or "identity".
                     type: string
                 type: object
-              managementPolicy:
-                default: FullControl
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  awsPublicCert:
+                    description: The  Base64 encoded AWS Public key required to verify
+                      PKCS7 signature of the EC2 instance metadata. You can find this
+                      key in the AWS documentation. Base64 encoded AWS Public key
+                      required to verify PKCS7 signature of the EC2 instance metadata.
+                    type: string
+                  backend:
+                    description: The path the AWS auth backend being configured was
+                      mounted at.  Defaults to aws. Unique name of the auth backend
+                      to configure.
+                    type: string
+                  certName:
+                    description: The name of the certificate. Name of the certificate
+                      to configure.
+                    type: string
+                  namespace:
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
+                    type: string
+                  type:
+                    description: Either "pkcs7" or "identity", indicating the type
+                      of document which can be verified using the given certificate.
+                      Defaults to "pkcs7". The type of document that can be verified
+                      using the certificate. Must be either "pkcs7" or "identity".
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
                 description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
                   It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicy
-                  specifies the level of control Crossplane has over the managed external
-                  resource. This field is planned to replace the DeletionPolicy field
-                  in a future release. Currently, both could be set independently
-                  and non-default values would be honored if the feature flag is enabled.
-                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
-                enum:
-                - FullControl
-                - ObserveOnly
-                - OrphanOnDelete
-                type: string
+                  enabled, and may be changed or removed without notice. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
@@ -274,32 +337,47 @@ spec:
             type: object
             x-kubernetes-validations:
             - message: awsPublicCert is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.awsPublicCert)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.awsPublicCert)
+                || has(self.initProvider.awsPublicCert)'
             - message: certName is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.certName)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.certName)
+                || has(self.initProvider.certName)'
           status:
             description: AuthBackendCertStatus defines the observed state of AuthBackendCert.
             properties:
               atProvider:
                 properties:
                   awsPublicCert:
-                    description: Base64 encoded AWS Public key required to verify
-                      PKCS7 signature of the EC2 instance metadata.
+                    description: The  Base64 encoded AWS Public key required to verify
+                      PKCS7 signature of the EC2 instance metadata. You can find this
+                      key in the AWS documentation. Base64 encoded AWS Public key
+                      required to verify PKCS7 signature of the EC2 instance metadata.
                     type: string
                   backend:
-                    description: Unique name of the auth backend to configure.
+                    description: The path the AWS auth backend being configured was
+                      mounted at.  Defaults to aws. Unique name of the auth backend
+                      to configure.
                     type: string
                   certName:
-                    description: Name of the certificate to configure.
+                    description: The name of the certificate. Name of the certificate
+                      to configure.
                     type: string
                   id:
                     type: string
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   type:
-                    description: The type of document that can be verified using the
-                      certificate. Must be either "pkcs7" or "identity".
+                    description: Either "pkcs7" or "identity", indicating the type
+                      of document which can be verified using the given certificate.
+                      Defaults to "pkcs7". The type of document that can be verified
+                      using the certificate. Must be either "pkcs7" or "identity".
                     type: string
                 type: object
               conditions:

@@ -17,9 +17,9 @@ func (mg *AuthBackendConfig) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this AuthBackendConfig.
-func (mg *AuthBackendConfig) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this AuthBackendConfig.
+func (mg *AuthBackendConfig) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this AuthBackendConfig.
@@ -55,9 +55,9 @@ func (mg *AuthBackendConfig) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this AuthBackendConfig.
-func (mg *AuthBackendConfig) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this AuthBackendConfig.
+func (mg *AuthBackendConfig) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this AuthBackendConfig.
@@ -93,9 +93,9 @@ func (mg *AuthBackendRole) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this AuthBackendRole.
-func (mg *AuthBackendRole) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this AuthBackendRole.
+func (mg *AuthBackendRole) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this AuthBackendRole.
@@ -131,9 +131,9 @@ func (mg *AuthBackendRole) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this AuthBackendRole.
-func (mg *AuthBackendRole) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this AuthBackendRole.
+func (mg *AuthBackendRole) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this AuthBackendRole.
@@ -169,9 +169,9 @@ func (mg *SecretBackend) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this SecretBackend.
-func (mg *SecretBackend) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this SecretBackend.
+func (mg *SecretBackend) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this SecretBackend.
@@ -207,9 +207,9 @@ func (mg *SecretBackend) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this SecretBackend.
-func (mg *SecretBackend) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this SecretBackend.
+func (mg *SecretBackend) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this SecretBackend.
@@ -245,9 +245,9 @@ func (mg *SecretBackendRole) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicy of this SecretBackendRole.
-func (mg *SecretBackendRole) GetManagementPolicy() xpv1.ManagementPolicy {
-	return mg.Spec.ManagementPolicy
+// GetManagementPolicies of this SecretBackendRole.
+func (mg *SecretBackendRole) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this SecretBackendRole.
@@ -283,9 +283,9 @@ func (mg *SecretBackendRole) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicy of this SecretBackendRole.
-func (mg *SecretBackendRole) SetManagementPolicy(r xpv1.ManagementPolicy) {
-	mg.Spec.ManagementPolicy = r
+// SetManagementPolicies of this SecretBackendRole.
+func (mg *SecretBackendRole) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this SecretBackendRole.

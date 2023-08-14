@@ -41,11 +41,22 @@ resources:
             uri_sans: '- (Optional) List of alternative URIs'
             use_csr_values: '- (Optional) Preserve CSR values'
         importStatements: []
-    vault_ad_secret_backend resource:
+    vault_ad_secret_backend:
         subCategory: ""
         description: Creates an Active Directory secret backend for Vault.
-        name: vault_ad_secret_backend resource
+        name: vault_ad_secret_backend
         title: vault_ad_secret_backend resource
+        examples:
+            - name: config
+              manifest: |-
+                {
+                  "backend": "ad",
+                  "binddn": "CN=Administrator,CN=Users,DC=corp,DC=example,DC=net",
+                  "bindpass": "SuperSecretPassw0rd",
+                  "insecure_tls": "true",
+                  "url": "ldaps://ad",
+                  "userdn": "CN=Users,DC=corp,DC=example,DC=net"
+                }
         argumentDocs:
             anonymous_group_search: |-
                 - (Optional) Use anonymous binds when performing LDAP group searches
@@ -153,11 +164,32 @@ resources:
                 - (Optional) The password time-to-live in seconds. Defaults to the configuration
                 ttl if not provided.
         importStatements: []
-    vault_ad_secret_role resource:
+    vault_ad_secret_role:
         subCategory: ""
         description: Creates a role on the Active Directory Secret Backend for Vault.
-        name: vault_ad_secret_role resource
+        name: vault_ad_secret_role
         title: vault_ad_secret_role resource
+        examples:
+            - name: role
+              manifest: |-
+                {
+                  "backend": "${vault_ad_secret_backend.config.backend}",
+                  "role": "bob",
+                  "service_account_name": "Bob",
+                  "ttl": 60
+                }
+              references:
+                backend: vault_ad_secret_backend.config.backend
+              dependencies:
+                vault_ad_secret_backend.config: |-
+                    {
+                      "backend": "ad",
+                      "binddn": "CN=Administrator,CN=Users,DC=corp,DC=example,DC=net",
+                      "bindpass": "SuperSecretPassw0rd",
+                      "insecure_tls": "true",
+                      "url": "ldaps://ad",
+                      "userdn": "CN=Users,DC=corp,DC=example,DC=net"
+                    }
         argumentDocs:
             backend: |-
                 - (Required) The path the AD secret backend is mounted at,
@@ -179,11 +211,27 @@ resources:
                 - (Optional) The password time-to-live in seconds. Defaults to the configuration
                 ttl if not provided.
         importStatements: []
-    vault_alicloud_auth_backend_role resource:
+    vault_alicloud_auth_backend_role:
         subCategory: ""
         description: Managing roles in an AliCloud auth backend in Vault
-        name: vault_alicloud_auth_backend_role resource
+        name: vault_alicloud_auth_backend_role
         title: vault_alicloud_auth_backend_role resource
+        examples:
+            - name: alicloud
+              manifest: |-
+                {
+                  "arn": "acs:ram:123456:tf:role/foobar",
+                  "backend": "${vault_auth_backend.alicloud.path}",
+                  "role": "example"
+                }
+              references:
+                backend: vault_auth_backend.alicloud.path
+              dependencies:
+                vault_auth_backend.alicloud: |-
+                    {
+                      "path": "alicloud",
+                      "type": "alicloud"
+                    }
         argumentDocs:
             arn: '- (Required) The role''s arn.'
             backend: |-
@@ -233,11 +281,43 @@ resources:
                 default-service and default-batch which specify the type to return unless the client
                 requests a different type at generation time.
         importStatements: []
-    vault_approle_auth_backend_login resource:
+    vault_approle_auth_backend_login:
         subCategory: ""
         description: Log into Vault using the AppRole auth backend.
-        name: vault_approle_auth_backend_login resource
+        name: vault_approle_auth_backend_login
         title: vault_approle_auth_backend_login resource
+        examples:
+            - name: login
+              manifest: |-
+                {
+                  "backend": "${vault_auth_backend.approle.path}",
+                  "role_id": "${vault_approle_auth_backend_role.example.role_id}",
+                  "secret_id": "${vault_approle_auth_backend_role_secret_id.id.secret_id}"
+                }
+              references:
+                backend: vault_auth_backend.approle.path
+                role_id: vault_approle_auth_backend_role.example.role_id
+                secret_id: vault_approle_auth_backend_role_secret_id.id.secret_id
+              dependencies:
+                vault_approle_auth_backend_role.example: |-
+                    {
+                      "backend": "${vault_auth_backend.approle.path}",
+                      "role_name": "test-role",
+                      "token_policies": [
+                        "default",
+                        "dev",
+                        "prod"
+                      ]
+                    }
+                vault_approle_auth_backend_role_secret_id.id: |-
+                    {
+                      "backend": "${vault_auth_backend.approle.path}",
+                      "role_name": "${vault_approle_auth_backend_role.example.role_name}"
+                    }
+                vault_auth_backend.approle: |-
+                    {
+                      "type": "approle"
+                    }
         argumentDocs:
             accessor: '- The accessor for the token.'
             backend: '- The unique path of the Vault backend to log in with.'
@@ -257,11 +337,30 @@ resources:
                 - (Optional) The secret ID of the role to log in with. Required
                 unless bind_secret_id is set to false on the role.
         importStatements: []
-    vault_approle_auth_backend_role resource:
+    vault_approle_auth_backend_role:
         subCategory: ""
         description: Manages AppRole auth backend roles in Vault.
-        name: vault_approle_auth_backend_role resource
+        name: vault_approle_auth_backend_role
         title: vault_approle_auth_backend_role resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "backend": "${vault_auth_backend.approle.path}",
+                  "role_name": "test-role",
+                  "token_policies": [
+                    "default",
+                    "dev",
+                    "prod"
+                  ]
+                }
+              references:
+                backend: vault_auth_backend.approle.path
+              dependencies:
+                vault_auth_backend.approle: |-
+                    {
+                      "type": "approle"
+                    }
         argumentDocs:
             backend: |-
                 - (Optional) The unique name of the auth backend to configure.
@@ -324,11 +423,37 @@ resources:
                 default-service and default-batch which specify the type to return unless the client
                 requests a different type at generation time.
         importStatements: []
-    vault_approle_auth_backend_role_secret_id resource:
+    vault_approle_auth_backend_role_secret_id:
         subCategory: ""
         description: Manages AppRole auth backend role SecretIDs in Vault.
-        name: vault_approle_auth_backend_role_secret_id resource
+        name: vault_approle_auth_backend_role_secret_id
         title: vault_approle_auth_backend_role_secret_id resource
+        examples:
+            - name: id
+              manifest: |-
+                {
+                  "backend": "${vault_auth_backend.approle.path}",
+                  "metadata": "${jsonencode(\n    {\n      \"hello\" = \"world\"\n    }\n  )}",
+                  "role_name": "${vault_approle_auth_backend_role.example.role_name}"
+                }
+              references:
+                backend: vault_auth_backend.approle.path
+                role_name: vault_approle_auth_backend_role.example.role_name
+              dependencies:
+                vault_approle_auth_backend_role.example: |-
+                    {
+                      "backend": "${vault_auth_backend.approle.path}",
+                      "role_name": "test-role",
+                      "token_policies": [
+                        "default",
+                        "dev",
+                        "prod"
+                      ]
+                    }
+                vault_auth_backend.approle: |-
+                    {
+                      "type": "approle"
+                    }
         argumentDocs:
             accessor: '- The unique ID for this SecretID that can be safely logged.'
             cidr_list: |-
@@ -360,11 +485,32 @@ resources:
                 and available for the duration specified. Only a single unwrapping of the
                 token is allowed.
         importStatements: []
-    vault_audit resource:
+    vault_audit:
         subCategory: ""
         description: Writes audit backends for Vault
-        name: vault_audit resource
+        name: vault_audit
         title: vault_audit resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "options": {
+                    "file_path": "C:/temp/audit.txt"
+                  },
+                  "type": "file"
+                }
+            - name: test
+              manifest: |-
+                {
+                  "local": false,
+                  "options": {
+                    "address": "127.0.0.1:8000",
+                    "description": "application x socket",
+                    "socket_type": "tcp"
+                  },
+                  "path": "app_socket",
+                  "type": "socket"
+                }
         argumentDocs:
             description: '- (Optional) Human-friendly description of the audit device.'
             local: '- (Optional) Specifies if the audit device is a local only. Local audit devices are not replicated nor (if a secondary) removed by replication.'
@@ -377,14 +523,105 @@ resources:
             path: '- (optional) The path to mount the audit device. This defaults to the type.'
             type: '- (Required) Type of the audit device, such as ''file''.'
         importStatements: []
-    vault_audit_request_header resource:
+    vault_audit_request_header:
         subCategory: ""
         description: Manages audited request headers in Vault
-        name: vault_audit_request_header resource
+        name: vault_audit_request_header
         title: vault_audit_request_header resource
+        examples:
+            - name: x_forwarded_for
+              manifest: |-
+                {
+                  "hmac": false,
+                  "name": "X-Forwarded-For"
+                }
         argumentDocs:
             hmac: '- (Optional) Whether this header''s value should be HMAC''d in the audit logs.'
             name: '- (Required) The name of the request header to audit.'
+        importStatements: []
+    vault_auth_backend:
+        subCategory: ""
+        description: Managing roles in an Cert auth backend in Vault
+        name: vault_auth_backend
+        title: vault_auth_backend resource
+        examples:
+            - name: cert
+              manifest: |-
+                {
+                  "path": "cert",
+                  "type": "cert"
+                }
+              dependencies:
+                vault_cert_auth_backend_role.cert: |-
+                    {
+                      "allowed_names": [
+                        "foo.example.org",
+                        "baz.example.org"
+                      ],
+                      "backend": "${vault_auth_backend.cert.path}",
+                      "certificate": "${file(\"/path/to/certs/ca-cert.pem\")}",
+                      "name": "foo",
+                      "token_max_ttl": 600,
+                      "token_policies": [
+                        "foo"
+                      ],
+                      "token_ttl": 300
+                    }
+        argumentDocs:
+            allowed_common_names: '- (Optional) Allowed the common names for authenticated client certificates'
+            allowed_dns_sans: '- (Optional) Allowed alternative dns names for authenticated client certificates'
+            allowed_email_sans: '- (Optional) Allowed emails for authenticated client certificates'
+            allowed_names: '- (Optional) Allowed subject names for authenticated client certificates'
+            allowed_organization_units: ', please update accordingly'
+            allowed_organizational_units: |-
+                - (Optional) Allowed organization units for authenticated client certificates.
+                In previous provider releases this field was incorrectly named
+            allowed_uri_sans: '- (Optional) Allowed URIs for authenticated client certificates'
+            backend: '- (Optional) Path to the mounted Cert auth backend'
+            certificate: '- (Required) CA certificate used to validate client certificates'
+            display_name: '- (Optional) The name to display on tokens issued under this role.'
+            name: '- (Required) Name of the role'
+            namespace: |-
+                - (Optional) The namespace to provision the resource in.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+                Available only for Vault Enterprise.
+            required_extensions: '- (Optional) TLS extensions required on client certificates'
+            token_bound_cidrs: |-
+                - (Optional) List of CIDR blocks; if set, specifies blocks of IP
+                addresses which can authenticate successfully, and ties the resulting token to these blocks
+                as well.
+            token_explicit_max_ttl: |-
+                - (Optional) If set, will encode an
+                explicit max TTL
+                onto the token in number of seconds. This is a hard cap even if token_ttl and
+                token_max_ttl would otherwise allow a renewal.
+            token_max_ttl: |-
+                - (Optional) The maximum lifetime for generated tokens in number of seconds.
+                Its current value will be referenced at renewal time.
+            token_no_default_policy: |-
+                - (Optional) If set, the default policy will not be set on
+                generated tokens; otherwise it will be added to the policies set in token_policies.
+            token_num_uses: |-
+                - (Optional) The maximum number
+                of times a generated token may be used (within its lifetime); 0 means unlimited.
+            token_period: |-
+                - (Optional) If set, indicates that the
+                token generated using this role should never expire. The token should be renewed within the
+                duration specified by this value. At each renewal, the token's TTL will be set to the
+                value of this field. Specified in seconds.
+            token_policies: |-
+                - (Optional) List of policies to encode onto generated tokens. Depending
+                on the auth method, this list may be supplemented by user/group/other values.
+            token_ttl: |-
+                - (Optional) The incremental lifetime for generated tokens in number of seconds.
+                Its current value will be referenced at renewal time.
+            token_type: |-
+                - (Optional) The type of token that should be generated. Can be service,
+                batch, or default to use the mount's tuned default (which unless changed will be
+                service tokens). For token store roles, there are two additional possibilities:
+                default-service and default-batch which specify the type to return unless the client
+                requests a different type at generation time.
         importStatements: []
     vault_auth_backend resource:
         subCategory: ""
@@ -457,11 +694,24 @@ resources:
             policies: '- (Optional) List of Vault policies to associate with this user'
             username: '- (Required Optional) Name of the user within Okta'
         importStatements: []
-    vault_aws_auth_backend_cert resource:
+    vault_aws_auth_backend_cert:
         subCategory: ""
         description: Manages a certificate for an AWS Auth Backend in Vault.
-        name: vault_aws_auth_backend_cert resource
+        name: vault_aws_auth_backend_cert
         title: vault_aws_auth_backend_cert resource
+        examples:
+            - name: cert
+              manifest: |-
+                {
+                  "backend": "${vault_auth_backend.aws.path}"
+                }
+              references:
+                backend: vault_auth_backend.aws.path
+              dependencies:
+                vault_auth_backend.aws: |-
+                    {
+                      "type": "aws"
+                    }
         argumentDocs:
             aws_public_cert: |-
                 - (Required) The  Base64 encoded AWS Public key required to
@@ -482,11 +732,26 @@ resources:
                 document which can be verified using the given certificate. Defaults to
                 "pkcs7".
         importStatements: []
-    vault_aws_auth_backend_client resource:
+    vault_aws_auth_backend_client:
         subCategory: ""
         description: Configures the client used by an AWS Auth Backend in Vault.
-        name: vault_aws_auth_backend_client resource
+        name: vault_aws_auth_backend_client
         title: vault_aws_auth_backend_client resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "access_key": "INSERT_AWS_ACCESS_KEY",
+                  "backend": "${vault_auth_backend.example.path}",
+                  "secret_key": "INSERT_AWS_SECRET_KEY"
+                }
+              references:
+                backend: vault_auth_backend.example.path
+              dependencies:
+                vault_auth_backend.example: |-
+                    {
+                      "type": "aws"
+                    }
         argumentDocs:
             access_key: |-
                 - (Optional) The AWS access key that Vault should use for the
@@ -519,11 +784,29 @@ resources:
                 - (Optional) Override the default region when making STS API
                 calls. The sts_endpoint argument must be set when using sts_region.
         importStatements: []
-    vault_aws_auth_backend_config_identity resource:
+    vault_aws_auth_backend_config_identity:
         subCategory: ""
         description: Manages AWS auth backend identity configuration in Vault.
-        name: vault_aws_auth_backend_config_identity resource
+        name: vault_aws_auth_backend_config_identity
         title: vault_aws_auth_backend_config_identity resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "backend": "${vault_auth_backend.aws.path}",
+                  "iam_alias": "full_arn",
+                  "iam_metadata": [
+                    "canonical_arn",
+                    "account_id"
+                  ]
+                }
+              references:
+                backend: vault_auth_backend.aws.path
+              dependencies:
+                vault_auth_backend.aws: |-
+                    {
+                      "type": "aws"
+                    }
         argumentDocs:
             ec2_alias: |-
                 - (Optional) How to generate the identity alias when using the ec2 auth method. Valid choices are
@@ -543,11 +826,25 @@ resources:
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
         importStatements: []
-    vault_aws_auth_backend_identity_whitelist resource:
+    vault_aws_auth_backend_identity_whitelist:
         subCategory: ""
         description: Configures the periodic tidying operation of the whitelisted identity entries.
-        name: vault_aws_auth_backend_identity_whitelist resource
+        name: vault_aws_auth_backend_identity_whitelist
         title: vault_aws_auth_backend_identity_whitelist resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "backend": "${vault_auth_backend.example.path}",
+                  "safety_buffer": 3600
+                }
+              references:
+                backend: vault_auth_backend.example.path
+              dependencies:
+                vault_auth_backend.example: |-
+                    {
+                      "type": "aws"
+                    }
         argumentDocs:
             backend: '- (Optional) The path of the AWS backend being configured.'
             disable_periodic_tidy: |-
@@ -563,11 +860,58 @@ resources:
                 have passed beyond the roletag expiration, before it is removed from the
                 backend storage.
         importStatements: []
-    vault_aws_auth_backend_login resource:
+    vault_aws_auth_backend_login:
         subCategory: ""
         description: Manages Vault tokens acquired using the AWS auth backend.
-        name: vault_aws_auth_backend_login resource
+        name: vault_aws_auth_backend_login
         title: vault_aws_auth_backend_login resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "backend": "${vault_auth_backend.example.path}",
+                  "identity": "BASE64ENCODEDIDENTITYDOCUMENT",
+                  "role": "${vault_aws_auth_backend_role.example.role}",
+                  "signature": "BASE64ENCODEDSHA256IDENTITYDOCUMENTSIGNATURE"
+                }
+              references:
+                backend: vault_auth_backend.example.path
+                role: vault_aws_auth_backend_role.example.role
+              dependencies:
+                vault_auth_backend.aws: |-
+                    {
+                      "path": "aws",
+                      "type": "aws"
+                    }
+                vault_aws_auth_backend_client.example: |-
+                    {
+                      "access_key": "123456789012",
+                      "backend": "${vault_auth_backend.aws.path}",
+                      "secret_key": "AWSSECRETKEYGOESHERE"
+                    }
+                vault_aws_auth_backend_role.example: |-
+                    {
+                      "auth_type": "ec2",
+                      "backend": "${vault_auth_backend.aws.path}",
+                      "bound_account_id": "123456789012",
+                      "bound_ami_id": "ami-8c1be5f6",
+                      "bound_iam_instance_profile_arns": [
+                        "arn:aws:iam::123456789012:instance-profile/MyProfile"
+                      ],
+                      "bound_subnet_id": "vpc-133128f1",
+                      "bound_vpc_id": "vpc-b61106d4",
+                      "depends_on": [
+                        "vault_aws_auth_backend_client.example"
+                      ],
+                      "max_ttl": 120,
+                      "role": "test-role",
+                      "token_policies": [
+                        "default",
+                        "dev",
+                        "prod"
+                      ],
+                      "ttl": 60
+                    }
         argumentDocs:
             accessor: '- The token''s accessor.'
             auth_type: '- The authentication type used to generate this token.'
@@ -623,11 +967,53 @@ resources:
                 instance identity document to authenticate with, with all newline characters
                 removed. Can be retrieved from the EC2 metadata server.
         importStatements: []
-    vault_aws_auth_backend_role resource:
+    vault_aws_auth_backend_role:
         subCategory: ""
         description: Manages AWS auth backend roles in Vault.
-        name: vault_aws_auth_backend_role resource
+        name: vault_aws_auth_backend_role
         title: vault_aws_auth_backend_role resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "auth_type": "iam",
+                  "backend": "${vault_auth_backend.aws.path}",
+                  "bound_account_ids": [
+                    "123456789012"
+                  ],
+                  "bound_ami_ids": [
+                    "ami-8c1be5f6"
+                  ],
+                  "bound_iam_instance_profile_arns": [
+                    "arn:aws:iam::123456789012:instance-profile/MyProfile"
+                  ],
+                  "bound_iam_role_arns": [
+                    "arn:aws:iam::123456789012:role/MyRole"
+                  ],
+                  "bound_subnet_ids": [
+                    "vpc-133128f1"
+                  ],
+                  "bound_vpc_ids": [
+                    "vpc-b61106d4"
+                  ],
+                  "inferred_aws_region": "us-east-1",
+                  "inferred_entity_type": "ec2_instance",
+                  "role": "test-role",
+                  "token_max_ttl": 120,
+                  "token_policies": [
+                    "default",
+                    "dev",
+                    "prod"
+                  ],
+                  "token_ttl": 60
+                }
+              references:
+                backend: vault_auth_backend.aws.path
+              dependencies:
+                vault_auth_backend.aws: |-
+                    {
+                      "type": "aws"
+                    }
         argumentDocs:
             allow_instance_migration: |-
                 - (Optional) If set to true, allows migration of
@@ -753,11 +1139,48 @@ resources:
                 default-service and default-batch which specify the type to return unless the client
                 requests a different type at generation time.
         importStatements: []
-    vault_aws_auth_backend_role_tag resource:
+    vault_aws_auth_backend_role_tag:
         subCategory: ""
         description: Reads role tags from a Vault AWS auth backend.
-        name: vault_aws_auth_backend_role_tag resource
+        name: vault_aws_auth_backend_role_tag
         title: vault_aws_auth_backend_role_tag resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "backend": "${vault_auth_backend.aws.path}",
+                  "instance_id": "i-1234567",
+                  "max_ttl": "1h",
+                  "policies": [
+                    "prod",
+                    "dev",
+                    "test"
+                  ],
+                  "role": "${vault_aws_auth_backend_role.role.role}"
+                }
+              references:
+                backend: vault_auth_backend.aws.path
+                role: vault_aws_auth_backend_role.role.role
+              dependencies:
+                vault_auth_backend.aws: |-
+                    {
+                      "path": "%s",
+                      "type": "aws"
+                    }
+                vault_aws_auth_backend_role.role: |-
+                    {
+                      "auth_type": "ec2",
+                      "backend": "${vault_auth_backend.aws.path}",
+                      "bound_account_id": "123456789012",
+                      "policies": [
+                        "dev",
+                        "prod",
+                        "qa",
+                        "test"
+                      ],
+                      "role": "%s",
+                      "role_tag": "VaultRoleTag"
+                    }
         argumentDocs:
             allow_instance_migration: '- (Optional) If set, allows migration of the underlying instances where the client resides. Use with caution.'
             backend: |-
@@ -778,11 +1201,25 @@ resources:
             tag_key: '- The key of the role tag.'
             tag_value: '- The value to set the role key.'
         importStatements: []
-    vault_aws_auth_backend_roletag_blacklist resource:
+    vault_aws_auth_backend_roletag_blacklist:
         subCategory: ""
         description: Configures the periodic tidying operation of the blacklisted role tag entries.
-        name: vault_aws_auth_backend_roletag_blacklist resource
+        name: vault_aws_auth_backend_roletag_blacklist
         title: vault_aws_auth_backend_roletag_blacklist resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "backend": "${vault_auth_backend.example.path}",
+                  "safety_buffer": 360
+                }
+              references:
+                backend: vault_auth_backend.example.path
+              dependencies:
+                vault_auth_backend.example: |-
+                    {
+                      "type": "aws"
+                    }
         argumentDocs:
             backend: |-
                 - (Required) The path the AWS auth backend being configured was
@@ -800,11 +1237,26 @@ resources:
                 beyond the roletag expiration, before it is removed from the backend storage.
                 Defaults to 259,200 seconds, or 72 hours.
         importStatements: []
-    vault_aws_auth_backend_sts_role resource:
+    vault_aws_auth_backend_sts_role:
         subCategory: ""
         description: Configures an STS role in the Vault AWS Auth backend.
-        name: vault_aws_auth_backend_sts_role resource
+        name: vault_aws_auth_backend_sts_role
         title: vault_aws_auth_backend_sts_role resource
+        examples:
+            - name: role
+              manifest: |-
+                {
+                  "account_id": "1234567890",
+                  "backend": "${vault_auth_backend.aws.path}",
+                  "sts_role": "arn:aws:iam::1234567890:role/my-role"
+                }
+              references:
+                backend: vault_auth_backend.aws.path
+              dependencies:
+                vault_auth_backend.aws: |-
+                    {
+                      "type": "aws"
+                    }
         argumentDocs:
             account_id: '- (Optional) The AWS account ID to configure the STS role for.'
             backend: |-
@@ -819,11 +1271,18 @@ resources:
                 - (Optional) The STS role to assume when verifying requests made
                 by EC2 instances in the account specified by account_id.
         importStatements: []
-    vault_aws_secret_backend resource:
+    vault_aws_secret_backend:
         subCategory: ""
         description: Creates an AWS secret backend for Vault.
-        name: vault_aws_secret_backend resource
+        name: vault_aws_secret_backend
         title: vault_aws_secret_backend resource
+        examples:
+            - name: aws
+              manifest: |-
+                {
+                  "access_key": "AKIA.....",
+                  "secret_key": "AWS secret key"
+                }
         argumentDocs:
             access_key: |-
                 - (Optional) The AWS Access Key ID this backend should use to
@@ -854,11 +1313,28 @@ resources:
             sts_endpoint: '- (Optional) Specifies a custom HTTP STS endpoint to use.'
             username_template: '- (Optional)  Template describing how dynamic usernames are generated. The username template is used to generate both IAM usernames (capped at 64 characters) and STS usernames (capped at 32 characters). If no template is provided the field defaults to the template:'
         importStatements: []
-    vault_aws_secret_backend_role resource:
+    vault_aws_secret_backend_role:
         subCategory: ""
         description: Creates a role on an AWS Secret Backend for Vault.
-        name: vault_aws_secret_backend_role resource
+        name: vault_aws_secret_backend_role
         title: vault_aws_secret_backend_role resource
+        examples:
+            - name: role
+              manifest: |-
+                {
+                  "backend": "${vault_aws_secret_backend.aws.path}",
+                  "credential_type": "iam_user",
+                  "name": "deploy",
+                  "policy_document": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"iam:*\",\n      \"Resource\": \"*\"\n    }\n  ]\n}\n"
+                }
+              references:
+                backend: vault_aws_secret_backend.aws.path
+              dependencies:
+                vault_aws_secret_backend.aws: |-
+                    {
+                      "access_key": "AKIA.....",
+                      "secret_key": "AWS secret key"
+                    }
         argumentDocs:
             backend: |-
                 - (Required) The path the AWS secret backend is mounted at,
@@ -919,11 +1395,28 @@ resources:
                 - (Optional) The path for the user name. Valid only when
                 credential_type is iam_user. Default is /.
         importStatements: []
-    vault_azure_auth_backend_config resource:
+    vault_azure_auth_backend_config:
         subCategory: ""
         description: Configures the Azure Auth Backend in Vault.
-        name: vault_azure_auth_backend_config resource
+        name: vault_azure_auth_backend_config
         title: vault_azure_auth_backend_config resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "backend": "${vault_auth_backend.example.path}",
+                  "client_id": "11111111-2222-3333-4444-555555555555",
+                  "client_secret": "01234567890123456789",
+                  "resource": "https://vault.hashicorp.com",
+                  "tenant_id": "11111111-2222-3333-4444-555555555555"
+                }
+              references:
+                backend: vault_auth_backend.example.path
+              dependencies:
+                vault_auth_backend.example: |-
+                    {
+                      "type": "azure"
+                    }
         argumentDocs:
             backend: |-
                 - (Optional) The path the Azure auth backend being configured was
@@ -950,11 +1443,38 @@ resources:
                 - (Required) The tenant id for the Azure Active Directory
                 organization.
         importStatements: []
-    vault_azure_auth_backend_role resource:
+    vault_azure_auth_backend_role:
         subCategory: ""
         description: Manages Azure auth backend roles in Vault.
-        name: vault_azure_auth_backend_role resource
+        name: vault_azure_auth_backend_role
         title: vault_azure_auth_backend_role resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "backend": "${vault_auth_backend.azure.path}",
+                  "bound_resource_groups": [
+                    "123456789012"
+                  ],
+                  "bound_subscription_ids": [
+                    "11111111-2222-3333-4444-555555555555"
+                  ],
+                  "role": "test-role",
+                  "token_max_ttl": 120,
+                  "token_policies": [
+                    "default",
+                    "dev",
+                    "prod"
+                  ],
+                  "token_ttl": 60
+                }
+              references:
+                backend: vault_auth_backend.azure.path
+              dependencies:
+                vault_auth_backend.azure: |-
+                    {
+                      "type": "azure"
+                    }
         argumentDocs:
             bound_group_ids: |-
                 - (Optional) If set, defines a constraint on the groups
@@ -1022,11 +1542,32 @@ resources:
                 default-service and default-batch which specify the type to return unless the client
                 requests a different type at generation time.
         importStatements: []
-    vault_azure_secret_backend resource:
+    vault_azure_secret_backend:
         subCategory: ""
         description: Creates an azure secret backend for Vault.
-        name: vault_azure_secret_backend resource
+        name: vault_azure_secret_backend
         title: vault_azure_secret_backend resource
+        examples:
+            - name: azure
+              manifest: |-
+                {
+                  "client_id": "11111111-2222-3333-4444-333333333333",
+                  "client_secret": "12345678901234567890",
+                  "environment": "AzurePublicCloud",
+                  "subscription_id": "11111111-2222-3333-4444-111111111111",
+                  "tenant_id": "11111111-2222-3333-4444-222222222222",
+                  "use_microsoft_graph_api": true
+                }
+            - name: azure
+              manifest: |-
+                {
+                  "client_id": "11111111-2222-3333-4444-333333333333",
+                  "client_secret": "12345678901234567890",
+                  "environment": "AzurePublicCloud",
+                  "subscription_id": "11111111-2222-3333-4444-111111111111",
+                  "tenant_id": "11111111-2222-3333-4444-222222222222",
+                  "use_microsoft_graph_api": false
+                }
         argumentDocs:
             client_id: (string:"") - The OAuth2 client id to connect to Azure.
             client_secret: (string:"") - The OAuth2 client secret to connect to Azure.
@@ -1047,11 +1588,55 @@ resources:
                 the Microsoft Graph API. This parameter has been deprecated and will be ignored in vault-1.12+.
                 For more information, please refer to the Vault docs
         importStatements: []
-    vault_azure_secret_backend_role resource:
+    vault_azure_secret_backend_role:
         subCategory: ""
         description: Creates an azure secret backend role for Vault.
-        name: vault_azure_secret_backend_role resource
+        name: vault_azure_secret_backend_role
         title: vault_azure_secret_backend_role resource
+        examples:
+            - name: generated_role
+              manifest: |-
+                {
+                  "azure_roles": [
+                    {
+                      "role_name": "Reader",
+                      "scope": "/subscriptions/${var.subscription_id}/resourceGroups/azure-vault-group"
+                    }
+                  ],
+                  "backend": "${vault_azure_secret_backend.azure.path}",
+                  "max_ttl": 600,
+                  "role": "generated_role",
+                  "ttl": 300
+                }
+              references:
+                backend: vault_azure_secret_backend.azure.path
+              dependencies:
+                vault_azure_secret_backend.azure: |-
+                    {
+                      "client_id": "${var.client_id}",
+                      "client_secret": "${var.client_secret}",
+                      "subscription_id": "${var.subscription_id}",
+                      "tenant_id": "${var.tenant_id}"
+                    }
+            - name: existing_object_id
+              manifest: |-
+                {
+                  "application_object_id": "11111111-2222-3333-4444-44444444444",
+                  "backend": "${vault_azure_secret_backend.azure.path}",
+                  "max_ttl": 600,
+                  "role": "existing_object_id",
+                  "ttl": 300
+                }
+              references:
+                backend: vault_azure_secret_backend.azure.path
+              dependencies:
+                vault_azure_secret_backend.azure: |-
+                    {
+                      "client_id": "${var.client_id}",
+                      "client_secret": "${var.client_secret}",
+                      "subscription_id": "${var.subscription_id}",
+                      "tenant_id": "${var.tenant_id}"
+                    }
         argumentDocs:
             application_object_id: |-
                 - Application Object ID for an existing service principal that will
@@ -1072,11 +1657,28 @@ resources:
                 – (Optional) Specifies the default TTL for service principals generated using this role.
                 Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
         importStatements: []
-    vault_consul_secret_backend resource:
+    vault_consul_secret_backend:
         subCategory: ""
         description: Creates a Consul secret backend for Vault.
-        name: vault_consul_secret_backend resource
+        name: vault_consul_secret_backend
         title: vault_consul_secret_backend resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "address": "127.0.0.1:8500",
+                  "description": "Manages the Consul backend",
+                  "path": "consul",
+                  "token": "4240861b-ce3d-8530-115a-521ff070dd29"
+                }
+            - name: test
+              manifest: |-
+                {
+                  "address": "127.0.0.1:8500",
+                  "bootstrap": true,
+                  "description": "Bootstrap the Consul backend",
+                  "path": "consul"
+                }
         argumentDocs:
             address: '- (Required) Specifies the address of the Consul instance, provided as "host:port" like "127.0.0.1:8500".'
             bootstrap: '- (Optional) Denotes that the resource is used to bootstrap the Consul ACL system.'
@@ -1109,11 +1711,31 @@ resources:
                 - (Optional) The Consul management token this backend should use to issue new tokens. This field is required
                 when bootstrap is false.
         importStatements: []
-    vault_consul_secret_backend_role resource:
+    vault_consul_secret_backend_role:
         subCategory: ""
         description: Manages a Consul secrets role for a Consul secrets engine in Vault.
-        name: vault_consul_secret_backend_role resource
+        name: vault_consul_secret_backend_role
         title: vault_consul_secret_backend_role resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "backend": "${vault_consul_secret_backend.test.path}",
+                  "consul_policies": [
+                    "example-policy"
+                  ],
+                  "name": "test-role"
+                }
+              references:
+                backend: vault_consul_secret_backend.test.path
+              dependencies:
+                vault_consul_secret_backend.test: |-
+                    {
+                      "address": "127.0.0.1:8500",
+                      "description": "Manages the Consul backend",
+                      "path": "consul",
+                      "token": "4240861b-ce3d-8530-115a-521ff070dd29"
+                    }
         argumentDocs:
             backend: '- (Optional) The unique name of an existing Consul secrets backend mount. Must not begin or end with a /. One of path or backend is required.'
             consul_namespace: |-
@@ -1149,11 +1771,35 @@ resources:
                 Deprecated: Consul 1.11 and later removed the legacy ACL system which supported this field.
             ttl: '- (Optional) Specifies the TTL for this role.'
         importStatements: []
-    vault_database_secret_backend_connection resource:
+    vault_database_secret_backend_connection:
         subCategory: ""
         description: Configures a database secret backend connection for Vault.
-        name: vault_database_secret_backend_connection resource
+        name: vault_database_secret_backend_connection
         title: vault_database_secret_backend_connection resource
+        examples:
+            - name: postgres
+              manifest: |-
+                {
+                  "allowed_roles": [
+                    "dev",
+                    "prod"
+                  ],
+                  "backend": "${vault_mount.db.path}",
+                  "name": "postgres",
+                  "postgresql": [
+                    {
+                      "connection_url": "postgres://username:password@host:port/database"
+                    }
+                  ]
+                }
+              references:
+                backend: vault_mount.db.path
+              dependencies:
+                vault_mount.db: |-
+                    {
+                      "path": "postgres",
+                      "type": "database"
+                    }
         argumentDocs:
             allowed_roles: |-
                 - (Optional) A list of roles that are allowed to use this
@@ -1244,11 +1890,45 @@ resources:
                 - (Optional) Whether the connection should be verified on
                 initial configuration or not.
         importStatements: []
-    vault_database_secret_backend_role resource:
+    vault_database_secret_backend_role:
         subCategory: ""
         description: Configures a database secret backend role for Vault.
-        name: vault_database_secret_backend_role resource
+        name: vault_database_secret_backend_role
         title: vault_database_secret_backend_role resource
+        examples:
+            - name: role
+              manifest: |-
+                {
+                  "backend": "${vault_mount.db.path}",
+                  "creation_statements": [
+                    "CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';"
+                  ],
+                  "db_name": "${vault_database_secret_backend_connection.postgres.name}",
+                  "name": "dev"
+                }
+              references:
+                backend: vault_mount.db.path
+                db_name: vault_database_secret_backend_connection.postgres.name
+              dependencies:
+                vault_database_secret_backend_connection.postgres: |-
+                    {
+                      "allowed_roles": [
+                        "dev",
+                        "prod"
+                      ],
+                      "backend": "${vault_mount.db.path}",
+                      "name": "postgres",
+                      "postgresql": [
+                        {
+                          "connection_url": "postgres://username:password@host:port/database"
+                        }
+                      ]
+                    }
+                vault_mount.db: |-
+                    {
+                      "path": "postgres",
+                      "type": "database"
+                    }
         argumentDocs:
             backend: '- (Required) The unique name of the Vault mount to configure.'
             creation_statements: |-
@@ -1279,11 +1959,46 @@ resources:
                 - (Optional) The database statements to execute when
                 rolling back creation due to an error.
         importStatements: []
-    vault_database_secret_backend_static_role resource:
+    vault_database_secret_backend_static_role:
         subCategory: ""
         description: Configures a database secret backend static role for Vault.
-        name: vault_database_secret_backend_static_role resource
+        name: vault_database_secret_backend_static_role
         title: vault_database_secret_backend_static_role resource
+        examples:
+            - name: static_role
+              manifest: |-
+                {
+                  "backend": "${vault_mount.db.path}",
+                  "db_name": "${vault_database_secret_backend_connection.postgres.name}",
+                  "name": "my-static-role",
+                  "rotation_period": "3600",
+                  "rotation_statements": [
+                    "ALTER USER \"{{name}}\" WITH PASSWORD '{{password}}';"
+                  ],
+                  "username": "example"
+                }
+              references:
+                backend: vault_mount.db.path
+                db_name: vault_database_secret_backend_connection.postgres.name
+              dependencies:
+                vault_database_secret_backend_connection.postgres: |-
+                    {
+                      "allowed_roles": [
+                        "*"
+                      ],
+                      "backend": "${vault_mount.db.path}",
+                      "name": "postgres",
+                      "postgresql": [
+                        {
+                          "connection_url": "postgres://username:password@host:port/database"
+                        }
+                      ]
+                    }
+                vault_mount.db: |-
+                    {
+                      "path": "postgres",
+                      "type": "database"
+                    }
         argumentDocs:
             backend: '- (Required) The unique name of the Vault mount to configure.'
             db_name: '- (Required) The unique name of the database connection to use for the static role.'
@@ -1297,11 +2012,62 @@ resources:
             rotation_statements: '- (Optional) Database statements to execute to rotate the password for the configured database user.'
             username: '- (Required) The database username that this static role corresponds to.'
         importStatements: []
-    vault_database_secrets_mount resource:
+    vault_database_secrets_mount:
         subCategory: ""
         description: Configures any number of database secrets engines under a single mount resource
-        name: vault_database_secrets_mount resource
+        name: vault_database_secrets_mount
         title: vault_database_secrets_mount resource
+        examples:
+            - name: db
+              manifest: |-
+                {
+                  "mssql": [
+                    {
+                      "allowed_roles": [
+                        "dev1"
+                      ],
+                      "connection_url": "sqlserver://{{username}}:{{password}}@127.0.0.1:1433",
+                      "name": "db1",
+                      "password": "super_secret_1",
+                      "username": "sa"
+                    }
+                  ],
+                  "path": "db",
+                  "postgresql": [
+                    {
+                      "allowed_roles": [
+                        "dev2"
+                      ],
+                      "connection_url": "postgresql://{{username}}:{{password}}@127.0.0.1:5432/postgres",
+                      "name": "db2",
+                      "password": "super_secret_2",
+                      "username": "postgres",
+                      "verify_connection": true
+                    }
+                  ]
+                }
+              dependencies:
+                vault_database_secret_backend_role.dev1: |-
+                    {
+                      "backend": "${vault_database_secrets_mount.db.path}",
+                      "creation_statements": [
+                        "CREATE LOGIN [{{name}}] WITH PASSWORD = '{{password}}';",
+                        "CREATE USER [{{name}}] FOR LOGIN [{{name}}];",
+                        "GRANT SELECT ON SCHEMA::dbo TO [{{name}}];"
+                      ],
+                      "db_name": "${vault_database_secrets_mount.db.mssql[0].name}",
+                      "name": "dev1"
+                    }
+                vault_database_secret_backend_role.dev2: |-
+                    {
+                      "backend": "${vault_database_secrets_mount.db.path}",
+                      "creation_statements": [
+                        "CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';",
+                        "GRANT SELECT ON ALL TABLES IN SCHEMA public TO \"{{name}}\";"
+                      ],
+                      "db_name": "${vault_database_secrets_mount.db.postgresql[0].name}",
+                      "name": "dev2"
+                    }
         argumentDocs:
             allowed_managed_keys: '- (Optional) Set of managed key registry entry names that the mount in question is allowed to access'
             allowed_roles: |-
@@ -1436,11 +2202,22 @@ resources:
                 - (Optional) Whether the connection should be verified on
                 initial configuration or not.
         importStatements: []
-    vault_egp_policy resource:
+    vault_egp_policy:
         subCategory: ""
         description: Writes Sentinel endpoint governing policies for Vault
-        name: vault_egp_policy resource
+        name: vault_egp_policy
         title: vault_egp_policy resource
+        examples:
+            - name: allow-all
+              manifest: |-
+                {
+                  "enforcement_level": "soft-mandatory",
+                  "name": "allow-all",
+                  "paths": [
+                    "*"
+                  ],
+                  "policy": "main = rule {\n  true\n}\n"
+                }
         argumentDocs:
             enforcement_level: '- (Required) Enforcement level of Sentinel policy. Can be either advisory or soft-mandatory or hard-mandatory'
             name: '- (Required) The name of the policy'
@@ -1452,11 +2229,32 @@ resources:
             paths: '- (Required) List of paths to which the policy will be applied to'
             policy: '- (Required) String containing a Sentinel policy'
         importStatements: []
-    vault_gcp_auth_backend_role resource:
+    vault_gcp_auth_backend_role:
         subCategory: ""
         description: Managing roles in an GCP auth backend in Vault
-        name: vault_gcp_auth_backend_role resource
+        name: vault_gcp_auth_backend_role
         title: vault_gcp_auth_backend_role resource
+        examples:
+            - name: gcp
+              manifest: |-
+                {
+                  "backend": "${vault_auth_backend.gcp.path}",
+                  "bound_service_accounts": [
+                    "database-server@foo-bar-baz.iam.gserviceaccount.com"
+                  ],
+                  "project_id": "foo-bar-baz",
+                  "token_policies": [
+                    "database-server"
+                  ]
+                }
+              references:
+                backend: vault_auth_backend.gcp.path
+              dependencies:
+                vault_auth_backend.gcp: |-
+                    {
+                      "path": "gcp",
+                      "type": "gcp"
+                    }
         argumentDocs:
             allow_gce_inference: '- (Optional) A flag to determine if this role should allow GCE instances to authenticate by inferring service accounts from the GCE identity metadata token.'
             backend: '- (Optional) Path to the mounted GCP auth backend'
@@ -1510,11 +2308,17 @@ resources:
                 requests a different type at generation time.
             type: '- (Required) Type of GCP authentication role (either gce or iam)'
         importStatements: []
-    vault_gcp_secret_backend resource:
+    vault_gcp_secret_backend:
         subCategory: ""
         description: Creates an GCP secret backend for Vault.
-        name: vault_gcp_secret_backend resource
+        name: vault_gcp_secret_backend
         title: vault_gcp_secret_backend resource
+        examples:
+            - name: gcp
+              manifest: |-
+                {
+                  "credentials": "${file(\"credentials.json\")}"
+                }
         argumentDocs:
             credentials: '- (Optional) The GCP service account credentials in JSON format.'
             default_lease_ttl_seconds: |-
@@ -1537,11 +2341,35 @@ resources:
                 - (Optional) The unique path this backend should be mounted at. Must
                 not begin or end with a /. Defaults to gcp.
         importStatements: []
-    vault_gcp_secret_impersonated_account resource:
+    vault_gcp_secret_impersonated_account:
         subCategory: ""
         description: Creates a Impersonated Account for the GCP Secret Backend for Vault.
-        name: vault_gcp_secret_impersonated_account resource
+        name: vault_gcp_secret_impersonated_account
         title: vault_gcp_secret_impersonated_account resource
+        examples:
+            - name: impersonated_account
+              manifest: |-
+                {
+                  "backend": "${vault_gcp_secret_backend.gcp.path}",
+                  "impersonated_account": "this",
+                  "service_account_email": "${google_service_account.this.email}",
+                  "token_scopes": [
+                    "https://www.googleapis.com/auth/cloud-platform"
+                  ]
+                }
+              references:
+                backend: vault_gcp_secret_backend.gcp.path
+                service_account_email: google_service_account.this.email
+              dependencies:
+                google_service_account.this: |-
+                    {
+                      "account_id": "my-awesome-account"
+                    }
+                vault_gcp_secret_backend.gcp: |-
+                    {
+                      "credentials": "${file(\"credentials.json\")}",
+                      "path": "gcp"
+                    }
         argumentDocs:
             backend: '- (Required, Forces new resource) Path where the GCP Secrets Engine is mounted'
             impersonated_account: '- (Required, Forces new resource) Name of the Impersonated Account to create'
@@ -1549,11 +2377,40 @@ resources:
             service_account_project: '- Project the service account belongs to.'
             token_scopes: '- (Required) List of OAuth scopes to assign to access tokens generated under this impersonated account.'
         importStatements: []
-    vault_gcp_secret_roleset resource:
+    vault_gcp_secret_roleset:
         subCategory: ""
         description: Creates a Roleset for the GCP Secret Backend for Vault.
-        name: vault_gcp_secret_roleset resource
+        name: vault_gcp_secret_roleset
         title: vault_gcp_secret_roleset resource
+        examples:
+            - name: roleset
+              manifest: |-
+                {
+                  "backend": "${vault_gcp_secret_backend.gcp.path}",
+                  "binding": [
+                    {
+                      "resource": "//cloudresourcemanager.googleapis.com/projects/${local.project}",
+                      "roles": [
+                        "roles/viewer"
+                      ]
+                    }
+                  ],
+                  "project": "${local.project}",
+                  "roleset": "project_viewer",
+                  "secret_type": "access_token",
+                  "token_scopes": [
+                    "https://www.googleapis.com/auth/cloud-platform"
+                  ]
+                }
+              references:
+                backend: vault_gcp_secret_backend.gcp.path
+                project: local.project
+              dependencies:
+                vault_gcp_secret_backend.gcp: |-
+                    {
+                      "credentials": "${file(\"credentials.json\")}",
+                      "path": "gcp"
+                    }
         argumentDocs:
             backend: '- (Required, Forces new resource) Path where the GCP Secrets Engine is mounted'
             binding: '- (Required) Bindings to create for this roleset. This can be specified multiple times for multiple bindings. Structure is documented below.'
@@ -1570,11 +2427,44 @@ resources:
             service_account_email: Email of the service account created by Vault for this Roleset.
             token_scopes: '- (Optional, Required for secret_type = "access_token") List of OAuth scopes to assign to access_token secrets generated under this role set (access_token role sets only).'
         importStatements: []
-    vault_gcp_secret_static_account resource:
+    vault_gcp_secret_static_account:
         subCategory: ""
         description: Creates a Static Account for the GCP Secret Backend for Vault.
-        name: vault_gcp_secret_static_account resource
+        name: vault_gcp_secret_static_account
         title: vault_gcp_secret_static_account resource
+        examples:
+            - name: static_account
+              manifest: |-
+                {
+                  "backend": "${vault_gcp_secret_backend.gcp.path}",
+                  "binding": [
+                    {
+                      "resource": "//cloudresourcemanager.googleapis.com/projects/${google_service_account.this.project}",
+                      "roles": [
+                        "roles/viewer"
+                      ]
+                    }
+                  ],
+                  "secret_type": "access_token",
+                  "service_account_email": "${google_service_account.this.email}",
+                  "static_account": "project_viewer",
+                  "token_scopes": [
+                    "https://www.googleapis.com/auth/cloud-platform"
+                  ]
+                }
+              references:
+                backend: vault_gcp_secret_backend.gcp.path
+                service_account_email: google_service_account.this.email
+              dependencies:
+                google_service_account.this: |-
+                    {
+                      "account_id": "my-awesome-account"
+                    }
+                vault_gcp_secret_backend.gcp: |-
+                    {
+                      "credentials": "${file(\"credentials.json\")}",
+                      "path": "gcp"
+                    }
         argumentDocs:
             backend: '- (Required, Forces new resource) Path where the GCP Secrets Engine is mounted'
             binding: '- (Optional) Bindings to create for this static account. This can be specified multiple times for multiple bindings. Structure is documented below.'
@@ -1591,11 +2481,63 @@ resources:
             static_account: '- (Required, Forces new resource) Name of the Static Account to create'
             token_scopes: '- (Optional, Required for secret_type = "access_token") List of OAuth scopes to assign to access_token secrets generated under this static account (access_token static accounts only).'
         importStatements: []
-    vault_generic_endpoint resource:
+    vault_generic_endpoint:
         subCategory: ""
         description: Writes arbitrary data to a given path in Vault
-        name: vault_generic_endpoint resource
+        name: vault_generic_endpoint
         title: vault_generic_endpoint resource
+        examples:
+            - name: u1
+              manifest: |-
+                {
+                  "data_json": "{\n  \"policies\": [\"p1\"],\n  \"password\": \"changeme\"\n}\n",
+                  "depends_on": [
+                    "${vault_auth_backend.userpass}"
+                  ],
+                  "ignore_absent_fields": true,
+                  "path": "auth/userpass/users/u1"
+                }
+              dependencies:
+                vault_auth_backend.userpass: |-
+                    {
+                      "type": "userpass"
+                    }
+            - name: u1_token
+              manifest: |-
+                {
+                  "data_json": "{\n  \"password\": \"changeme\"\n}\n",
+                  "depends_on": [
+                    "${vault_generic_endpoint.u1}"
+                  ],
+                  "disable_delete": true,
+                  "disable_read": true,
+                  "path": "auth/userpass/login/u1"
+                }
+              dependencies:
+                vault_auth_backend.userpass: |-
+                    {
+                      "type": "userpass"
+                    }
+            - name: u1_entity
+              manifest: |-
+                {
+                  "data_json": "{\n  \"alias_name\": \"u1\",\n  \"alias_mount_accessor\": vault_auth_backend.userpass.accessor\n}\n",
+                  "depends_on": [
+                    "${vault_generic_endpoint.u1_token}"
+                  ],
+                  "disable_delete": true,
+                  "disable_read": true,
+                  "ignore_absent_fields": true,
+                  "path": "identity/lookup/entity",
+                  "write_fields": [
+                    "id"
+                  ]
+                }
+              dependencies:
+                vault_auth_backend.userpass: |-
+                    {
+                      "type": "userpass"
+                    }
         argumentDocs:
             data_json: |-
                 - (Required) String containing a JSON-encoded object that will be
@@ -1646,11 +2588,18 @@ resources:
                 data from writing to an endpoint rather than reading it. You should
                 use write_fields if you need information returned in this way.
         importStatements: []
-    vault_generic_secret resource:
+    vault_generic_secret:
         subCategory: ""
         description: Writes arbitrary data to a given path in Vault
-        name: vault_generic_secret resource
+        name: vault_generic_secret
         title: vault_generic_secret resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "data_json": "{\n  \"foo\":   \"bar\",\n  \"pizza\": \"cheese\"\n}\n",
+                  "path": "secret/foo"
+                }
         argumentDocs:
             data: |-
                 - A mapping whose keys are the top-level data keys returned from
@@ -1681,11 +2630,17 @@ resources:
                 resource is possible; consult each backend's documentation to see which
                 endpoints support the PUT and DELETE methods.
         importStatements: []
-    vault_github_auth_backend resource:
+    vault_github_auth_backend:
         subCategory: ""
         description: Manages GitHub Auth mounts in Vault.
-        name: vault_github_auth_backend resource
+        name: vault_github_auth_backend
         title: vault_github_auth_backend resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "organization": "myorg"
+                }
         argumentDocs:
             accessor: '- The mount accessor related to the auth mount. It is useful for integration with Identity Secrets Engine.'
             base_url: |-
@@ -1772,11 +2727,29 @@ resources:
                 - (Optional) Specifies the type of tokens that should be returned by
                 the mount. Valid values are "default-service", "default-batch", "service", "batch".
         importStatements: []
-    vault_github_team resource:
+    vault_github_team:
         subCategory: ""
         description: Manages Team mappings for Github Auth backend mounts in Vault.
-        name: vault_github_team resource
+        name: vault_github_team
         title: vault_github_team resource
+        examples:
+            - name: tf_devs
+              manifest: |-
+                {
+                  "backend": "${vault_github_auth_backend.example.id}",
+                  "policies": [
+                    "developer",
+                    "read-only"
+                  ],
+                  "team": "terraform-developers"
+                }
+              references:
+                backend: vault_github_auth_backend.example.id
+              dependencies:
+                vault_github_auth_backend.example: |-
+                    {
+                      "organization": "myorg"
+                    }
         argumentDocs:
             backend: |-
                 - (Required) Path where the github auth backend is mounted. Defaults to github
@@ -1793,11 +2766,29 @@ resources:
                 - (Required) GitHub team name in "slugified" format, for example: Terraform
                 Developers -> terraform-developers.
         importStatements: []
-    vault_github_user resource:
+    vault_github_user:
         subCategory: ""
         description: Manages User mappings for Github Auth backend mounts in Vault.
-        name: vault_github_user resource
+        name: vault_github_user
         title: vault_github_user resource
+        examples:
+            - name: tf_user
+              manifest: |-
+                {
+                  "backend": "${vault_github_auth_backend.example.id}",
+                  "policies": [
+                    "developer",
+                    "read-only"
+                  ],
+                  "user": "john.doe"
+                }
+              references:
+                backend: vault_github_auth_backend.example.id
+              dependencies:
+                vault_github_auth_backend.example: |-
+                    {
+                      "organization": "myorg"
+                    }
         argumentDocs:
             backend: |-
                 - (Required) Path where the github auth backend is mounted. Defaults to github
@@ -1812,11 +2803,23 @@ resources:
                 using this role.
             user: '- (Required) GitHub user name.'
         importStatements: []
-    vault_identity_entity resource:
+    vault_identity_entity:
         subCategory: ""
         description: Creates an Identity Entity for Vault.
-        name: vault_identity_entity resource
+        name: vault_identity_entity
         title: vault_identity_entity resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "metadata": {
+                    "foo": "bar"
+                  },
+                  "name": "tester1",
+                  "policies": [
+                    "test"
+                  ]
+                }
         argumentDocs:
             disabled: '- (Optional) True/false Is this entity currently disabled. Defaults to false'
             external_policies: '- (Optional) false by default. If set to true, this resource will ignore any policies return from Vault or specified in the resource. You can use vault_identity_entity_policies to manage policies for this entity in a decoupled manner.'
@@ -1830,11 +2833,19 @@ resources:
                 Available only for Vault Enterprise.
             policies: '- (Optional) A list of policies to apply to the entity.'
         importStatements: []
-    vault_identity_entity_alias resource:
+    vault_identity_entity_alias:
         subCategory: ""
         description: Creates an Identity Entity Alias for Vault.
-        name: vault_identity_entity_alias resource
+        name: vault_identity_entity_alias
         title: vault_identity_entity_alias resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "canonical_id": "49877D63-07AD-4B85-BDA8-B61626C477E8",
+                  "mount_accessor": "token_1f2bd5",
+                  "name": "user_1"
+                }
         argumentDocs:
             canonical_id: '- (Required) Entity ID to which this alias belongs to.'
             id: '- ID of the entity alias.'
@@ -1846,11 +2857,65 @@ resources:
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
         importStatements: []
-    vault_identity_entity_policies resource:
+    vault_identity_entity_policies:
         subCategory: ""
         description: Manages policies for an Identity Entity for Vault.
-        name: vault_identity_entity_policies resource
+        name: vault_identity_entity_policies
         title: vault_identity_entity_policies resource
+        examples:
+            - name: policies
+              manifest: |-
+                {
+                  "entity_id": "${vault_identity_entity.entity.id}",
+                  "exclusive": true,
+                  "policies": [
+                    "default",
+                    "test"
+                  ]
+                }
+              references:
+                entity_id: vault_identity_entity.entity.id
+              dependencies:
+                vault_identity_entity.entity: |-
+                    {
+                      "external_policies": true,
+                      "name": "entity"
+                    }
+            - name: default
+              manifest: |-
+                {
+                  "entity_id": "${vault_identity_entity.entity.id}",
+                  "exclusive": false,
+                  "policies": [
+                    "default",
+                    "test"
+                  ]
+                }
+              references:
+                entity_id: vault_identity_entity.entity.id
+              dependencies:
+                vault_identity_entity.entity: |-
+                    {
+                      "external_policies": true,
+                      "name": "entity"
+                    }
+            - name: others
+              manifest: |-
+                {
+                  "entity_id": "${vault_identity_entity.entity.id}",
+                  "exclusive": false,
+                  "policies": [
+                    "others"
+                  ]
+                }
+              references:
+                entity_id: vault_identity_entity.entity.id
+              dependencies:
+                vault_identity_entity.entity: |-
+                    {
+                      "external_policies": true,
+                      "name": "entity"
+                    }
         argumentDocs:
             entity_id: '- (Required) Entity ID to assign policies to.'
             entity_name: '- The name of the entity that are assigned the policies.'
@@ -1864,11 +2929,63 @@ resources:
             policies: '- (Required) List of policies to assign to the entity'
             "true": ', this resource will take exclusive control of the policies assigned to the entity and will set it equal to what is specified in the resource.'
         importStatements: []
-    vault_identity_group resource:
+    vault_identity_group:
         subCategory: ""
         description: Creates an Identity Group for Vault.
-        name: vault_identity_group resource
+        name: vault_identity_group
         title: vault_identity_group resource
+        examples:
+            - name: internal
+              manifest: |-
+                {
+                  "metadata": {
+                    "version": "2"
+                  },
+                  "name": "internal",
+                  "policies": [
+                    "dev",
+                    "test"
+                  ],
+                  "type": "internal"
+                }
+            - name: group
+              manifest: |-
+                {
+                  "metadata": {
+                    "version": "1"
+                  },
+                  "name": "external",
+                  "policies": [
+                    "test"
+                  ],
+                  "type": "external"
+                }
+            - name: internal
+              manifest: |-
+                {
+                  "metadata": {
+                    "version": "2"
+                  },
+                  "name": "internal",
+                  "policies": [
+                    "dev",
+                    "test"
+                  ],
+                  "type": "internal"
+                }
+            - name: Internal
+              manifest: |-
+                {
+                  "metadata": {
+                    "version": "2"
+                  },
+                  "name": "Internal",
+                  "policies": [
+                    "dev",
+                    "test"
+                  ],
+                  "type": "internal"
+                }
         argumentDocs:
             external_member_entity_ids: |-
                 - (Optional) false by default. If set to true, this resource will ignore any Entity IDs
@@ -1897,11 +3014,36 @@ resources:
             policies: '- (Optional) A list of policies to apply to the group.'
             type: '- (Optional, Forces new resource) Type of the group, internal or external. Defaults to internal.'
         importStatements: []
-    vault_identity_group_alias resource:
+    vault_identity_group_alias:
         subCategory: ""
         description: Creates an Identity Group Alias for Vault.
-        name: vault_identity_group_alias resource
+        name: vault_identity_group_alias
         title: vault_identity_group_alias resource
+        examples:
+            - name: group-alias
+              manifest: |-
+                {
+                  "canonical_id": "${vault_identity_group.group.id}",
+                  "mount_accessor": "${vault_auth_backend.github.accessor}",
+                  "name": "Github_Team_Slug"
+                }
+              references:
+                canonical_id: vault_identity_group.group.id
+                mount_accessor: vault_auth_backend.github.accessor
+              dependencies:
+                vault_auth_backend.github: |-
+                    {
+                      "path": "github",
+                      "type": "github"
+                    }
+                vault_identity_group.group: |-
+                    {
+                      "name": "test",
+                      "policies": [
+                        "test"
+                      ],
+                      "type": "external"
+                    }
         argumentDocs:
             canonical_id: '- (Required) ID of the group to which this is an alias.'
             id: '- The id of the created group alias.'
@@ -1915,11 +3057,104 @@ resources:
         importStatements:
             - $ terraform import vault_identity_group_alias.group-alias id
             - terraform import vault_identity_group_alias.alias_name 63104e20-88e4-11eb-8d04-cf7ac9d60157
-    vault_identity_group_member_entity_ids resource:
+    vault_identity_group_member_entity_ids:
         subCategory: ""
         description: Manages member entities for an Identity Group for Vault.
-        name: vault_identity_group_member_entity_ids resource
+        name: vault_identity_group_member_entity_ids
         title: vault_identity_group_member_entity_ids resource
+        examples:
+            - name: members
+              manifest: |-
+                {
+                  "exclusive": true,
+                  "group_id": "${vault_identity_group.internal.id}",
+                  "member_entity_ids": [
+                    "${vault_identity_entity.user.id}"
+                  ]
+                }
+              references:
+                group_id: vault_identity_group.internal.id
+              dependencies:
+                vault_identity_entity.user: |-
+                    {
+                      "name": "user"
+                    }
+                vault_identity_group.internal: |-
+                    {
+                      "external_member_entity_ids": true,
+                      "metadata": {
+                        "version": "2"
+                      },
+                      "name": "internal",
+                      "type": "internal"
+                    }
+            - name: test
+              manifest: |-
+                {
+                  "exclusive": false,
+                  "group_id": "${vault_identity_group.internal.id}",
+                  "member_entity_ids": [
+                    "${vault_identity_entity.test_user.id}",
+                    "${vault_identity_entity.second_test_user.id}"
+                  ]
+                }
+              references:
+                group_id: vault_identity_group.internal.id
+              dependencies:
+                vault_identity_entity.dev_user: |-
+                    {
+                      "name": "dev"
+                    }
+                vault_identity_entity.second_test_user: |-
+                    {
+                      "name": "second_test"
+                    }
+                vault_identity_entity.test_user: |-
+                    {
+                      "name": "test"
+                    }
+                vault_identity_group.internal: |-
+                    {
+                      "external_member_entity_ids": true,
+                      "metadata": {
+                        "version": "2"
+                      },
+                      "name": "internal",
+                      "type": "internal"
+                    }
+            - name: others
+              manifest: |-
+                {
+                  "exclusive": false,
+                  "group_id": "${vault_identity_group.internal.id}",
+                  "member_entity_ids": [
+                    "${vault_identity_entity.dev_user.id}"
+                  ]
+                }
+              references:
+                group_id: vault_identity_group.internal.id
+              dependencies:
+                vault_identity_entity.dev_user: |-
+                    {
+                      "name": "dev"
+                    }
+                vault_identity_entity.second_test_user: |-
+                    {
+                      "name": "second_test"
+                    }
+                vault_identity_entity.test_user: |-
+                    {
+                      "name": "test"
+                    }
+                vault_identity_group.internal: |-
+                    {
+                      "external_member_entity_ids": true,
+                      "metadata": {
+                        "version": "2"
+                      },
+                      "name": "internal",
+                      "type": "internal"
+                    }
         argumentDocs:
             exclusive: '- (Optional) Defaults to true.'
             "false": ', this resource will simply ensure that the member entities specified in the resource are present in the group. When destroying the resource, the resource will ensure that the member entities specified in the resource are removed.'
@@ -1936,11 +3171,68 @@ resources:
                 Available only for Vault Enterprise.
             "true": ', this resource will take exclusive control of the member entities that belong to the group and will set it equal to what is specified in the resource.'
         importStatements: []
-    vault_identity_group_member_group_ids resource:
+    vault_identity_group_member_group_ids:
         subCategory: ""
         description: Manages member groups for an Identity Group for Vault.
-        name: vault_identity_group_member_group_ids resource
+        name: vault_identity_group_member_group_ids
         title: vault_identity_group_member_group_ids resource
+        examples:
+            - name: members
+              manifest: |-
+                {
+                  "exclusive": true,
+                  "group_id": "${vault_identity_group.internal.id}",
+                  "member_group_ids": [
+                    "${vault_identity_group.users.id}"
+                  ]
+                }
+              references:
+                group_id: vault_identity_group.internal.id
+              dependencies:
+                vault_identity_group.internal: |-
+                    {
+                      "external_member_group_ids": true,
+                      "metadata": {
+                        "version": "2"
+                      },
+                      "name": "internal",
+                      "type": "internal"
+                    }
+                vault_identity_group.users: |-
+                    {
+                      "metadata": {
+                        "version": "2"
+                      },
+                      "name": "users"
+                    }
+            - name: members
+              manifest: |-
+                {
+                  "exclusive": false,
+                  "group_id": "${vault_identity_group.internal.id}",
+                  "member_group_ids": [
+                    "${vault_identity_group.users.id}"
+                  ]
+                }
+              references:
+                group_id: vault_identity_group.internal.id
+              dependencies:
+                vault_identity_group.internal: |-
+                    {
+                      "external_member_group_ids": true,
+                      "metadata": {
+                        "version": "2"
+                      },
+                      "name": "internal",
+                      "type": "internal"
+                    }
+                vault_identity_group.users: |-
+                    {
+                      "metadata": {
+                        "version": "2"
+                      },
+                      "name": "users"
+                    }
         argumentDocs:
             exclusive: '- (Optional) Defaults to true.'
             "false": |-
@@ -1958,11 +3250,77 @@ resources:
                 , this resource will take exclusive control of the member groups that belong to the group and will set
                 it equal to what is specified in the resource.
         importStatements: []
-    vault_identity_group_policies resource:
+    vault_identity_group_policies:
         subCategory: ""
         description: Manages policies for an Identity Group for Vault.
-        name: vault_identity_group_policies resource
+        name: vault_identity_group_policies
         title: vault_identity_group_policies resource
+        examples:
+            - name: policies
+              manifest: |-
+                {
+                  "exclusive": true,
+                  "group_id": "${vault_identity_group.internal.id}",
+                  "policies": [
+                    "default",
+                    "test"
+                  ]
+                }
+              references:
+                group_id: vault_identity_group.internal.id
+              dependencies:
+                vault_identity_group.internal: |-
+                    {
+                      "external_policies": true,
+                      "metadata": {
+                        "version": "2"
+                      },
+                      "name": "internal",
+                      "type": "internal"
+                    }
+            - name: default
+              manifest: |-
+                {
+                  "exclusive": false,
+                  "group_id": "${vault_identity_group.internal.id}",
+                  "policies": [
+                    "default",
+                    "test"
+                  ]
+                }
+              references:
+                group_id: vault_identity_group.internal.id
+              dependencies:
+                vault_identity_group.internal: |-
+                    {
+                      "external_policies": true,
+                      "metadata": {
+                        "version": "2"
+                      },
+                      "name": "internal",
+                      "type": "internal"
+                    }
+            - name: others
+              manifest: |-
+                {
+                  "exclusive": false,
+                  "group_id": "${vault_identity_group.internal.id}",
+                  "policies": [
+                    "others"
+                  ]
+                }
+              references:
+                group_id: vault_identity_group.internal.id
+              dependencies:
+                vault_identity_group.internal: |-
+                    {
+                      "external_policies": true,
+                      "metadata": {
+                        "version": "2"
+                      },
+                      "name": "internal",
+                      "type": "internal"
+                    }
         argumentDocs:
             exclusive: '- (Optional) Defaults to true.'
             "false": ', this resource will simply ensure that the policies specified in the resource are present in the group. When destroying the resource, the resource will ensure that the policies specified in the resource are removed.'
@@ -1976,11 +3334,19 @@ resources:
             policies: '- (Required) List of policies to assign to the group'
             "true": ', this resource will take exclusive control of the policies assigned to the group and will set it equal to what is specified in the resource.'
         importStatements: []
-    vault_identity_mfa_duo resource:
+    vault_identity_mfa_duo:
         subCategory: ""
         description: Resource for configuring the duo MFA method.
-        name: vault_identity_mfa_duo resource
+        name: vault_identity_mfa_duo
         title: vault_identity_mfa_duo resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "api_hostname": "api-xxxxxxxx.duosecurity.com",
+                  "integration_key": "secret-int-key",
+                  "secret_key": "secret-key"
+                }
         argumentDocs:
             api_hostname: '- (Required) API hostname for Duo'
             integration_key: '- (Required) Integration key for Duo'
@@ -1996,11 +3362,28 @@ resources:
             username_format: '- (Optional) A template string for mapping Identity names to MFA methods.'
             uuid: '- (Optional) Resource UUID.'
         importStatements: []
-    vault_identity_mfa_login_enforcement resource:
+    vault_identity_mfa_login_enforcement:
         subCategory: ""
         description: Resource for configuring MFA login-enforcement
-        name: vault_identity_mfa_login_enforcement resource
+        name: vault_identity_mfa_login_enforcement
         title: vault_identity_mfa_login_enforcement resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "mfa_method_ids": [
+                    "${vault_identity_mfa_duo.example.method_id}"
+                  ],
+                  "name": "default"
+                }
+              dependencies:
+                vault_identity_mfa_duo.example: |-
+                    {
+                      "api_hostname": "foo.baz",
+                      "integration_key": "int-key",
+                      "push_info": "push-info",
+                      "secret_key": "secret-key"
+                    }
         argumentDocs:
             auth_method_accessors: '- (Optional) Set of auth method accessor IDs.'
             auth_method_types: '- (Optional) Set of auth method types.'
@@ -2013,11 +3396,19 @@ resources:
             namespace_path: '- Method''s namespace path.'
             uuid: '- (Optional) Resource UUID.'
         importStatements: []
-    vault_identity_mfa_okta resource:
+    vault_identity_mfa_okta:
         subCategory: ""
         description: Resource for configuring the okta MFA method.
-        name: vault_identity_mfa_okta resource
+        name: vault_identity_mfa_okta
         title: vault_identity_mfa_okta resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "api_token": "token1",
+                  "base_url": "qux.baz.com",
+                  "org_name": "org1"
+                }
         argumentDocs:
             api_token: '- (Required) Okta API token.'
             base_url: '- (Optional) The base domain to use for API requests.'
@@ -2053,11 +3444,17 @@ resources:
             username_format: '- (Optional) A template string for mapping Identity names to MFA methods.'
             uuid: '- (Optional) Resource UUID.'
         importStatements: []
-    vault_identity_mfa_totp resource:
+    vault_identity_mfa_totp:
         subCategory: ""
         description: Resource for configuring the totp MFA method.
-        name: vault_identity_mfa_totp resource
+        name: vault_identity_mfa_totp
         title: vault_identity_mfa_totp resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "issuer": "issuer1"
+                }
         argumentDocs:
             algorithm: '- (Optional) Specifies the hashing algorithm used to generate the TOTP code. Options include SHA1, SHA256, SHA512.'
             digits: '- (Optional) The number of digits in the generated TOTP token. This value can either be 6 or 8'
@@ -2075,11 +3472,17 @@ resources:
             type: '- MFA type.'
             uuid: '- (Optional) Resource UUID.'
         importStatements: []
-    vault_identity_oidc resource:
+    vault_identity_oidc:
         subCategory: ""
         description: Configure the Identity Tokens Backend for Vault
-        name: vault_identity_oidc resource
+        name: vault_identity_oidc
         title: vault_identity_oidc resource
+        examples:
+            - name: server
+              manifest: |-
+                {
+                  "issuer": "https://www.acme.com"
+                }
         argumentDocs:
             issuer: |-
                 - (Optional) Issuer URL to be used in the iss claim of the token. If not set, Vault's
@@ -2092,11 +3495,40 @@ resources:
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
         importStatements: []
-    vault_identity_oidc_assignment resource:
+    vault_identity_oidc_assignment:
         subCategory: ""
         description: Provision OIDC Assignments in Vault.
-        name: vault_identity_oidc_assignment resource
+        name: vault_identity_oidc_assignment
         title: vault_identity_oidc_assignment resource
+        examples:
+            - name: default
+              manifest: |-
+                {
+                  "entity_ids": [
+                    "${vault_identity_entity.test.id}"
+                  ],
+                  "group_ids": [
+                    "${vault_identity_group.internal.id}"
+                  ],
+                  "name": "assignment"
+                }
+              dependencies:
+                vault_identity_entity.test: |-
+                    {
+                      "name": "test",
+                      "policies": [
+                        "test"
+                      ]
+                    }
+                vault_identity_group.internal: |-
+                    {
+                      "name": "internal",
+                      "policies": [
+                        "dev",
+                        "test"
+                      ],
+                      "type": "internal"
+                    }
         argumentDocs:
             entity_ids: '- (Optional) A set of Vault entity IDs.'
             group_ids: '- (Optional) A set of Vault group IDs.'
@@ -2107,11 +3539,38 @@ resources:
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
         importStatements: []
-    vault_identity_oidc_client resource:
+    vault_identity_oidc_client:
         subCategory: ""
         description: Provision OIDC Clients in Vault.
-        name: vault_identity_oidc_client resource
+        name: vault_identity_oidc_client
         title: vault_identity_oidc_client resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "access_token_ttl": 7200,
+                  "assignments": [
+                    "${vault_identity_oidc_assignment.test.name}"
+                  ],
+                  "id_token_ttl": 2400,
+                  "name": "my-app",
+                  "redirect_uris": [
+                    "http://127.0.0.1:9200/v1/auth-methods/oidc:authenticate:callback",
+                    "http://127.0.0.1:8251/callback",
+                    "http://127.0.0.1:8080/callback"
+                  ]
+                }
+              dependencies:
+                vault_identity_oidc_assignment.test: |-
+                    {
+                      "entity_ids": [
+                        "ascbascas-2231a-sdfaa"
+                      ],
+                      "group_ids": [
+                        "sajkdsad-32414-sfsada"
+                      ],
+                      "name": "my-assignment"
+                    }
         argumentDocs:
             access_token_ttl: '- (Optional) The time-to-live for access tokens obtained by the client.'
             assignments: '- (Optional) A list of assignment resources associated with the client.'
@@ -2136,11 +3595,29 @@ resources:
                 One of these values must exactly match the redirect_uri parameter value
                 used in each authentication request.
         importStatements: []
-    vault_identity_oidc_key resource:
+    vault_identity_oidc_key:
         subCategory: ""
         description: Creates an Identity OIDC Named Key for Vault
-        name: vault_identity_oidc_key resource
+        name: vault_identity_oidc_key
         title: vault_identity_oidc_key resource
+        examples:
+            - name: key
+              manifest: |-
+                {
+                  "algorithm": "RS256",
+                  "name": "key"
+                }
+              dependencies:
+                vault_identity_oidc_key_allowed_client_id.role: |-
+                    {
+                      "allowed_client_id": "${vault_identity_oidc_role.role.client_id}",
+                      "key_name": "${vault_identity_oidc_key.key.name}"
+                    }
+                vault_identity_oidc_role.role: |-
+                    {
+                      "key": "${vault_identity_oidc_key.key.name}",
+                      "name": "role"
+                    }
         argumentDocs:
             algorithm: |-
                 - (Optional) Signing algorithm to use. Signing algorithm to use.
@@ -2160,11 +3637,32 @@ resources:
                 - (Optional) "Controls how long the public portion of a signing key will be
                 available for verification after being rotated in seconds.
         importStatements: []
-    vault_identity_oidc_key_allowed_client_id resource:
+    vault_identity_oidc_key_allowed_client_id:
         subCategory: ""
         description: Allows an Identity OIDC Role to use an OIDC Named key.
-        name: vault_identity_oidc_key_allowed_client_id resource
+        name: vault_identity_oidc_key_allowed_client_id
         title: vault_identity_oidc_key_allowed_client_id resource
+        examples:
+            - name: role
+              manifest: |-
+                {
+                  "allowed_client_id": "${vault_identity_oidc_role.role.client_id}",
+                  "key_name": "${vault_identity_oidc_key.key.name}"
+                }
+              references:
+                allowed_client_id: vault_identity_oidc_role.role.client_id
+                key_name: vault_identity_oidc_key.key.name
+              dependencies:
+                vault_identity_oidc_key.key: |-
+                    {
+                      "algorithm": "RS256",
+                      "name": "key"
+                    }
+                vault_identity_oidc_role.role: |-
+                    {
+                      "key": "${vault_identity_oidc_key.key.name}",
+                      "name": "role"
+                    }
         argumentDocs:
             allowed_client_id: '- (Required; Forces new resource) Client ID to allow usage with the OIDC named key'
             key_name: '- (Required; Forces new resource) Name of the OIDC Key allow the Client ID.'
@@ -2174,11 +3672,66 @@ resources:
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
         importStatements: []
-    vault_identity_oidc_provider resource:
+    vault_identity_oidc_provider:
         subCategory: ""
         description: Provision OIDC Providers in Vault.
-        name: vault_identity_oidc_provider resource
+        name: vault_identity_oidc_provider
         title: vault_identity_oidc_provider resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "allowed_client_ids": [
+                    "${vault_identity_oidc_client.test.client_id}"
+                  ],
+                  "https_enabled": false,
+                  "issuer_host": "127.0.0.1:8200",
+                  "name": "my-provider",
+                  "scopes_supported": [
+                    "${vault_identity_oidc_scope.test.name}"
+                  ]
+                }
+              dependencies:
+                vault_identity_oidc_assignment.test: |-
+                    {
+                      "entity_ids": [
+                        "fake-ascbascas-2231a-sdfaa"
+                      ],
+                      "group_ids": [
+                        "fake-sajkdsad-32414-sfsada"
+                      ],
+                      "name": "my-assignment"
+                    }
+                vault_identity_oidc_client.test: |-
+                    {
+                      "access_token_ttl": 7200,
+                      "assignments": [
+                        "${vault_identity_oidc_assignment.test.name}"
+                      ],
+                      "id_token_ttl": 2400,
+                      "key": "${vault_identity_oidc_key.test.name}",
+                      "name": "application",
+                      "redirect_uris": [
+                        "http://127.0.0.1:9200/v1/auth-methods/oidc:authenticate:callback",
+                        "http://127.0.0.1:8251/callback",
+                        "http://127.0.0.1:8080/callback"
+                      ]
+                    }
+                vault_identity_oidc_key.test: |-
+                    {
+                      "allowed_client_ids": [
+                        "*"
+                      ],
+                      "name": "my-key",
+                      "rotation_period": 3600,
+                      "verification_ttl": 3600
+                    }
+                vault_identity_oidc_scope.test: |-
+                    {
+                      "description": "Groups scope.",
+                      "name": "groups",
+                      "template": "${jsonencode(\n  {\n    groups = \"{{identity.entity.groups.names}}\",\n  }\n  )}"
+                    }
         argumentDocs:
             allowed_client_ids: |-
                 - (Optional) The client IDs that are permitted to use the provider.
@@ -2197,11 +3750,48 @@ resources:
                 Available only for Vault Enterprise.
             scopes_supported: '- (Optional) The scopes available for requesting on the provider.'
         importStatements: []
-    vault_identity_oidc_role resource:
+    vault_identity_oidc_role:
         subCategory: ""
         description: Creates an Identity OIDC Role for Vault
-        name: vault_identity_oidc_role resource
+        name: vault_identity_oidc_role
         title: vault_identity_oidc_role resource
+        examples:
+            - name: role
+              manifest: |-
+                {
+                  "key": "${var.key}",
+                  "name": "role"
+                }
+              references:
+                key: var.key
+              dependencies:
+                vault_identity_oidc_key.key: |-
+                    {
+                      "algorithm": "RS256",
+                      "allowed_client_ids": [
+                        "${vault_identity_oidc_role.role.client_id}"
+                      ],
+                      "name": "${var.key}"
+                    }
+            - name: role
+              manifest: |-
+                {
+                  "key": "${vault_identity_oidc_key.key.name}",
+                  "name": "role"
+                }
+              references:
+                key: vault_identity_oidc_key.key.name
+              dependencies:
+                vault_identity_oidc_key.key: |-
+                    {
+                      "algorithm": "RS256",
+                      "name": "key"
+                    }
+                vault_identity_oidc_key_allowed_client_id.role: |-
+                    {
+                      "allowed_client_id": "${vault_identity_oidc_role.role.client_id}",
+                      "key_name": "${vault_identity_oidc_key.key.name}"
+                    }
         argumentDocs:
             client_id: |-
                 - (Optional) The value that will be included in the aud field of all the OIDC identity
@@ -2223,11 +3813,19 @@ resources:
                 for the template format.
             ttl: '- (Optional) TTL of the tokens generated against the role in number of seconds.'
         importStatements: []
-    vault_identity_oidc_scope resource:
+    vault_identity_oidc_scope:
         subCategory: ""
         description: Provision OIDC Scopes in Vault.
-        name: vault_identity_oidc_scope resource
+        name: vault_identity_oidc_scope
         title: vault_identity_oidc_scope resource
+        examples:
+            - name: groups
+              manifest: |-
+                {
+                  "description": "Vault OIDC Groups Scope",
+                  "name": "groups",
+                  "template": "{\"groups\":{{identity.entity.groups.names}}}"
+                }
         argumentDocs:
             description: '- (Optional) A description of the scope.'
             name: '- (Required) The name of the scope. The openid scope name is reserved.'
@@ -2238,11 +3836,50 @@ resources:
                 Available only for Vault Enterprise.
             template: '- (Optional) The template string for the scope. This may be provided as escaped JSON or base64 encoded JSON.'
         importStatements: []
-    vault_jwt_auth_backend resource:
+    vault_jwt_auth_backend:
         subCategory: ""
         description: Managing JWT/OIDC auth backends in Vault
-        name: vault_jwt_auth_backend resource
+        name: vault_jwt_auth_backend
         title: vault_jwt_auth_backend resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "bound_issuer": "https://myco.auth0.com/",
+                  "description": "Demonstration of the Terraform JWT auth backend",
+                  "oidc_discovery_url": "https://myco.auth0.com/",
+                  "path": "jwt"
+                }
+            - name: example
+              manifest: |-
+                {
+                  "bound_issuer": "https://myco.auth0.com/",
+                  "description": "Demonstration of the Terraform JWT auth backend",
+                  "oidc_client_id": "1234567890",
+                  "oidc_client_secret": "secret123456",
+                  "oidc_discovery_url": "https://myco.auth0.com/",
+                  "path": "oidc",
+                  "tune": [
+                    {
+                      "listing_visibility": "unauth"
+                    }
+                  ],
+                  "type": "oidc"
+                }
+            - name: gsuite
+              manifest: |-
+                {
+                  "description": "OIDC backend",
+                  "oidc_discovery_url": "https://accounts.google.com",
+                  "path": "oidc",
+                  "provider_config": {
+                    "fetch_groups": true,
+                    "fetch_user_info": true,
+                    "groups_recurse_max_depth": 1,
+                    "provider": "gsuite"
+                  },
+                  "type": "oidc"
+                }
         argumentDocs:
             accessor: '- The accessor for this auth method'
             bound_issuer: '- (Optional) The value against which to match the iss claim in a JWT'
@@ -2298,11 +3935,62 @@ resources:
                 the mount. Valid values are "default-service", "default-batch", "service", "batch".
             type: '- (Optional) Type of auth backend. Should be one of jwt or oidc. Default - jwt'
         importStatements: []
-    vault_jwt_auth_backend_role resource:
+    vault_jwt_auth_backend_role:
         subCategory: ""
         description: Manages JWT/OIDC auth backend roles in Vault.
-        name: vault_jwt_auth_backend_role resource
+        name: vault_jwt_auth_backend_role
         title: vault_jwt_auth_backend_role resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "backend": "${vault_jwt_auth_backend.jwt.path}",
+                  "bound_audiences": [
+                    "https://myco.test"
+                  ],
+                  "bound_claims": {
+                    "color": "red,green,blue"
+                  },
+                  "role_name": "test-role",
+                  "role_type": "jwt",
+                  "token_policies": [
+                    "default",
+                    "dev",
+                    "prod"
+                  ],
+                  "user_claim": "https://vault/user"
+                }
+              references:
+                backend: vault_jwt_auth_backend.jwt.path
+              dependencies:
+                vault_jwt_auth_backend.jwt: |-
+                    {
+                      "path": "jwt"
+                    }
+            - name: example
+              manifest: |-
+                {
+                  "allowed_redirect_uris": [
+                    "http://localhost:8200/ui/vault/auth/oidc/oidc/callback"
+                  ],
+                  "backend": "${vault_jwt_auth_backend.oidc.path}",
+                  "role_name": "test-role",
+                  "role_type": "oidc",
+                  "token_policies": [
+                    "default",
+                    "dev",
+                    "prod"
+                  ],
+                  "user_claim": "https://vault/user"
+                }
+              references:
+                backend: vault_jwt_auth_backend.oidc.path
+              dependencies:
+                vault_jwt_auth_backend.oidc: |-
+                    {
+                      "default_role": "test-role",
+                      "path": "oidc"
+                    }
         argumentDocs:
             allowed_redirect_uris: |-
                 - (Optional) The list of allowed values for redirect_uri during OIDC logins.
@@ -2407,11 +4095,27 @@ resources:
                 logging is active. Not recommended in production since sensitive information may be present
                 in OIDC responses.
         importStatements: []
-    vault_kmip_secret_backend resource:
+    vault_kmip_secret_backend:
         subCategory: ""
         description: Provision KMIP Secret backends in Vault.
-        name: vault_kmip_secret_backend resource
+        name: vault_kmip_secret_backend
         title: vault_kmip_secret_backend resource
+        examples:
+            - name: default
+              manifest: |-
+                {
+                  "default_tls_client_key_bits": 4096,
+                  "default_tls_client_key_type": "rsa",
+                  "default_tls_client_ttl": 86400,
+                  "description": "Vault KMIP backend",
+                  "listen_addrs": [
+                    "127.0.0.1:5696",
+                    "127.0.0.1:8080"
+                  ],
+                  "path": "kmip",
+                  "tls_ca_key_bits": 4096,
+                  "tls_ca_key_type": "rsa"
+                }
         argumentDocs:
             default_tls_client_key_bits: '- (Optional) Client certificate key bits, valid values depend on key type.'
             default_tls_client_key_type: '- (Optional) Client certificate key type, rsa or ec.'
@@ -2434,11 +4138,41 @@ resources:
             tls_ca_key_type: '- (Optional) CA key type, rsa or ec.'
             tls_min_version: '- (Optional) Minimum TLS version to accept.'
         importStatements: []
-    vault_kmip_secret_role resource:
+    vault_kmip_secret_role:
         subCategory: ""
         description: Provision KMIP Secret roles in Vault.
-        name: vault_kmip_secret_role resource
+        name: vault_kmip_secret_role
         title: vault_kmip_secret_role resource
+        examples:
+            - name: admin
+              manifest: |-
+                {
+                  "operation_activate": true,
+                  "operation_create": true,
+                  "operation_destroy": true,
+                  "operation_get": true,
+                  "operation_get_attributes": true,
+                  "path": "${vault_kmip_secret_scope.dev.path}",
+                  "role": "admin",
+                  "scope": "${vault_kmip_secret_scope.dev.scope}",
+                  "tls_client_key_bits": 256,
+                  "tls_client_key_type": "ec"
+                }
+              references:
+                path: vault_kmip_secret_scope.dev.path
+                scope: vault_kmip_secret_scope.dev.scope
+              dependencies:
+                vault_kmip_secret_backend.default: |-
+                    {
+                      "description": "Vault KMIP backend",
+                      "path": "kmip"
+                    }
+                vault_kmip_secret_scope.dev: |-
+                    {
+                      "force": true,
+                      "path": "${vault_kmip_secret_backend.default.path}",
+                      "scope": "dev"
+                    }
         argumentDocs:
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
@@ -2468,11 +4202,27 @@ resources:
             tls_client_key_type: '- (Optional) Client certificate key type, rsa or ec.'
             tls_client_ttl: '- (Optional) Client certificate TTL in seconds.'
         importStatements: []
-    vault_kmip_secret_scope resource:
+    vault_kmip_secret_scope:
         subCategory: ""
         description: Provision KMIP Secret scopes in Vault.
-        name: vault_kmip_secret_scope resource
+        name: vault_kmip_secret_scope
         title: vault_kmip_secret_scope resource
+        examples:
+            - name: dev
+              manifest: |-
+                {
+                  "force": true,
+                  "path": "${vault_kmip_secret_backend.default.path}",
+                  "scope": "dev"
+                }
+              references:
+                path: vault_kmip_secret_backend.default.path
+              dependencies:
+                vault_kmip_secret_backend.default: |-
+                    {
+                      "description": "Vault KMIP backend",
+                      "path": "kmip"
+                    }
         argumentDocs:
             force: '- (Optional) Boolean field to force deletion even if there are managed objects in the scope.'
             namespace: |-
@@ -2485,11 +4235,29 @@ resources:
                 not begin or end with a /. Defaults to kmip.
             scope: '- (Required) Name of the scope.'
         importStatements: []
-    vault_kubernetes_auth_backend_config resource:
+    vault_kubernetes_auth_backend_config:
         subCategory: ""
         description: Manages Kubernetes auth backend configs in Vault.
-        name: vault_kubernetes_auth_backend_config resource
+        name: vault_kubernetes_auth_backend_config
         title: vault_kubernetes_auth_backend_config resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "backend": "${vault_auth_backend.kubernetes.path}",
+                  "disable_iss_validation": "true",
+                  "issuer": "api",
+                  "kubernetes_ca_cert": "-----BEGIN CERTIFICATE-----\nexample\n-----END CERTIFICATE-----",
+                  "kubernetes_host": "http://example.com:443",
+                  "token_reviewer_jwt": "ZXhhbXBsZQo="
+                }
+              references:
+                backend: vault_auth_backend.kubernetes.path
+              dependencies:
+                vault_auth_backend.kubernetes: |-
+                    {
+                      "type": "kubernetes"
+                    }
         argumentDocs:
             disable_iss_validation: '- (Optional) Disable JWT issuer validation. Allows to skip ISS validation. Requires Vault v1.5.4+ or Vault auth kubernetes plugin v0.7.1+'
             disable_local_ca_jwt: '- (Optional) Disable defaulting to the local CA cert and service account JWT when running in a Kubernetes pod. Requires Vault v1.5.4+ or Vault auth kubernetes plugin v0.7.1+'
@@ -2504,11 +4272,38 @@ resources:
             pem_keys: '- (Optional) List of PEM-formatted public keys or certificates used to verify the signatures of Kubernetes service account JWTs. If a certificate is given, its public key will be extracted. Not every installation of Kubernetes exposes these keys.'
             token_reviewer_jwt: '- (Optional) A service account JWT used to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.'
         importStatements: []
-    vault_kubernetes_auth_backend_role resource:
+    vault_kubernetes_auth_backend_role:
         subCategory: ""
         description: Manages Kubernetes auth backend roles in Vault.
-        name: vault_kubernetes_auth_backend_role resource
+        name: vault_kubernetes_auth_backend_role
         title: vault_kubernetes_auth_backend_role resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "audience": "vault",
+                  "backend": "${vault_auth_backend.kubernetes.path}",
+                  "bound_service_account_names": [
+                    "example"
+                  ],
+                  "bound_service_account_namespaces": [
+                    "example"
+                  ],
+                  "role_name": "example-role",
+                  "token_policies": [
+                    "default",
+                    "dev",
+                    "prod"
+                  ],
+                  "token_ttl": 3600
+                }
+              references:
+                backend: vault_auth_backend.kubernetes.path
+              dependencies:
+                vault_auth_backend.kubernetes: |-
+                    {
+                      "type": "kubernetes"
+                    }
         argumentDocs:
             alias_name_source: |-
                 - (Optional, default: serviceaccount_uid) Configures how identity aliases are generated.
@@ -2556,11 +4351,24 @@ resources:
                 default-service and default-batch which specify the type to return unless the client
                 requests a different type at generation time.
         importStatements: []
-    vault_kubernetes_secret_backend resource:
+    vault_kubernetes_secret_backend:
         subCategory: ""
         description: Creates a Kubernetes Secrets Engine in Vault.
-        name: vault_kubernetes_secret_backend resource
+        name: vault_kubernetes_secret_backend
         title: vault_kubernetes_secret_backend resource
+        examples:
+            - name: config
+              manifest: |-
+                {
+                  "default_lease_ttl_seconds": 43200,
+                  "description": "kubernetes secrets engine description",
+                  "disable_local_ca_jwt": false,
+                  "kubernetes_ca_cert": "${file(\"/path/to/cert\")}",
+                  "kubernetes_host": "https://127.0.0.1:61233",
+                  "max_lease_ttl_seconds": 86400,
+                  "path": "kubernetes",
+                  "service_account_jwt": "${file(\"/path/to/token\")}"
+                }
         argumentDocs:
             disable_local_ca_jwt: |-
                 - (Optional) Disable defaulting to the local CA certificate and
@@ -2584,11 +4392,109 @@ resources:
                 secrets engine to manage Kubernetes credentials. Defaults to the local pod’s JWT if Vault
                 is running in Kubernetes.
         importStatements: []
-    vault_kubernetes_secret_backend_role resource:
+    vault_kubernetes_secret_backend_role:
         subCategory: ""
         description: Creates a role for the Kubernetes Secrets Engine in Vault.
-        name: vault_kubernetes_secret_backend_role resource
+        name: vault_kubernetes_secret_backend_role
         title: vault_kubernetes_secret_backend_role resource
+        examples:
+            - name: sa-example
+              manifest: |-
+                {
+                  "allowed_kubernetes_namespaces": [
+                    "*"
+                  ],
+                  "backend": "${vault_kubernetes_secret_backend.config.path}",
+                  "extra_annotations": {
+                    "env": "development",
+                    "location": "earth"
+                  },
+                  "extra_labels": {
+                    "id": "abc123",
+                    "name": "some_name"
+                  },
+                  "name": "service-account-name-role",
+                  "service_account_name": "test-service-account-with-generated-token",
+                  "token_default_ttl": 21600,
+                  "token_max_ttl": 43200
+                }
+              references:
+                backend: vault_kubernetes_secret_backend.config.path
+              dependencies:
+                vault_kubernetes_secret_backend.config: |-
+                    {
+                      "description": "kubernetes secrets engine description",
+                      "disable_local_ca_jwt": false,
+                      "kubernetes_ca_cert": "${file(\"/path/to/cert\")}",
+                      "kubernetes_host": "https://127.0.0.1:61233",
+                      "path": "kubernetes",
+                      "service_account_jwt": "${file(\"/path/to/token\")}"
+                    }
+            - name: name-example
+              manifest: |-
+                {
+                  "allowed_kubernetes_namespaces": [
+                    "*"
+                  ],
+                  "backend": "${vault_kubernetes_secret_backend.config.path}",
+                  "extra_annotations": {
+                    "env": "development",
+                    "location": "earth"
+                  },
+                  "extra_labels": {
+                    "id": "abc123",
+                    "name": "some_name"
+                  },
+                  "kubernetes_role_name": "vault-k8s-secrets-role",
+                  "name": "service-account-name-role",
+                  "token_default_ttl": 21600,
+                  "token_max_ttl": 43200
+                }
+              references:
+                backend: vault_kubernetes_secret_backend.config.path
+              dependencies:
+                vault_kubernetes_secret_backend.config: |-
+                    {
+                      "description": "kubernetes secrets engine description",
+                      "disable_local_ca_jwt": false,
+                      "kubernetes_ca_cert": "${file(\"/path/to/cert\")}",
+                      "kubernetes_host": "https://127.0.0.1:61233",
+                      "path": "kubernetes",
+                      "service_account_jwt": "${file(\"/path/to/token\")}"
+                    }
+            - name: rules-example
+              manifest: |-
+                {
+                  "allowed_kubernetes_namespaces": [
+                    "*"
+                  ],
+                  "backend": "${vault_kubernetes_secret_backend.config.path}",
+                  "extra_annotations": {
+                    "env": "development",
+                    "location": "earth"
+                  },
+                  "extra_labels": {
+                    "id": "abc123",
+                    "name": "some_name"
+                  },
+                  "generated_role_rules": "rules:\n- apiGroups: [\"\"]\n  resources: [\"pods\"]\n  verbs: [\"list\"]\n",
+                  "kubernetes_role_type": "Role",
+                  "name": "service-account-name-role",
+                  "token_default_ttl": 21600,
+                  "token_max_ttl": 43200
+                }
+              references:
+                backend: vault_kubernetes_secret_backend.config.path
+              dependencies:
+                vault_kubernetes_secret_backend.config: |-
+                    {
+                      "description": "kubernetes secrets engine description",
+                      "disable_local_ca_jwt": false,
+                      "kubernetes_ca_cert": "${file(\"/path/to/cert\")}",
+                      "kubernetes_host": "https://127.0.0.1:61233",
+                      "path": "kubernetes",
+                      "service_account_jwt": "${file(\"/path/to/token\")}"
+                    }
         argumentDocs:
             allowed_kubernetes_namespaces: |-
                 - (Required) The list of Kubernetes namespaces this role
@@ -2631,11 +4537,28 @@ resources:
             token_default_ttl: '- (Optional) The default TTL for generated Kubernetes tokens in seconds.'
             token_max_ttl: '- (Optional) The maximum TTL for generated Kubernetes tokens in seconds.'
         importStatements: []
-    vault_kv_secret resource:
+    vault_kv_secret:
         subCategory: ""
         description: Writes a KV-V1 secret to a given path in Vault
-        name: vault_kv_secret resource
+        name: vault_kv_secret
         title: vault_kv_secret resource
+        examples:
+            - name: secret
+              manifest: |-
+                {
+                  "data_json": "${jsonencode(\n  {\n    zip = \"zap\",\n    foo = \"bar\"\n  }\n  )}",
+                  "path": "${vault_mount.kvv1.path}/secret"
+                }
+              dependencies:
+                vault_mount.kvv1: |-
+                    {
+                      "description": "KV Version 1 secret engine mount",
+                      "options": {
+                        "version": "1"
+                      },
+                      "path": "kvv1",
+                      "type": "kv"
+                    }
         argumentDocs:
             data: |-
                 - A mapping whose keys are the top-level data keys returned from
@@ -2652,11 +4575,32 @@ resources:
                 Available only for Vault Enterprise.
             path: '- (Required) Full path of the KV-V1 secret.'
         importStatements: []
-    vault_kv_secret_backend_v2 resource:
+    vault_kv_secret_backend_v2:
         subCategory: ""
         description: Configures KV-V2 backend level settings that are applied to every key in the key-value store.
-        name: vault_kv_secret_backend_v2 resource
+        name: vault_kv_secret_backend_v2
         title: vault_kv_secret_backend_v2 resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "cas_required": true,
+                  "delete_version_after": 12600,
+                  "max_versions": 5,
+                  "mount": "${vault_mount.kvv2.path}"
+                }
+              references:
+                mount: vault_mount.kvv2.path
+              dependencies:
+                vault_mount.kvv2: |-
+                    {
+                      "description": "KV Version 2 secret engine mount",
+                      "options": {
+                        "version": "2"
+                      },
+                      "path": "kvv2",
+                      "type": "kv"
+                    }
         argumentDocs:
             cas_required: |-
                 - (Optional) If true, all keys will require the cas
@@ -2672,11 +4616,42 @@ resources:
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
         importStatements: []
-    vault_kv_secret_v2 resource:
+    vault_kv_secret_v2:
         subCategory: ""
         description: Writes a KV-V2 secret to a given path in Vault
-        name: vault_kv_secret_v2 resource
+        name: vault_kv_secret_v2
         title: vault_kv_secret_v2 resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "cas": 1,
+                  "custom_metadata": [
+                    {
+                      "data": {
+                        "bar": "12345",
+                        "foo": "vault@example.com"
+                      },
+                      "max_versions": 5
+                    }
+                  ],
+                  "data_json": "${jsonencode(\n  {\n    zip       = \"zap\",\n    foo       = \"bar\"\n  }\n  )}",
+                  "delete_all_versions": true,
+                  "mount": "${vault_mount.kvv2.path}",
+                  "name": "secret"
+                }
+              references:
+                mount: vault_mount.kvv2.path
+              dependencies:
+                vault_mount.kvv2: |-
+                    {
+                      "description": "KV Version 2 secret engine mount",
+                      "options": {
+                        "version": "2"
+                      },
+                      "path": "kvv2",
+                      "type": "kv"
+                    }
         argumentDocs:
             cas: |-
                 - (Optional) This flag is required if cas_required is set to true
@@ -2719,11 +4694,50 @@ resources:
             options: '- (Optional) An object that holds option settings.'
             path: '- Full path where the KV-V2 secret will be written.'
         importStatements: []
-    vault_managed_keys resource:
+    vault_managed_keys:
         subCategory: ""
         description: Configures Managed Keys in Vault
-        name: vault_managed_keys resource
+        name: vault_managed_keys
         title: vault_managed_keys resource
+        examples:
+            - name: keys
+              manifest: |-
+                {
+                  "aws": [
+                    {
+                      "access_key": "${var.aws_access_key}",
+                      "key_bits": "2048",
+                      "key_type": "RSA",
+                      "kms_key": "alias/vault_aws_key_1",
+                      "name": "aws-key-1",
+                      "secret_key": "${var.aws_secret_key}"
+                    },
+                    {
+                      "access_key": "${var.aws_access_key}",
+                      "key_bits": "4096",
+                      "key_type": "RSA",
+                      "kms_key": "alias/vault_aws_key_2",
+                      "name": "aws-key-2",
+                      "secret_key": "${var.aws_secret_key}"
+                    }
+                  ]
+                }
+              references:
+                aws.access_key: var.aws_access_key
+                aws.secret_key: var.aws_secret_key
+              dependencies:
+                vault_mount.pki: |-
+                    {
+                      "allowed_managed_keys": [
+                        "${tolist(vault_managed_keys.keys.aws)[0].name}",
+                        "${tolist(vault_managed_keys.keys.aws)[1].name}"
+                      ],
+                      "default_lease_ttl_seconds": 3600,
+                      "description": "Example mount for managed keys",
+                      "max_lease_ttl_seconds": 36000,
+                      "path": "pki",
+                      "type": "pki"
+                    }
         argumentDocs:
             access_key: '- (Required) The AWS access key to use.'
             allow_generate_key: |-
@@ -2779,11 +4793,29 @@ resources:
             token_label: '- (Optional) The slot token label to use.'
             vault_name: '- (Required) The Key Vault vault to use for encryption and decryption.'
         importStatements: []
-    vault_mfa_duo resource:
+    vault_mfa_duo:
         subCategory: ""
         description: Managing the MFA Duo method configuration
-        name: vault_mfa_duo resource
+        name: vault_mfa_duo
         title: vault_mfa_duo resource
+        examples:
+            - name: my_duo
+              manifest: |-
+                {
+                  "api_hostname": "api-2b5c39f5.duosecurity.com",
+                  "integration_key": "BIACEUEAXI20BNWTEYXT",
+                  "mount_accessor": "${vault_auth_backend.userpass.accessor}",
+                  "name": "my_duo",
+                  "secret_key": "8C7THtrIigh2rPZQMbguugt8IUftWhMRCOBzbuyz"
+                }
+              references:
+                mount_accessor: vault_auth_backend.userpass.accessor
+              dependencies:
+                vault_auth_backend.userpass: |-
+                    {
+                      "path": "userpass",
+                      "type": "userpass"
+                    }
         argumentDocs:
             <key>: ': The value of the Alias''s metadata parameter'
             api_hostname: '(string: <required>) - API hostname for Duo.'
@@ -2799,11 +4831,29 @@ resources:
             secret_key: '(string: <required>) - Secret key for Duo.'
             username_format: '(string) - A format string for mapping Identity names to MFA method names. Values to substitute should be placed in {{}}. For example, "{{alias.name}}@example.com". If blank, the Alias''s Name field will be used as-is. Currently-supported mappings:'
         importStatements: []
-    vault_mfa_okta resource:
+    vault_mfa_okta:
         subCategory: ""
         description: Managing the MFA Okta method configuration
-        name: vault_mfa_okta resource
+        name: vault_mfa_okta
         title: vault_mfa_okta resource
+        examples:
+            - name: my_okta
+              manifest: |-
+                {
+                  "api_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+                  "mount_accessor": "${vault_auth_backend.userpass.accessor}",
+                  "name": "my_okta",
+                  "org_name": "hashicorp",
+                  "username_format": "user@example.com"
+                }
+              references:
+                mount_accessor: vault_auth_backend.userpass.accessor
+              dependencies:
+                vault_auth_backend.userpass: |-
+                    {
+                      "path": "userpass",
+                      "type": "userpass"
+                    }
         argumentDocs:
             <key>: ': The value of the Alias''s metadata parameter'
             api_token: '(string: <required>) - Okta API key.'
@@ -2828,11 +4878,29 @@ resources:
                 Values to substitute should be placed in {{}}. For example, "{{alias.name}}@example.com".
                 If blank, the Alias's Name field will be used as-is. Currently-supported mappings:
         importStatements: []
-    vault_mfa_pingid resource:
+    vault_mfa_pingid:
         subCategory: ""
         description: Managing the MFA PingID method configuration
-        name: vault_mfa_pingid resource
+        name: vault_mfa_pingid
         title: vault_mfa_pingid resource
+        examples:
+            - name: my_pingid
+              manifest: |-
+                {
+                  "mount_accessor": "${vault_auth_backend.userpass.accessor}",
+                  "name": "my_pingid",
+                  "settings_file_base64": "${var.settings_file}",
+                  "username_format": "user@example.com"
+                }
+              references:
+                mount_accessor: vault_auth_backend.userpass.accessor
+                settings_file_base64: var.settings_file
+              dependencies:
+                vault_auth_backend.userpass: |-
+                    {
+                      "path": "userpass",
+                      "type": "userpass"
+                    }
         argumentDocs:
             <key>: ': The value of the Alias''s metadata parameter'
             admin_url: (string) – Admin URL computed by Vault
@@ -2860,11 +4928,22 @@ resources:
                 Values to substitute should be placed in {{}}. For example, "{{alias.name}}@example.com".
                 If blank, the Alias's Name field will be used as-is. Currently-supported mappings:
         importStatements: []
-    vault_mfa_totp resource:
+    vault_mfa_totp:
         subCategory: ""
         description: Managing the MFA TOTP method configuration
-        name: vault_mfa_totp resource
+        name: vault_mfa_totp
         title: vault_mfa_totp resource
+        examples:
+            - name: my_totp
+              manifest: |-
+                {
+                  "algorithm": "SHA256",
+                  "digits": 8,
+                  "issuer": "hashicorp",
+                  "key_size": 20,
+                  "name": "my_totp",
+                  "period": 60
+                }
         argumentDocs:
             algorithm: |-
                 (string) - Specifies the hashing algorithm used to generate the TOTP code.
@@ -2886,11 +4965,26 @@ resources:
                 (int) - The number of delay periods that are allowed when validating a TOTP token.
                 This value can either be 0 or 1.
         importStatements: []
-    vault_mongodbatlas_secret_backend resource:
+    vault_mongodbatlas_secret_backend:
         subCategory: ""
         description: Creates a MongoDB Atlas secret backend for Vault.
-        name: vault_mongodbatlas_secret_backend resource
+        name: vault_mongodbatlas_secret_backend
         title: vault_mongodbatlas_secret_backend resource
+        examples:
+            - name: config
+              manifest: |-
+                {
+                  "mount": "vault_mount.mongo.path",
+                  "private_key": "privateKey",
+                  "public_key": "publicKey"
+                }
+              dependencies:
+                vault_mount.mongo: |-
+                    {
+                      "description": "MongoDB Atlas secret engine mount",
+                      "path": "mongodbatlas",
+                      "type": "mongodbatlas"
+                    }
         argumentDocs:
             mount: '- (Required) Path where the MongoDB Atlas Secrets Engine is mounted.'
             namespace: |-
@@ -2901,11 +4995,41 @@ resources:
             private_key: '- (Required) Specifies the Private API Key used to authenticate with the MongoDB Atlas API.'
             public_key: '- (Required) Specifies the Public API Key used to authenticate with the MongoDB Atlas API.'
         importStatements: []
-    vault_mongodbatlas_secret_role resource:
+    vault_mongodbatlas_secret_role:
         subCategory: ""
         description: Creates a role for the MongoDB Atlas Secret Engine in Vault.
-        name: vault_mongodbatlas_secret_role resource
+        name: vault_mongodbatlas_secret_role
         title: vault_mongodbatlas_secret_role resource
+        examples:
+            - name: role
+              manifest: |-
+                {
+                  "cidr_blocks": "192.168.1.3/35",
+                  "ip_addresses": "192.168.1.5, 192.168.1.6",
+                  "max_ttl": "120",
+                  "mount": "${vault_mount.mongo.path}",
+                  "name": "tf-test-role",
+                  "organization_id": "7cf5a45a9ccf6400e60981b7",
+                  "project_id": "5cf5a45a9ccf6400e60981b6",
+                  "project_roles": "GROUP_READ_ONLY",
+                  "roles": "ORG_READ_ONLY",
+                  "ttl": "60"
+                }
+              references:
+                mount: vault_mount.mongo.path
+              dependencies:
+                vault_mongodbatlas_secret_backend.config: |-
+                    {
+                      "mount": "vault_mount.mongo.path",
+                      "private_key": "privateKey",
+                      "public_key": "publicKey"
+                    }
+                vault_mount.mongo: |-
+                    {
+                      "description": "MongoDB Atlas secret engine mount",
+                      "path": "%s",
+                      "type": "mongodbatlas"
+                    }
         argumentDocs:
             cidr_blocks: '- (Optional) Whitelist entry in CIDR notation to be added for the API key.'
             ip_addresses: '- (Optional) IP address to be added to the whitelist for the API key.'
@@ -2927,11 +5051,45 @@ resources:
             roles: '- (Required) List of roles that the API Key needs to have.'
             ttl: '- (Optional) Duration in seconds after which the issued credential should expire.'
         importStatements: []
-    vault_mount resource:
+    vault_mount:
         subCategory: ""
         description: Managing the mounting of secret backends in Vault
-        name: vault_mount resource
+        name: vault_mount
         title: vault_mount resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "description": "This is an example mount",
+                  "path": "dummy",
+                  "type": "generic"
+                }
+            - name: kvv2-example
+              manifest: |-
+                {
+                  "description": "This is an example KV Version 2 secret engine mount",
+                  "path": "version2-example",
+                  "type": "kv-v2"
+                }
+            - name: transit-example
+              manifest: |-
+                {
+                  "description": "This is an example transit secret engine mount",
+                  "options": {
+                    "convergent_encryption": false
+                  },
+                  "path": "transit-example",
+                  "type": "transit"
+                }
+            - name: pki-example
+              manifest: |-
+                {
+                  "default_lease_ttl_seconds": 3600,
+                  "description": "This is an example PKI mount",
+                  "max_lease_ttl_seconds": 86400,
+                  "path": "pki-example",
+                  "type": "pki"
+                }
         argumentDocs:
             accessor: '- The accessor for this mount.'
             allowed_managed_keys: '- (Optional) Set of managed key registry entry names that the mount in question is allowed to access'
@@ -2952,11 +5110,69 @@ resources:
             seal_wrap: '- (Optional) Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal''s encryption capability'
             type: '- (Required) Type of the backend, such as "aws"'
         importStatements: []
-    vault_namespace resource:
+    vault_namespace:
         subCategory: ""
         description: Writes namespaces for Vault
-        name: vault_namespace resource
+        name: vault_namespace
         title: vault_namespace resource
+        examples:
+            - name: ns1
+              manifest: |-
+                {
+                  "path": "ns1"
+                }
+            - name: parent
+              manifest: |-
+                {
+                  "path": "parent"
+                }
+              dependencies:
+                vault_generic_secret.children: |-
+                    {
+                      "data_json": "${jsonencode(\n    {\n      \"ns\" = each.key\n    }\n  )}",
+                      "for_each": "${local.child_namespaces}",
+                      "namespace": "${vault_mount.children[each.key].namespace}",
+                      "path": "${vault_mount.children[each.key].path}/secret"
+                    }
+                vault_mount.children: |-
+                    {
+                      "for_each": "${local.child_namespaces}",
+                      "namespace": "${vault_namespace.children[each.key].path_fq}",
+                      "options": {
+                        "version": "1"
+                      },
+                      "path": "secrets",
+                      "type": "kv"
+                    }
+            - name: children
+              manifest: |-
+                {
+                  "for_each": "${local.child_namespaces}",
+                  "namespace": "${vault_namespace.parent.path}",
+                  "path": "${each.key}"
+                }
+              references:
+                for_each: local.child_namespaces
+                namespace: vault_namespace.parent.path
+                path: each.key
+              dependencies:
+                vault_generic_secret.children: |-
+                    {
+                      "data_json": "${jsonencode(\n    {\n      \"ns\" = each.key\n    }\n  )}",
+                      "for_each": "${local.child_namespaces}",
+                      "namespace": "${vault_mount.children[each.key].namespace}",
+                      "path": "${vault_mount.children[each.key].path}/secret"
+                    }
+                vault_mount.children: |-
+                    {
+                      "for_each": "${local.child_namespaces}",
+                      "namespace": "${vault_namespace.children[each.key].path_fq}",
+                      "options": {
+                        "version": "1"
+                      },
+                      "path": "secrets",
+                      "type": "kv"
+                    }
         argumentDocs:
             id: '- ID of the namespace.'
             namespace: |-
@@ -2967,11 +5183,24 @@ resources:
             path: '- (Required) The path of the namespace. Must not have a trailing /'
             path_fq: '- The fully qualified path to the namespace. Useful when provisioning resources in a child namespace.'
         importStatements: []
-    vault_nomad_secret_backend resource:
+    vault_nomad_secret_backend:
         subCategory: ""
         description: Creates a Nomad secret backend for Vault.
-        name: vault_nomad_secret_backend resource
+        name: vault_nomad_secret_backend
         title: vault_nomad_secret_backend resource
+        examples:
+            - name: config
+              manifest: |-
+                {
+                  "address": "https://127.0.0.1:4646",
+                  "backend": "nomad",
+                  "default_lease_ttl_seconds": "3600",
+                  "description": "test description",
+                  "max_lease_ttl_seconds": "7200",
+                  "max_ttl": "240",
+                  "token": "ae20ceaa-...",
+                  "ttl": "120"
+                }
         argumentDocs:
             address: |-
                 - (Optional) Specifies the address of the Nomad instance, provided
@@ -3005,11 +5234,34 @@ resources:
             token: '- (Optional) Specifies the Nomad Management token to use.'
             ttl: '- (Optional) Specifies the ttl of the lease for the generated token.'
         importStatements: []
-    vault_nomad_secret_role resource:
+    vault_nomad_secret_role:
         subCategory: ""
         description: Creates a Nomad role.
-        name: vault_nomad_secret_role resource
+        name: vault_nomad_secret_role
         title: vault_nomad_secret_role resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "backend": "${vault_nomad_secret_backend.config.backend}",
+                  "policies": [
+                    "readonly"
+                  ],
+                  "role": "test",
+                  "type": "client"
+                }
+              references:
+                backend: vault_nomad_secret_backend.config.backend
+              dependencies:
+                vault_nomad_secret_backend.config: |-
+                    {
+                      "address": "https://127.0.0.1:4646",
+                      "backend": "nomad",
+                      "default_lease_ttl_seconds": "3600",
+                      "description": "test description",
+                      "max_lease_ttl_seconds": "7200",
+                      "token": "ae20ceaa-..."
+                    }
         argumentDocs:
             backend: |-
                 - (Optional) The unique path this backend should be mounted at. Must
@@ -3032,11 +5284,18 @@ resources:
                 - (Optional)  Specifies the type of token to create when using this role. Valid
                 settings are 'client' and 'management'. Defaults to 'client'.
         importStatements: []
-    vault_password_policy resource:
+    vault_password_policy:
         subCategory: ""
         description: Writes Password policies for Vault
-        name: vault_password_policy resource
+        name: vault_password_policy
         title: vault_password_policy resource
+        examples:
+            - name: alphanumeric
+              manifest: |-
+                {
+                  "name": "alphanumeric",
+                  "policy": "    length = 20\n    rule \"charset\" {\n      charset = \"abcdefghijklmnopqrstuvwxyz0123456789\"\n    }\n"
+                }
         argumentDocs:
             name: '- (Required) The name of the password policy.'
             namespace: |-
@@ -3046,11 +5305,25 @@ resources:
                 Available only for Vault Enterprise.
             policy: '- (Required) String containing a password policy.'
         importStatements: []
-    vault_pki_secret_backend_cert resource:
+    vault_pki_secret_backend_cert:
         subCategory: ""
         description: Generate an PKI certificate.
-        name: vault_pki_secret_backend_cert resource
+        name: vault_pki_secret_backend_cert
         title: vault_pki_secret_backend_cert resource
+        examples:
+            - name: app
+              manifest: |-
+                {
+                  "backend": "${vault_mount.intermediate.path}",
+                  "common_name": "app.my.domain",
+                  "depends_on": [
+                    "${vault_pki_secret_backend_role.admin}"
+                  ],
+                  "name": "${vault_pki_secret_backend_role.test.name}"
+                }
+              references:
+                backend: vault_mount.intermediate.path
+                name: vault_pki_secret_backend_role.test.name
         argumentDocs:
             alt_names: '- (Optional) List of alternative names'
             auto_renew: '- (Optional) If set to true, certs will be renewed if the expiration is within min_seconds_remaining. Default false'
@@ -3080,11 +5353,23 @@ resources:
             ttl: '- (Optional) Time to live'
             uri_sans: '- (Optional) List of alternative URIs'
         importStatements: []
-    vault_pki_secret_backend_config_ca resource:
+    vault_pki_secret_backend_config_ca:
         subCategory: ""
         description: Submit the CA information to PKI.
-        name: vault_pki_secret_backend_config_ca resource
+        name: vault_pki_secret_backend_config_ca
         title: vault_pki_secret_backend_config_ca resource
+        examples:
+            - name: intermediate
+              manifest: |-
+                {
+                  "backend": "${vault_mount.intermediate.path}",
+                  "depends_on": [
+                    "${vault_mount.intermediate}"
+                  ],
+                  "pem_bundle": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAwvEHeJCXnFgi88rE1dTX6FHdBPK0wSjedh0ywVnCZxLWbBv/\n5PytjTcCPdrfW7g2sfbPwOge/WF3X2KeYSP8SxZA0czmz6QDspeG921JkZWtyp5o\n++N0leLTIUAhq339p3O1onAOUO1k4sHfmCwfrDpTn2hcx4URa5Pzzb1fHigusjIH\n1mcGdncaA6Z2CzO1w4E8kPOUukIDrcZT4faOZrWUIQZKQw2JzTyKJ+ZMDCZq2TFz\nWwpL3eG48wB7J7mibFQ/9nFvxpIflBjDAZ8QiqkwYr5N0DNsTxcfTCSeubfJDCUf\nIWwFZhLitzwOxazazUQKXX/SPMQ1l/L9o3nnHwIDAQABAoIBAAQidJQcDPsl62fc\nTxxx7TpiMhvewfKu2TkMGX18V+EzxxR364+BxHSQTB3fvIkHeTGBGJrw0WdyX8PI\nJa/NwZYeHLXWcLbKtcFd8WDiEoNh91Oq1HMzOc/MBcpYv94RSAX7MEkHs2YIAvHE\nRufFV86hVhC1d/JLYjkz5CHi+Fd9XTYjBK78tHhJd4IJPu5LYvwlmzC1zeS7s1Tg\nQW1FQuVDV8tWa4PMTrQHwfaGqn95AKc+tbg+ubpCiWl5bBNI3Ghuh4sAC9dMdAkd\nw27i29O9/Y3XJSSGUZlZqDBP4YU388RgHpzLDUxgRcaQt9vdeEz6frULPW67e9D2\nmPPDzjECgYEA4aPOwvnSwGoOKsS6vANGy4Ajsq09PR+1ltMJUR5kDlXGuZWI72eX\n3/GAnovDuCp0tbYt0r7Fmkfel0Ore7SYM18TH5QGpPddcZLvKUf7AchCIOYY0Te3\npS9+7S1lEGrLXyuox4N26Ov6wHVrmZTcQoZsDWbjYxNNsNACsiQNjGMCgYEA3SvQ\nJets9e9SgNVvao2TijX+/vcNKRfcWB71T9Xc4BuSNEu5+ZLtptlwaSnVCVu1Xilk\nsWDh+3EhByl4EteENPvE/7A2s1sfcDOprvg0r52aBZKeTp0AukrT8+Ad4hap7g1x\n2Lz11MFDkhRqt2KqQaIL+5Mq5WfptbBJ0YI7ARUCgYAD6iSfK1hlsDFYupsGwgPL\nagi0g97pHZC38idaOe3AdeqBs79xb9mpr/XsSj52Bn6J3IRFALxK5e5Nr4XdGo/9\nbCvXw2iuGgCMBOGTVMVdDY1gJr3Ne2r7Oay5Dq2PMFsg5pACDhzVA6sRBbh9LKD5\non1jaiKNyHrzk1hIoOl/QwKBgA+Ov2uLbfS2yvTpDpdOMiyss603r6NOXF+Ofe8J\nuinBhr1K/mAB59muveuH18Z6vv1KqByaFgtb39jjH+Eja9dWRns95/sh08pOuAbo\nyrv3uBfgQmaBQMXZ8aLcBv4aXgWyyGlYkWpP1fL2oLMZq6RGQ9WEeqX8c0ImjmrA\nYGopAoGBAJZPFlZi2Rfq4MfFZp/X1/zM09hphZwkxkSI+RnsjDUjTgB8CuQul5ep\nKWE98yLw4C25Cqw5fKKQ2addizLnZCAIfJKVNRjYLWlWyGQydDEUzqwXlSLS9LVX\nLxLkWDajIyjeFn21Ttb42L9pBo3TAQIxUenom/lP2SQTvCKBiPai\n-----END RSA PRIVATE KEY-----\n-----BEGIN CERTIFICATE-----\nMIIDazCCAlOgAwIBAgIUahce2sCO7Bom/Rznd5HsNAlr1NgwDQYJKoZIhvcNAQEL\nBQAwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoM\nGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDAeFw0xODEyMDIwMTAxNDRaFw00NjEy\nMTUwMTAxNDRaMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEw\nHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwggEiMA0GCSqGSIb3DQEB\nAQUAA4IBDwAwggEKAoIBAQDC8Qd4kJecWCLzysTV1NfoUd0E8rTBKN52HTLBWcJn\nEtZsG//k/K2NNwI92t9buDax9s/A6B79YXdfYp5hI/xLFkDRzObPpAOyl4b3bUmR\nla3Knmj743SV4tMhQCGrff2nc7WicA5Q7WTiwd+YLB+sOlOfaFzHhRFrk/PNvV8e\nKC6yMgfWZwZ2dxoDpnYLM7XDgTyQ85S6QgOtxlPh9o5mtZQhBkpDDYnNPIon5kwM\nJmrZMXNbCkvd4bjzAHsnuaJsVD/2cW/Gkh+UGMMBnxCKqTBivk3QM2xPFx9MJJ65\nt8kMJR8hbAVmEuK3PA7FrNrNRApdf9I8xDWX8v2jeecfAgMBAAGjUzBRMB0GA1Ud\nDgQWBBQXGfrns8OqxTGKsXG5pDZS/WyyYDAfBgNVHSMEGDAWgBQXGfrns8OqxTGK\nsXG5pDZS/WyyYDAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQCt\n8aUX26cl2PgdIEByZSHAX5G+2b0IEtTclPkl4uDyyKRY4dVq6gK3ueVSU5eUmBip\nJbV5aRetovGOcV//8vbxkZm/ntQ8Oo+2sfGR5lIzd0UdlOr5pkD6g3bFy/zJ+4DR\nDAe8fklUacfz6CFmD+H8GyHm+fKmF+mjr4oOGQW6OegRDJHuiipUk2lJyuXdlPSa\nFpNRO2sGbjn000ANinFgnFiVzGDnx0/G1Kii/6GWrI6rrdVmXioQzF+8AloWckeB\n+hbmbwkwQa/JrLb5SWcBDOXSgtn1Li3XF5AQQBBjA3pOlyBXqnI94Irw89Lv9uPT\nMUR4qFxeUOW/GJGccMUd\n-----END CERTIFICATE-----\n"
+                }
+              references:
+                backend: vault_mount.intermediate.path
         argumentDocs:
             backend: '- (Required) The PKI secret backend the resource belongs to.'
             namespace: |-
@@ -3094,11 +5379,31 @@ resources:
                 Available only for Vault Enterprise.
             pem_bundle: '- (Required) The key and certificate PEM bundle'
         importStatements: []
-    vault_pki_secret_backend_config_urls resource:
+    vault_pki_secret_backend_config_urls:
         subCategory: ""
         description: Sets the config URL's on an PKI Secret Backend for Vault.
-        name: vault_pki_secret_backend_config_urls resource
+        name: vault_pki_secret_backend_config_urls
         title: vault_pki_secret_backend_config_urls resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "backend": "${vault_mount.root.path}",
+                  "issuing_certificates": [
+                    "http://127.0.0.1:8200/v1/pki/ca"
+                  ]
+                }
+              references:
+                backend: vault_mount.root.path
+              dependencies:
+                vault_mount.root: |-
+                    {
+                      "default_lease_ttl_seconds": 8640000,
+                      "description": "root PKI",
+                      "max_lease_ttl_seconds": 8640000,
+                      "path": "pki-root",
+                      "type": "pki"
+                    }
         argumentDocs:
             backend: '- (Required) The path the PKI secret backend is mounted at, with no leading or trailing /s.'
             crl_distribution_points: '- (Optional) Specifies the URL values for the CRL Distribution Points field.'
@@ -3110,11 +5415,29 @@ resources:
                 Available only for Vault Enterprise.
             ocsp_servers: '- (Optional) Specifies the URL values for the OCSP Servers field.'
         importStatements: []
-    vault_pki_secret_backend_crl_config resource:
+    vault_pki_secret_backend_crl_config:
         subCategory: ""
         description: Sets the CRL config on an PKI Secret Backend for Vault.
-        name: vault_pki_secret_backend_crl_config resource
+        name: vault_pki_secret_backend_crl_config
         title: vault_pki_secret_backend_crl_config resource
+        examples:
+            - name: crl_config
+              manifest: |-
+                {
+                  "backend": "${vault_mount.pki.path}",
+                  "disable": false,
+                  "expiry": "72h"
+                }
+              references:
+                backend: vault_mount.pki.path
+              dependencies:
+                vault_mount.pki: |-
+                    {
+                      "default_lease_ttl_seconds": 3600,
+                      "max_lease_ttl_seconds": 86400,
+                      "path": "%s",
+                      "type": "pki"
+                    }
         argumentDocs:
             auto_rebuild: '- (Optional) Enables periodic rebuilding of the CRL upon expiry. Vault 1.12+'
             auto_rebuild_grace_period: '- (Optional) Grace period before CRL expiry to attempt rebuild of CRL. Vault 1.12+'
@@ -3140,11 +5463,24 @@ resources:
                 - (Optional) Enables serving the unified CRL and OCSP on the existing, previously
                 cluster-local paths. Vault 1.13+
         importStatements: []
-    vault_pki_secret_backend_intermediate_cert_request resource:
+    vault_pki_secret_backend_intermediate_cert_request:
         subCategory: ""
         description: Generate a new private key and a CSR for signing the PKI.
-        name: vault_pki_secret_backend_intermediate_cert_request resource
+        name: vault_pki_secret_backend_intermediate_cert_request
         title: vault_pki_secret_backend_intermediate_cert_request resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "backend": "${vault_mount.pki.path}",
+                  "common_name": "app.my.domain",
+                  "depends_on": [
+                    "${vault_mount.pki}"
+                  ],
+                  "type": "internal"
+                }
+              references:
+                backend: vault_mount.pki.path
         argumentDocs:
             add_basic_constraints: |-
                 - (Optional) Adds a Basic Constraints extension with 'CA: true'.
@@ -3187,11 +5523,74 @@ resources:
                 or "kms"
             uri_sans: '- (Optional) List of alternative URIs'
         importStatements: []
-    vault_pki_secret_backend_intermediate_set_signed resource:
+    vault_pki_secret_backend_intermediate_set_signed:
         subCategory: ""
         description: Submit the PKI CA certificate.
-        name: vault_pki_secret_backend_intermediate_set_signed resource
+        name: vault_pki_secret_backend_intermediate_set_signed
         title: vault_pki_secret_backend_intermediate_set_signed resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "backend": "${vault_mount.intermediate.path}",
+                  "certificate": "${vault_pki_secret_backend_root_sign_intermediate.example.certificate}"
+                }
+              references:
+                backend: vault_mount.intermediate.path
+                certificate: vault_pki_secret_backend_root_sign_intermediate.example.certificate
+              dependencies:
+                vault_mount.intermediate: |-
+                    {
+                      "default_lease_ttl_seconds": 86400,
+                      "description": "intermediate",
+                      "max_lease_ttl_seconds": 86400,
+                      "path": "pki-int",
+                      "type": "${vault_mount.root.type}"
+                    }
+                vault_mount.root: |-
+                    {
+                      "default_lease_ttl_seconds": 8640000,
+                      "description": "root",
+                      "max_lease_ttl_seconds": 8640000,
+                      "path": "pki-root",
+                      "type": "pki"
+                    }
+                vault_pki_secret_backend_intermediate_cert_request.example: |-
+                    {
+                      "backend": "${vault_mount.intermediate.path}",
+                      "common_name": "SubOrg Intermediate CA",
+                      "type": "${vault_pki_secret_backend_root_cert.example.type}"
+                    }
+                vault_pki_secret_backend_root_cert.example: |-
+                    {
+                      "backend": "${vault_mount.root.path}",
+                      "common_name": "RootOrg Root CA",
+                      "country": "US",
+                      "exclude_cn_from_sans": true,
+                      "format": "pem",
+                      "key_bits": 4096,
+                      "key_type": "rsa",
+                      "locality": "San Francisco",
+                      "organization": "RootOrg",
+                      "ou": "Organizational Unit",
+                      "private_key_format": "der",
+                      "province": "CA",
+                      "ttl": 86400,
+                      "type": "internal"
+                    }
+                vault_pki_secret_backend_root_sign_intermediate.example: |-
+                    {
+                      "backend": "${vault_mount.root.path}",
+                      "common_name": "SubOrg Intermediate CA",
+                      "country": "US",
+                      "csr": "${vault_pki_secret_backend_intermediate_cert_request.example.csr}",
+                      "exclude_cn_from_sans": true,
+                      "locality": "San Francisco",
+                      "organization": "SubOrg",
+                      "ou": "SubUnit",
+                      "province": "CA",
+                      "revoke": true
+                    }
         argumentDocs:
             backend: '- (Required) The PKI secret backend the resource belongs to.'
             certificate: |-
@@ -3204,11 +5603,72 @@ resources:
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
         importStatements: []
-    vault_pki_secret_backend_role resource:
+    vault_pki_secret_backend_role:
         subCategory: ""
         description: Create a role on an PKI Secret Backend for Vault.
-        name: vault_pki_secret_backend_role resource
+        name: vault_pki_secret_backend_role
         title: vault_pki_secret_backend_role resource
+        examples:
+            - name: role
+              manifest: |-
+                {
+                  "allow_ip_sans": true,
+                  "allow_subdomains": true,
+                  "allowed_domains": [
+                    "example.com",
+                    "my.domain"
+                  ],
+                  "backend": "${vault_mount.pki.path}",
+                  "key_bits": 4096,
+                  "key_type": "rsa",
+                  "name": "my_role",
+                  "ttl": 3600
+                }
+              references:
+                backend: vault_mount.pki.path
+              dependencies:
+                vault_mount.pki: |-
+                    {
+                      "default_lease_ttl_seconds": 3600,
+                      "max_lease_ttl_seconds": 86400,
+                      "path": "pki",
+                      "type": "pki"
+                    }
+            - name: role
+              manifest: |-
+                {
+                  "allow_ip_sans": true,
+                  "allow_subdomains": true,
+                  "allowed_domains": [
+                    "example.com",
+                    "my.domain"
+                  ],
+                  "backend": "${vault_mount.pki.path}",
+                  "key_bits": 4096,
+                  "key_type": "rsa",
+                  "name": "my_role",
+                  "policy_identifier": [
+                    {
+                      "notice": "I am a user Notice",
+                      "oid": "1.3.6.1.4.1.7.8"
+                    },
+                    {
+                      "cps": "https://example.com",
+                      "oid": "1.3.6.1.4.1.44947.1.2.4"
+                    }
+                  ],
+                  "ttl": 3600
+                }
+              references:
+                backend: vault_mount.pki.path
+              dependencies:
+                vault_mount.pki: |-
+                    {
+                      "default_lease_ttl_seconds": 3600,
+                      "max_lease_ttl_seconds": 86400,
+                      "path": "pki",
+                      "type": "pki"
+                    }
         argumentDocs:
             allow_any_name: '- (Optional) Flag to allow any name'
             allow_bare_domains: '- (Optional) Flag to allow certificates matching the actual domain'
@@ -3261,11 +5721,32 @@ resources:
             use_csr_common_name: '- (Optional) Flag to use the CN in the CSR'
             use_csr_sans: '- (Optional) Flag to use the SANs in the CSR'
         importStatements: []
-    vault_pki_secret_backend_root_cert resource:
+    vault_pki_secret_backend_root_cert:
         subCategory: ""
         description: Generate root.
-        name: vault_pki_secret_backend_root_cert resource
+        name: vault_pki_secret_backend_root_cert
         title: vault_pki_secret_backend_root_cert resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "backend": "${vault_mount.pki.path}",
+                  "common_name": "Root CA",
+                  "depends_on": [
+                    "${vault_mount.pki}"
+                  ],
+                  "exclude_cn_from_sans": true,
+                  "format": "pem",
+                  "key_bits": 4096,
+                  "key_type": "rsa",
+                  "organization": "My organization",
+                  "ou": "My OU",
+                  "private_key_format": "der",
+                  "ttl": "315360000",
+                  "type": "internal"
+                }
+              references:
+                backend: vault_mount.pki.path
         argumentDocs:
             alt_names: '- (Optional) List of alternative names'
             backend: '- (Required) The PKI secret backend the resource belongs to.'
@@ -3307,11 +5788,26 @@ resources:
                 or "kms"
             uri_sans: '- (Optional) List of alternative URIs'
         importStatements: []
-    vault_pki_secret_backend_sign resource:
+    vault_pki_secret_backend_sign:
         subCategory: ""
         description: Sign a new certificate based on the CSR by the PKI.
-        name: vault_pki_secret_backend_sign resource
+        name: vault_pki_secret_backend_sign
         title: vault_pki_secret_backend_sign resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "backend": "${vault_mount.pki.path}",
+                  "common_name": "test.my.domain",
+                  "csr": "-----BEGIN CERTIFICATE REQUEST-----\nMIIEqDCCApACAQAwYzELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUx\nITAfBgNVBAoMGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDEcMBoGA1UEAwwTY2Vy\ndC50ZXN0Lm15LmRvbWFpbjCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIB\nAJupYCQ8UVCWII1Zof1c6YcSSaM9hEaDU78cfKP5RoSeH10BvrWRfT+mzCONVpNP\nCW9Iabtvk6hm0ot6ilnndEyVJbc0g7hdDLBX5BM25D+DGZGJRKUz1V+uBrWmXtIt\nVonj7JTDTe7ViH0GDsB7CvqXFGXO2a2cDYBchLkL6vQiFPshxvUsLtwxuy/qdYgy\nX6ya+AUoZcoQGy1XxNjfH6cPtWSWQGEp1oPR6vL9hU3laTZb3C+VV4jZem+he8/0\nV+qV6fLG92WTXm2hmf8nrtUqqJ+C7mW/RJod+TviviBadIX0OHXW7k5HVsZood01\nte8vMRUNJNiZfa9EMIK5oncbQn0LcM3Wo9VrjpL7jREb/4HCS2gswYGv7hzk9cCS\nkVY4rDucchKbApuI3kfzmO7GFOF5eiSkYZpY/czNn7VVM3WCu6dpOX4+3rhgrZQw\nkY14L930DaLVRUgve/zKVP2D2GHdEOs+MbV7s96UgigT9pXly/yHPj+1sSYqmnaD\n5b7jSeJusmzO/nrwXVGLsnezR87VzHl9Ux9g5s6zh+R+PrZuVxYsLvoUpaasH47O\ngIcBzSb/6pSGZKAUizmYsHsR1k88dAvsQ+FsUDaNokdi9VndEB4QPmiFmjyLV+0I\n1TFoXop4sW11NPz1YCq+IxnYrEaIN3PyhY0GvBJDFY1/AgMBAAGgADANBgkqhkiG\n9w0BAQsFAAOCAgEActuqnqS8Y9UF7e08w7tR3FPzGecWreuvxILrlFEZJxiLPFqL\nIt7uJvtypCVQvz6UQzKdBYO7tMpRaWViB8DrWzXNZjLMrg+QHcpveg8C0Ett4scG\nfnvLk6fTDFYrnGvwHTqiHos5i0y3bFLyS1BGwSpdLAykGtvC+VM8mRyw/Y7CPcKN\n77kebY/9xduW1g2uxWLr0x90RuQDv9psPojT+59tRLGSp5Kt0IeD3QtnAZEFE4aN\nvt+Pd69eg3BgZ8ZeDgoqAw3yppvOkpAFiE5pw2qPZaM4SRphl4d2Lek2zNIMyZqv\ndo5zh356HOgXtDaSg0POnRGrN/Ua+LMCRTg6GEPUnx9uQb/zt8Zu0hIexDGyykp1\nOGqtWlv/Nc8UYuS38v0BeB6bMPeoqQUjkqs8nHlAEFn0KlgYdtDC+7SdQx6wS4te\ndBKRNDfC4lS3jYJgs55jHqonZgkpSi3bamlxpfpW0ukGBcmq91wRe4bOw/4uD/vf\nUwqMWOdCYcU3mdYNjTWy22ORW3SGFQxMBwpUEURCSoeqWr6aJeQ7KAYkx1PrB5T8\nOTEc13lWf+B0PU9UJuGTsmpIuImPDVd0EVDayr3mT5dDbqTVDbe8ppf2IswABmf0\no3DybUeUmknYjl109rdSf+76nuREICHatxXgN3xCMFuBaN4WLO+ksd6Y1Ys=\n-----END CERTIFICATE REQUEST-----\n",
+                  "depends_on": [
+                    "${vault_pki_secret_backend_role.admin}"
+                  ],
+                  "name": "${vault_pki_secret_backend_role.admin.name}"
+                }
+              references:
+                backend: vault_mount.pki.path
+                name: vault_pki_secret_backend_role.admin.name
         argumentDocs:
             alt_names: '- (Optional) List of alternative names'
             auto_renew: '- (Optional) If set to true, certs will be renewed if the expiration is within min_seconds_remaining. Default false'
@@ -3339,11 +5835,18 @@ resources:
             ttl: '- (Optional) Time to live'
             uri_sans: '- (Optional) List of alternative URIs'
         importStatements: []
-    vault_policy resource:
+    vault_policy:
         subCategory: ""
         description: Writes arbitrary policies for Vault
-        name: vault_policy resource
+        name: vault_policy
         title: vault_policy resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "name": "dev-team",
+                  "policy": "path \"secret/my_app\" {\n  capabilities = [\"update\"]\n}\n"
+                }
         argumentDocs:
             name: '- (Required) The name of the policy'
             namespace: |-
@@ -3353,11 +5856,19 @@ resources:
                 Available only for Vault Enterprise.
             policy: '- (Required) String containing a Vault policy'
         importStatements: []
-    vault_quota_lease_count resource:
+    vault_quota_lease_count:
         subCategory: ""
         description: Manage Lease Count Quota
-        name: vault_quota_lease_count resource
+        name: vault_quota_lease_count
         title: vault_quota_lease_count resource
+        examples:
+            - name: global
+              manifest: |-
+                {
+                  "max_leases": 100,
+                  "name": "global",
+                  "path": ""
+                }
         argumentDocs:
             max_leases: |-
                 - (Required) The maximum number of leases to be allowed by the quota
@@ -3376,11 +5887,19 @@ resources:
                 auth/userpass to namespace1/auth/userpass moves this quota from being a global mount quota to
                 a namespace specific mount quota. Note, namespaces are supported in Enterprise only.
         importStatements: []
-    vault_quota_rate_limit resource:
+    vault_quota_rate_limit:
         subCategory: ""
         description: Manage Rate Limit Quota
-        name: vault_quota_rate_limit resource
+        name: vault_quota_rate_limit
         title: vault_quota_rate_limit resource
+        examples:
+            - name: global
+              manifest: |-
+                {
+                  "name": "global",
+                  "path": "",
+                  "rate": 100
+                }
         argumentDocs:
             block_interval: |-
                 - (Optional) If set, when a client reaches a rate limit threshold, the client will
@@ -3403,11 +5922,19 @@ resources:
                 - (Required) The maximum number of requests at any given second to be allowed by the quota
                 rule. The rate must be positive.
         importStatements: []
-    vault_rabbitmq_secret_backend resource:
+    vault_rabbitmq_secret_backend:
         subCategory: ""
         description: Creates an RabbitMQ secret backend for Vault.
-        name: vault_rabbitmq_secret_backend resource
+        name: vault_rabbitmq_secret_backend
         title: vault_rabbitmq_secret_backend resource
+        examples:
+            - name: rabbitmq
+              manifest: |-
+                {
+                  "connection_uri": "https://.....",
+                  "password": "password",
+                  "username": "user"
+                }
         argumentDocs:
             connection_uri: '- (Required)  Specifies the RabbitMQ connection URI.'
             default_lease_ttl_seconds: |-
@@ -3436,11 +5963,48 @@ resources:
                 - (Optional) Specifies whether to verify connection URI, username, and password.
                 Defaults to true.
         importStatements: []
-    vault_rabbitmq_secret_backend_role resource:
+    vault_rabbitmq_secret_backend_role:
         subCategory: ""
         description: Creates a role on an RabbitMQ Secret Backend for Vault.
-        name: vault_rabbitmq_secret_backend_role resource
+        name: vault_rabbitmq_secret_backend_role
         title: vault_rabbitmq_secret_backend_role resource
+        examples:
+            - name: role
+              manifest: |-
+                {
+                  "backend": "${vault_rabbitmq_secret_backend.rabbitmq.path}",
+                  "name": "deploy",
+                  "tags": "tag1,tag2",
+                  "vhost": [
+                    {
+                      "configure": "",
+                      "host": "/",
+                      "read": ".*",
+                      "write": ""
+                    }
+                  ],
+                  "vhost_topic": [
+                    {
+                      "host": "/",
+                      "vhost": [
+                        {
+                          "read": ".*",
+                          "topic": "amq.topic",
+                          "write": ""
+                        }
+                      ]
+                    }
+                  ]
+                }
+              references:
+                backend: vault_rabbitmq_secret_backend.rabbitmq.path
+              dependencies:
+                vault_rabbitmq_secret_backend.rabbitmq: |-
+                    {
+                      "connection_uri": "https://.....",
+                      "password": "password",
+                      "username": "user"
+                    }
         argumentDocs:
             backend: |-
                 - (Required) The path the RabbitMQ secret backend is mounted at,
@@ -3457,11 +6021,22 @@ resources:
             vhost: '- (Optional) Specifies a map of virtual hosts to permissions.'
             vhost_topic: '- (Optional) Specifies a map of virtual hosts and exchanges to topic permissions. This option requires RabbitMQ 3.7.0 or later.'
         importStatements: []
-    vault_raft_autopilot resource:
+    vault_raft_autopilot:
         subCategory: ""
         description: Configures Raft's Autopilot capabilities.
-        name: vault_raft_autopilot resource
+        name: vault_raft_autopilot
         title: vault_raft_autopilot resource
+        examples:
+            - name: autopilot
+              manifest: |-
+                {
+                  "cleanup_dead_servers": true,
+                  "dead_server_last_contact_threshold": "24h0m0s",
+                  "last_contact_threshold": "10s",
+                  "max_trailing_logs": 1000,
+                  "min_quorum": 3,
+                  "server_stabilization_time": "10s"
+                }
         argumentDocs:
             cleanup_dead_servers: |-
                 – (Optional) Specifies whether to remove dead server nodes
@@ -3490,11 +6065,55 @@ resources:
                 - (Optional) Minimum amount of time a server must be
                 stable in the 'healthy' state before being added to the cluster.
         importStatements: []
-    vault_raft_snapshot_agent_config resource:
+    vault_raft_snapshot_agent_config:
         subCategory: ""
         description: Creates a Raft Snapshot Agent Configuration for Vault.
-        name: vault_raft_snapshot_agent_config resource
+        name: vault_raft_snapshot_agent_config
         title: vault_raft_snapshot_agent_config resource
+        examples:
+            - name: local_backups
+              manifest: |-
+                {
+                  "interval_seconds": 86400,
+                  "local_max_space": 10000000,
+                  "name": "local",
+                  "path_prefix": "/opt/vault/snapshots/",
+                  "retain": 7,
+                  "storage_type": "local"
+                }
+            - name: s3_backups
+              manifest: |-
+                {
+                  "aws_access_key_id": "${var.aws_access_key_id}",
+                  "aws_s3_bucket": "my-bucket",
+                  "aws_s3_enable_kms": true,
+                  "aws_s3_region": "${data.aws_region.current.name}",
+                  "aws_secret_access_key": "${var.aws_secret_access_key}",
+                  "interval_seconds": 86400,
+                  "name": "s3",
+                  "path_prefix": "/path/in/bucket",
+                  "retain": 7,
+                  "storage_type": "aws-s3"
+                }
+              references:
+                aws_access_key_id: var.aws_access_key_id
+                aws_s3_region: data.aws_region.current.name
+                aws_secret_access_key: var.aws_secret_access_key
+            - name: azure_backups
+              manifest: |-
+                {
+                  "azure_account_key": "${var.azure_account_key}",
+                  "azure_account_name": "${var.azure_account_name}",
+                  "azure_container_name": "vault-blob",
+                  "interval_seconds": 86400,
+                  "name": "azure_backup",
+                  "path_prefix": "/",
+                  "retain": 7,
+                  "storage_type": "azure-blob"
+                }
+              references:
+                azure_account_key: var.azure_account_key
+                azure_account_name: var.azure_account_name
         argumentDocs:
             aws_access_key_id: '- AWS access key ID.'
             aws_s3_bucket: <required> - S3 bucket to write snapshots to.
@@ -3563,11 +6182,19 @@ resources:
                 or "google-gcs". The remaining parameters described below are all specific to
                 the selected storage_type and prefixed accordingly.
         importStatements: []
-    vault_rgp_policy resource:
+    vault_rgp_policy:
         subCategory: ""
         description: Writes Sentinel role governing policies for Vault
-        name: vault_rgp_policy resource
+        name: vault_rgp_policy
         title: vault_rgp_policy resource
+        examples:
+            - name: allow-all
+              manifest: |-
+                {
+                  "enforcement_level": "soft-mandatory",
+                  "name": "allow-all",
+                  "policy": "main = rule {\n  true\n}\n"
+                }
         argumentDocs:
             enforcement_level: '- (Required) Enforcement level of Sentinel policy. Can be either advisory or soft-mandatory or hard-mandatory'
             name: '- (Required) The name of the policy'
@@ -3578,11 +6205,24 @@ resources:
                 Available only for Vault Enterprise.
             policy: '- (Required) String containing a Sentinel policy'
         importStatements: []
-    vault_ssh_secret_backend_ca resource:
+    vault_ssh_secret_backend_ca:
         subCategory: ""
         description: Managing CA information in an SSH secret backend in Vault
-        name: vault_ssh_secret_backend_ca resource
+        name: vault_ssh_secret_backend_ca
         title: vault_ssh_secret_backend_ca resource
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "backend": "${vault_mount.example.path}"
+                }
+              references:
+                backend: vault_mount.example.path
+              dependencies:
+                vault_mount.example: |-
+                    {
+                      "type": "ssh"
+                    }
         argumentDocs:
             backend: '- (Optional) The path where the SSH secret backend is mounted. Defaults to ''ssh'''
             generate_signing_key: '- (Optional) Whether Vault should generate the signing key pair internally. Defaults to true'
@@ -3594,11 +6234,44 @@ resources:
             private_key: '- (Optional) The private key part the SSH CA key pair; required if generate_signing_key is false.'
             public_key: '- (Optional) The public key part the SSH CA key pair; required if generate_signing_key is false.'
         importStatements: []
-    vault_ssh_secret_backend_role resource:
+    vault_ssh_secret_backend_role:
         subCategory: ""
         description: Managing roles in an SSH secret backend in Vault
-        name: vault_ssh_secret_backend_role resource
+        name: vault_ssh_secret_backend_role
         title: vault_ssh_secret_backend_role resource
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "allow_user_certificates": true,
+                  "backend": "${vault_mount.example.path}",
+                  "key_type": "ca",
+                  "name": "my-role"
+                }
+              references:
+                backend: vault_mount.example.path
+              dependencies:
+                vault_mount.example: |-
+                    {
+                      "type": "ssh"
+                    }
+            - name: bar
+              manifest: |-
+                {
+                  "allowed_users": "default,baz",
+                  "backend": "${vault_mount.example.path}",
+                  "cidr_list": "0.0.0.0/0",
+                  "default_user": "default",
+                  "key_type": "otp",
+                  "name": "otp-role"
+                }
+              references:
+                backend: vault_mount.example.path
+              dependencies:
+                vault_mount.example: |-
+                    {
+                      "type": "ssh"
+                    }
         argumentDocs:
             algorithm_signer: '- (Optional) When supplied, this value specifies a signing algorithm for the key. Possible values: ssh-rsa, rsa-sha2-256, rsa-sha2-512.'
             allow_bare_domains: '- (Optional) Specifies if host certificates that are requested are allowed to use the base domains listed in allowed_domains.'
@@ -3646,11 +6319,19 @@ resources:
                 rsa, ecdsa, ec, dsa, ed25519, ssh-rsa, ssh-dss, ssh-ed25519,
                 ecdsa-sha2-nistp256, ecdsa-sha2-nistp384, ecdsa-sha2-nistp521
         importStatements: []
-    vault_terraform_cloud_secret_backend resource:
+    vault_terraform_cloud_secret_backend:
         subCategory: ""
         description: Creates a Terraform Cloud secret backend for Vault.
-        name: vault_terraform_cloud_secret_backend resource
+        name: vault_terraform_cloud_secret_backend
         title: vault_terraform_cloud_secret_backend resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "backend": "terraform",
+                  "description": "Manages the Terraform Cloud backend",
+                  "token": "V0idfhi2iksSDU234ucdbi2nidsi..."
+                }
         argumentDocs:
             backend: '- (Optional) The unique location this backend should be mounted at. Must not begin or end with a /. Defaults to terraform.'
             default_lease_ttl_seconds: '- (Optional) The default TTL for credentials issued by this backend.'
@@ -3670,11 +6351,35 @@ resources:
                 - (Required) The Terraform Cloud management token this backend should
                 use to issue new tokens.
         importStatements: []
-    vault_terraform_cloud_secret_creds resource:
+    vault_terraform_cloud_secret_creds:
         subCategory: ""
         description: Generates tokens for Terraform Cloud.
-        name: vault_terraform_cloud_secret_creds resource
+        name: vault_terraform_cloud_secret_creds
         title: vault_terraform_cloud_secret_creds resource
+        examples:
+            - name: token
+              manifest: |-
+                {
+                  "backend": "${vault_terraform_cloud_secret_backend.test.backend}",
+                  "role": "${vault_terraform_cloud_secret_role.example.name}"
+                }
+              references:
+                backend: vault_terraform_cloud_secret_backend.test.backend
+                role: vault_terraform_cloud_secret_role.example.name
+              dependencies:
+                vault_terraform_cloud_secret_backend.test: |-
+                    {
+                      "backend": "terraform",
+                      "description": "Manages the Terraform Cloud backend",
+                      "token": "V0idfhi2iksSDU234ucdbi2nidsi..."
+                    }
+                vault_terraform_cloud_secret_role.example: |-
+                    {
+                      "backend": "${vault_terraform_cloud_secret_backend.test.backend}",
+                      "name": "test-role",
+                      "organization": "example-organization-name",
+                      "team_id": "team-ieF4isC..."
+                    }
         argumentDocs:
             backend: |-
                 - (Required) The path to the Terraform Cloud secret backend to
@@ -3699,11 +6404,29 @@ resources:
                 - The public identifier for a specific token. It can be used
                 to look up information about a token or to revoke a token.
         importStatements: []
-    vault_terraform_cloud_secret_role resource:
+    vault_terraform_cloud_secret_role:
         subCategory: ""
         description: Manages a Terraform Cloud secrets role for a Terraform Cloud secrets engine in Vault.
-        name: vault_terraform_cloud_secret_role resource
+        name: vault_terraform_cloud_secret_role
         title: vault_terraform_cloud_secret_role resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "backend": "${vault_terraform_cloud_secret_backend.test.backend}",
+                  "name": "test-role",
+                  "organization": "example-organization-name",
+                  "team_id": "team-ieF4isC..."
+                }
+              references:
+                backend: vault_terraform_cloud_secret_backend.test.backend
+              dependencies:
+                vault_terraform_cloud_secret_backend.test: |-
+                    {
+                      "backend": "terraform",
+                      "description": "Manages the Terraform Cloud backend",
+                      "token": "V0idfhi2iksSDU234ucdbi2nidsi..."
+                    }
         argumentDocs:
             backend: '- (Optional) The unique name of an existing Terraform Cloud secrets backend mount. Must not begin or end with a /.'
             max_ttl: '- (Optional) Maximum TTL for leases associated with this role, in seconds.'
@@ -3718,11 +6441,28 @@ resources:
             ttl: '- (Optional) Specifies the TTL for this role.'
             user_id: '- (Optional) The user id you wish to create a token for in your Terraform Cloud instance. (Note: this value can not be provided in conjunction with team_id and/or organization)'
         importStatements: []
-    vault_token resource:
+    vault_token:
         subCategory: ""
         description: Writes token for Vault
-        name: vault_token resource
+        name: vault_token
         title: vault_token resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "metadata": {
+                    "purpose": "service-account"
+                  },
+                  "policies": [
+                    "policy1",
+                    "policy2"
+                  ],
+                  "renew_increment": 86400,
+                  "renew_min_lease": 43200,
+                  "renewable": true,
+                  "role_name": "app",
+                  "ttl": "24h"
+                }
         argumentDocs:
             client_token: '- String containing the client token if stored in present file'
             display_name: '- (Optional) String containing the token display name'
@@ -3746,11 +6486,32 @@ resources:
             role_name: '- (Optional) The token role name'
             ttl: '- (Optional) The TTL period of this token'
         importStatements: []
-    vault_token_auth_backend_role resource:
+    vault_token_auth_backend_role:
         subCategory: ""
         description: Manages Token auth backend roles in Vault.
-        name: vault_token_auth_backend_role resource
+        name: vault_token_auth_backend_role
         title: vault_token_auth_backend_role resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "allowed_entity_aliases": [
+                    "test_entity"
+                  ],
+                  "allowed_policies": [
+                    "dev",
+                    "test"
+                  ],
+                  "disallowed_policies": [
+                    "default"
+                  ],
+                  "orphan": true,
+                  "path_suffix": "path-suffix",
+                  "renewable": true,
+                  "role_name": "my-role",
+                  "token_explicit_max_ttl": "115200",
+                  "token_period": "86400"
+                }
         argumentDocs:
             allowed_entity_aliases: (Optional) List of allowed entity aliases.
             allowed_policies: (Optional) List of allowed policies for given role.
@@ -3799,11 +6560,27 @@ resources:
                 default-service and default-batch which specify the type to return unless the client
                 requests a different type at generation time.
         importStatements: []
-    vault_transform_alphabet resource:
+    vault_transform_alphabet:
         subCategory: ""
         description: '"/transform/alphabet/{name}"'
-        name: vault_transform_alphabet resource
+        name: vault_transform_alphabet
         title: vault_transform_alphabet resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "alphabet": "0123456789",
+                  "name": "numerics",
+                  "path": "${vault_mount.mount_transform.path}"
+                }
+              references:
+                path: vault_mount.mount_transform.path
+              dependencies:
+                vault_mount.mount_transform: |-
+                    {
+                      "path": "transform",
+                      "type": "transform"
+                    }
         argumentDocs:
             alphabet: '- (Optional) A string of characters that contains the alphabet set.'
             name: '- (Required) The name of the alphabet.'
@@ -3814,11 +6591,29 @@ resources:
                 Available only for Vault Enterprise.
             path: '- (Required) Path to where the back-end is mounted within Vault.'
         importStatements: []
-    vault_transform_role resource:
+    vault_transform_role:
         subCategory: ""
         description: '"/transform/role/{name}"'
-        name: vault_transform_role resource
+        name: vault_transform_role
         title: vault_transform_role resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "name": "payments",
+                  "path": "${vault_mount.mount_transform.path}",
+                  "transformations": [
+                    "ccn-fpe"
+                  ]
+                }
+              references:
+                path: vault_mount.mount_transform.path
+              dependencies:
+                vault_mount.mount_transform: |-
+                    {
+                      "path": "transform",
+                      "type": "transform"
+                    }
         argumentDocs:
             name: '- (Required) The name of the role.'
             namespace: |-
@@ -3829,11 +6624,39 @@ resources:
             path: '- (Required) Path to where the back-end is mounted within Vault.'
             transformations: '- (Optional) A comma separated string or slice of transformations to use.'
         importStatements: []
-    vault_transform_template resource:
+    vault_transform_template:
         subCategory: ""
         description: '"/transform/template/{name}"'
-        name: vault_transform_template resource
+        name: vault_transform_template
         title: vault_transform_template resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "alphabet": "numerics",
+                  "decode_formats": {
+                    "last-four-digits": "$4"
+                  },
+                  "encode_format": "$1-$2-$3-$4",
+                  "name": "ccn",
+                  "path": "${vault_transform_alphabet.numerics.path}",
+                  "pattern": "(\\d{4})[- ](\\d{4})[- ](\\d{4})[- ](\\d{4})",
+                  "type": "regex"
+                }
+              references:
+                path: vault_transform_alphabet.numerics.path
+              dependencies:
+                vault_mount.transform: |-
+                    {
+                      "path": "transform",
+                      "type": "transform"
+                    }
+                vault_transform_alphabet.numerics: |-
+                    {
+                      "alphabet": "0123456789",
+                      "name": "numerics",
+                      "path": "${vault_mount.transform.path}"
+                    }
         argumentDocs:
             alphabet: '- (Optional) The alphabet to use for this template. This is only used during FPE transformations.'
             decode_formats: |-
@@ -3852,11 +6675,32 @@ resources:
             pattern: '- (Optional) The pattern used for matching. Currently, only regular expression pattern is supported.'
             type: '- (Optional) The pattern type to use for match detection. Currently, only regex is supported.'
         importStatements: []
-    vault_transform_transformation resource:
+    vault_transform_transformation:
         subCategory: ""
         description: '"/transform/transformation/{name}"'
-        name: vault_transform_transformation resource
+        name: vault_transform_transformation
         title: vault_transform_transformation resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "allowed_roles": [
+                    "payments"
+                  ],
+                  "name": "ccn-fpe",
+                  "path": "${vault_mount.example.path}",
+                  "template": "ccn",
+                  "tweak_source": "internal",
+                  "type": "fpe"
+                }
+              references:
+                path: vault_mount.example.path
+              dependencies:
+                vault_mount.example: |-
+                    {
+                      "path": "transform",
+                      "type": "transform"
+                    }
         argumentDocs:
             allowed_roles: '- (Optional) The set of roles allowed to perform this transformation.'
             deletion_allowed: |-
@@ -3876,11 +6720,29 @@ resources:
             tweak_source: '- (Optional) The source of where the tweak value comes from. Only valid when in FPE mode.'
             type: '- (Optional) The type of transformation to perform.'
         importStatements: []
-    vault_transit_secret_backend_key resource:
+    vault_transit_secret_backend_key:
         subCategory: ""
         description: Create an Encryption Keyring on a Transit Secret Backend for Vault.
-        name: vault_transit_secret_backend_key resource
+        name: vault_transit_secret_backend_key
         title: vault_transit_secret_backend_key resource
+        examples:
+            - name: key
+              manifest: |-
+                {
+                  "backend": "${vault_mount.transit.path}",
+                  "name": "my_key"
+                }
+              references:
+                backend: vault_mount.transit.path
+              dependencies:
+                vault_mount.transit: |-
+                    {
+                      "default_lease_ttl_seconds": 3600,
+                      "description": "Example description",
+                      "max_lease_ttl_seconds": 86400,
+                      "path": "transit",
+                      "type": "transit"
+                    }
         argumentDocs:
             aes128-gcm96: ', aes256-gcm96 and chacha20-poly1305, each key version will be a map of a single value id which is just a hash of the key''s metadata.'
             allow_plaintext_backup: '- (Optional) Enables taking backup of entire keyring in the plaintext format. Once set, this cannot be disabled.'
@@ -3913,11 +6775,29 @@ resources:
             supports_signing: '- Whether or not the key supports signing, based on key type.'
             type: '- (Optional) Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96 (default), chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, rsa-2048, rsa-3072 and rsa-4096.'
         importStatements: []
-    vault_transit_secret_cache_config resource:
+    vault_transit_secret_cache_config:
         subCategory: ""
         description: Configure the cache for the Transit Secret Backend in Vault.
-        name: vault_transit_secret_cache_config resource
+        name: vault_transit_secret_cache_config
         title: vault_transit_secret_cache_config resource
+        examples:
+            - name: cfg
+              manifest: |-
+                {
+                  "backend": "${vault_mount.transit.path}",
+                  "size": 500
+                }
+              references:
+                backend: vault_mount.transit.path
+              dependencies:
+                vault_mount.transit: |-
+                    {
+                      "default_lease_ttl_seconds": 3600,
+                      "description": "Example description",
+                      "max_lease_ttl_seconds": 86400,
+                      "path": "transit",
+                      "type": "transit"
+                    }
         argumentDocs:
             backend: '- (Required) The path the transit secret backend is mounted at, with no leading or trailing /s.'
             namespace: |-

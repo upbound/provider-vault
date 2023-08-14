@@ -13,57 +13,103 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AuthBackendLoginObservation struct {
+type AuthBackendLoginInitParameters struct {
 
-	// The accessor for the token.
-	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
-
+	// The unique path of the Vault backend to log in with.
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The ID of the role to log in with.
+	// The RoleID to log in with.
+	RoleID *string `json:"roleId,omitempty" tf:"role_id,omitempty"`
+
+	// The secret ID of the role to log in with. Required
+	// unless bind_secret_id is set to false on the role.
+	// The SecretID to log in with.
+	SecretID *string `json:"secretId,omitempty" tf:"secret_id,omitempty"`
+}
+
+type AuthBackendLoginObservation struct {
+
+	// The accessor for the token.
+	// The accessor for the token.
+	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
+
+	// The unique path of the Vault backend to log in with.
+	// Unique name of the auth backend to configure.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// The Vault token created.
 	// The token.
 	ClientToken *string `json:"clientToken,omitempty" tf:"client_token,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// How long the token is valid for, in seconds.
 	// How long the token is valid for.
 	LeaseDuration *float64 `json:"leaseDuration,omitempty" tf:"lease_duration,omitempty"`
 
+	// The date and time the lease started, in RFC 3339 format.
 	LeaseStarted *string `json:"leaseStarted,omitempty" tf:"lease_started,omitempty"`
 
+	// The metadata associated with the token.
 	// Metadata associated with the token.
 	Metadata map[string]*string `json:"metadata,omitempty" tf:"metadata,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// A list of policies applied to the token.
 	// Policies set on the token.
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 
 	// Whether the token is renewable or not.
+	// Whether the token is renewable or not.
 	Renewable *bool `json:"renewable,omitempty" tf:"renewable,omitempty"`
 
+	// The ID of the role to log in with.
 	// The RoleID to log in with.
 	RoleID *string `json:"roleId,omitempty" tf:"role_id,omitempty"`
 
+	// The secret ID of the role to log in with. Required
+	// unless bind_secret_id is set to false on the role.
 	// The SecretID to log in with.
 	SecretID *string `json:"secretId,omitempty" tf:"secret_id,omitempty"`
 }
 
 type AuthBackendLoginParameters struct {
 
+	// The unique path of the Vault backend to log in with.
 	// Unique name of the auth backend to configure.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The ID of the role to log in with.
 	// The RoleID to log in with.
 	// +kubebuilder:validation:Optional
 	RoleID *string `json:"roleId,omitempty" tf:"role_id,omitempty"`
 
+	// The secret ID of the role to log in with. Required
+	// unless bind_secret_id is set to false on the role.
 	// The SecretID to log in with.
 	// +kubebuilder:validation:Optional
 	SecretID *string `json:"secretId,omitempty" tf:"secret_id,omitempty"`
@@ -73,6 +119,18 @@ type AuthBackendLoginParameters struct {
 type AuthBackendLoginSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendLoginParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AuthBackendLoginInitParameters `json:"initProvider,omitempty"`
 }
 
 // AuthBackendLoginStatus defines the observed state of AuthBackendLogin.
@@ -83,7 +141,7 @@ type AuthBackendLoginStatus struct {
 
 // +kubebuilder:object:root=true
 
-// AuthBackendLogin is the Schema for the AuthBackendLogins API. <no value>
+// AuthBackendLogin is the Schema for the AuthBackendLogins API. Log into Vault using the AppRole auth backend.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -93,7 +151,7 @@ type AuthBackendLoginStatus struct {
 type AuthBackendLogin struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.roleId)",message="roleId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.roleId) || has(self.initProvider.roleId)",message="roleId is a required parameter"
 	Spec   AuthBackendLoginSpec   `json:"spec"`
 	Status AuthBackendLoginStatus `json:"status,omitempty"`
 }

@@ -13,37 +13,82 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AuthBackendIdentityWhitelistObservation struct {
+type AuthBackendIdentityWhitelistInitParameters struct {
 
+	// The path of the AWS backend being configured.
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// If set to true, disables the periodic
+	// tidying of the identity-whitelist entries.
+	// If true, disables the periodic tidying of the identiy whitelist entries.
+	DisablePeriodicTidy *bool `json:"disablePeriodicTidy,omitempty" tf:"disable_periodic_tidy,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The amount of extra time, in minutes, that must
+	// have passed beyond the roletag expiration, before it is removed from the
+	// backend storage.
+	// The amount of extra time that must have passed beyond the roletag expiration, before it's removed from backend storage.
+	SafetyBuffer *float64 `json:"safetyBuffer,omitempty" tf:"safety_buffer,omitempty"`
+}
+
+type AuthBackendIdentityWhitelistObservation struct {
+
+	// The path of the AWS backend being configured.
+	// Unique name of the auth backend to configure.
+	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// If set to true, disables the periodic
+	// tidying of the identity-whitelist entries.
 	// If true, disables the periodic tidying of the identiy whitelist entries.
 	DisablePeriodicTidy *bool `json:"disablePeriodicTidy,omitempty" tf:"disable_periodic_tidy,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The amount of extra time, in minutes, that must
+	// have passed beyond the roletag expiration, before it is removed from the
+	// backend storage.
 	// The amount of extra time that must have passed beyond the roletag expiration, before it's removed from backend storage.
 	SafetyBuffer *float64 `json:"safetyBuffer,omitempty" tf:"safety_buffer,omitempty"`
 }
 
 type AuthBackendIdentityWhitelistParameters struct {
 
+	// The path of the AWS backend being configured.
 	// Unique name of the auth backend to configure.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// If set to true, disables the periodic
+	// tidying of the identity-whitelist entries.
 	// If true, disables the periodic tidying of the identiy whitelist entries.
 	// +kubebuilder:validation:Optional
 	DisablePeriodicTidy *bool `json:"disablePeriodicTidy,omitempty" tf:"disable_periodic_tidy,omitempty"`
 
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The amount of extra time, in minutes, that must
+	// have passed beyond the roletag expiration, before it is removed from the
+	// backend storage.
 	// The amount of extra time that must have passed beyond the roletag expiration, before it's removed from backend storage.
 	// +kubebuilder:validation:Optional
 	SafetyBuffer *float64 `json:"safetyBuffer,omitempty" tf:"safety_buffer,omitempty"`
@@ -53,6 +98,18 @@ type AuthBackendIdentityWhitelistParameters struct {
 type AuthBackendIdentityWhitelistSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendIdentityWhitelistParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AuthBackendIdentityWhitelistInitParameters `json:"initProvider,omitempty"`
 }
 
 // AuthBackendIdentityWhitelistStatus defines the observed state of AuthBackendIdentityWhitelist.
@@ -63,7 +120,7 @@ type AuthBackendIdentityWhitelistStatus struct {
 
 // +kubebuilder:object:root=true
 
-// AuthBackendIdentityWhitelist is the Schema for the AuthBackendIdentityWhitelists API. <no value>
+// AuthBackendIdentityWhitelist is the Schema for the AuthBackendIdentityWhitelists API. Configures the periodic tidying operation of the whitelisted identity entries.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

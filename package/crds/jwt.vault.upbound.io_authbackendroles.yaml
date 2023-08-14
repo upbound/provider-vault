@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: authbackendroles.jwt.vault.upbound.io
 spec:
   group: jwt.vault.upbound.io
@@ -35,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: AuthBackendRole is the Schema for the AuthBackendRoles API. <no
-          value>
+        description: AuthBackendRole is the Schema for the AuthBackendRoles API. Manages
+          JWT/OIDC auth backend roles in Vault.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -58,7 +57,7 @@ spec:
                 description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
                   or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicy field in a future release. Currently,
+                  in favor of the ManagementPolicies field in a future release. Currently,
                   both could be set independently and non-default values would be
                   honored if the feature flag is enabled. See the design doc for more
                   information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
@@ -70,41 +69,56 @@ spec:
                 properties:
                   allowedRedirectUris:
                     description: The list of allowed values for redirect_uri during
-                      OIDC logins.
+                      OIDC logins. Required for OIDC roles The list of allowed values
+                      for redirect_uri during OIDC logins.
                     items:
                       type: string
                     type: array
                   backend:
-                    description: Unique name of the auth backend to configure.
+                    description: The unique name of the auth backend to configure.
+                      Defaults to jwt. Unique name of the auth backend to configure.
                     type: string
                   boundAudiences:
-                    description: List of aud claims to match against. Any match is
-                      sufficient.
+                    description: (For "jwt" roles, at least one of bound_audiences,
+                      bound_subject, bound_claims or token_bound_cidrs is required.
+                      Optional for "oidc" roles.) List of aud claims to match against.
+                      Any match is sufficient. List of aud claims to match against.
+                      Any match is sufficient.
                     items:
                       type: string
                     type: array
                   boundClaims:
                     additionalProperties:
                       type: string
-                    description: Map of claims/values to match against. The expected
-                      value may be a single string or a comma-separated string list.
+                    description: If set, a map of claims to values to match against.
+                      A claim's value must be a string, which may contain one value
+                      or multiple comma-separated values, e.g. "red" or "red,green,blue".
+                      Map of claims/values to match against. The expected value may
+                      be a single string or a comma-separated string list.
                     type: object
                   boundClaimsType:
-                    description: 'How to interpret values in the claims/values map:
-                      can be either "string" (exact match) or "glob" (wildcard match).'
+                    description: 'How to interpret values in the claims/values map
+                      (bound_claims): can be either string (exact match) or glob (wildcard
+                      match). Requires Vault 1.4.0 or above. How to interpret values
+                      in the claims/values map: can be either "string" (exact match)
+                      or "glob" (wildcard match).'
                     type: string
                   boundSubject:
                     description: If set, requires that the sub claim matches this
-                      value.
+                      value. If set, requires that the sub claim matches this value.
                     type: string
                   claimMappings:
                     additionalProperties:
                       type: string
-                    description: Map of claims (keys) to be copied to specified metadata
-                      fields (values).
+                    description: If set, a map of claims (keys) to be copied to specified
+                      metadata fields (values). Map of claims (keys) to be copied
+                      to specified metadata fields (values).
                     type: object
                   clockSkewLeeway:
                     description: The amount of leeway to add to all claims to account
+                      for clock skew, in seconds. Defaults to 60 seconds if set to
+                      0 and can be disabled if set to -1. Only applicable with "jwt"
+                      roles. The amount of leeway to add to all claims to account
                       for clock skew, in seconds. Defaults to 60 seconds if set to
                       0 and can be disabled if set to -1. Only applicable with 'jwt'
                       roles.
@@ -117,105 +131,377 @@ spec:
                     description: The amount of leeway to add to expiration (exp) claims
                       to account for clock skew, in seconds. Defaults to 60 seconds
                       if set to 0 and can be disabled if set to -1. Only applicable
-                      with 'jwt' roles.
+                      with "jwt" roles. The amount of leeway to add to expiration
+                      (exp) claims to account for clock skew, in seconds. Defaults
+                      to 60 seconds if set to 0 and can be disabled if set to -1.
+                      Only applicable with 'jwt' roles.
                     type: number
                   groupsClaim:
                     description: The claim to use to uniquely identify the set of
                       groups to which the user belongs; this will be used as the names
                       for the Identity group aliases created due to a successful login.
-                      The claim value must be a list of strings.
+                      The claim value must be a list of strings. The claim to use
+                      to uniquely identify the set of groups to which the user belongs;
+                      this will be used as the names for the Identity group aliases
+                      created due to a successful login. The claim value must be a
+                      list of strings.
                     type: string
                   maxAge:
                     description: Specifies the allowable elapsed time in seconds since
+                      the last time the user was actively authenticated with the OIDC
+                      provider. Specifies the allowable elapsed time in seconds since
                       the last time the user was actively authenticated.
                     type: number
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   notBeforeLeeway:
                     description: The amount of leeway to add to not before (nbf) claims
-                      to account for clock skew, in seconds. Defaults to 150 seconds
+                      to account for clock skew, in seconds. Defaults to 60 seconds
                       if set to 0 and can be disabled if set to -1. Only applicable
-                      with 'jwt' roles.
+                      with "jwt" roles. The amount of leeway to add to not before
+                      (nbf) claims to account for clock skew, in seconds. Defaults
+                      to 150 seconds if set to 0 and can be disabled if set to -1.
+                      Only applicable with 'jwt' roles.
                     type: number
                   oidcScopes:
-                    description: List of OIDC scopes to be used with an OIDC role.
-                      The standard scope "openid" is automatically included and need
-                      not be specified.
+                    description: If set, a list of OIDC scopes to be used with an
+                      OIDC role. The standard scope "openid" is automatically included
+                      and need not be specified. List of OIDC scopes to be used with
+                      an OIDC role. The standard scope "openid" is automatically included
+                      and need not be specified.
                     items:
                       type: string
                     type: array
                   roleName:
-                    description: Name of the role.
+                    description: The name of the role. Name of the role.
                     type: string
                   roleType:
-                    description: Type of role, either "oidc" (default) or "jwt"
+                    description: Type of role, either "oidc" (default) or "jwt". Type
+                      of role, either "oidc" (default) or "jwt"
                     type: string
                   tokenBoundCidrs:
-                    description: Specifies the blocks of IP addresses which are allowed
-                      to use the generated token
+                    description: List of CIDR blocks; if set, specifies blocks of
+                      IP addresses which can authenticate successfully, and ties the
+                      resulting token to these blocks as well. Specifies the blocks
+                      of IP addresses which are allowed to use the generated token
                     items:
                       type: string
                     type: array
                   tokenExplicitMaxTtl:
-                    description: Generated Token's Explicit Maximum TTL in seconds
+                    description: If set, will encode an explicit max TTL onto the
+                      token in number of seconds. This is a hard cap even if token_ttl
+                      and token_max_ttl would otherwise allow a renewal. Generated
+                      Token's Explicit Maximum TTL in seconds
                     type: number
                   tokenMaxTtl:
-                    description: The maximum lifetime of the generated token
+                    description: The maximum lifetime for generated tokens in number
+                      of seconds. Its current value will be referenced at renewal
+                      time. The maximum lifetime of the generated token
                     type: number
                   tokenNoDefaultPolicy:
-                    description: If true, the 'default' policy will not automatically
-                      be added to generated tokens
+                    description: If set, the default policy will not be set on generated
+                      tokens; otherwise it will be added to the policies set in token_policies.
+                      If true, the 'default' policy will not automatically be added
+                      to generated tokens
                     type: boolean
                   tokenNumUses:
-                    description: The maximum number of times a token may be used,
-                      a value of zero means unlimited
+                    description: The maximum number of times a generated token may
+                      be used (within its lifetime); 0 means unlimited. The maximum
+                      number of times a token may be used, a value of zero means unlimited
                     type: number
                   tokenPeriod:
-                    description: Generated Token's Period
+                    description: If set, indicates that the token generated using
+                      this role should never expire. The token should be renewed within
+                      the duration specified by this value. At each renewal, the token's
+                      TTL will be set to the value of this field. Specified in seconds.
+                      Generated Token's Period
                     type: number
                   tokenPolicies:
-                    description: Generated Token's Policies
+                    description: List of policies to encode onto generated tokens.
+                      Depending on the auth method, this list may be supplemented
+                      by user/group/other values. Generated Token's Policies
                     items:
                       type: string
                     type: array
                   tokenTtl:
-                    description: The initial ttl of the token to generate in seconds
+                    description: The incremental lifetime for generated tokens in
+                      number of seconds. Its current value will be referenced at renewal
+                      time. The initial ttl of the token to generate in seconds
                     type: number
                   tokenType:
-                    description: The type of token to generate, service or batch
+                    description: 'The type of token that should be generated. Can
+                      be service, batch, or default to use the mount''s tuned default
+                      (which unless changed will be service tokens). For token store
+                      roles, there are two additional possibilities: default-service
+                      and default-batch which specify the type to return unless the
+                      client requests a different type at generation time. The type
+                      of token to generate, service or batch'
                     type: string
                   userClaim:
                     description: The claim to use to uniquely identify the user; this
                       will be used as the name for the Identity entity alias created
-                      due to a successful login.
+                      due to a successful login. The claim to use to uniquely identify
+                      the user; this will be used as the name for the Identity entity
+                      alias created due to a successful login.
                     type: string
                   userClaimJsonPointer:
                     description: Specifies if the user_claim value uses JSON pointer
                       syntax for referencing claims. By default, the user_claim value
-                      will not use JSON pointer.
+                      will not use JSON pointer. Requires Vault 1.11+. Specifies if
+                      the user_claim value uses JSON pointer syntax for referencing
+                      claims. By default, the user_claim value will not use JSON pointer.
                     type: boolean
                   verboseOidcLogging:
                     description: Log received OIDC tokens and claims when debug-level
                       logging is active. Not recommended in production since sensitive
-                      information may be present in OIDC responses.
+                      information may be present in OIDC responses. Log received OIDC
+                      tokens and claims when debug-level logging is active. Not recommended
+                      in production since sensitive information may be present in
+                      OIDC responses.
                     type: boolean
                 type: object
-              managementPolicy:
-                default: FullControl
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  allowedRedirectUris:
+                    description: The list of allowed values for redirect_uri during
+                      OIDC logins. Required for OIDC roles The list of allowed values
+                      for redirect_uri during OIDC logins.
+                    items:
+                      type: string
+                    type: array
+                  backend:
+                    description: The unique name of the auth backend to configure.
+                      Defaults to jwt. Unique name of the auth backend to configure.
+                    type: string
+                  boundAudiences:
+                    description: (For "jwt" roles, at least one of bound_audiences,
+                      bound_subject, bound_claims or token_bound_cidrs is required.
+                      Optional for "oidc" roles.) List of aud claims to match against.
+                      Any match is sufficient. List of aud claims to match against.
+                      Any match is sufficient.
+                    items:
+                      type: string
+                    type: array
+                  boundClaims:
+                    additionalProperties:
+                      type: string
+                    description: If set, a map of claims to values to match against.
+                      A claim's value must be a string, which may contain one value
+                      or multiple comma-separated values, e.g. "red" or "red,green,blue".
+                      Map of claims/values to match against. The expected value may
+                      be a single string or a comma-separated string list.
+                    type: object
+                  boundClaimsType:
+                    description: 'How to interpret values in the claims/values map
+                      (bound_claims): can be either string (exact match) or glob (wildcard
+                      match). Requires Vault 1.4.0 or above. How to interpret values
+                      in the claims/values map: can be either "string" (exact match)
+                      or "glob" (wildcard match).'
+                    type: string
+                  boundSubject:
+                    description: If set, requires that the sub claim matches this
+                      value. If set, requires that the sub claim matches this value.
+                    type: string
+                  claimMappings:
+                    additionalProperties:
+                      type: string
+                    description: If set, a map of claims (keys) to be copied to specified
+                      metadata fields (values). Map of claims (keys) to be copied
+                      to specified metadata fields (values).
+                    type: object
+                  clockSkewLeeway:
+                    description: The amount of leeway to add to all claims to account
+                      for clock skew, in seconds. Defaults to 60 seconds if set to
+                      0 and can be disabled if set to -1. Only applicable with "jwt"
+                      roles. The amount of leeway to add to all claims to account
+                      for clock skew, in seconds. Defaults to 60 seconds if set to
+                      0 and can be disabled if set to -1. Only applicable with 'jwt'
+                      roles.
+                    type: number
+                  disableBoundClaimsParsing:
+                    description: Disable bound claim value parsing. Useful when values
+                      contain commas.
+                    type: boolean
+                  expirationLeeway:
+                    description: The amount of leeway to add to expiration (exp) claims
+                      to account for clock skew, in seconds. Defaults to 60 seconds
+                      if set to 0 and can be disabled if set to -1. Only applicable
+                      with "jwt" roles. The amount of leeway to add to expiration
+                      (exp) claims to account for clock skew, in seconds. Defaults
+                      to 60 seconds if set to 0 and can be disabled if set to -1.
+                      Only applicable with 'jwt' roles.
+                    type: number
+                  groupsClaim:
+                    description: The claim to use to uniquely identify the set of
+                      groups to which the user belongs; this will be used as the names
+                      for the Identity group aliases created due to a successful login.
+                      The claim value must be a list of strings. The claim to use
+                      to uniquely identify the set of groups to which the user belongs;
+                      this will be used as the names for the Identity group aliases
+                      created due to a successful login. The claim value must be a
+                      list of strings.
+                    type: string
+                  maxAge:
+                    description: Specifies the allowable elapsed time in seconds since
+                      the last time the user was actively authenticated with the OIDC
+                      provider. Specifies the allowable elapsed time in seconds since
+                      the last time the user was actively authenticated.
+                    type: number
+                  namespace:
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
+                    type: string
+                  notBeforeLeeway:
+                    description: The amount of leeway to add to not before (nbf) claims
+                      to account for clock skew, in seconds. Defaults to 60 seconds
+                      if set to 0 and can be disabled if set to -1. Only applicable
+                      with "jwt" roles. The amount of leeway to add to not before
+                      (nbf) claims to account for clock skew, in seconds. Defaults
+                      to 150 seconds if set to 0 and can be disabled if set to -1.
+                      Only applicable with 'jwt' roles.
+                    type: number
+                  oidcScopes:
+                    description: If set, a list of OIDC scopes to be used with an
+                      OIDC role. The standard scope "openid" is automatically included
+                      and need not be specified. List of OIDC scopes to be used with
+                      an OIDC role. The standard scope "openid" is automatically included
+                      and need not be specified.
+                    items:
+                      type: string
+                    type: array
+                  roleName:
+                    description: The name of the role. Name of the role.
+                    type: string
+                  roleType:
+                    description: Type of role, either "oidc" (default) or "jwt". Type
+                      of role, either "oidc" (default) or "jwt"
+                    type: string
+                  tokenBoundCidrs:
+                    description: List of CIDR blocks; if set, specifies blocks of
+                      IP addresses which can authenticate successfully, and ties the
+                      resulting token to these blocks as well. Specifies the blocks
+                      of IP addresses which are allowed to use the generated token
+                    items:
+                      type: string
+                    type: array
+                  tokenExplicitMaxTtl:
+                    description: If set, will encode an explicit max TTL onto the
+                      token in number of seconds. This is a hard cap even if token_ttl
+                      and token_max_ttl would otherwise allow a renewal. Generated
+                      Token's Explicit Maximum TTL in seconds
+                    type: number
+                  tokenMaxTtl:
+                    description: The maximum lifetime for generated tokens in number
+                      of seconds. Its current value will be referenced at renewal
+                      time. The maximum lifetime of the generated token
+                    type: number
+                  tokenNoDefaultPolicy:
+                    description: If set, the default policy will not be set on generated
+                      tokens; otherwise it will be added to the policies set in token_policies.
+                      If true, the 'default' policy will not automatically be added
+                      to generated tokens
+                    type: boolean
+                  tokenNumUses:
+                    description: The maximum number of times a generated token may
+                      be used (within its lifetime); 0 means unlimited. The maximum
+                      number of times a token may be used, a value of zero means unlimited
+                    type: number
+                  tokenPeriod:
+                    description: If set, indicates that the token generated using
+                      this role should never expire. The token should be renewed within
+                      the duration specified by this value. At each renewal, the token's
+                      TTL will be set to the value of this field. Specified in seconds.
+                      Generated Token's Period
+                    type: number
+                  tokenPolicies:
+                    description: List of policies to encode onto generated tokens.
+                      Depending on the auth method, this list may be supplemented
+                      by user/group/other values. Generated Token's Policies
+                    items:
+                      type: string
+                    type: array
+                  tokenTtl:
+                    description: The incremental lifetime for generated tokens in
+                      number of seconds. Its current value will be referenced at renewal
+                      time. The initial ttl of the token to generate in seconds
+                    type: number
+                  tokenType:
+                    description: 'The type of token that should be generated. Can
+                      be service, batch, or default to use the mount''s tuned default
+                      (which unless changed will be service tokens). For token store
+                      roles, there are two additional possibilities: default-service
+                      and default-batch which specify the type to return unless the
+                      client requests a different type at generation time. The type
+                      of token to generate, service or batch'
+                    type: string
+                  userClaim:
+                    description: The claim to use to uniquely identify the user; this
+                      will be used as the name for the Identity entity alias created
+                      due to a successful login. The claim to use to uniquely identify
+                      the user; this will be used as the name for the Identity entity
+                      alias created due to a successful login.
+                    type: string
+                  userClaimJsonPointer:
+                    description: Specifies if the user_claim value uses JSON pointer
+                      syntax for referencing claims. By default, the user_claim value
+                      will not use JSON pointer. Requires Vault 1.11+. Specifies if
+                      the user_claim value uses JSON pointer syntax for referencing
+                      claims. By default, the user_claim value will not use JSON pointer.
+                    type: boolean
+                  verboseOidcLogging:
+                    description: Log received OIDC tokens and claims when debug-level
+                      logging is active. Not recommended in production since sensitive
+                      information may be present in OIDC responses. Log received OIDC
+                      tokens and claims when debug-level logging is active. Not recommended
+                      in production since sensitive information may be present in
+                      OIDC responses.
+                    type: boolean
+                type: object
+              managementPolicies:
+                default:
+                - '*'
                 description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
                   It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicy
-                  specifies the level of control Crossplane has over the managed external
-                  resource. This field is planned to replace the DeletionPolicy field
-                  in a future release. Currently, both could be set independently
-                  and non-default values would be honored if the feature flag is enabled.
-                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
-                enum:
-                - FullControl
-                - ObserveOnly
-                - OrphanOnDelete
-                type: string
+                  enabled, and may be changed or removed without notice. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
@@ -389,9 +675,13 @@ spec:
             type: object
             x-kubernetes-validations:
             - message: roleName is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.roleName)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.roleName)
+                || has(self.initProvider.roleName)'
             - message: userClaim is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.userClaim)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.userClaim)
+                || has(self.initProvider.userClaim)'
           status:
             description: AuthBackendRoleStatus defines the observed state of AuthBackendRole.
             properties:
@@ -399,41 +689,56 @@ spec:
                 properties:
                   allowedRedirectUris:
                     description: The list of allowed values for redirect_uri during
-                      OIDC logins.
+                      OIDC logins. Required for OIDC roles The list of allowed values
+                      for redirect_uri during OIDC logins.
                     items:
                       type: string
                     type: array
                   backend:
-                    description: Unique name of the auth backend to configure.
+                    description: The unique name of the auth backend to configure.
+                      Defaults to jwt. Unique name of the auth backend to configure.
                     type: string
                   boundAudiences:
-                    description: List of aud claims to match against. Any match is
-                      sufficient.
+                    description: (For "jwt" roles, at least one of bound_audiences,
+                      bound_subject, bound_claims or token_bound_cidrs is required.
+                      Optional for "oidc" roles.) List of aud claims to match against.
+                      Any match is sufficient. List of aud claims to match against.
+                      Any match is sufficient.
                     items:
                       type: string
                     type: array
                   boundClaims:
                     additionalProperties:
                       type: string
-                    description: Map of claims/values to match against. The expected
-                      value may be a single string or a comma-separated string list.
+                    description: If set, a map of claims to values to match against.
+                      A claim's value must be a string, which may contain one value
+                      or multiple comma-separated values, e.g. "red" or "red,green,blue".
+                      Map of claims/values to match against. The expected value may
+                      be a single string or a comma-separated string list.
                     type: object
                   boundClaimsType:
-                    description: 'How to interpret values in the claims/values map:
-                      can be either "string" (exact match) or "glob" (wildcard match).'
+                    description: 'How to interpret values in the claims/values map
+                      (bound_claims): can be either string (exact match) or glob (wildcard
+                      match). Requires Vault 1.4.0 or above. How to interpret values
+                      in the claims/values map: can be either "string" (exact match)
+                      or "glob" (wildcard match).'
                     type: string
                   boundSubject:
                     description: If set, requires that the sub claim matches this
-                      value.
+                      value. If set, requires that the sub claim matches this value.
                     type: string
                   claimMappings:
                     additionalProperties:
                       type: string
-                    description: Map of claims (keys) to be copied to specified metadata
-                      fields (values).
+                    description: If set, a map of claims (keys) to be copied to specified
+                      metadata fields (values). Map of claims (keys) to be copied
+                      to specified metadata fields (values).
                     type: object
                   clockSkewLeeway:
                     description: The amount of leeway to add to all claims to account
+                      for clock skew, in seconds. Defaults to 60 seconds if set to
+                      0 and can be disabled if set to -1. Only applicable with "jwt"
+                      roles. The amount of leeway to add to all claims to account
                       for clock skew, in seconds. Defaults to 60 seconds if set to
                       0 and can be disabled if set to -1. Only applicable with 'jwt'
                       roles.
@@ -446,90 +751,140 @@ spec:
                     description: The amount of leeway to add to expiration (exp) claims
                       to account for clock skew, in seconds. Defaults to 60 seconds
                       if set to 0 and can be disabled if set to -1. Only applicable
-                      with 'jwt' roles.
+                      with "jwt" roles. The amount of leeway to add to expiration
+                      (exp) claims to account for clock skew, in seconds. Defaults
+                      to 60 seconds if set to 0 and can be disabled if set to -1.
+                      Only applicable with 'jwt' roles.
                     type: number
                   groupsClaim:
                     description: The claim to use to uniquely identify the set of
                       groups to which the user belongs; this will be used as the names
                       for the Identity group aliases created due to a successful login.
-                      The claim value must be a list of strings.
+                      The claim value must be a list of strings. The claim to use
+                      to uniquely identify the set of groups to which the user belongs;
+                      this will be used as the names for the Identity group aliases
+                      created due to a successful login. The claim value must be a
+                      list of strings.
                     type: string
                   id:
                     type: string
                   maxAge:
                     description: Specifies the allowable elapsed time in seconds since
+                      the last time the user was actively authenticated with the OIDC
+                      provider. Specifies the allowable elapsed time in seconds since
                       the last time the user was actively authenticated.
                     type: number
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: The namespace to provision the resource in. The value
+                      should not contain leading or trailing forward slashes. The
+                      namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise. Target namespace. (requires
+                      Enterprise)
                     type: string
                   notBeforeLeeway:
                     description: The amount of leeway to add to not before (nbf) claims
-                      to account for clock skew, in seconds. Defaults to 150 seconds
+                      to account for clock skew, in seconds. Defaults to 60 seconds
                       if set to 0 and can be disabled if set to -1. Only applicable
-                      with 'jwt' roles.
+                      with "jwt" roles. The amount of leeway to add to not before
+                      (nbf) claims to account for clock skew, in seconds. Defaults
+                      to 150 seconds if set to 0 and can be disabled if set to -1.
+                      Only applicable with 'jwt' roles.
                     type: number
                   oidcScopes:
-                    description: List of OIDC scopes to be used with an OIDC role.
-                      The standard scope "openid" is automatically included and need
-                      not be specified.
+                    description: If set, a list of OIDC scopes to be used with an
+                      OIDC role. The standard scope "openid" is automatically included
+                      and need not be specified. List of OIDC scopes to be used with
+                      an OIDC role. The standard scope "openid" is automatically included
+                      and need not be specified.
                     items:
                       type: string
                     type: array
                   roleName:
-                    description: Name of the role.
+                    description: The name of the role. Name of the role.
                     type: string
                   roleType:
-                    description: Type of role, either "oidc" (default) or "jwt"
+                    description: Type of role, either "oidc" (default) or "jwt". Type
+                      of role, either "oidc" (default) or "jwt"
                     type: string
                   tokenBoundCidrs:
-                    description: Specifies the blocks of IP addresses which are allowed
-                      to use the generated token
+                    description: List of CIDR blocks; if set, specifies blocks of
+                      IP addresses which can authenticate successfully, and ties the
+                      resulting token to these blocks as well. Specifies the blocks
+                      of IP addresses which are allowed to use the generated token
                     items:
                       type: string
                     type: array
                   tokenExplicitMaxTtl:
-                    description: Generated Token's Explicit Maximum TTL in seconds
+                    description: If set, will encode an explicit max TTL onto the
+                      token in number of seconds. This is a hard cap even if token_ttl
+                      and token_max_ttl would otherwise allow a renewal. Generated
+                      Token's Explicit Maximum TTL in seconds
                     type: number
                   tokenMaxTtl:
-                    description: The maximum lifetime of the generated token
+                    description: The maximum lifetime for generated tokens in number
+                      of seconds. Its current value will be referenced at renewal
+                      time. The maximum lifetime of the generated token
                     type: number
                   tokenNoDefaultPolicy:
-                    description: If true, the 'default' policy will not automatically
-                      be added to generated tokens
+                    description: If set, the default policy will not be set on generated
+                      tokens; otherwise it will be added to the policies set in token_policies.
+                      If true, the 'default' policy will not automatically be added
+                      to generated tokens
                     type: boolean
                   tokenNumUses:
-                    description: The maximum number of times a token may be used,
-                      a value of zero means unlimited
+                    description: The maximum number of times a generated token may
+                      be used (within its lifetime); 0 means unlimited. The maximum
+                      number of times a token may be used, a value of zero means unlimited
                     type: number
                   tokenPeriod:
-                    description: Generated Token's Period
+                    description: If set, indicates that the token generated using
+                      this role should never expire. The token should be renewed within
+                      the duration specified by this value. At each renewal, the token's
+                      TTL will be set to the value of this field. Specified in seconds.
+                      Generated Token's Period
                     type: number
                   tokenPolicies:
-                    description: Generated Token's Policies
+                    description: List of policies to encode onto generated tokens.
+                      Depending on the auth method, this list may be supplemented
+                      by user/group/other values. Generated Token's Policies
                     items:
                       type: string
                     type: array
                   tokenTtl:
-                    description: The initial ttl of the token to generate in seconds
+                    description: The incremental lifetime for generated tokens in
+                      number of seconds. Its current value will be referenced at renewal
+                      time. The initial ttl of the token to generate in seconds
                     type: number
                   tokenType:
-                    description: The type of token to generate, service or batch
+                    description: 'The type of token that should be generated. Can
+                      be service, batch, or default to use the mount''s tuned default
+                      (which unless changed will be service tokens). For token store
+                      roles, there are two additional possibilities: default-service
+                      and default-batch which specify the type to return unless the
+                      client requests a different type at generation time. The type
+                      of token to generate, service or batch'
                     type: string
                   userClaim:
                     description: The claim to use to uniquely identify the user; this
                       will be used as the name for the Identity entity alias created
-                      due to a successful login.
+                      due to a successful login. The claim to use to uniquely identify
+                      the user; this will be used as the name for the Identity entity
+                      alias created due to a successful login.
                     type: string
                   userClaimJsonPointer:
                     description: Specifies if the user_claim value uses JSON pointer
                       syntax for referencing claims. By default, the user_claim value
-                      will not use JSON pointer.
+                      will not use JSON pointer. Requires Vault 1.11+. Specifies if
+                      the user_claim value uses JSON pointer syntax for referencing
+                      claims. By default, the user_claim value will not use JSON pointer.
                     type: boolean
                   verboseOidcLogging:
                     description: Log received OIDC tokens and claims when debug-level
                       logging is active. Not recommended in production since sensitive
-                      information may be present in OIDC responses.
+                      information may be present in OIDC responses. Log received OIDC
+                      tokens and claims when debug-level logging is active. Not recommended
+                      in production since sensitive information may be present in
+                      OIDC responses.
                     type: boolean
                 type: object
               conditions:
