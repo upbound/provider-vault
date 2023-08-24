@@ -101,7 +101,7 @@ kind: Provider
 metadata:
   name: provider-vault
 spec:
-  package: upbound/provider-vault:v0.1.0
+  package: xpkg.upbound.io/upbound/provider-vault:v0.1.0
 EOF
 ```
 
