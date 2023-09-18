@@ -1,0 +1,31 @@
+apiVersion: vault.vault.upbound.io/v1alpha1
+kind: Token
+metadata:
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vault/v1alpha1/token
+  labels:
+    testing.upbound.io/example-name: vault-token
+  name: vault-token
+spec:
+  forProvider:
+    roleName: "app"
+    ttl: "24h"
+    renewMinLease: 43200
+    renewIncrement: 86400
+  providerConfigRef:
+    name: vault-provider-config
+---
+apiVersion: token.vault.upbound.io/v1alpha1
+kind: AuthBackendRole
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vault/v1alpha1/token
+  labels:
+    testing.upbound.io/example-name: vault-token
+  name: vault-token
+spec:
+  forProvider:
+    roleName: "app"
+  providerConfigRef:
+    name: vault-provider-config

@@ -1,7 +1,11 @@
 apiVersion: vault.vault.upbound.io/v1alpha1
 kind: Mount
 metadata:
-  name: kv-v2-secret-mount
+  annotations:
+    meta.upbound.io/example-id: vault/v1alpha1/mount
+  labels:
+    testing.upbound.io/example-name: kv-v2
+  name: kv-v2
 spec:
   deletionPolicy: Delete
   forProvider:
