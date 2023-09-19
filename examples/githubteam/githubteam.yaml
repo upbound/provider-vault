@@ -1,0 +1,29 @@
+apiVersion: github.vault.upbound.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: github/v1alpha1/team
+  labels:
+    testing.upbound.io/example-name: github-team
+  name: github-team
+spec:
+  forProvider:
+    backend: "github"
+    team: "everyone"
+  providerConfigRef:
+    name: vault-provider-config
+---
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: github/v1alpha1/team
+  labels:
+    testing.upbound.io/example-name: github-team
+  name: github-team
+spec:
+  forProvider:
+    description: "GitHub generic auth backend for UXP manageed Vault"
+    type: "github"
+  providerConfigRef:
+    name: vault-provider-config

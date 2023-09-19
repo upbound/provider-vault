@@ -26,8 +26,6 @@ if [ -f "${KUBECONFIG_PATH}" ]; then
     chmod 0600 ${KUBECONFIG_PATH}
 fi
 
-echo_info "Creating cloud credential secret..."
-${KUBECTL} -n upbound-system create secret generic provider-secret --from-literal=credentials="{\"token\":\"${UPTEST_CLOUD_CREDENTIALS}\"}" --dry-run=client -o yaml | ${KUBECTL} apply -f -
 echo_info "Waiting until provider is healthy..."
 ${KUBECTL} wait provider.pkg --all --for condition=Healthy --timeout 5m
 
@@ -123,17 +121,3 @@ spec:
       namespace: vault
       key: credentials
 EOF
-
-echo_info "Enabling GitHub Auth"
-${KUBECTL} exec -n vault --stdin vault-0 -- vault login -tls-skip-verify $VAULT_ROOT_TOKEN
-${KUBECTL} exec -n vault --stdin vault-0 -- vault auth enable github
-
-echo_info "Enabled Auth Methods"
-${KUBECTL} exec -n vault --stdin vault-0 -- vault auth list
-
-# More useful setup info
-# https://itnext.io/vault-cluster-with-auto-unseal-on-kubernetes-8e469f9cdcfd
-
-echo_step "Note: local-dev cluster will remain after tests"
-echo_step_completed "Test setup complete"
-echo_step "Running upjet vault tests"
