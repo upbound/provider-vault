@@ -4,7 +4,7 @@ metadata:
   name: github-generic-auth-backend
 spec:
   forProvider:
-    description: "GitHub generic auth backend for UXP manageed Vault"
+    description: "GitHub generic auth backend for UXP managed Vault"
     type: "github"
   providerConfigRef:
     name: vault-provider-config
