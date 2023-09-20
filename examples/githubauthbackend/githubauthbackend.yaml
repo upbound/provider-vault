@@ -8,7 +8,7 @@ metadata:
   name: github-specific-auth-backend
 spec:
   forProvider:
-    description: "GitHub specific auth backend for UXP manageed Vault"
+    description: "GitHub specific auth backend for UXP managed Vault"
     path: "auth/github-specific"
     organization: default-org-test
   providerConfigRef:
