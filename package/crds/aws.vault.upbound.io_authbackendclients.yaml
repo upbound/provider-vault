@@ -143,6 +143,15 @@ spec:
                       Region to override the default region for making AWS STS API
                       calls.
                     type: string
+                  useStsRegionFromClient:
+                    description: Available in Vault v1.15+. If set, overrides both
+                      sts_endpoint and sts_region to instead use the region specified
+                      in the client request headers for IAM-based authentication.
+                      This can be useful when you have client requests coming from
+                      different regions and want flexibility in which regional STS
+                      API is used. If set, will override sts_region and use the region
+                      from the client request's header
+                    type: boolean
                 type: object
               initProvider:
                 description: THIS IS AN ALPHA FIELD. Do not use it in production.
@@ -197,6 +206,15 @@ spec:
                       Region to override the default region for making AWS STS API
                       calls.
                     type: string
+                  useStsRegionFromClient:
+                    description: Available in Vault v1.15+. If set, overrides both
+                      sts_endpoint and sts_region to instead use the region specified
+                      in the client request headers for IAM-based authentication.
+                      This can be useful when you have client requests coming from
+                      different regions and want flexibility in which regional STS
+                      API is used. If set, will override sts_region and use the region
+                      from the client request's header
+                    type: boolean
                 type: object
               managementPolicies:
                 default:
@@ -442,6 +460,15 @@ spec:
                       Region to override the default region for making AWS STS API
                       calls.
                     type: string
+                  useStsRegionFromClient:
+                    description: Available in Vault v1.15+. If set, overrides both
+                      sts_endpoint and sts_region to instead use the region specified
+                      in the client request headers for IAM-based authentication.
+                      This can be useful when you have client requests coming from
+                      different regions and want flexibility in which regional STS
+                      API is used. If set, will override sts_region and use the region
+                      from the client request's header
+                    type: boolean
                 type: object
               conditions:
                 description: Conditions of the resource.

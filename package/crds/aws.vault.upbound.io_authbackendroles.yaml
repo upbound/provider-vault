@@ -79,7 +79,8 @@ spec:
                       this role.
                     type: string
                   backend:
-                    description: Unique name of the auth backend to configure.
+                    description: Path to the mounted aws auth backend. Unique name
+                      of the auth backend to configure.
                     type: string
                   boundAccountIds:
                     description: If set, defines a constraint on the EC2 instances
@@ -305,7 +306,8 @@ spec:
                       this role.
                     type: string
                   backend:
-                    description: Unique name of the auth backend to configure.
+                    description: Path to the mounted aws auth backend. Unique name
+                      of the auth backend to configure.
                     type: string
                   boundAccountIds:
                     description: If set, defines a constraint on the EC2 instances
@@ -725,7 +727,8 @@ spec:
                       this role.
                     type: string
                   backend:
-                    description: Unique name of the auth backend to configure.
+                    description: Path to the mounted aws auth backend. Unique name
+                      of the auth backend to configure.
                     type: string
                   boundAccountIds:
                     description: If set, defines a constraint on the EC2 instances

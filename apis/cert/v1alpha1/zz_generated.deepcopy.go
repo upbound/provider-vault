@@ -145,6 +145,37 @@ func (in *AuthBackendRoleInitParameters) DeepCopyInto(out *AuthBackendRoleInitPa
 		*out = new(string)
 		**out = **in
 	}
+	if in.OcspCACertificates != nil {
+		in, out := &in.OcspCACertificates, &out.OcspCACertificates
+		*out = new(string)
+		**out = **in
+	}
+	if in.OcspEnabled != nil {
+		in, out := &in.OcspEnabled, &out.OcspEnabled
+		*out = new(bool)
+		**out = **in
+	}
+	if in.OcspFailOpen != nil {
+		in, out := &in.OcspFailOpen, &out.OcspFailOpen
+		*out = new(bool)
+		**out = **in
+	}
+	if in.OcspQueryAllServers != nil {
+		in, out := &in.OcspQueryAllServers, &out.OcspQueryAllServers
+		*out = new(bool)
+		**out = **in
+	}
+	if in.OcspServersOverride != nil {
+		in, out := &in.OcspServersOverride, &out.OcspServersOverride
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.RequiredExtensions != nil {
 		in, out := &in.RequiredExtensions, &out.RequiredExtensions
 		*out = make([]*string, len(*in))
@@ -367,6 +398,37 @@ func (in *AuthBackendRoleObservation) DeepCopyInto(out *AuthBackendRoleObservati
 		*out = new(string)
 		**out = **in
 	}
+	if in.OcspCACertificates != nil {
+		in, out := &in.OcspCACertificates, &out.OcspCACertificates
+		*out = new(string)
+		**out = **in
+	}
+	if in.OcspEnabled != nil {
+		in, out := &in.OcspEnabled, &out.OcspEnabled
+		*out = new(bool)
+		**out = **in
+	}
+	if in.OcspFailOpen != nil {
+		in, out := &in.OcspFailOpen, &out.OcspFailOpen
+		*out = new(bool)
+		**out = **in
+	}
+	if in.OcspQueryAllServers != nil {
+		in, out := &in.OcspQueryAllServers, &out.OcspQueryAllServers
+		*out = new(bool)
+		**out = **in
+	}
+	if in.OcspServersOverride != nil {
+		in, out := &in.OcspServersOverride, &out.OcspServersOverride
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.RequiredExtensions != nil {
 		in, out := &in.RequiredExtensions, &out.RequiredExtensions
 		*out = make([]*string, len(*in))
@@ -551,6 +613,37 @@ func (in *AuthBackendRoleParameters) DeepCopyInto(out *AuthBackendRoleParameters
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
 		**out = **in
+	}
+	if in.OcspCACertificates != nil {
+		in, out := &in.OcspCACertificates, &out.OcspCACertificates
+		*out = new(string)
+		**out = **in
+	}
+	if in.OcspEnabled != nil {
+		in, out := &in.OcspEnabled, &out.OcspEnabled
+		*out = new(bool)
+		**out = **in
+	}
+	if in.OcspFailOpen != nil {
+		in, out := &in.OcspFailOpen, &out.OcspFailOpen
+		*out = new(bool)
+		**out = **in
+	}
+	if in.OcspQueryAllServers != nil {
+		in, out := &in.OcspQueryAllServers, &out.OcspQueryAllServers
+		*out = new(bool)
+		**out = **in
+	}
+	if in.OcspServersOverride != nil {
+		in, out := &in.OcspServersOverride, &out.OcspServersOverride
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
 	}
 	if in.RequiredExtensions != nil {
 		in, out := &in.RequiredExtensions, &out.RequiredExtensions

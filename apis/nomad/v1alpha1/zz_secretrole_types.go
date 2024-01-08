@@ -15,8 +15,7 @@ import (
 
 type SecretRoleInitParameters struct {
 
-	// The unique path this backend should be mounted at. Must
-	// not begin or end with a /. Defaults to nomad.
+	// The unique path this backend should be mounted at.
 	// The mount path for the Nomad backend.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -50,8 +49,7 @@ type SecretRoleInitParameters struct {
 
 type SecretRoleObservation struct {
 
-	// The unique path this backend should be mounted at. Must
-	// not begin or end with a /. Defaults to nomad.
+	// The unique path this backend should be mounted at.
 	// The mount path for the Nomad backend.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -87,8 +85,7 @@ type SecretRoleObservation struct {
 
 type SecretRoleParameters struct {
 
-	// The unique path this backend should be mounted at. Must
-	// not begin or end with a /. Defaults to nomad.
+	// The unique path this backend should be mounted at.
 	// The mount path for the Nomad backend.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`

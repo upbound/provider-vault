@@ -60,7 +60,7 @@ type AzureRolesParameters struct {
 type SecretBackendRoleInitParameters struct {
 
 	// Application Object ID for an existing service principal that will
-	// be used instead of creating dynamic service principals. If present, azure_roles will be ignored.
+	// be used instead of creating dynamic service principals. If present, azure_roles and permanently_delete will be ignored.
 	// Application Object ID for an existing service principal that will be used instead of creating dynamic service principals.
 	ApplicationObjectID *string `json:"applicationObjectId,omitempty" tf:"application_object_id,omitempty"`
 
@@ -89,6 +89,11 @@ type SecretBackendRoleInitParameters struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Indicates whether the applications and service principals created by Vault will be permanently
+	// deleted when the corresponding leases expire. Defaults to false. For Vault v1.12+.
+	// Indicates whether the applications and service principals created by Vault will be permanently deleted when the corresponding leases expire.
+	PermanentlyDelete *bool `json:"permanentlyDelete,omitempty" tf:"permanently_delete,omitempty"`
+
 	// Name of the Azure role
 	// Name of the role to create
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
@@ -102,7 +107,7 @@ type SecretBackendRoleInitParameters struct {
 type SecretBackendRoleObservation struct {
 
 	// Application Object ID for an existing service principal that will
-	// be used instead of creating dynamic service principals. If present, azure_roles will be ignored.
+	// be used instead of creating dynamic service principals. If present, azure_roles and permanently_delete will be ignored.
 	// Application Object ID for an existing service principal that will be used instead of creating dynamic service principals.
 	ApplicationObjectID *string `json:"applicationObjectId,omitempty" tf:"application_object_id,omitempty"`
 
@@ -133,6 +138,11 @@ type SecretBackendRoleObservation struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Indicates whether the applications and service principals created by Vault will be permanently
+	// deleted when the corresponding leases expire. Defaults to false. For Vault v1.12+.
+	// Indicates whether the applications and service principals created by Vault will be permanently deleted when the corresponding leases expire.
+	PermanentlyDelete *bool `json:"permanentlyDelete,omitempty" tf:"permanently_delete,omitempty"`
+
 	// Name of the Azure role
 	// Name of the role to create
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
@@ -146,7 +156,7 @@ type SecretBackendRoleObservation struct {
 type SecretBackendRoleParameters struct {
 
 	// Application Object ID for an existing service principal that will
-	// be used instead of creating dynamic service principals. If present, azure_roles will be ignored.
+	// be used instead of creating dynamic service principals. If present, azure_roles and permanently_delete will be ignored.
 	// Application Object ID for an existing service principal that will be used instead of creating dynamic service principals.
 	// +kubebuilder:validation:Optional
 	ApplicationObjectID *string `json:"applicationObjectId,omitempty" tf:"application_object_id,omitempty"`
@@ -181,6 +191,12 @@ type SecretBackendRoleParameters struct {
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Indicates whether the applications and service principals created by Vault will be permanently
+	// deleted when the corresponding leases expire. Defaults to false. For Vault v1.12+.
+	// Indicates whether the applications and service principals created by Vault will be permanently deleted when the corresponding leases expire.
+	// +kubebuilder:validation:Optional
+	PermanentlyDelete *bool `json:"permanentlyDelete,omitempty" tf:"permanently_delete,omitempty"`
 
 	// Name of the Azure role
 	// Name of the role to create

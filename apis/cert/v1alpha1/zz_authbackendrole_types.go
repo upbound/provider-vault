@@ -39,6 +39,21 @@ type AuthBackendRoleInitParameters struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Any additional CA certificates needed to verify OCSP responses. Provided as base64 encoded PEM data.
+	OcspCACertificates *string `json:"ocspCaCertificates,omitempty" tf:"ocsp_ca_certificates,omitempty"`
+
+	// If enabled, validate certificates' revocation status using OCSP.
+	OcspEnabled *bool `json:"ocspEnabled,omitempty" tf:"ocsp_enabled,omitempty"`
+
+	// If true and an OCSP response cannot be fetched or is of an unknown status, the login will proceed as if the certificate has not been revoked.
+	OcspFailOpen *bool `json:"ocspFailOpen,omitempty" tf:"ocsp_fail_open,omitempty"`
+
+	// If set to true, rather than accepting the first successful OCSP response, query all servers and consider the certificate valid only if all servers agree.
+	OcspQueryAllServers *bool `json:"ocspQueryAllServers,omitempty" tf:"ocsp_query_all_servers,omitempty"`
+
+	// A comma-separated list of OCSP server addresses. If unset, the OCSP server is determined from the AuthorityInformationAccess extension on the certificate being inspected.
+	OcspServersOverride []*string `json:"ocspServersOverride,omitempty" tf:"ocsp_servers_override,omitempty"`
+
 	RequiredExtensions []*string `json:"requiredExtensions,omitempty" tf:"required_extensions,omitempty"`
 
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
@@ -96,6 +111,21 @@ type AuthBackendRoleObservation struct {
 
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Any additional CA certificates needed to verify OCSP responses. Provided as base64 encoded PEM data.
+	OcspCACertificates *string `json:"ocspCaCertificates,omitempty" tf:"ocsp_ca_certificates,omitempty"`
+
+	// If enabled, validate certificates' revocation status using OCSP.
+	OcspEnabled *bool `json:"ocspEnabled,omitempty" tf:"ocsp_enabled,omitempty"`
+
+	// If true and an OCSP response cannot be fetched or is of an unknown status, the login will proceed as if the certificate has not been revoked.
+	OcspFailOpen *bool `json:"ocspFailOpen,omitempty" tf:"ocsp_fail_open,omitempty"`
+
+	// If set to true, rather than accepting the first successful OCSP response, query all servers and consider the certificate valid only if all servers agree.
+	OcspQueryAllServers *bool `json:"ocspQueryAllServers,omitempty" tf:"ocsp_query_all_servers,omitempty"`
+
+	// A comma-separated list of OCSP server addresses. If unset, the OCSP server is determined from the AuthorityInformationAccess extension on the certificate being inspected.
+	OcspServersOverride []*string `json:"ocspServersOverride,omitempty" tf:"ocsp_servers_override,omitempty"`
 
 	RequiredExtensions []*string `json:"requiredExtensions,omitempty" tf:"required_extensions,omitempty"`
 
@@ -165,6 +195,26 @@ type AuthBackendRoleParameters struct {
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Any additional CA certificates needed to verify OCSP responses. Provided as base64 encoded PEM data.
+	// +kubebuilder:validation:Optional
+	OcspCACertificates *string `json:"ocspCaCertificates,omitempty" tf:"ocsp_ca_certificates,omitempty"`
+
+	// If enabled, validate certificates' revocation status using OCSP.
+	// +kubebuilder:validation:Optional
+	OcspEnabled *bool `json:"ocspEnabled,omitempty" tf:"ocsp_enabled,omitempty"`
+
+	// If true and an OCSP response cannot be fetched or is of an unknown status, the login will proceed as if the certificate has not been revoked.
+	// +kubebuilder:validation:Optional
+	OcspFailOpen *bool `json:"ocspFailOpen,omitempty" tf:"ocsp_fail_open,omitempty"`
+
+	// If set to true, rather than accepting the first successful OCSP response, query all servers and consider the certificate valid only if all servers agree.
+	// +kubebuilder:validation:Optional
+	OcspQueryAllServers *bool `json:"ocspQueryAllServers,omitempty" tf:"ocsp_query_all_servers,omitempty"`
+
+	// A comma-separated list of OCSP server addresses. If unset, the OCSP server is determined from the AuthorityInformationAccess extension on the certificate being inspected.
+	// +kubebuilder:validation:Optional
+	OcspServersOverride []*string `json:"ocspServersOverride,omitempty" tf:"ocsp_servers_override,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	RequiredExtensions []*string `json:"requiredExtensions,omitempty" tf:"required_extensions,omitempty"`

@@ -95,6 +95,10 @@ type SecretBackendRoleInitParameters struct {
 	// The list of domains for which a client can request a host certificate.
 	AllowedDomains *string `json:"allowedDomains,omitempty" tf:"allowed_domains,omitempty"`
 
+	// Specifies if allowed_domains can be declared using
+	// identity template policies. Non-templated domains are also permitted.
+	AllowedDomainsTemplate *bool `json:"allowedDomainsTemplate,omitempty" tf:"allowed_domains_template,omitempty"`
+
 	// Specifies a comma-separated list of extensions that certificates can have when signed.
 	AllowedExtensions *string `json:"allowedExtensions,omitempty" tf:"allowed_extensions,omitempty"`
 
@@ -153,6 +157,11 @@ type SecretBackendRoleInitParameters struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Specifies the duration by which to backdate the ValidAfter property.
+	// Uses duration format strings.
+	// Specifies the duration by which to backdate the ValidAfter property. Uses duration format strings.
+	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
+
 	// Specifies the Time To Live value.
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 }
@@ -182,6 +191,10 @@ type SecretBackendRoleObservation struct {
 
 	// The list of domains for which a client can request a host certificate.
 	AllowedDomains *string `json:"allowedDomains,omitempty" tf:"allowed_domains,omitempty"`
+
+	// Specifies if allowed_domains can be declared using
+	// identity template policies. Non-templated domains are also permitted.
+	AllowedDomainsTemplate *bool `json:"allowedDomainsTemplate,omitempty" tf:"allowed_domains_template,omitempty"`
 
 	// Specifies a comma-separated list of extensions that certificates can have when signed.
 	AllowedExtensions *string `json:"allowedExtensions,omitempty" tf:"allowed_extensions,omitempty"`
@@ -243,6 +256,11 @@ type SecretBackendRoleObservation struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Specifies the duration by which to backdate the ValidAfter property.
+	// Uses duration format strings.
+	// Specifies the duration by which to backdate the ValidAfter property. Uses duration format strings.
+	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
+
 	// Specifies the Time To Live value.
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 }
@@ -280,6 +298,11 @@ type SecretBackendRoleParameters struct {
 	// The list of domains for which a client can request a host certificate.
 	// +kubebuilder:validation:Optional
 	AllowedDomains *string `json:"allowedDomains,omitempty" tf:"allowed_domains,omitempty"`
+
+	// Specifies if allowed_domains can be declared using
+	// identity template policies. Non-templated domains are also permitted.
+	// +kubebuilder:validation:Optional
+	AllowedDomainsTemplate *bool `json:"allowedDomainsTemplate,omitempty" tf:"allowed_domains_template,omitempty"`
 
 	// Specifies a comma-separated list of extensions that certificates can have when signed.
 	// +kubebuilder:validation:Optional
@@ -354,6 +377,12 @@ type SecretBackendRoleParameters struct {
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Specifies the duration by which to backdate the ValidAfter property.
+	// Uses duration format strings.
+	// Specifies the duration by which to backdate the ValidAfter property. Uses duration format strings.
+	// +kubebuilder:validation:Optional
+	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
 
 	// Specifies the Time To Live value.
 	// +kubebuilder:validation:Optional

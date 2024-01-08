@@ -4,16 +4,23 @@ metadata:
   annotations:
     meta.upbound.io/example-id: gcp/v1alpha1/authbackendrole
   labels:
-    testing.upbound.io/example-name: gcp
-  name: gcp
+    testing.upbound.io/example-name: test
+  name: test
 spec:
   forProvider:
+    addGroupAliases: true
     backend: cert
+    boundProjects:
+    - test
     boundServiceAccounts:
-    - database-server@foo-bar-baz.iam.gserviceaccount.com
-    project_id: foo-bar-baz
+    - test
+    role: test
+    tokenMaxTtl: 600
     tokenPolicies:
-    - database-server
+    - policy_a
+    - policy_b
+    tokenTtl: 300
+    type: iam
 
 ---
 

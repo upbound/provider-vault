@@ -15,6 +15,11 @@ import (
 
 type NamespaceInitParameters struct {
 
+	// Custom metadata describing this namespace. Value type
+	// is map[string]string. Requires Vault version 1.12+.
+	// Custom metadata describing this namespace. Value type is map[string]string.
+	CustomMetadata map[string]*string `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -22,18 +27,24 @@ type NamespaceInitParameters struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// The path of the namespace. Must not have a trailing /
+	// The path of the namespace. Must not have a trailing /.
 	// Namespace path.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
 	// The fully qualified path to the namespace. Useful when provisioning resources in a child namespace.
+	// The path is relative to the provider's namespace argument.
 	// The fully qualified namespace path.
 	PathFq *string `json:"pathFq,omitempty" tf:"path_fq,omitempty"`
 }
 
 type NamespaceObservation struct {
 
-	// ID of the namespace.
+	// Custom metadata describing this namespace. Value type
+	// is map[string]string. Requires Vault version 1.12+.
+	// Custom metadata describing this namespace. Value type is map[string]string.
+	CustomMetadata map[string]*string `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
+
+	// The fully qualified path to the namespace, including the provider namespace and a trailing slash.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The namespace to provision the resource in.
@@ -43,20 +54,27 @@ type NamespaceObservation struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// ID of the namespace.
+	// Vault server's internal ID of the namespace.
 	// Namespace ID.
 	NamespaceID *string `json:"namespaceId,omitempty" tf:"namespace_id,omitempty"`
 
-	// The path of the namespace. Must not have a trailing /
+	// The path of the namespace. Must not have a trailing /.
 	// Namespace path.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
 	// The fully qualified path to the namespace. Useful when provisioning resources in a child namespace.
+	// The path is relative to the provider's namespace argument.
 	// The fully qualified namespace path.
 	PathFq *string `json:"pathFq,omitempty" tf:"path_fq,omitempty"`
 }
 
 type NamespaceParameters struct {
+
+	// Custom metadata describing this namespace. Value type
+	// is map[string]string. Requires Vault version 1.12+.
+	// Custom metadata describing this namespace. Value type is map[string]string.
+	// +kubebuilder:validation:Optional
+	CustomMetadata map[string]*string `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -66,12 +84,13 @@ type NamespaceParameters struct {
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// The path of the namespace. Must not have a trailing /
+	// The path of the namespace. Must not have a trailing /.
 	// Namespace path.
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
 	// The fully qualified path to the namespace. Useful when provisioning resources in a child namespace.
+	// The path is relative to the provider's namespace argument.
 	// The fully qualified namespace path.
 	// +kubebuilder:validation:Optional
 	PathFq *string `json:"pathFq,omitempty" tf:"path_fq,omitempty"`

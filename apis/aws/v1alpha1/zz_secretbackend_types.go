@@ -33,6 +33,10 @@ type SecretBackendInitParameters struct {
 	// Specifies a custom HTTP IAM endpoint to use.
 	IAMEndpoint *string `json:"iamEndpoint,omitempty" tf:"iam_endpoint,omitempty"`
 
+	// Specifies whether the secrets mount will be marked as local. Local mounts are not replicated to performance replicas.
+	// Specifies if the secret backend is local only
+	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
+
 	// The maximum TTL that can be requested
 	// for credentials issued by this backend.
 	// Maximum possible lease duration for secrets in seconds
@@ -84,6 +88,10 @@ type SecretBackendObservation struct {
 	IAMEndpoint *string `json:"iamEndpoint,omitempty" tf:"iam_endpoint,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Specifies whether the secrets mount will be marked as local. Local mounts are not replicated to performance replicas.
+	// Specifies if the secret backend is local only
+	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
 	// The maximum TTL that can be requested
 	// for credentials issued by this backend.
@@ -144,6 +152,11 @@ type SecretBackendParameters struct {
 	// Specifies a custom HTTP IAM endpoint to use.
 	// +kubebuilder:validation:Optional
 	IAMEndpoint *string `json:"iamEndpoint,omitempty" tf:"iam_endpoint,omitempty"`
+
+	// Specifies whether the secrets mount will be marked as local. Local mounts are not replicated to performance replicas.
+	// Specifies if the secret backend is local only
+	// +kubebuilder:validation:Optional
+	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
 	// The maximum TTL that can be requested
 	// for credentials issued by this backend.

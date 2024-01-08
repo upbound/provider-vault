@@ -47,6 +47,15 @@ type SecretBackendIntermediateSetSignedObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The imported issuers indicating which issuers were created as part of
+	// this request.
+	// The imported issuers.
+	ImportedIssuers []*string `json:"importedIssuers,omitempty" tf:"imported_issuers,omitempty"`
+
+	// The imported keys indicating which keys were created as part of this request.
+	// The imported keys.
+	ImportedKeys []*string `json:"importedKeys,omitempty" tf:"imported_keys,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.

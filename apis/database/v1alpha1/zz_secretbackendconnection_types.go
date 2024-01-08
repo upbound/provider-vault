@@ -1011,6 +1011,10 @@ type MySQLAuroraParameters struct {
 
 type MySQLInitParameters struct {
 
+	// Enable IAM authentication to a Google Cloud instance when set to gcp_iam
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information. See
 	// the Vault
 	// docs
@@ -1158,6 +1162,10 @@ type MySQLLegacyParameters struct {
 
 type MySQLObservation struct {
 
+	// Enable IAM authentication to a Google Cloud instance when set to gcp_iam
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information. See
 	// the Vault
 	// docs
@@ -1195,6 +1203,11 @@ type MySQLObservation struct {
 
 type MySQLParameters struct {
 
+	// Enable IAM authentication to a Google Cloud instance when set to gcp_iam
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	// +kubebuilder:validation:Optional
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information. See
 	// the Vault
 	// docs
@@ -1225,6 +1238,11 @@ type MySQLParameters struct {
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
+	// A JSON encoded credential for use with IAM authorization
+	// +kubebuilder:validation:Optional
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -1469,6 +1487,10 @@ type OracleParameters struct {
 
 type PostgresqlInitParameters struct {
 
+	// Enable IAM authentication to a Google Cloud instance when set to gcp_iam
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information. See
 	// the Vault
 	// docs
@@ -1505,6 +1527,10 @@ type PostgresqlInitParameters struct {
 }
 
 type PostgresqlObservation struct {
+
+	// Enable IAM authentication to a Google Cloud instance when set to gcp_iam
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
 
 	// A URL containing connection information. See
 	// the Vault
@@ -1543,6 +1569,11 @@ type PostgresqlObservation struct {
 
 type PostgresqlParameters struct {
 
+	// Enable IAM authentication to a Google Cloud instance when set to gcp_iam
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	// +kubebuilder:validation:Optional
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information. See
 	// the Vault
 	// docs
@@ -1578,6 +1609,11 @@ type PostgresqlParameters struct {
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
+	// A JSON encoded credential for use with IAM authorization
+	// +kubebuilder:validation:Optional
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL

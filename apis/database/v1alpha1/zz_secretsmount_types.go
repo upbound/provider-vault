@@ -1888,6 +1888,9 @@ type SecretsMountMySQLInitParameters struct {
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information.
 	// See Vault docs
 	// Connection string to use to connect to the database.
@@ -2137,6 +2140,9 @@ type SecretsMountMySQLObservation struct {
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information.
 	// See Vault docs
 	// Connection string to use to connect to the database.
@@ -2199,6 +2205,10 @@ type SecretsMountMySQLParameters struct {
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	// +kubebuilder:validation:Optional
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information.
 	// See Vault docs
 	// Connection string to use to connect to the database.
@@ -2247,6 +2257,10 @@ type SecretsMountMySQLParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// A JSON encoded credential for use with IAM authorization
+	// +kubebuilder:validation:Optional
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -2977,6 +2991,9 @@ type SecretsMountPostgresqlInitParameters struct {
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information.
 	// See Vault docs
 	// Connection string to use to connect to the database.
@@ -3037,6 +3054,9 @@ type SecretsMountPostgresqlObservation struct {
 	// connection.
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
 
 	// A URL containing connection information.
 	// See Vault docs
@@ -3100,6 +3120,10 @@ type SecretsMountPostgresqlParameters struct {
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	// +kubebuilder:validation:Optional
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information.
 	// See Vault docs
 	// Connection string to use to connect to the database.
@@ -3153,6 +3177,10 @@ type SecretsMountPostgresqlParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// A JSON encoded credential for use with IAM authorization
+	// +kubebuilder:validation:Optional
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL

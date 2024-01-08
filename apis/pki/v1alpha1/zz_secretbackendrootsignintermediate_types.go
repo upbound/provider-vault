@@ -39,6 +39,9 @@ type SecretBackendRootSignIntermediateInitParameters struct {
 	// List of alternative IPs.
 	IPSans []*string `json:"ipSans,omitempty" tf:"ip_sans,omitempty"`
 
+	// Specifies the default issuer of this request.
+	IssuerRef *string `json:"issuerRef,omitempty" tf:"issuer_ref,omitempty"`
+
 	// The locality.
 	Locality *string `json:"locality,omitempty" tf:"locality,omitempty"`
 
@@ -118,6 +121,9 @@ type SecretBackendRootSignIntermediateObservation struct {
 
 	// List of alternative IPs.
 	IPSans []*string `json:"ipSans,omitempty" tf:"ip_sans,omitempty"`
+
+	// Specifies the default issuer of this request.
+	IssuerRef *string `json:"issuerRef,omitempty" tf:"issuer_ref,omitempty"`
 
 	// The issuing CA certificate.
 	IssuingCA *string `json:"issuingCa,omitempty" tf:"issuing_ca,omitempty"`
@@ -204,6 +210,10 @@ type SecretBackendRootSignIntermediateParameters struct {
 	// List of alternative IPs.
 	// +kubebuilder:validation:Optional
 	IPSans []*string `json:"ipSans,omitempty" tf:"ip_sans,omitempty"`
+
+	// Specifies the default issuer of this request.
+	// +kubebuilder:validation:Optional
+	IssuerRef *string `json:"issuerRef,omitempty" tf:"issuer_ref,omitempty"`
 
 	// The locality.
 	// +kubebuilder:validation:Optional

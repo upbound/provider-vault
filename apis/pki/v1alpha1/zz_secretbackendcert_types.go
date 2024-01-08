@@ -43,6 +43,9 @@ type SecretBackendCertInitParameters struct {
 	// List of alternative IPs.
 	IPSans []*string `json:"ipSans,omitempty" tf:"ip_sans,omitempty"`
 
+	// Specifies the default issuer of this request.
+	IssuerRef *string `json:"issuerRef,omitempty" tf:"issuer_ref,omitempty"`
+
 	// Generate a new certificate when the expiration is within this number of seconds, default is 604800 (7 days)
 	// Generate a new certificate when the expiration is within this number of seconds
 	MinSecondsRemaining *float64 `json:"minSecondsRemaining,omitempty" tf:"min_seconds_remaining,omitempty"`
@@ -77,6 +80,10 @@ type SecretBackendCertInitParameters struct {
 	// List of alternative URIs
 	// List of alternative URIs.
 	URISans []*string `json:"uriSans,omitempty" tf:"uri_sans,omitempty"`
+
+	// List of Subject User IDs
+	// List of Subject User IDs.
+	UserIds []*string `json:"userIds,omitempty" tf:"user_ids,omitempty"`
 }
 
 type SecretBackendCertObservation struct {
@@ -122,6 +129,9 @@ type SecretBackendCertObservation struct {
 	// List of alternative IPs
 	// List of alternative IPs.
 	IPSans []*string `json:"ipSans,omitempty" tf:"ip_sans,omitempty"`
+
+	// Specifies the default issuer of this request.
+	IssuerRef *string `json:"issuerRef,omitempty" tf:"issuer_ref,omitempty"`
 
 	// The issuing CA
 	// The issuing CA.
@@ -173,6 +183,10 @@ type SecretBackendCertObservation struct {
 	// List of alternative URIs
 	// List of alternative URIs.
 	URISans []*string `json:"uriSans,omitempty" tf:"uri_sans,omitempty"`
+
+	// List of Subject User IDs
+	// List of Subject User IDs.
+	UserIds []*string `json:"userIds,omitempty" tf:"user_ids,omitempty"`
 }
 
 type SecretBackendCertParameters struct {
@@ -211,6 +225,10 @@ type SecretBackendCertParameters struct {
 	// List of alternative IPs.
 	// +kubebuilder:validation:Optional
 	IPSans []*string `json:"ipSans,omitempty" tf:"ip_sans,omitempty"`
+
+	// Specifies the default issuer of this request.
+	// +kubebuilder:validation:Optional
+	IssuerRef *string `json:"issuerRef,omitempty" tf:"issuer_ref,omitempty"`
 
 	// Generate a new certificate when the expiration is within this number of seconds, default is 604800 (7 days)
 	// Generate a new certificate when the expiration is within this number of seconds
@@ -254,6 +272,11 @@ type SecretBackendCertParameters struct {
 	// List of alternative URIs.
 	// +kubebuilder:validation:Optional
 	URISans []*string `json:"uriSans,omitempty" tf:"uri_sans,omitempty"`
+
+	// List of Subject User IDs
+	// List of Subject User IDs.
+	// +kubebuilder:validation:Optional
+	UserIds []*string `json:"userIds,omitempty" tf:"user_ids,omitempty"`
 }
 
 // SecretBackendCertSpec defines the desired state of SecretBackendCert

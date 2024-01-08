@@ -130,6 +130,8 @@ spec:
                   local:
                     description: Specifies if the auth method is local only
                     type: boolean
+                  maxPageSize:
+                    type: number
                   namespace:
                     description: Target namespace. (requires Enterprise)
                     type: string
@@ -233,6 +235,8 @@ spec:
                   local:
                     description: Specifies if the auth method is local only
                     type: boolean
+                  maxPageSize:
+                    type: number
                   namespace:
                     description: Target namespace. (requires Enterprise)
                     type: string
@@ -535,6 +539,8 @@ spec:
                   local:
                     description: Specifies if the auth method is local only
                     type: boolean
+                  maxPageSize:
+                    type: number
                   namespace:
                     description: Target namespace. (requires Enterprise)
                     type: string

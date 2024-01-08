@@ -71,8 +71,9 @@ spec:
                       name of the token.
                     type: string
                   explicitMaxTtl:
-                    description: The explicit max TTL of this token The explicit max
-                      TTL of the token.
+                    description: The explicit max TTL of this token. This is specified
+                      as a numeric string with suffix like "30s" ro "5m" The explicit
+                      max TTL of the token.
                     type: string
                   metadata:
                     additionalProperties:
@@ -100,7 +101,9 @@ spec:
                       of allowed uses of the token.
                     type: number
                   period:
-                    description: The period of this token The period of the token.
+                    description: The period of this token. This is specified as a
+                      numeric string with suffix like "30s" ro "5m" The period of
+                      the token.
                     type: string
                   policies:
                     description: List of policies to attach to this token List of
@@ -109,7 +112,8 @@ spec:
                       type: string
                     type: array
                   renewIncrement:
-                    description: The renew increment The renew increment.
+                    description: The renew increment. This is specified in seconds
+                      The renew increment.
                     type: number
                   renewMinLease:
                     description: The minimal lease to renew this token The minimum
@@ -123,12 +127,14 @@ spec:
                     description: The token role name The token role name.
                     type: string
                   ttl:
-                    description: The TTL period of this token The TTL period of the
-                      token.
+                    description: The TTL period of this token. This is specified as
+                      a numeric string with suffix like "30s" ro "5m" The TTL period
+                      of the token.
                     type: string
                   wrappingTtl:
-                    description: The TTL period of this token The TTL period of the
-                      wrapped token.
+                    description: The TTL period of this token. This is specified as
+                      a numeric string with suffix like "30s" ro "5m" The TTL period
+                      of the wrapped token.
                     type: string
                 type: object
               initProvider:
@@ -149,8 +155,9 @@ spec:
                       name of the token.
                     type: string
                   explicitMaxTtl:
-                    description: The explicit max TTL of this token The explicit max
-                      TTL of the token.
+                    description: The explicit max TTL of this token. This is specified
+                      as a numeric string with suffix like "30s" ro "5m" The explicit
+                      max TTL of the token.
                     type: string
                   metadata:
                     additionalProperties:
@@ -178,7 +185,9 @@ spec:
                       of allowed uses of the token.
                     type: number
                   period:
-                    description: The period of this token The period of the token.
+                    description: The period of this token. This is specified as a
+                      numeric string with suffix like "30s" ro "5m" The period of
+                      the token.
                     type: string
                   policies:
                     description: List of policies to attach to this token List of
@@ -187,7 +196,8 @@ spec:
                       type: string
                     type: array
                   renewIncrement:
-                    description: The renew increment The renew increment.
+                    description: The renew increment. This is specified in seconds
+                      The renew increment.
                     type: number
                   renewMinLease:
                     description: The minimal lease to renew this token The minimum
@@ -201,12 +211,14 @@ spec:
                     description: The token role name The token role name.
                     type: string
                   ttl:
-                    description: The TTL period of this token The TTL period of the
-                      token.
+                    description: The TTL period of this token. This is specified as
+                      a numeric string with suffix like "30s" ro "5m" The TTL period
+                      of the token.
                     type: string
                   wrappingTtl:
-                    description: The TTL period of this token The TTL period of the
-                      wrapped token.
+                    description: The TTL period of this token. This is specified as
+                      a numeric string with suffix like "30s" ro "5m" The TTL period
+                      of the wrapped token.
                     type: string
                 type: object
               managementPolicies:
@@ -416,8 +428,9 @@ spec:
                       name of the token.
                     type: string
                   explicitMaxTtl:
-                    description: The explicit max TTL of this token The explicit max
-                      TTL of the token.
+                    description: The explicit max TTL of this token. This is specified
+                      as a numeric string with suffix like "30s" ro "5m" The explicit
+                      max TTL of the token.
                     type: string
                   id:
                     type: string
@@ -455,7 +468,9 @@ spec:
                       of allowed uses of the token.
                     type: number
                   period:
-                    description: The period of this token The period of the token.
+                    description: The period of this token. This is specified as a
+                      numeric string with suffix like "30s" ro "5m" The period of
+                      the token.
                     type: string
                   policies:
                     description: List of policies to attach to this token List of
@@ -464,7 +479,8 @@ spec:
                       type: string
                     type: array
                   renewIncrement:
-                    description: The renew increment The renew increment.
+                    description: The renew increment. This is specified in seconds
+                      The renew increment.
                     type: number
                   renewMinLease:
                     description: The minimal lease to renew this token The minimum
@@ -478,12 +494,14 @@ spec:
                     description: The token role name The token role name.
                     type: string
                   ttl:
-                    description: The TTL period of this token The TTL period of the
-                      token.
+                    description: The TTL period of this token. This is specified as
+                      a numeric string with suffix like "30s" ro "5m" The TTL period
+                      of the token.
                     type: string
                   wrappingTtl:
-                    description: The TTL period of this token The TTL period of the
-                      wrapped token.
+                    description: The TTL period of this token. This is specified as
+                      a numeric string with suffix like "30s" ro "5m" The TTL period
+                      of the wrapped token.
                     type: string
                 type: object
               conditions:

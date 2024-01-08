@@ -40,6 +40,10 @@ type AuthBackendInitParameters struct {
 }
 
 type AuthBackendObservation struct {
+
+	// The accessor of the auth backend
+	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
+
 	ClientEmail *string `json:"clientEmail,omitempty" tf:"client_email,omitempty"`
 
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`

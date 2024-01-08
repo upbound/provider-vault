@@ -23,9 +23,9 @@ type SecretBackendKeyInitParameters struct {
 	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
 	AutoRotateInterval *float64 `json:"autoRotateInterval,omitempty" tf:"auto_rotate_interval,omitempty"`
 
-	// Amount of time the key should live before being automatically rotated.
+	// Amount of seconds the key should live before being automatically rotated.
 	// A value of 0 disables automatic rotation for the key.
-	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
+	// Amount of seconds the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
 	AutoRotatePeriod *float64 `json:"autoRotatePeriod,omitempty" tf:"auto_rotate_period,omitempty"`
 
 	// The path the transit secret backend is mounted at, with no leading or trailing /s.
@@ -48,6 +48,10 @@ type SecretBackendKeyInitParameters struct {
 	// Enables keys to be exportable. This allows for all the valid keys in the key ring to be exported. Once set, this cannot be disabled.
 	Exportable *bool `json:"exportable,omitempty" tf:"exportable,omitempty"`
 
+	// The key size in bytes for algorithms that allow variable key sizes. Currently only applicable to HMAC, where it must be between 32 and 512 bytes.
+	// The key size in bytes for algorithms that allow variable key sizes. Currently only applicable to HMAC; this value must be between 32 and 512.
+	KeySize *float64 `json:"keySize,omitempty" tf:"key_size,omitempty"`
+
 	// Minimum key version to use for decryption.
 	// Minimum key version to use for decryption.
 	MinDecryptionVersion *float64 `json:"minDecryptionVersion,omitempty" tf:"min_decryption_version,omitempty"`
@@ -67,8 +71,8 @@ type SecretBackendKeyInitParameters struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96 (default), chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, rsa-2048, rsa-3072 and rsa-4096.
-	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96, chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, rsa-2048, rsa-3072, rsa-4096
+	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96 (default), chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, hmac, rsa-2048, rsa-3072 and rsa-4096.
+	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96, chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, hmac, rsa-2048, rsa-3072, rsa-4096
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
@@ -82,9 +86,9 @@ type SecretBackendKeyObservation struct {
 	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
 	AutoRotateInterval *float64 `json:"autoRotateInterval,omitempty" tf:"auto_rotate_interval,omitempty"`
 
-	// Amount of time the key should live before being automatically rotated.
+	// Amount of seconds the key should live before being automatically rotated.
 	// A value of 0 disables automatic rotation for the key.
-	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
+	// Amount of seconds the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
 	AutoRotatePeriod *float64 `json:"autoRotatePeriod,omitempty" tf:"auto_rotate_period,omitempty"`
 
 	// The path the transit secret backend is mounted at, with no leading or trailing /s.
@@ -108,6 +112,10 @@ type SecretBackendKeyObservation struct {
 	Exportable *bool `json:"exportable,omitempty" tf:"exportable,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The key size in bytes for algorithms that allow variable key sizes. Currently only applicable to HMAC, where it must be between 32 and 512 bytes.
+	// The key size in bytes for algorithms that allow variable key sizes. Currently only applicable to HMAC; this value must be between 32 and 512.
+	KeySize *float64 `json:"keySize,omitempty" tf:"key_size,omitempty"`
 
 	// List of key versions in the keyring. This attribute is zero-indexed and will contain a map of values depending on the type of the encryption key.
 	// List of key versions in the keyring.
@@ -156,8 +164,8 @@ type SecretBackendKeyObservation struct {
 	// Whether or not the key supports signing, based on key type.
 	SupportsSigning *bool `json:"supportsSigning,omitempty" tf:"supports_signing,omitempty"`
 
-	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96 (default), chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, rsa-2048, rsa-3072 and rsa-4096.
-	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96, chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, rsa-2048, rsa-3072, rsa-4096
+	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96 (default), chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, hmac, rsa-2048, rsa-3072 and rsa-4096.
+	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96, chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, hmac, rsa-2048, rsa-3072, rsa-4096
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
@@ -173,9 +181,9 @@ type SecretBackendKeyParameters struct {
 	// +kubebuilder:validation:Optional
 	AutoRotateInterval *float64 `json:"autoRotateInterval,omitempty" tf:"auto_rotate_interval,omitempty"`
 
-	// Amount of time the key should live before being automatically rotated.
+	// Amount of seconds the key should live before being automatically rotated.
 	// A value of 0 disables automatic rotation for the key.
-	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
+	// Amount of seconds the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
 	// +kubebuilder:validation:Optional
 	AutoRotatePeriod *float64 `json:"autoRotatePeriod,omitempty" tf:"auto_rotate_period,omitempty"`
 
@@ -204,6 +212,11 @@ type SecretBackendKeyParameters struct {
 	// +kubebuilder:validation:Optional
 	Exportable *bool `json:"exportable,omitempty" tf:"exportable,omitempty"`
 
+	// The key size in bytes for algorithms that allow variable key sizes. Currently only applicable to HMAC, where it must be between 32 and 512 bytes.
+	// The key size in bytes for algorithms that allow variable key sizes. Currently only applicable to HMAC; this value must be between 32 and 512.
+	// +kubebuilder:validation:Optional
+	KeySize *float64 `json:"keySize,omitempty" tf:"key_size,omitempty"`
+
 	// Minimum key version to use for decryption.
 	// Minimum key version to use for decryption.
 	// +kubebuilder:validation:Optional
@@ -227,8 +240,8 @@ type SecretBackendKeyParameters struct {
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96 (default), chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, rsa-2048, rsa-3072 and rsa-4096.
-	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96, chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, rsa-2048, rsa-3072, rsa-4096
+	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96 (default), chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, hmac, rsa-2048, rsa-3072 and rsa-4096.
+	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96, chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, hmac, rsa-2048, rsa-3072, rsa-4096
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }

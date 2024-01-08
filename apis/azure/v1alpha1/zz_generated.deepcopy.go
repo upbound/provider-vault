@@ -1222,6 +1222,11 @@ func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleIn
 		*out = new(string)
 		**out = **in
 	}
+	if in.PermanentlyDelete != nil {
+		in, out := &in.PermanentlyDelete, &out.PermanentlyDelete
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Role != nil {
 		in, out := &in.Role, &out.Role
 		*out = new(string)
@@ -1323,6 +1328,11 @@ func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObser
 		*out = new(string)
 		**out = **in
 	}
+	if in.PermanentlyDelete != nil {
+		in, out := &in.PermanentlyDelete, &out.PermanentlyDelete
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Role != nil {
 		in, out := &in.Role, &out.Role
 		*out = new(string)
@@ -1385,6 +1395,11 @@ func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParame
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
+		**out = **in
+	}
+	if in.PermanentlyDelete != nil {
+		in, out := &in.PermanentlyDelete, &out.PermanentlyDelete
+		*out = new(bool)
 		**out = **in
 	}
 	if in.Role != nil {

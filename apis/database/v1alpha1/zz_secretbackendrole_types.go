@@ -24,6 +24,17 @@ type SecretBackendRoleInitParameters struct {
 	// Database statements to execute to create and configure a user.
 	CreationStatements []*string `json:"creationStatements,omitempty" tf:"creation_statements,omitempty"`
 
+	// – Specifies the configuration
+	// for the given credential_type.
+	// Specifies the configuration for the given credential_type.
+	CredentialConfig map[string]*string `json:"credentialConfig,omitempty" tf:"credential_config,omitempty"`
+
+	// – Specifies the type of credential that
+	// will be generated for the role. Options include: password, rsa_private_key, client_certificate.
+	// See the plugin's API page for credential types supported by individual databases.
+	// Specifies the type of credential that will be generated for the role.
+	CredentialType *string `json:"credentialType,omitempty" tf:"credential_type,omitempty"`
+
 	// The unique name of the database connection to use for
 	// the role.
 	// Database connection to use for this role.
@@ -76,6 +87,17 @@ type SecretBackendRoleObservation struct {
 	// creating a user.
 	// Database statements to execute to create and configure a user.
 	CreationStatements []*string `json:"creationStatements,omitempty" tf:"creation_statements,omitempty"`
+
+	// – Specifies the configuration
+	// for the given credential_type.
+	// Specifies the configuration for the given credential_type.
+	CredentialConfig map[string]*string `json:"credentialConfig,omitempty" tf:"credential_config,omitempty"`
+
+	// – Specifies the type of credential that
+	// will be generated for the role. Options include: password, rsa_private_key, client_certificate.
+	// See the plugin's API page for credential types supported by individual databases.
+	// Specifies the type of credential that will be generated for the role.
+	CredentialType *string `json:"credentialType,omitempty" tf:"credential_type,omitempty"`
 
 	// The unique name of the database connection to use for
 	// the role.
@@ -133,6 +155,19 @@ type SecretBackendRoleParameters struct {
 	// Database statements to execute to create and configure a user.
 	// +kubebuilder:validation:Optional
 	CreationStatements []*string `json:"creationStatements,omitempty" tf:"creation_statements,omitempty"`
+
+	// – Specifies the configuration
+	// for the given credential_type.
+	// Specifies the configuration for the given credential_type.
+	// +kubebuilder:validation:Optional
+	CredentialConfig map[string]*string `json:"credentialConfig,omitempty" tf:"credential_config,omitempty"`
+
+	// – Specifies the type of credential that
+	// will be generated for the role. Options include: password, rsa_private_key, client_certificate.
+	// See the plugin's API page for credential types supported by individual databases.
+	// Specifies the type of credential that will be generated for the role.
+	// +kubebuilder:validation:Optional
+	CredentialType *string `json:"credentialType,omitempty" tf:"credential_type,omitempty"`
 
 	// The unique name of the database connection to use for
 	// the role.

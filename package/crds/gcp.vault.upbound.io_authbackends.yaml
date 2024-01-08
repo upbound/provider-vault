@@ -389,6 +389,9 @@ spec:
             properties:
               atProvider:
                 properties:
+                  accessor:
+                    description: The accessor of the auth backend
+                    type: string
                   clientEmail:
                     type: string
                   clientId:
