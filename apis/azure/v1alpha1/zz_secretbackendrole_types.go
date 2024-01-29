@@ -98,10 +98,19 @@ type SecretBackendRoleInitParameters struct {
 	// Name of the role to create
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
+	// Specifies the security principal types that are allowed to sign in to the application.
+	// Valid values are: AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, PersonalMicrosoftAccount. Requires Vault 1.16+.
+	// Specifies the security principal types that are allowed to sign in to the application. Valid values are: AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, PersonalMicrosoftAccount
+	SignInAudience *string `json:"signInAudience,omitempty" tf:"sign_in_audience,omitempty"`
+
 	// –  Specifies the default TTL for service principals generated using this role.
 	// Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
 	// Human-friendly description of the mount for the backend.
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// - A list of Azure tags to attach to an application. Requires Vault 1.16+.
+	// Comma-separated strings of Azure tags to attach to an application.
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
 }
 
 type SecretBackendRoleObservation struct {
@@ -147,10 +156,19 @@ type SecretBackendRoleObservation struct {
 	// Name of the role to create
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
+	// Specifies the security principal types that are allowed to sign in to the application.
+	// Valid values are: AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, PersonalMicrosoftAccount. Requires Vault 1.16+.
+	// Specifies the security principal types that are allowed to sign in to the application. Valid values are: AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, PersonalMicrosoftAccount
+	SignInAudience *string `json:"signInAudience,omitempty" tf:"sign_in_audience,omitempty"`
+
 	// –  Specifies the default TTL for service principals generated using this role.
 	// Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
 	// Human-friendly description of the mount for the backend.
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// - A list of Azure tags to attach to an application. Requires Vault 1.16+.
+	// Comma-separated strings of Azure tags to attach to an application.
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
 }
 
 type SecretBackendRoleParameters struct {
@@ -203,11 +221,22 @@ type SecretBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
+	// Specifies the security principal types that are allowed to sign in to the application.
+	// Valid values are: AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, PersonalMicrosoftAccount. Requires Vault 1.16+.
+	// Specifies the security principal types that are allowed to sign in to the application. Valid values are: AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, PersonalMicrosoftAccount
+	// +kubebuilder:validation:Optional
+	SignInAudience *string `json:"signInAudience,omitempty" tf:"sign_in_audience,omitempty"`
+
 	// –  Specifies the default TTL for service principals generated using this role.
 	// Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
 	// Human-friendly description of the mount for the backend.
 	// +kubebuilder:validation:Optional
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// - A list of Azure tags to attach to an application. Requires Vault 1.16+.
+	// Comma-separated strings of Azure tags to attach to an application.
+	// +kubebuilder:validation:Optional
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
 }
 
 // SecretBackendRoleSpec defines the desired state of SecretBackendRole

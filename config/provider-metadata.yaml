@@ -1319,6 +1319,13 @@ resources:
                   "access_key": "AKIA.....",
                   "secret_key": "AWS secret key"
                 }
+            - name: aws
+              manifest: |-
+                {
+                  "identity_token_audience": "\u003cTOKEN_AUDIENCE\u003e",
+                  "identity_token_ttl": "\u003cTOKEN_TTL\u003e",
+                  "role_arn": "\u003cAWS_ROLE_ARN\u003e"
+                }
         argumentDocs:
             access_key: |-
                 - (Optional) The AWS Access Key ID this backend should use to
@@ -1331,6 +1338,9 @@ resources:
                 - (Optional) If set, opts out of mount migration on path updates.
                 See here for more info on Mount Migration
             iam_endpoint: '- (Optional) Specifies a custom HTTP IAM endpoint to use.'
+            identity_token_audience: '- (Optional) The audience claim value. Requires Vault 1.16+.'
+            identity_token_key: '- (Optional) The key to use for signing identity tokens. Requires Vault 1.16+.'
+            identity_token_ttl: '- (Optional) The TTL of generated identity tokens in seconds. Requires Vault 1.16+.'
             local: '- (Optional) Specifies whether the secrets mount will be marked as local. Local mounts are not replicated to performance replicas.'
             max_lease_ttl_seconds: |-
                 - (Optional) The maximum TTL that can be requested
@@ -1344,6 +1354,7 @@ resources:
                 - (Optional) The unique path this backend should be mounted at. Must
                 not begin or end with a /. Defaults to aws.
             region: '- (Optional) The AWS region for API calls. Defaults to us-east-1.'
+            role_arn: '- (Optional) Role ARN to assume for plugin identity token federation. Requires Vault 1.16+.'
             secret_key: |-
                 - (Optional) The AWS Secret Key this backend should use to
                 issue new credentials. Vault uses the official AWS SDK to authenticate, and thus can also use standard AWS environment credentials, shared file credentials or IAM role/ECS task credentials.
@@ -1680,6 +1691,11 @@ resources:
                   "backend": "${vault_azure_secret_backend.azure.path}",
                   "max_ttl": 600,
                   "role": "generated_role",
+                  "sign_in_audience": "AzureADMyOrg",
+                  "tags": [
+                    "team:engineering",
+                    "environment:development"
+                  ],
                   "ttl": 300
                 }
               references:
@@ -1730,6 +1746,10 @@ resources:
                 - (Optional) Indicates whether the applications and service principals created by Vault will be permanently
                 deleted when the corresponding leases expire. Defaults to false. For Vault v1.12+.
             role: '- (Required) Name of the Azure role'
+            sign_in_audience: |-
+                - (Optional) Specifies the security principal types that are allowed to sign in to the application.
+                Valid values are: AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, PersonalMicrosoftAccount. Requires Vault 1.16+.
+            tags: '- (Optional) - A list of Azure tags to attach to an application. Requires Vault 1.16+.'
             ttl: |-
                 – (Optional) Specifies the default TTL for service principals generated using this role.
                 Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
@@ -1906,6 +1926,7 @@ resources:
             couchbase: '- (Optional) A nested block containing configuration options for Couchbase connections.'
             data: '- (Optional) A map of sensitive data to pass to the endpoint. Useful for templated connection strings.'
             disable_escaping: '- (Optional) Disable special character escaping in username and password.'
+            disconnect_sessions: '- (Optional) Enable the built-in session disconnect mechanism.'
             elasticsearch: '- (Optional) A nested block containing configuration options for Elasticsearch connections.'
             hana: '- (Optional) A nested block containing configuration options for SAP HanaDB connections.'
             host: '- (Required) The host to connect to.'
@@ -1958,6 +1979,7 @@ resources:
             root_rotation_statements: '- (Optional) A list of database statements to be executed to rotate the root user''s credentials.'
             service_account_json: '- (Optional) JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.'
             snowflake: '- (Optional) A nested block containing configuration options for Snowflake connections.'
+            split_statements: '- (Optional) Enable spliting statements after semi-colons.'
             tls: '- (Optional) Whether to use TLS when connecting to Cassandra.'
             tls_ca: '- (Optional) x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.'
             tls_certificate_key: '- (Optional) x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.'
@@ -4435,7 +4457,7 @@ resources:
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
             pem_keys: '- (Optional) List of PEM-formatted public keys or certificates used to verify the signatures of Kubernetes service account JWTs. If a certificate is given, its public key will be extracted. Not every installation of Kubernetes exposes these keys.'
-            token_reviewer_jwt: '- (Optional) A service account JWT used to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.'
+            token_reviewer_jwt: '- (Optional) A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.'
         importStatements: []
     vault_kubernetes_auth_backend_role:
         subCategory: ""
@@ -6273,6 +6295,7 @@ resources:
             email_protection_flag: '- (Optional) Flag to specify certificates for email protection use'
             enforce_hostnames: '- (Optional) Flag to allow only valid host names'
             ext_key_usage: '- (Optional) Specify the allowed extended key usage constraint on issued certificates'
+            ext_key_usage_oids: '- (Optional) Specify the allowed extended key usage OIDs constraint on issued certificates'
             generate_lease: '- (Optional) Flag to generate leases with certificates'
             issuer_ref: |-
                 - (Optional) Specifies the default issuer of this request. May
@@ -6954,6 +6977,293 @@ resources:
                 service tokens). For token store roles, there are two additional possibilities:
                 default-service and default-batch which specify the type to return unless the client
                 requests a different type at generation time.
+        importStatements: []
+    vault_secrets_sync_association:
+        subCategory: ""
+        description: Triggers a sync operation in Vault and links a secret to an existing destination
+        name: vault_secrets_sync_association
+        title: vault_secrets_sync_association resource
+        examples:
+            - name: gh_token
+              manifest: |-
+                {
+                  "mount": "${vault_mount.kvv2.path}",
+                  "name": "${vault_secrets_sync_gh_destination.gh.name}",
+                  "secret_name": "${vault_kv_secret_v2.token.name}",
+                  "type": "${vault_secrets_sync_gh_destination.gh.type}"
+                }
+              references:
+                mount: vault_mount.kvv2.path
+                name: vault_secrets_sync_gh_destination.gh.name
+                secret_name: vault_kv_secret_v2.token.name
+                type: vault_secrets_sync_gh_destination.gh.type
+              dependencies:
+                vault_kv_secret_v2.token: |-
+                    {
+                      "data_json": "${jsonencode(\n    {\n      dev  = \"B!gS3cr3t\",\n      prod = \"S3cureP4$$\"\n    }\n  )}",
+                      "mount": "${vault_mount.kvv2.path}",
+                      "name": "token"
+                    }
+                vault_mount.kvv2: |-
+                    {
+                      "description": "KV Version 2 secret engine mount",
+                      "options": {
+                        "version": "2"
+                      },
+                      "path": "kvv2",
+                      "type": "kv"
+                    }
+                vault_secrets_sync_gh_destination.gh: |-
+                    {
+                      "access_token": "${var.access_token}",
+                      "name": "gh-dest",
+                      "repository_name": "repo-name-example",
+                      "repository_owner": "${var.repo_owner}",
+                      "secret_name_template": "vault_{{ .MountAccessor | lowercase }}_{{ .SecretPath | lowercase }}"
+                    }
+        argumentDocs:
+            mount: '- (Required) Specifies the mount where the secret is located.'
+            name: '- (Required) Specifies the name of the destination.'
+            namespace: |-
+                - (Optional) The namespace to provision the resource in.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+            secret_name: '- (Required) Specifies the name of the secret to synchronize.'
+            sync_status: '- Specifies the status of the association (for eg. SYNCED).'
+            type: '- (Required) Specifies the destination type.'
+            updated_at: '- Duration string specifying when the secret was last updated.'
+        importStatements: []
+    vault_secrets_sync_aws_destination:
+        subCategory: ""
+        description: Creates an AWS destination to synchronize secrets in Vault
+        name: vault_secrets_sync_aws_destination
+        title: vault_secrets_sync_aws_destination resource
+        examples:
+            - name: aws
+              manifest: |-
+                {
+                  "access_key_id": "${var.access_key_id}",
+                  "custom_tags": {
+                    "foo": "bar"
+                  },
+                  "name": "aws-dest",
+                  "region": "us-east-1",
+                  "secret_access_key": "${var.secret_access_key}",
+                  "secret_name_template": "vault_{{ .MountAccessor | lowercase }}_{{ .SecretPath | lowercase }}"
+                }
+              references:
+                access_key_id: var.access_key_id
+                secret_access_key: var.secret_access_key
+        argumentDocs:
+            access_key_id: |-
+                - (Optional) Access key id to authenticate against the AWS secrets manager.
+                Can be omitted and directly provided to Vault using the AWS_ACCESS_KEY_ID environment
+                variable.
+            custom_tags: '- (Optional) Custom tags to set on the secret managed at the destination.'
+            name: '- (Required) Unique name of the AWS destination.'
+            namespace: |-
+                - (Optional) The namespace to provision the resource in.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+            region: |-
+                - (Optional) Region where to manage the secrets manager entries.
+                Can be omitted and directly provided to Vault using the AWS_REGION environment
+                variable.
+            secret_access_key: |-
+                - (Optional) Secret access key to authenticate against the AWS secrets manager.
+                Can be omitted and directly provided to Vault using the AWS_SECRET_ACCESS_KEY environment
+                variable.
+            secret_name_template: |-
+                - (Optional) Template describing how to generate external secret names.
+                Supports a subset of the Go Template syntax.
+            type: '- The type of the secrets destination (aws-sm).'
+        importStatements: []
+    vault_secrets_sync_azure_destination:
+        subCategory: ""
+        description: Creates a Azure destination to synchronize secrets in Vault
+        name: vault_secrets_sync_azure_destination
+        title: vault_secrets_sync_azure_destination resource
+        examples:
+            - name: az
+              manifest: |-
+                {
+                  "client_id": "${var.client_id}",
+                  "client_secret": "${var.client_secret}",
+                  "custom_tags": {
+                    "foo": "bar"
+                  },
+                  "key_vault_uri": "${var.key_vault_uri}",
+                  "name": "az-dest",
+                  "secret_name_template": "vault_{{ .MountAccessor | lowercase }}_{{ .SecretPath | lowercase }}",
+                  "tenant_id": "${var.tenant_id}"
+                }
+              references:
+                client_id: var.client_id
+                client_secret: var.client_secret
+                key_vault_uri: var.key_vault_uri
+                tenant_id: var.tenant_id
+        argumentDocs:
+            client_id: |-
+                - (Optional) Client ID of an Azure app registration.
+                Can be omitted and directly provided to Vault using the AZURE_CLIENT_ID environment
+                variable.
+            client_secret: |-
+                - (Optional) Client Secret of an Azure app registration.
+                Can be omitted and directly provided to Vault using the AZURE_CLIENT_SECRET environment
+                variable.
+            cloud: '- (Optional) Specifies a cloud for the client. The default is Azure Public Cloud.'
+            custom_tags: '- (Optional) Custom tags to set on the secret managed at the destination.'
+            key_vault_uri: |-
+                - (Optional) URI of an existing Azure Key Vault instance.
+                Can be omitted and directly provided to Vault using the KEY_VAULT_URI environment
+                variable.
+            name: '- (Required) Unique name of the Azure destination.'
+            namespace: |-
+                - (Optional) The namespace to provision the resource in.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+            secret_name_template: |-
+                - (Optional) Template describing how to generate external secret names.
+                Supports a subset of the Go Template syntax.
+            tenant_id: |-
+                - (Optional) ID of the target Azure tenant.
+                Can be omitted and directly provided to Vault using the AZURE_TENANT_ID environment
+                variable.
+            type: '- The type of the secrets destination (azure-kv).'
+        importStatements: []
+    vault_secrets_sync_config:
+        subCategory: ""
+        description: Configures the secret sync global config.
+        name: vault_secrets_sync_config
+        title: vault_secrets_sync_config resource
+        examples:
+            - name: global_config
+              manifest: |-
+                {
+                  "disabled": true,
+                  "queue_capacity": 500000
+                }
+        argumentDocs:
+            disabled: '- (Optional) Disables the syncing process between Vault and external destinations. Defaults to false.'
+            namespace: |-
+                - (Optional) The namespace to provision the resource in.
+                This resource can only be configured in the root namespace.
+                Available only for Vault Enterprise.
+            queue_capacity: '- (Optional) Maximum number of pending sync operations allowed on the queue. Defaults to 1000000.'
+        importStatements: []
+    vault_secrets_sync_gcp_destination:
+        subCategory: ""
+        description: Creates a GCP destination to synchronize secrets in Vault
+        name: vault_secrets_sync_gcp_destination
+        title: vault_secrets_sync_gcp_destination resource
+        examples:
+            - name: gcp
+              manifest: |-
+                {
+                  "credentials": "${file(var.credentials_file)}",
+                  "custom_tags": {
+                    "foo": "bar"
+                  },
+                  "name": "gcp-dest",
+                  "secret_name_template": "vault_{{ .MountAccessor | lowercase }}_{{ .SecretPath | lowercase }}"
+                }
+        argumentDocs:
+            credentials: |-
+                - (Optional) JSON-encoded credentials to use to connect to GCP.
+                Can be omitted and directly provided to Vault using the GOOGLE_APPLICATION_CREDENTIALS environment
+                variable.
+            custom_tags: '- (Optional) Custom tags to set on the secret managed at the destination.'
+            name: '- (Required) Unique name of the GCP destination.'
+            namespace: |-
+                - (Optional) The namespace to provision the resource in.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+            secret_name_template: |-
+                - (Optional) Template describing how to generate external secret names.
+                Supports a subset of the Go Template syntax.
+            type: '- The type of the secrets destination (gcp-sm).'
+        importStatements: []
+    vault_secrets_sync_gh_destination:
+        subCategory: ""
+        description: Creates a GitHub destination to synchronize secrets in Vault
+        name: vault_secrets_sync_gh_destination
+        title: vault_secrets_sync_gh_destination resource
+        examples:
+            - name: gh
+              manifest: |-
+                {
+                  "access_token": "${var.access_token}",
+                  "name": "gh-dest",
+                  "repository_name": "repo-name-example",
+                  "repository_owner": "${var.repo_owner}",
+                  "secret_name_template": "vault_{{ .MountAccessor | lowercase }}_{{ .SecretPath | lowercase }}"
+                }
+              references:
+                access_token: var.access_token
+                repository_owner: var.repo_owner
+        argumentDocs:
+            access_token: |-
+                - (Optional) Fine-grained or personal access token.
+                Can be omitted and directly provided to Vault using the GITHUB_ACCESS_TOKEN environment
+                variable.
+            name: '- (Required) Unique name of the GitHub destination.'
+            namespace: |-
+                - (Optional) The namespace to provision the resource in.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+            repository_name: |-
+                - (Optional) Name of the repository.
+                Can be omitted and directly provided to Vault using the GITHUB_REPOSITORY_NAME environment
+                variable.
+            repository_owner: |-
+                - (Optional) GitHub organization or username that owns the repository.
+                Can be omitted and directly provided to Vault using the GITHUB_REPOSITORY_OWNER environment
+                variable.
+            secret_name_template: |-
+                - (Optional) Template describing how to generate external secret names.
+                Supports a subset of the Go Template syntax.
+            type: '- The type of the secrets destination (gh).'
+        importStatements: []
+    vault_secrets_sync_vercel_destination:
+        subCategory: ""
+        description: Creates a GitHub destination to synchronize secrets in Vault
+        name: vault_secrets_sync_vercel_destination
+        title: vault_secrets_sync_vercel_destination resource
+        examples:
+            - name: vercel
+              manifest: |-
+                {
+                  "access_token": "${var.access_token}",
+                  "deployment_environments": [
+                    "development",
+                    "preview",
+                    "production"
+                  ],
+                  "name": "vercel-dest",
+                  "project_id": "${var.project_id}",
+                  "secret_name_template": "vault_{{ .MountAccessor | lowercase }}_{{ .SecretPath | lowercase }}"
+                }
+              references:
+                access_token: var.access_token
+                project_id: var.project_id
+        argumentDocs:
+            access_token: |-
+                - (Required) Vercel API access token with the permissions to manage environment
+                variables.
+            deployment_environments: |-
+                - (Required) Deployment environments where the environment variables
+                are available. Accepts development, preview and production.
+            name: '- (Required) Unique name of the GitHub destination.'
+            namespace: |-
+                - (Optional) The namespace to provision the resource in.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+            project_id: '- (Required) Project ID where to manage environment variables.'
+            secret_name_template: |-
+                - (Optional) Template describing how to generate external secret names.
+                Supports a subset of the Go Template syntax.
+            team_id: '- (Optional) Team ID where to manage environment variables.'
+            type: '- The type of the secrets destination (vercel-project).'
         importStatements: []
     vault_ssh_secret_backend_ca:
         subCategory: ""

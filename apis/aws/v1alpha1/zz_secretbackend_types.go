@@ -33,6 +33,18 @@ type SecretBackendInitParameters struct {
 	// Specifies a custom HTTP IAM endpoint to use.
 	IAMEndpoint *string `json:"iamEndpoint,omitempty" tf:"iam_endpoint,omitempty"`
 
+	// The audience claim value. Requires Vault 1.16+.
+	// The audience claim value.
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The key to use for signing identity tokens. Requires Vault 1.16+.
+	// The key to use for signing identity tokens.
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
+	// The TTL of generated identity tokens in seconds. Requires Vault 1.16+.
+	// The TTL of generated identity tokens in seconds.
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
+
 	// Specifies whether the secrets mount will be marked as local. Local mounts are not replicated to performance replicas.
 	// Specifies if the secret backend is local only
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
@@ -57,6 +69,10 @@ type SecretBackendInitParameters struct {
 	// The AWS region for API calls. Defaults to us-east-1.
 	// The AWS region to make API calls against. Defaults to us-east-1.
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+
+	// Role ARN to assume for plugin identity token federation. Requires Vault 1.16+.
+	// Role ARN to assume for plugin identity token federation.
+	RoleArn *string `json:"roleArn,omitempty" tf:"role_arn,omitempty"`
 
 	// Specifies a custom HTTP STS endpoint to use.
 	// Specifies a custom HTTP STS endpoint to use.
@@ -89,6 +105,18 @@ type SecretBackendObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The audience claim value. Requires Vault 1.16+.
+	// The audience claim value.
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The key to use for signing identity tokens. Requires Vault 1.16+.
+	// The key to use for signing identity tokens.
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
+	// The TTL of generated identity tokens in seconds. Requires Vault 1.16+.
+	// The TTL of generated identity tokens in seconds.
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
+
 	// Specifies whether the secrets mount will be marked as local. Local mounts are not replicated to performance replicas.
 	// Specifies if the secret backend is local only
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
@@ -113,6 +141,10 @@ type SecretBackendObservation struct {
 	// The AWS region for API calls. Defaults to us-east-1.
 	// The AWS region to make API calls against. Defaults to us-east-1.
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+
+	// Role ARN to assume for plugin identity token federation. Requires Vault 1.16+.
+	// Role ARN to assume for plugin identity token federation.
+	RoleArn *string `json:"roleArn,omitempty" tf:"role_arn,omitempty"`
 
 	// Specifies a custom HTTP STS endpoint to use.
 	// Specifies a custom HTTP STS endpoint to use.
@@ -153,6 +185,21 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	IAMEndpoint *string `json:"iamEndpoint,omitempty" tf:"iam_endpoint,omitempty"`
 
+	// The audience claim value. Requires Vault 1.16+.
+	// The audience claim value.
+	// +kubebuilder:validation:Optional
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The key to use for signing identity tokens. Requires Vault 1.16+.
+	// The key to use for signing identity tokens.
+	// +kubebuilder:validation:Optional
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
+	// The TTL of generated identity tokens in seconds. Requires Vault 1.16+.
+	// The TTL of generated identity tokens in seconds.
+	// +kubebuilder:validation:Optional
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
+
 	// Specifies whether the secrets mount will be marked as local. Local mounts are not replicated to performance replicas.
 	// Specifies if the secret backend is local only
 	// +kubebuilder:validation:Optional
@@ -182,6 +229,11 @@ type SecretBackendParameters struct {
 	// The AWS region to make API calls against. Defaults to us-east-1.
 	// +kubebuilder:validation:Optional
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+
+	// Role ARN to assume for plugin identity token federation. Requires Vault 1.16+.
+	// Role ARN to assume for plugin identity token federation.
+	// +kubebuilder:validation:Optional
+	RoleArn *string `json:"roleArn,omitempty" tf:"role_arn,omitempty"`
 
 	// The AWS Secret Key this backend should use to
 	// issue new credentials. Vault uses the official AWS SDK to authenticate, and thus can also use standard AWS environment credentials, shared file credentials or IAM role/ECS task credentials.

@@ -4,13 +4,12 @@
 PROJECT_NAME ?= provider-vault
 PROJECT_REPO ?= github.com/upbound/$(PROJECT_NAME)
 
-export TERRAFORM_VERSION ?= 1.3.9
+export TERRAFORM_VERSION ?= 1.7.0
 
 export TERRAFORM_PROVIDER_SOURCE ?= hashicorp/vault
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/hashicorp/terraform-provider-vault
-export TERRAFORM_PROVIDER_VERSION ?= 3.23.0
+export TERRAFORM_PROVIDER_VERSION ?= 3.25.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-vault
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-null_v3.23.0_x5
 export TERRAFORM_DOCS_PATH ?= website/docs/r
 
 PLATFORMS ?= linux_amd64 linux_arm64

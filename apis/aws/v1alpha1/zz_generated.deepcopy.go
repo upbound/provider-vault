@@ -2858,6 +2858,21 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 		*out = new(string)
 		**out = **in
 	}
+	if in.IdentityTokenAudience != nil {
+		in, out := &in.IdentityTokenAudience, &out.IdentityTokenAudience
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenKey != nil {
+		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenTTL != nil {
+		in, out := &in.IdentityTokenTTL, &out.IdentityTokenTTL
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Local != nil {
 		in, out := &in.Local, &out.Local
 		*out = new(bool)
@@ -2880,6 +2895,11 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 	}
 	if in.Region != nil {
 		in, out := &in.Region, &out.Region
+		*out = new(string)
+		**out = **in
+	}
+	if in.RoleArn != nil {
+		in, out := &in.RoleArn, &out.RoleArn
 		*out = new(string)
 		**out = **in
 	}
@@ -2965,6 +2985,21 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.IdentityTokenAudience != nil {
+		in, out := &in.IdentityTokenAudience, &out.IdentityTokenAudience
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenKey != nil {
+		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenTTL != nil {
+		in, out := &in.IdentityTokenTTL, &out.IdentityTokenTTL
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Local != nil {
 		in, out := &in.Local, &out.Local
 		*out = new(bool)
@@ -2987,6 +3022,11 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 	}
 	if in.Region != nil {
 		in, out := &in.Region, &out.Region
+		*out = new(string)
+		**out = **in
+	}
+	if in.RoleArn != nil {
+		in, out := &in.RoleArn, &out.RoleArn
 		*out = new(string)
 		**out = **in
 	}
@@ -3040,6 +3080,21 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.IdentityTokenAudience != nil {
+		in, out := &in.IdentityTokenAudience, &out.IdentityTokenAudience
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenKey != nil {
+		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenTTL != nil {
+		in, out := &in.IdentityTokenTTL, &out.IdentityTokenTTL
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Local != nil {
 		in, out := &in.Local, &out.Local
 		*out = new(bool)
@@ -3062,6 +3117,11 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 	}
 	if in.Region != nil {
 		in, out := &in.Region, &out.Region
+		*out = new(string)
+		**out = **in
+	}
+	if in.RoleArn != nil {
+		in, out := &in.RoleArn, &out.RoleArn
 		*out = new(string)
 		**out = **in
 	}

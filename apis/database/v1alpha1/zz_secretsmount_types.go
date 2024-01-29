@@ -1700,6 +1700,9 @@ type SecretsMountMySQLAuroraInitParameters struct {
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information.
 	// See Vault docs
 	// Connection string to use to connect to the database.
@@ -1735,6 +1738,10 @@ type SecretsMountMySQLAuroraInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1757,6 +1764,9 @@ type SecretsMountMySQLAuroraObservation struct {
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information.
 	// See Vault docs
 	// Connection string to use to connect to the database.
@@ -1793,6 +1803,10 @@ type SecretsMountMySQLAuroraObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -1814,6 +1828,10 @@ type SecretsMountMySQLAuroraParameters struct {
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	// +kubebuilder:validation:Optional
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
 
 	// A URL containing connection information.
 	// See Vault docs
@@ -1863,6 +1881,20 @@ type SecretsMountMySQLAuroraParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// A JSON encoded credential for use with IAM authorization
+	// +kubebuilder:validation:Optional
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// +kubebuilder:validation:Optional
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// +kubebuilder:validation:Optional
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1952,6 +1984,9 @@ type SecretsMountMySQLLegacyInitParameters struct {
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information.
 	// See Vault docs
 	// Connection string to use to connect to the database.
@@ -1987,6 +2022,10 @@ type SecretsMountMySQLLegacyInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2009,6 +2048,9 @@ type SecretsMountMySQLLegacyObservation struct {
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information.
 	// See Vault docs
 	// Connection string to use to connect to the database.
@@ -2045,6 +2087,10 @@ type SecretsMountMySQLLegacyObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -2066,6 +2112,10 @@ type SecretsMountMySQLLegacyParameters struct {
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	// +kubebuilder:validation:Optional
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
 
 	// A URL containing connection information.
 	// See Vault docs
@@ -2115,6 +2165,20 @@ type SecretsMountMySQLLegacyParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// A JSON encoded credential for use with IAM authorization
+	// +kubebuilder:validation:Optional
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// +kubebuilder:validation:Optional
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// +kubebuilder:validation:Optional
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2296,6 +2360,9 @@ type SecretsMountMySQLRDSInitParameters struct {
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information.
 	// See Vault docs
 	// Connection string to use to connect to the database.
@@ -2331,6 +2398,10 @@ type SecretsMountMySQLRDSInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2353,6 +2424,9 @@ type SecretsMountMySQLRDSObservation struct {
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information.
 	// See Vault docs
 	// Connection string to use to connect to the database.
@@ -2389,6 +2463,10 @@ type SecretsMountMySQLRDSObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -2410,6 +2488,10 @@ type SecretsMountMySQLRDSParameters struct {
 	// A list of roles that are allowed to use this connection.
 	// +kubebuilder:validation:Optional
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
+
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	// +kubebuilder:validation:Optional
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
 
 	// A URL containing connection information.
 	// See Vault docs
@@ -2459,6 +2541,20 @@ type SecretsMountMySQLRDSParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// A JSON encoded credential for use with IAM authorization
+	// +kubebuilder:validation:Optional
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// +kubebuilder:validation:Optional
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// +kubebuilder:validation:Optional
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2642,6 +2738,9 @@ type SecretsMountOracleInitParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Set to true to disconnect any open sessions prior to running the revocation statements.
+	DisconnectSessions *bool `json:"disconnectSessions,omitempty" tf:"disconnect_sessions,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -2668,6 +2767,9 @@ type SecretsMountOracleInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// Set to true in order to split statements after semi-colons.
+	SplitStatements *bool `json:"splitStatements,omitempty" tf:"split_statements,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2699,6 +2801,9 @@ type SecretsMountOracleObservation struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Set to true to disconnect any open sessions prior to running the revocation statements.
+	DisconnectSessions *bool `json:"disconnectSessions,omitempty" tf:"disconnect_sessions,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -2725,6 +2830,9 @@ type SecretsMountOracleObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// Set to true in order to split statements after semi-colons.
+	SplitStatements *bool `json:"splitStatements,omitempty" tf:"split_statements,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2758,6 +2866,10 @@ type SecretsMountOracleParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// Set to true to disconnect any open sessions prior to running the revocation statements.
+	// +kubebuilder:validation:Optional
+	DisconnectSessions *bool `json:"disconnectSessions,omitempty" tf:"disconnect_sessions,omitempty"`
 
 	// The maximum number of seconds to keep
 	// a connection alive for.
@@ -2796,6 +2908,10 @@ type SecretsMountOracleParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// Set to true in order to split statements after semi-colons.
+	// +kubebuilder:validation:Optional
+	SplitStatements *bool `json:"splitStatements,omitempty" tf:"split_statements,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL

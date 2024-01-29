@@ -151,6 +151,10 @@ type SecretBackendRoleInitParameters struct {
 	// Specify the allowed extended key usage constraint on issued certificates.
 	ExtKeyUsage []*string `json:"extKeyUsage,omitempty" tf:"ext_key_usage,omitempty"`
 
+	// Specify the allowed extended key usage OIDs constraint on issued certificates
+	// A list of extended key usage OIDs.
+	ExtKeyUsageOids []*string `json:"extKeyUsageOids,omitempty" tf:"ext_key_usage_oids,omitempty"`
+
 	// Flag to generate leases with certificates
 	// Flag to generate leases with certificates.
 	GenerateLease *bool `json:"generateLease,omitempty" tf:"generate_lease,omitempty"`
@@ -342,6 +346,10 @@ type SecretBackendRoleObservation struct {
 	// Specify the allowed extended key usage constraint on issued certificates
 	// Specify the allowed extended key usage constraint on issued certificates.
 	ExtKeyUsage []*string `json:"extKeyUsage,omitempty" tf:"ext_key_usage,omitempty"`
+
+	// Specify the allowed extended key usage OIDs constraint on issued certificates
+	// A list of extended key usage OIDs.
+	ExtKeyUsageOids []*string `json:"extKeyUsageOids,omitempty" tf:"ext_key_usage_oids,omitempty"`
 
 	// Flag to generate leases with certificates
 	// Flag to generate leases with certificates.
@@ -558,6 +566,11 @@ type SecretBackendRoleParameters struct {
 	// Specify the allowed extended key usage constraint on issued certificates.
 	// +kubebuilder:validation:Optional
 	ExtKeyUsage []*string `json:"extKeyUsage,omitempty" tf:"ext_key_usage,omitempty"`
+
+	// Specify the allowed extended key usage OIDs constraint on issued certificates
+	// A list of extended key usage OIDs.
+	// +kubebuilder:validation:Optional
+	ExtKeyUsageOids []*string `json:"extKeyUsageOids,omitempty" tf:"ext_key_usage_oids,omitempty"`
 
 	// Flag to generate leases with certificates
 	// Flag to generate leases with certificates.

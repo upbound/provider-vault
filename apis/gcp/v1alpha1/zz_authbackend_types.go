@@ -37,6 +37,8 @@ type AuthBackendInitParameters struct {
 	PrivateKeyID *string `json:"privateKeyId,omitempty" tf:"private_key_id,omitempty"`
 
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	Tune []TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 }
 
 type AuthBackendObservation struct {
@@ -69,6 +71,8 @@ type AuthBackendObservation struct {
 	PrivateKeyID *string `json:"privateKeyId,omitempty" tf:"private_key_id,omitempty"`
 
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	Tune []TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
 }
 
 type AuthBackendParameters struct {
@@ -109,6 +113,9 @@ type AuthBackendParameters struct {
 
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	Tune []TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 }
 
 type CustomEndpointInitParameters struct {
@@ -158,6 +165,69 @@ type CustomEndpointParameters struct {
 	// Replaces the service endpoint used in API requests to `https://iam.googleapis.com`.
 	// +kubebuilder:validation:Optional
 	IAM *string `json:"iam,omitempty" tf:"iam,omitempty"`
+}
+
+type TuneInitParameters struct {
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers"`
+
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys"`
+
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys"`
+
+	DefaultLeaseTTL *string `json:"defaultLeaseTtl,omitempty" tf:"default_lease_ttl"`
+
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility"`
+
+	MaxLeaseTTL *string `json:"maxLeaseTtl,omitempty" tf:"max_lease_ttl"`
+
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers"`
+
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type"`
+}
+
+type TuneObservation struct {
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
+
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
+
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
+
+	DefaultLeaseTTL *string `json:"defaultLeaseTtl,omitempty" tf:"default_lease_ttl,omitempty"`
+
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
+
+	MaxLeaseTTL *string `json:"maxLeaseTtl,omitempty" tf:"max_lease_ttl,omitempty"`
+
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
+
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
+}
+
+type TuneParameters struct {
+
+	// +kubebuilder:validation:Optional
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers"`
+
+	// +kubebuilder:validation:Optional
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys"`
+
+	// +kubebuilder:validation:Optional
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys"`
+
+	// +kubebuilder:validation:Optional
+	DefaultLeaseTTL *string `json:"defaultLeaseTtl,omitempty" tf:"default_lease_ttl"`
+
+	// +kubebuilder:validation:Optional
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility"`
+
+	// +kubebuilder:validation:Optional
+	MaxLeaseTTL *string `json:"maxLeaseTtl,omitempty" tf:"max_lease_ttl"`
+
+	// +kubebuilder:validation:Optional
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers"`
+
+	// +kubebuilder:validation:Optional
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type"`
 }
 
 // AuthBackendSpec defines the desired state of AuthBackend

@@ -128,6 +128,35 @@ spec:
                     type: string
                   projectId:
                     type: string
+                  tune:
+                    items:
+                      properties:
+                        allowedResponseHeaders:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacRequestKeys:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacResponseKeys:
+                          items:
+                            type: string
+                          type: array
+                        defaultLeaseTtl:
+                          type: string
+                        listingVisibility:
+                          type: string
+                        maxLeaseTtl:
+                          type: string
+                        passthroughRequestHeaders:
+                          items:
+                            type: string
+                          type: array
+                        tokenType:
+                          type: string
+                      type: object
+                    type: array
                 type: object
               initProvider:
                 description: THIS IS AN ALPHA FIELD. Do not use it in production.
@@ -186,6 +215,35 @@ spec:
                     type: string
                   projectId:
                     type: string
+                  tune:
+                    items:
+                      properties:
+                        allowedResponseHeaders:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacRequestKeys:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacResponseKeys:
+                          items:
+                            type: string
+                          type: array
+                        defaultLeaseTtl:
+                          type: string
+                        listingVisibility:
+                          type: string
+                        maxLeaseTtl:
+                          type: string
+                        passthroughRequestHeaders:
+                          items:
+                            type: string
+                          type: array
+                        tokenType:
+                          type: string
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -438,6 +496,35 @@ spec:
                     type: string
                   projectId:
                     type: string
+                  tune:
+                    items:
+                      properties:
+                        allowedResponseHeaders:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacRequestKeys:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacResponseKeys:
+                          items:
+                            type: string
+                          type: array
+                        defaultLeaseTtl:
+                          type: string
+                        listingVisibility:
+                          type: string
+                        maxLeaseTtl:
+                          type: string
+                        passthroughRequestHeaders:
+                          items:
+                            type: string
+                          type: array
+                        tokenType:
+                          type: string
+                      type: object
+                    type: array
                 type: object
               conditions:
                 description: Conditions of the resource.

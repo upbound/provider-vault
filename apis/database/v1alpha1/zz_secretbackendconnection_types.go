@@ -901,6 +901,10 @@ type MssqlParameters struct {
 
 type MySQLAuroraInitParameters struct {
 
+	// Enable IAM authentication to a Google Cloud instance when set to gcp_iam
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information. See
 	// the Vault
 	// docs
@@ -922,6 +926,10 @@ type MySQLAuroraInitParameters struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -934,6 +942,10 @@ type MySQLAuroraInitParameters struct {
 
 type MySQLAuroraObservation struct {
 
+	// Enable IAM authentication to a Google Cloud instance when set to gcp_iam
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information. See
 	// the Vault
 	// docs
@@ -956,6 +968,10 @@ type MySQLAuroraObservation struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -966,6 +982,11 @@ type MySQLAuroraObservation struct {
 }
 
 type MySQLAuroraParameters struct {
+
+	// Enable IAM authentication to a Google Cloud instance when set to gcp_iam
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	// +kubebuilder:validation:Optional
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
 
 	// A URL containing connection information. See
 	// the Vault
@@ -997,6 +1018,21 @@ type MySQLAuroraParameters struct {
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
+	// A JSON encoded credential for use with IAM authorization
+	// +kubebuilder:validation:Optional
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// +kubebuilder:validation:Optional
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// +kubebuilder:validation:Optional
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1052,6 +1088,10 @@ type MySQLInitParameters struct {
 
 type MySQLLegacyInitParameters struct {
 
+	// Enable IAM authentication to a Google Cloud instance when set to gcp_iam
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information. See
 	// the Vault
 	// docs
@@ -1073,6 +1113,10 @@ type MySQLLegacyInitParameters struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1085,6 +1129,10 @@ type MySQLLegacyInitParameters struct {
 
 type MySQLLegacyObservation struct {
 
+	// Enable IAM authentication to a Google Cloud instance when set to gcp_iam
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information. See
 	// the Vault
 	// docs
@@ -1107,6 +1155,10 @@ type MySQLLegacyObservation struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -1117,6 +1169,11 @@ type MySQLLegacyObservation struct {
 }
 
 type MySQLLegacyParameters struct {
+
+	// Enable IAM authentication to a Google Cloud instance when set to gcp_iam
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	// +kubebuilder:validation:Optional
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
 
 	// A URL containing connection information. See
 	// the Vault
@@ -1148,6 +1205,21 @@ type MySQLLegacyParameters struct {
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
+	// A JSON encoded credential for use with IAM authorization
+	// +kubebuilder:validation:Optional
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// +kubebuilder:validation:Optional
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// +kubebuilder:validation:Optional
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1267,6 +1339,10 @@ type MySQLParameters struct {
 
 type MySQLRDSInitParameters struct {
 
+	// Enable IAM authentication to a Google Cloud instance when set to gcp_iam
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information. See
 	// the Vault
 	// docs
@@ -1288,6 +1364,10 @@ type MySQLRDSInitParameters struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1300,6 +1380,10 @@ type MySQLRDSInitParameters struct {
 
 type MySQLRDSObservation struct {
 
+	// Enable IAM authentication to a Google Cloud instance when set to gcp_iam
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
+
 	// A URL containing connection information. See
 	// the Vault
 	// docs
@@ -1322,6 +1406,10 @@ type MySQLRDSObservation struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -1332,6 +1420,11 @@ type MySQLRDSObservation struct {
 }
 
 type MySQLRDSParameters struct {
+
+	// Enable IAM authentication to a Google Cloud instance when set to gcp_iam
+	// Specify alternative authorization type. (Only 'gcp_iam' is valid currently)
+	// +kubebuilder:validation:Optional
+	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
 
 	// A URL containing connection information. See
 	// the Vault
@@ -1363,6 +1456,21 @@ type MySQLRDSParameters struct {
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
+	// A JSON encoded credential for use with IAM authorization
+	// +kubebuilder:validation:Optional
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// +kubebuilder:validation:Optional
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// +kubebuilder:validation:Optional
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1384,6 +1492,10 @@ type OracleInitParameters struct {
 	// Connection string to use to connect to the database.
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
+	// Enable the built-in session disconnect mechanism.
+	// Set to true to disconnect any open sessions prior to running the revocation statements.
+	DisconnectSessions *bool `json:"disconnectSessions,omitempty" tf:"disconnect_sessions,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -1398,6 +1510,10 @@ type OracleInitParameters struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// Enable spliting statements after semi-colons.
+	// Set to true in order to split statements after semi-colons.
+	SplitStatements *bool `json:"splitStatements,omitempty" tf:"split_statements,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1417,6 +1533,10 @@ type OracleObservation struct {
 	// Connection string to use to connect to the database.
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
 
+	// Enable the built-in session disconnect mechanism.
+	// Set to true to disconnect any open sessions prior to running the revocation statements.
+	DisconnectSessions *bool `json:"disconnectSessions,omitempty" tf:"disconnect_sessions,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -1431,6 +1551,10 @@ type OracleObservation struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// Enable spliting statements after semi-colons.
+	// Set to true in order to split statements after semi-colons.
+	SplitStatements *bool `json:"splitStatements,omitempty" tf:"split_statements,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1450,6 +1574,11 @@ type OracleParameters struct {
 	// Connection string to use to connect to the database.
 	// +kubebuilder:validation:Optional
 	ConnectionURL *string `json:"connectionUrl,omitempty" tf:"connection_url,omitempty"`
+
+	// Enable the built-in session disconnect mechanism.
+	// Set to true to disconnect any open sessions prior to running the revocation statements.
+	// +kubebuilder:validation:Optional
+	DisconnectSessions *bool `json:"disconnectSessions,omitempty" tf:"disconnect_sessions,omitempty"`
 
 	// The maximum number of seconds to keep
 	// a connection alive for.
@@ -1473,6 +1602,11 @@ type OracleParameters struct {
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// Enable spliting statements after semi-colons.
+	// Set to true in order to split statements after semi-colons.
+	// +kubebuilder:validation:Optional
+	SplitStatements *bool `json:"splitStatements,omitempty" tf:"split_statements,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL

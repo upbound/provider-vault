@@ -2413,6 +2413,17 @@ func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleIn
 			}
 		}
 	}
+	if in.ExtKeyUsageOids != nil {
+		in, out := &in.ExtKeyUsageOids, &out.ExtKeyUsageOids
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.GenerateLease != nil {
 		in, out := &in.GenerateLease, &out.GenerateLease
 		*out = new(bool)
@@ -2777,6 +2788,17 @@ func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObser
 			}
 		}
 	}
+	if in.ExtKeyUsageOids != nil {
+		in, out := &in.ExtKeyUsageOids, &out.ExtKeyUsageOids
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.GenerateLease != nil {
 		in, out := &in.GenerateLease, &out.GenerateLease
 		*out = new(bool)
@@ -3105,6 +3127,17 @@ func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParame
 	}
 	if in.ExtKeyUsage != nil {
 		in, out := &in.ExtKeyUsage, &out.ExtKeyUsage
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExtKeyUsageOids != nil {
+		in, out := &in.ExtKeyUsageOids, &out.ExtKeyUsageOids
 		*out = make([]*string, len(*in))
 		for i := range *in {
 			if (*in)[i] != nil {
