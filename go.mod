@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/crossplane/crossplane-runtime v1.14.0
-	github.com/crossplane/crossplane-tools v0.0.0-20230714144037-2684f4bc7638
+	github.com/crossplane/crossplane-tools v0.0.0-20230925130601-628280f8bf79
 	github.com/pkg/errors v0.9.1
 	github.com/upbound/upjet v0.9.0-rc.0.0.20230801094152-39dcb37efd81
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
