@@ -37,6 +37,13 @@ type AuthBackendConfigIdentityInitParameters struct {
 	// added to both audit logs, and on the iam_alias
 	// The metadata to include on the token returned by the login endpoint.
 	IAMMetadata []*string `json:"iamMetadata,omitempty" tf:"iam_metadata,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 }
 
 type AuthBackendConfigIdentityObservation struct {
@@ -65,6 +72,13 @@ type AuthBackendConfigIdentityObservation struct {
 	IAMMetadata []*string `json:"iamMetadata,omitempty" tf:"iam_metadata,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 }
 
 type AuthBackendConfigIdentityParameters struct {
@@ -96,6 +110,14 @@ type AuthBackendConfigIdentityParameters struct {
 	// The metadata to include on the token returned by the login endpoint.
 	// +kubebuilder:validation:Optional
 	IAMMetadata []*string `json:"iamMetadata,omitempty" tf:"iam_metadata,omitempty"`
+
+	// The namespace to provision the resource in.
+	// The value should not contain leading or trailing forward slashes.
+	// The namespace is always relative to the provider's configured namespace.
+	// Available only for Vault Enterprise.
+	// Target namespace. (requires Enterprise)
+	// +kubebuilder:validation:Optional
+	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 }
 
 // AuthBackendConfigIdentitySpec defines the desired state of AuthBackendConfigIdentity

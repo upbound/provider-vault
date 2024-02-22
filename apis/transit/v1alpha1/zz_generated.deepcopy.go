@@ -83,6 +83,11 @@ func (in *SecretBackendKeyInitParameters) DeepCopyInto(out *SecretBackendKeyInit
 		*out = new(bool)
 		**out = **in
 	}
+	if in.KeySize != nil {
+		in, out := &in.KeySize, &out.KeySize
+		*out = new(float64)
+		**out = **in
+	}
 	if in.MinDecryptionVersion != nil {
 		in, out := &in.MinDecryptionVersion, &out.MinDecryptionVersion
 		*out = new(float64)
@@ -198,6 +203,11 @@ func (in *SecretBackendKeyObservation) DeepCopyInto(out *SecretBackendKeyObserva
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
 		*out = new(string)
+		**out = **in
+	}
+	if in.KeySize != nil {
+		in, out := &in.KeySize, &out.KeySize
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Keys != nil {
@@ -329,6 +339,11 @@ func (in *SecretBackendKeyParameters) DeepCopyInto(out *SecretBackendKeyParamete
 	if in.Exportable != nil {
 		in, out := &in.Exportable, &out.Exportable
 		*out = new(bool)
+		**out = **in
+	}
+	if in.KeySize != nil {
+		in, out := &in.KeySize, &out.KeySize
+		*out = new(float64)
 		**out = **in
 	}
 	if in.MinDecryptionVersion != nil {

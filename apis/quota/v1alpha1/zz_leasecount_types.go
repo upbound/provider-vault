@@ -39,6 +39,10 @@ type LeaseCountInitParameters struct {
 	// a namespace specific mount quota. Note, namespaces are supported in Enterprise only.
 	// Path of the mount or namespace to apply the quota. A blank path configures a global lease count quota.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// If set on a quota where path is set to an auth mount with a concept of roles (such as /auth/approle/), this will make the quota restrict login requests to that mount that are made with the specified role.
+	// If set on a quota where path is set to an auth mount with a concept of roles (such as /auth/approle/), this will make the quota restrict login requests to that mount that are made with the specified role.
+	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 }
 
 type LeaseCountObservation struct {
@@ -68,6 +72,10 @@ type LeaseCountObservation struct {
 	// a namespace specific mount quota. Note, namespaces are supported in Enterprise only.
 	// Path of the mount or namespace to apply the quota. A blank path configures a global lease count quota.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// If set on a quota where path is set to an auth mount with a concept of roles (such as /auth/approle/), this will make the quota restrict login requests to that mount that are made with the specified role.
+	// If set on a quota where path is set to an auth mount with a concept of roles (such as /auth/approle/), this will make the quota restrict login requests to that mount that are made with the specified role.
+	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 }
 
 type LeaseCountParameters struct {
@@ -100,6 +108,11 @@ type LeaseCountParameters struct {
 	// Path of the mount or namespace to apply the quota. A blank path configures a global lease count quota.
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// If set on a quota where path is set to an auth mount with a concept of roles (such as /auth/approle/), this will make the quota restrict login requests to that mount that are made with the specified role.
+	// If set on a quota where path is set to an auth mount with a concept of roles (such as /auth/approle/), this will make the quota restrict login requests to that mount that are made with the specified role.
+	// +kubebuilder:validation:Optional
+	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 }
 
 // LeaseCountSpec defines the desired state of LeaseCount

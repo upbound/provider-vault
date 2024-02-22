@@ -48,6 +48,10 @@ type RateLimitInitParameters struct {
 	// rule. The rate must be positive.
 	// The maximum number of requests at any given second to be allowed by the quota rule. The rate must be positive.
 	Rate *float64 `json:"rate,omitempty" tf:"rate,omitempty"`
+
+	// If set on a quota where path is set to an auth mount with a concept of roles (such as /auth/approle/), this will make the quota restrict login requests to that mount that are made with the specified role.
+	// If set on a quota where path is set to an auth mount with a concept of roles (such as /auth/approle/), this will make the quota restrict login requests to that mount that are made with the specified role.
+	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 }
 
 type RateLimitObservation struct {
@@ -87,6 +91,10 @@ type RateLimitObservation struct {
 	// rule. The rate must be positive.
 	// The maximum number of requests at any given second to be allowed by the quota rule. The rate must be positive.
 	Rate *float64 `json:"rate,omitempty" tf:"rate,omitempty"`
+
+	// If set on a quota where path is set to an auth mount with a concept of roles (such as /auth/approle/), this will make the quota restrict login requests to that mount that are made with the specified role.
+	// If set on a quota where path is set to an auth mount with a concept of roles (such as /auth/approle/), this will make the quota restrict login requests to that mount that are made with the specified role.
+	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 }
 
 type RateLimitParameters struct {
@@ -130,6 +138,11 @@ type RateLimitParameters struct {
 	// The maximum number of requests at any given second to be allowed by the quota rule. The rate must be positive.
 	// +kubebuilder:validation:Optional
 	Rate *float64 `json:"rate,omitempty" tf:"rate,omitempty"`
+
+	// If set on a quota where path is set to an auth mount with a concept of roles (such as /auth/approle/), this will make the quota restrict login requests to that mount that are made with the specified role.
+	// If set on a quota where path is set to an auth mount with a concept of roles (such as /auth/approle/), this will make the quota restrict login requests to that mount that are made with the specified role.
+	// +kubebuilder:validation:Optional
+	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 }
 
 // RateLimitSpec defines the desired state of RateLimit

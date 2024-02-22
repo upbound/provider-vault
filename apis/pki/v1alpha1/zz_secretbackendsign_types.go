@@ -47,6 +47,13 @@ type SecretBackendSignInitParameters struct {
 	// List of alternative IPs.
 	IPSans []*string `json:"ipSans,omitempty" tf:"ip_sans,omitempty"`
 
+	// Specifies the default issuer of this request. Can
+	// be the value default, a name, or an issuer ID. Use ACLs to prevent access to
+	// the /pki/issuer/:issuer_ref/{issue,sign}/:name paths to prevent users
+	// overriding the role's issuer_ref value.
+	// Specifies the default issuer of this request.
+	IssuerRef *string `json:"issuerRef,omitempty" tf:"issuer_ref,omitempty"`
+
 	// Generate a new certificate when the expiration is within this number of seconds, default is 604800 (7 days)
 	// Generate a new certificate when the expiration is within this number of seconds
 	MinSecondsRemaining *float64 `json:"minSecondsRemaining,omitempty" tf:"min_seconds_remaining,omitempty"`
@@ -122,6 +129,13 @@ type SecretBackendSignObservation struct {
 	// List of alternative IPs
 	// List of alternative IPs.
 	IPSans []*string `json:"ipSans,omitempty" tf:"ip_sans,omitempty"`
+
+	// Specifies the default issuer of this request. Can
+	// be the value default, a name, or an issuer ID. Use ACLs to prevent access to
+	// the /pki/issuer/:issuer_ref/{issue,sign}/:name paths to prevent users
+	// overriding the role's issuer_ref value.
+	// Specifies the default issuer of this request.
+	IssuerRef *string `json:"issuerRef,omitempty" tf:"issuer_ref,omitempty"`
 
 	// The issuing CA
 	// The issuing CA.
@@ -208,6 +222,14 @@ type SecretBackendSignParameters struct {
 	// List of alternative IPs.
 	// +kubebuilder:validation:Optional
 	IPSans []*string `json:"ipSans,omitempty" tf:"ip_sans,omitempty"`
+
+	// Specifies the default issuer of this request. Can
+	// be the value default, a name, or an issuer ID. Use ACLs to prevent access to
+	// the /pki/issuer/:issuer_ref/{issue,sign}/:name paths to prevent users
+	// overriding the role's issuer_ref value.
+	// Specifies the default issuer of this request.
+	// +kubebuilder:validation:Optional
+	IssuerRef *string `json:"issuerRef,omitempty" tf:"issuer_ref,omitempty"`
 
 	// Generate a new certificate when the expiration is within this number of seconds, default is 604800 (7 days)
 	// Generate a new certificate when the expiration is within this number of seconds

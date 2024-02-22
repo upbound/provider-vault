@@ -133,8 +133,8 @@ type AuthBackendConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	PemKeys []*string `json:"pemKeys,omitempty" tf:"pem_keys,omitempty"`
 
-	// A service account JWT used to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
-	// A service account JWT used to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
+	// A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
+	// A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
 	// +kubebuilder:validation:Optional
 	TokenReviewerJwtSecretRef *v1.SecretKeySelector `json:"tokenReviewerJwtSecretRef,omitempty" tf:"-"`
 }

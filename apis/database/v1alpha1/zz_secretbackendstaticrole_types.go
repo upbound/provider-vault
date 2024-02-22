@@ -35,12 +35,23 @@ type SecretBackendStaticRoleInitParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// The amount of time Vault should wait before rotating the password, in seconds.
+	// Mutually exclusive with rotation_schedule.
 	// The amount of time Vault should wait before rotating the password, in seconds.
 	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// A cron-style string that will define the schedule on which rotations should occur.
+	// Mutually exclusive with rotation_period.
+	// A cron-style string that will define the schedule on which rotations should occur.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
 
 	// Database statements to execute to rotate the password for the configured database user.
 	// Database statements to execute to rotate the password for the configured database user.
 	RotationStatements []*string `json:"rotationStatements,omitempty" tf:"rotation_statements,omitempty"`
+
+	// The amount of time, in seconds, in which rotations are allowed to occur starting
+	// from a given rotation_schedule.
+	// The amount of time in seconds in which the rotations are allowed to occur starting from a given rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The database username that this static role corresponds to.
 	// The database username that this role corresponds to.
@@ -71,12 +82,23 @@ type SecretBackendStaticRoleObservation struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// The amount of time Vault should wait before rotating the password, in seconds.
+	// Mutually exclusive with rotation_schedule.
 	// The amount of time Vault should wait before rotating the password, in seconds.
 	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// A cron-style string that will define the schedule on which rotations should occur.
+	// Mutually exclusive with rotation_period.
+	// A cron-style string that will define the schedule on which rotations should occur.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
 
 	// Database statements to execute to rotate the password for the configured database user.
 	// Database statements to execute to rotate the password for the configured database user.
 	RotationStatements []*string `json:"rotationStatements,omitempty" tf:"rotation_statements,omitempty"`
+
+	// The amount of time, in seconds, in which rotations are allowed to occur starting
+	// from a given rotation_schedule.
+	// The amount of time in seconds in which the rotations are allowed to occur starting from a given rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The database username that this static role corresponds to.
 	// The database username that this role corresponds to.
@@ -109,14 +131,27 @@ type SecretBackendStaticRoleParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// The amount of time Vault should wait before rotating the password, in seconds.
+	// Mutually exclusive with rotation_schedule.
 	// The amount of time Vault should wait before rotating the password, in seconds.
 	// +kubebuilder:validation:Optional
 	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// A cron-style string that will define the schedule on which rotations should occur.
+	// Mutually exclusive with rotation_period.
+	// A cron-style string that will define the schedule on which rotations should occur.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
 
 	// Database statements to execute to rotate the password for the configured database user.
 	// Database statements to execute to rotate the password for the configured database user.
 	// +kubebuilder:validation:Optional
 	RotationStatements []*string `json:"rotationStatements,omitempty" tf:"rotation_statements,omitempty"`
+
+	// The amount of time, in seconds, in which rotations are allowed to occur starting
+	// from a given rotation_schedule.
+	// The amount of time in seconds in which the rotations are allowed to occur starting from a given rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The database username that this static role corresponds to.
 	// The database username that this role corresponds to.
@@ -163,7 +198,6 @@ type SecretBackendStaticRole struct {
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dbName) || has(self.initProvider.dbName)",message="dbName is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.rotationPeriod) || has(self.initProvider.rotationPeriod)",message="rotationPeriod is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.username) || has(self.initProvider.username)",message="username is a required parameter"
 	Spec   SecretBackendStaticRoleSpec   `json:"spec"`
 	Status SecretBackendStaticRoleStatus `json:"status,omitempty"`

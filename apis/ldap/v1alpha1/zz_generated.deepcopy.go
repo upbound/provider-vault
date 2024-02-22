@@ -331,6 +331,11 @@ func (in *AuthBackendInitParameters) DeepCopyInto(out *AuthBackendInitParameters
 		*out = new(bool)
 		**out = **in
 	}
+	if in.MaxPageSize != nil {
+		in, out := &in.MaxPageSize, &out.MaxPageSize
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -570,6 +575,11 @@ func (in *AuthBackendObservation) DeepCopyInto(out *AuthBackendObservation) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.MaxPageSize != nil {
+		in, out := &in.MaxPageSize, &out.MaxPageSize
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -775,6 +785,11 @@ func (in *AuthBackendParameters) DeepCopyInto(out *AuthBackendParameters) {
 	if in.Local != nil {
 		in, out := &in.Local, &out.Local
 		*out = new(bool)
+		**out = **in
+	}
+	if in.MaxPageSize != nil {
+		in, out := &in.MaxPageSize, &out.MaxPageSize
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Namespace != nil {

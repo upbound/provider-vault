@@ -120,12 +120,13 @@ spec:
                       type: string
                     type: array
                   tokenReviewerJwtSecretRef:
-                    description: A service account JWT used to access the TokenReview
-                      API to validate other JWTs during login. If not set the JWT
-                      used for login will be used to access the API. A service account
-                      JWT used to access the TokenReview API to validate other JWTs
-                      during login. If not set the JWT used for login will be used
-                      to access the API.
+                    description: A service account JWT (or other token) used as a
+                      bearer token to access the TokenReview API to validate other
+                      JWTs during login. If not set the JWT used for login will be
+                      used to access the API. A service account JWT (or other token)
+                      used as a bearer token to access the TokenReview API to validate
+                      other JWTs during login. If not set the JWT used for login will
+                      be used to access the API.
                     properties:
                       key:
                         description: The key to select.

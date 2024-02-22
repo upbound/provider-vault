@@ -60,7 +60,7 @@ type AzureRolesParameters struct {
 type SecretBackendRoleInitParameters struct {
 
 	// Application Object ID for an existing service principal that will
-	// be used instead of creating dynamic service principals. If present, azure_roles will be ignored.
+	// be used instead of creating dynamic service principals. If present, azure_roles and permanently_delete will be ignored.
 	// Application Object ID for an existing service principal that will be used instead of creating dynamic service principals.
 	ApplicationObjectID *string `json:"applicationObjectId,omitempty" tf:"application_object_id,omitempty"`
 
@@ -89,20 +89,34 @@ type SecretBackendRoleInitParameters struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Indicates whether the applications and service principals created by Vault will be permanently
+	// deleted when the corresponding leases expire. Defaults to false. For Vault v1.12+.
+	// Indicates whether the applications and service principals created by Vault will be permanently deleted when the corresponding leases expire.
+	PermanentlyDelete *bool `json:"permanentlyDelete,omitempty" tf:"permanently_delete,omitempty"`
+
 	// Name of the Azure role
 	// Name of the role to create
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
+
+	// Specifies the security principal types that are allowed to sign in to the application.
+	// Valid values are: AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, PersonalMicrosoftAccount. Requires Vault 1.16+.
+	// Specifies the security principal types that are allowed to sign in to the application. Valid values are: AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, PersonalMicrosoftAccount
+	SignInAudience *string `json:"signInAudience,omitempty" tf:"sign_in_audience,omitempty"`
 
 	// –  Specifies the default TTL for service principals generated using this role.
 	// Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
 	// Human-friendly description of the mount for the backend.
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// - A list of Azure tags to attach to an application. Requires Vault 1.16+.
+	// Comma-separated strings of Azure tags to attach to an application.
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
 }
 
 type SecretBackendRoleObservation struct {
 
 	// Application Object ID for an existing service principal that will
-	// be used instead of creating dynamic service principals. If present, azure_roles will be ignored.
+	// be used instead of creating dynamic service principals. If present, azure_roles and permanently_delete will be ignored.
 	// Application Object ID for an existing service principal that will be used instead of creating dynamic service principals.
 	ApplicationObjectID *string `json:"applicationObjectId,omitempty" tf:"application_object_id,omitempty"`
 
@@ -133,20 +147,34 @@ type SecretBackendRoleObservation struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Indicates whether the applications and service principals created by Vault will be permanently
+	// deleted when the corresponding leases expire. Defaults to false. For Vault v1.12+.
+	// Indicates whether the applications and service principals created by Vault will be permanently deleted when the corresponding leases expire.
+	PermanentlyDelete *bool `json:"permanentlyDelete,omitempty" tf:"permanently_delete,omitempty"`
+
 	// Name of the Azure role
 	// Name of the role to create
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
+
+	// Specifies the security principal types that are allowed to sign in to the application.
+	// Valid values are: AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, PersonalMicrosoftAccount. Requires Vault 1.16+.
+	// Specifies the security principal types that are allowed to sign in to the application. Valid values are: AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, PersonalMicrosoftAccount
+	SignInAudience *string `json:"signInAudience,omitempty" tf:"sign_in_audience,omitempty"`
 
 	// –  Specifies the default TTL for service principals generated using this role.
 	// Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
 	// Human-friendly description of the mount for the backend.
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// - A list of Azure tags to attach to an application. Requires Vault 1.16+.
+	// Comma-separated strings of Azure tags to attach to an application.
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
 }
 
 type SecretBackendRoleParameters struct {
 
 	// Application Object ID for an existing service principal that will
-	// be used instead of creating dynamic service principals. If present, azure_roles will be ignored.
+	// be used instead of creating dynamic service principals. If present, azure_roles and permanently_delete will be ignored.
 	// Application Object ID for an existing service principal that will be used instead of creating dynamic service principals.
 	// +kubebuilder:validation:Optional
 	ApplicationObjectID *string `json:"applicationObjectId,omitempty" tf:"application_object_id,omitempty"`
@@ -182,16 +210,33 @@ type SecretBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Indicates whether the applications and service principals created by Vault will be permanently
+	// deleted when the corresponding leases expire. Defaults to false. For Vault v1.12+.
+	// Indicates whether the applications and service principals created by Vault will be permanently deleted when the corresponding leases expire.
+	// +kubebuilder:validation:Optional
+	PermanentlyDelete *bool `json:"permanentlyDelete,omitempty" tf:"permanently_delete,omitempty"`
+
 	// Name of the Azure role
 	// Name of the role to create
 	// +kubebuilder:validation:Optional
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
+
+	// Specifies the security principal types that are allowed to sign in to the application.
+	// Valid values are: AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, PersonalMicrosoftAccount. Requires Vault 1.16+.
+	// Specifies the security principal types that are allowed to sign in to the application. Valid values are: AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, PersonalMicrosoftAccount
+	// +kubebuilder:validation:Optional
+	SignInAudience *string `json:"signInAudience,omitempty" tf:"sign_in_audience,omitempty"`
 
 	// –  Specifies the default TTL for service principals generated using this role.
 	// Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
 	// Human-friendly description of the mount for the backend.
 	// +kubebuilder:validation:Optional
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// - A list of Azure tags to attach to an application. Requires Vault 1.16+.
+	// Comma-separated strings of Azure tags to attach to an application.
+	// +kubebuilder:validation:Optional
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
 }
 
 // SecretBackendRoleSpec defines the desired state of SecretBackendRole

@@ -42,6 +42,8 @@ type AuthBackendInitParameters struct {
 	// Specifies if the auth method is local only
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
+	MaxPageSize *float64 `json:"maxPageSize,omitempty" tf:"max_page_size,omitempty"`
+
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
@@ -130,6 +132,8 @@ type AuthBackendObservation struct {
 
 	// Specifies if the auth method is local only
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
+
+	MaxPageSize *float64 `json:"maxPageSize,omitempty" tf:"max_page_size,omitempty"`
 
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
@@ -233,6 +237,9 @@ type AuthBackendParameters struct {
 	// Specifies if the auth method is local only
 	// +kubebuilder:validation:Optional
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	MaxPageSize *float64 `json:"maxPageSize,omitempty" tf:"max_page_size,omitempty"`
 
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional

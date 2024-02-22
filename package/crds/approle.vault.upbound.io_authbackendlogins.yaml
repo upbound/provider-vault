@@ -82,11 +82,25 @@ spec:
                     description: The ID of the role to log in with. The RoleID to
                       log in with.
                     type: string
-                  secretId:
+                  secretIdSecretRef:
                     description: The secret ID of the role to log in with. Required
                       unless bind_secret_id is set to false on the role. The SecretID
                       to log in with.
-                    type: string
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
                 type: object
               initProvider:
                 description: THIS IS AN ALPHA FIELD. Do not use it in production.
@@ -115,11 +129,6 @@ spec:
                   roleId:
                     description: The ID of the role to log in with. The RoleID to
                       log in with.
-                    type: string
-                  secretId:
-                    description: The secret ID of the role to log in with. Required
-                      unless bind_secret_id is set to false on the role. The SecretID
-                      to log in with.
                     type: string
                 type: object
               managementPolicies:
@@ -337,9 +346,6 @@ spec:
                     description: The unique path of the Vault backend to log in with.
                       Unique name of the auth backend to configure.
                     type: string
-                  clientToken:
-                    description: The Vault token created. The token.
-                    type: string
                   id:
                     type: string
                   leaseDuration:
@@ -376,11 +382,6 @@ spec:
                   roleId:
                     description: The ID of the role to log in with. The RoleID to
                       log in with.
-                    type: string
-                  secretId:
-                    description: The secret ID of the role to log in with. Required
-                      unless bind_secret_id is set to false on the role. The SecretID
-                      to log in with.
                     type: string
                 type: object
               conditions:

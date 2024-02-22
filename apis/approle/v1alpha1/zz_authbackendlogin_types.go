@@ -29,11 +29,6 @@ type AuthBackendLoginInitParameters struct {
 	// The ID of the role to log in with.
 	// The RoleID to log in with.
 	RoleID *string `json:"roleId,omitempty" tf:"role_id,omitempty"`
-
-	// The secret ID of the role to log in with. Required
-	// unless bind_secret_id is set to false on the role.
-	// The SecretID to log in with.
-	SecretID *string `json:"secretId,omitempty" tf:"secret_id,omitempty"`
 }
 
 type AuthBackendLoginObservation struct {
@@ -45,10 +40,6 @@ type AuthBackendLoginObservation struct {
 	// The unique path of the Vault backend to log in with.
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
-
-	// The Vault token created.
-	// The token.
-	ClientToken *string `json:"clientToken,omitempty" tf:"client_token,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -81,11 +72,6 @@ type AuthBackendLoginObservation struct {
 	// The ID of the role to log in with.
 	// The RoleID to log in with.
 	RoleID *string `json:"roleId,omitempty" tf:"role_id,omitempty"`
-
-	// The secret ID of the role to log in with. Required
-	// unless bind_secret_id is set to false on the role.
-	// The SecretID to log in with.
-	SecretID *string `json:"secretId,omitempty" tf:"secret_id,omitempty"`
 }
 
 type AuthBackendLoginParameters struct {
@@ -112,7 +98,7 @@ type AuthBackendLoginParameters struct {
 	// unless bind_secret_id is set to false on the role.
 	// The SecretID to log in with.
 	// +kubebuilder:validation:Optional
-	SecretID *string `json:"secretId,omitempty" tf:"secret_id,omitempty"`
+	SecretIDSecretRef *v1.SecretKeySelector `json:"secretIdSecretRef,omitempty" tf:"-"`
 }
 
 // AuthBackendLoginSpec defines the desired state of AuthBackendLogin

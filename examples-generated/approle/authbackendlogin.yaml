@@ -10,7 +10,10 @@ spec:
   forProvider:
     backend: cert
     roleId: ${vault_approle_auth_backend_role.example.role_id}
-    secretId: ${vault_approle_auth_backend_role_secret_id.id.secret_id}
+    secretIdSecretRef:
+      key: attribute.secret_id
+      name: example-approle-auth-backend-role-secret-id
+      namespace: upbound-system
 
 ---
 

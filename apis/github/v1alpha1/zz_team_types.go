@@ -17,7 +17,7 @@ type TeamInitParameters struct {
 
 	// Path where the github auth backend is mounted. Defaults to github
 	// if not specified.
-	// Auth backend to which team mapping will be congigured.
+	// Auth backend to which team mapping will be configured.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
 	// The namespace to provision the resource in.
@@ -40,7 +40,7 @@ type TeamObservation struct {
 
 	// Path where the github auth backend is mounted. Defaults to github
 	// if not specified.
-	// Auth backend to which team mapping will be congigured.
+	// Auth backend to which team mapping will be configured.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -65,7 +65,7 @@ type TeamParameters struct {
 
 	// Path where the github auth backend is mounted. Defaults to github
 	// if not specified.
-	// Auth backend to which team mapping will be congigured.
+	// Auth backend to which team mapping will be configured.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 

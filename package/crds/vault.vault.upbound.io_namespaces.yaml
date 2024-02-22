@@ -67,6 +67,13 @@ spec:
                 type: string
               forProvider:
                 properties:
+                  customMetadata:
+                    additionalProperties:
+                      type: string
+                    description: Custom metadata describing this namespace. Value
+                      type is map[string]string. Requires Vault version 1.12+. Custom
+                      metadata describing this namespace. Value type is map[string]string.
+                    type: object
                   namespace:
                     description: The namespace to provision the resource in. The value
                       should not contain leading or trailing forward slashes. The
@@ -76,12 +83,13 @@ spec:
                     type: string
                   path:
                     description: The path of the namespace. Must not have a trailing
-                      / Namespace path.
+                      /. Namespace path.
                     type: string
                   pathFq:
                     description: The fully qualified path to the namespace. Useful
-                      when provisioning resources in a child namespace. The fully
-                      qualified namespace path.
+                      when provisioning resources in a child namespace. The path is
+                      relative to the provider's namespace argument. The fully qualified
+                      namespace path.
                     type: string
                 type: object
               initProvider:
@@ -97,6 +105,13 @@ spec:
                   creation, for example because of an external controller is managing
                   them, like an autoscaler.
                 properties:
+                  customMetadata:
+                    additionalProperties:
+                      type: string
+                    description: Custom metadata describing this namespace. Value
+                      type is map[string]string. Requires Vault version 1.12+. Custom
+                      metadata describing this namespace. Value type is map[string]string.
+                    type: object
                   namespace:
                     description: The namespace to provision the resource in. The value
                       should not contain leading or trailing forward slashes. The
@@ -106,12 +121,13 @@ spec:
                     type: string
                   path:
                     description: The path of the namespace. Must not have a trailing
-                      / Namespace path.
+                      /. Namespace path.
                     type: string
                   pathFq:
                     description: The fully qualified path to the namespace. Useful
-                      when provisioning resources in a child namespace. The fully
-                      qualified namespace path.
+                      when provisioning resources in a child namespace. The path is
+                      relative to the provider's namespace argument. The fully qualified
+                      namespace path.
                     type: string
                 type: object
               managementPolicies:
@@ -321,8 +337,16 @@ spec:
             properties:
               atProvider:
                 properties:
+                  customMetadata:
+                    additionalProperties:
+                      type: string
+                    description: Custom metadata describing this namespace. Value
+                      type is map[string]string. Requires Vault version 1.12+. Custom
+                      metadata describing this namespace. Value type is map[string]string.
+                    type: object
                   id:
-                    description: ID of the namespace.
+                    description: The fully qualified path to the namespace, including
+                      the provider namespace and a trailing slash.
                     type: string
                   namespace:
                     description: The namespace to provision the resource in. The value
@@ -332,16 +356,18 @@ spec:
                       Enterprise)
                     type: string
                   namespaceId:
-                    description: ID of the namespace. Namespace ID.
+                    description: Vault server's internal ID of the namespace. Namespace
+                      ID.
                     type: string
                   path:
                     description: The path of the namespace. Must not have a trailing
-                      / Namespace path.
+                      /. Namespace path.
                     type: string
                   pathFq:
                     description: The fully qualified path to the namespace. Useful
-                      when provisioning resources in a child namespace. The fully
-                      qualified namespace path.
+                      when provisioning resources in a child namespace. The path is
+                      relative to the provider's namespace argument. The fully qualified
+                      namespace path.
                     type: string
                 type: object
               conditions:

@@ -70,7 +70,7 @@ spec:
                   backend:
                     description: Path where the github auth backend is mounted. Defaults
                       to github if not specified. Auth backend to which team mapping
-                      will be congigured.
+                      will be configured.
                     type: string
                   namespace:
                     description: The namespace to provision the resource in. The value
@@ -106,7 +106,7 @@ spec:
                   backend:
                     description: Path where the github auth backend is mounted. Defaults
                       to github if not specified. Auth backend to which team mapping
-                      will be congigured.
+                      will be configured.
                     type: string
                   namespace:
                     description: The namespace to provision the resource in. The value
@@ -336,7 +336,7 @@ spec:
                   backend:
                     description: Path where the github auth backend is mounted. Defaults
                       to github if not specified. Auth backend to which team mapping
-                      will be congigured.
+                      will be configured.
                     type: string
                   id:
                     type: string

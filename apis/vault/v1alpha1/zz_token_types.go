@@ -19,7 +19,7 @@ type TokenInitParameters struct {
 	// The display name of the token.
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
 
-	// The explicit max TTL of this token
+	// The explicit max TTL of this token. This is specified as a numeric string with suffix like "30s" ro "5m"
 	// The explicit max TTL of the token.
 	ExplicitMaxTTL *string `json:"explicitMaxTtl,omitempty" tf:"explicit_max_ttl,omitempty"`
 
@@ -46,7 +46,7 @@ type TokenInitParameters struct {
 	// The number of allowed uses of the token.
 	NumUses *float64 `json:"numUses,omitempty" tf:"num_uses,omitempty"`
 
-	// The period of this token
+	// The period of this token. This is specified as a numeric string with suffix like "30s" ro "5m"
 	// The period of the token.
 	Period *string `json:"period,omitempty" tf:"period,omitempty"`
 
@@ -54,7 +54,7 @@ type TokenInitParameters struct {
 	// List of policies.
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 
-	// The renew increment
+	// The renew increment. This is specified in seconds
 	// The renew increment.
 	RenewIncrement *float64 `json:"renewIncrement,omitempty" tf:"renew_increment,omitempty"`
 
@@ -70,11 +70,11 @@ type TokenInitParameters struct {
 	// The token role name.
 	RoleName *string `json:"roleName,omitempty" tf:"role_name,omitempty"`
 
-	// The TTL period of this token
+	// The TTL period of this token. This is specified as a numeric string with suffix like "30s" ro "5m"
 	// The TTL period of the token.
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
-	// The TTL period of this token
+	// The TTL period of this token. This is specified as a numeric string with suffix like "30s" ro "5m"
 	// The TTL period of the wrapped token.
 	WrappingTTL *string `json:"wrappingTtl,omitempty" tf:"wrapping_ttl,omitempty"`
 }
@@ -85,7 +85,7 @@ type TokenObservation struct {
 	// The display name of the token.
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
 
-	// The explicit max TTL of this token
+	// The explicit max TTL of this token. This is specified as a numeric string with suffix like "30s" ro "5m"
 	// The explicit max TTL of the token.
 	ExplicitMaxTTL *string `json:"explicitMaxTtl,omitempty" tf:"explicit_max_ttl,omitempty"`
 
@@ -122,7 +122,7 @@ type TokenObservation struct {
 	// The number of allowed uses of the token.
 	NumUses *float64 `json:"numUses,omitempty" tf:"num_uses,omitempty"`
 
-	// The period of this token
+	// The period of this token. This is specified as a numeric string with suffix like "30s" ro "5m"
 	// The period of the token.
 	Period *string `json:"period,omitempty" tf:"period,omitempty"`
 
@@ -130,7 +130,7 @@ type TokenObservation struct {
 	// List of policies.
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 
-	// The renew increment
+	// The renew increment. This is specified in seconds
 	// The renew increment.
 	RenewIncrement *float64 `json:"renewIncrement,omitempty" tf:"renew_increment,omitempty"`
 
@@ -146,11 +146,11 @@ type TokenObservation struct {
 	// The token role name.
 	RoleName *string `json:"roleName,omitempty" tf:"role_name,omitempty"`
 
-	// The TTL period of this token
+	// The TTL period of this token. This is specified as a numeric string with suffix like "30s" ro "5m"
 	// The TTL period of the token.
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
-	// The TTL period of this token
+	// The TTL period of this token. This is specified as a numeric string with suffix like "30s" ro "5m"
 	// The TTL period of the wrapped token.
 	WrappingTTL *string `json:"wrappingTtl,omitempty" tf:"wrapping_ttl,omitempty"`
 }
@@ -162,7 +162,7 @@ type TokenParameters struct {
 	// +kubebuilder:validation:Optional
 	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
 
-	// The explicit max TTL of this token
+	// The explicit max TTL of this token. This is specified as a numeric string with suffix like "30s" ro "5m"
 	// The explicit max TTL of the token.
 	// +kubebuilder:validation:Optional
 	ExplicitMaxTTL *string `json:"explicitMaxTtl,omitempty" tf:"explicit_max_ttl,omitempty"`
@@ -195,7 +195,7 @@ type TokenParameters struct {
 	// +kubebuilder:validation:Optional
 	NumUses *float64 `json:"numUses,omitempty" tf:"num_uses,omitempty"`
 
-	// The period of this token
+	// The period of this token. This is specified as a numeric string with suffix like "30s" ro "5m"
 	// The period of the token.
 	// +kubebuilder:validation:Optional
 	Period *string `json:"period,omitempty" tf:"period,omitempty"`
@@ -205,7 +205,7 @@ type TokenParameters struct {
 	// +kubebuilder:validation:Optional
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 
-	// The renew increment
+	// The renew increment. This is specified in seconds
 	// The renew increment.
 	// +kubebuilder:validation:Optional
 	RenewIncrement *float64 `json:"renewIncrement,omitempty" tf:"renew_increment,omitempty"`
@@ -225,12 +225,12 @@ type TokenParameters struct {
 	// +kubebuilder:validation:Optional
 	RoleName *string `json:"roleName,omitempty" tf:"role_name,omitempty"`
 
-	// The TTL period of this token
+	// The TTL period of this token. This is specified as a numeric string with suffix like "30s" ro "5m"
 	// The TTL period of the token.
 	// +kubebuilder:validation:Optional
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
-	// The TTL period of this token
+	// The TTL period of this token. This is specified as a numeric string with suffix like "30s" ro "5m"
 	// The TTL period of the wrapped token.
 	// +kubebuilder:validation:Optional
 	WrappingTTL *string `json:"wrappingTtl,omitempty" tf:"wrapping_ttl,omitempty"`

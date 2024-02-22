@@ -386,6 +386,11 @@ func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleIn
 		*out = new(string)
 		**out = **in
 	}
+	if in.AllowedDomainsTemplate != nil {
+		in, out := &in.AllowedDomainsTemplate, &out.AllowedDomainsTemplate
+		*out = new(bool)
+		**out = **in
+	}
 	if in.AllowedExtensions != nil {
 		in, out := &in.AllowedExtensions, &out.AllowedExtensions
 		*out = new(string)
@@ -498,6 +503,11 @@ func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleIn
 		*out = new(string)
 		**out = **in
 	}
+	if in.NotBeforeDuration != nil {
+		in, out := &in.NotBeforeDuration, &out.NotBeforeDuration
+		*out = new(string)
+		**out = **in
+	}
 	if in.TTL != nil {
 		in, out := &in.TTL, &out.TTL
 		*out = new(string)
@@ -588,6 +598,11 @@ func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObser
 	if in.AllowedDomains != nil {
 		in, out := &in.AllowedDomains, &out.AllowedDomains
 		*out = new(string)
+		**out = **in
+	}
+	if in.AllowedDomainsTemplate != nil {
+		in, out := &in.AllowedDomainsTemplate, &out.AllowedDomainsTemplate
+		*out = new(bool)
 		**out = **in
 	}
 	if in.AllowedExtensions != nil {
@@ -707,6 +722,11 @@ func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObser
 		*out = new(string)
 		**out = **in
 	}
+	if in.NotBeforeDuration != nil {
+		in, out := &in.NotBeforeDuration, &out.NotBeforeDuration
+		*out = new(string)
+		**out = **in
+	}
 	if in.TTL != nil {
 		in, out := &in.TTL, &out.TTL
 		*out = new(string)
@@ -765,6 +785,11 @@ func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParame
 	if in.AllowedDomains != nil {
 		in, out := &in.AllowedDomains, &out.AllowedDomains
 		*out = new(string)
+		**out = **in
+	}
+	if in.AllowedDomainsTemplate != nil {
+		in, out := &in.AllowedDomainsTemplate, &out.AllowedDomainsTemplate
+		*out = new(bool)
 		**out = **in
 	}
 	if in.AllowedExtensions != nil {
@@ -876,6 +901,11 @@ func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParame
 	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	if in.NotBeforeDuration != nil {
+		in, out := &in.NotBeforeDuration, &out.NotBeforeDuration
 		*out = new(string)
 		**out = **in
 	}

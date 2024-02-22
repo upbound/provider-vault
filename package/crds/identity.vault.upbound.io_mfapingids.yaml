@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: MfaPingid is the Schema for the MfaPingids API. <no value>
+        description: MfaPingid is the Schema for the MfaPingids API. Resource for
+          configuring the pingid MFA method.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -67,14 +68,18 @@ spec:
               forProvider:
                 properties:
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: Target namespace. (requires Enterprise) Target namespace.
+                      (requires Enterprise)
                     type: string
                   settingsFileBase64:
                     description: A base64-encoded third-party settings contents as
-                      retrieved from PingID's configuration page.
+                      retrieved from PingID's configuration page. A base64-encoded
+                      third-party settings contents as retrieved from PingID's configuration
+                      page.
                     type: string
                   usernameFormat:
                     description: A template string for mapping Identity names to MFA
+                      methods. A template string for mapping Identity names to MFA
                       methods.
                     type: string
                 type: object
@@ -92,14 +97,18 @@ spec:
                   them, like an autoscaler.
                 properties:
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: Target namespace. (requires Enterprise) Target namespace.
+                      (requires Enterprise)
                     type: string
                   settingsFileBase64:
                     description: A base64-encoded third-party settings contents as
-                      retrieved from PingID's configuration page.
+                      retrieved from PingID's configuration page. A base64-encoded
+                      third-party settings contents as retrieved from PingID's configuration
+                      page.
                     type: string
                   usernameFormat:
                     description: A template string for mapping Identity names to MFA
+                      methods. A template string for mapping Identity names to MFA
                       methods.
                     type: string
                 type: object
@@ -312,54 +321,63 @@ spec:
                 properties:
                   adminUrl:
                     description: The admin URL, derived from "settings_file_base64"
+                      The admin URL, derived from "settings_file_base64"
                     type: string
                   authenticatorUrl:
                     description: A unique identifier of the organization, derived
-                      from "settings_file_base64"
+                      from "settings_file_base64" A unique identifier of the organization,
+                      derived from "settings_file_base64"
                     type: string
                   id:
                     type: string
                   idpUrl:
                     description: The IDP URL, derived from "settings_file_base64"
+                      The IDP URL, derived from "settings_file_base64"
                     type: string
                   methodId:
-                    description: Method ID.
+                    description: Method ID. Method ID.
                     type: string
                   mountAccessor:
-                    description: Mount accessor.
+                    description: Mount accessor. Mount accessor.
                     type: string
                   name:
                     description: Method name.
                     type: string
                   namespace:
-                    description: Target namespace. (requires Enterprise)
+                    description: Target namespace. (requires Enterprise) Target namespace.
+                      (requires Enterprise)
                     type: string
                   namespaceId:
-                    description: Method's namespace ID.
+                    description: Method's namespace ID. Method's namespace ID.
                     type: string
                   namespacePath:
-                    description: Method's namespace path.
+                    description: Method's namespace path. Method's namespace path.
                     type: string
                   orgAlias:
                     description: The name of the PingID client organization, derived
-                      from "settings_file_base64"
+                      from "settings_file_base64" The name of the PingID client organization,
+                      derived from "settings_file_base64"
                     type: string
                   settingsFileBase64:
                     description: A base64-encoded third-party settings contents as
-                      retrieved from PingID's configuration page.
+                      retrieved from PingID's configuration page. A base64-encoded
+                      third-party settings contents as retrieved from PingID's configuration
+                      page.
                     type: string
                   type:
-                    description: MFA type.
+                    description: MFA type. MFA type.
                     type: string
                   useSignature:
                     description: Use signature value, derived from "settings_file_base64"
+                      Use signature value, derived from "settings_file_base64"
                     type: boolean
                   usernameFormat:
                     description: A template string for mapping Identity names to MFA
+                      methods. A template string for mapping Identity names to MFA
                       methods.
                     type: string
                   uuid:
-                    description: Resource UUID.
+                    description: Resource UUID. Resource UUID.
                     type: string
                 type: object
               conditions:

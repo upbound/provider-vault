@@ -43,9 +43,24 @@ type SecretBackendRootCertInitParameters struct {
 	// List of alternative IPs.
 	IPSans []*string `json:"ipSans,omitempty" tf:"ip_sans,omitempty"`
 
+	// Provides a name to the specified issuer. The name must be unique
+	// across all issuers and not be the reserved value default
+	// Provides a name to the specified issuer. The name must be unique across all issuers and not be the reserved value 'default'.
+	IssuerName *string `json:"issuerName,omitempty" tf:"issuer_name,omitempty"`
+
 	// The number of bits to use
 	// The number of bits to use.
 	KeyBits *float64 `json:"keyBits,omitempty" tf:"key_bits,omitempty"`
+
+	// When a new key is created with this request, optionally specifies
+	// the name for this. The global ref default may not be used as a name.
+	// When a new key is created with this request, optionally specifies the name for this.
+	KeyName *string `json:"keyName,omitempty" tf:"key_name,omitempty"`
+
+	// Specifies the key (either default, by name, or by identifier) to use
+	// for generating this request. Only suitable for type=existing requests.
+	// Specifies the key to use for generating this request.
+	KeyRef *string `json:"keyRef,omitempty" tf:"key_ref,omitempty"`
 
 	// The desired key type
 	// The desired key type.
@@ -114,7 +129,7 @@ type SecretBackendRootCertInitParameters struct {
 
 	// Type of intermediate to create. Must be either "exported", "internal"
 	// or "kms"
-	// Type of root to create. Must be either "exported" or "internal".
+	// Type of root to create. Must be either "existing", "exported", "internal" or "kms"
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// List of alternative URIs
@@ -158,6 +173,15 @@ type SecretBackendRootCertObservation struct {
 	// List of alternative IPs.
 	IPSans []*string `json:"ipSans,omitempty" tf:"ip_sans,omitempty"`
 
+	// The ID of the generated issuer.
+	// The ID of the generated issuer.
+	IssuerID *string `json:"issuerId,omitempty" tf:"issuer_id,omitempty"`
+
+	// Provides a name to the specified issuer. The name must be unique
+	// across all issuers and not be the reserved value default
+	// Provides a name to the specified issuer. The name must be unique across all issuers and not be the reserved value 'default'.
+	IssuerName *string `json:"issuerName,omitempty" tf:"issuer_name,omitempty"`
+
 	// The issuing CA certificate.
 	// The issuing CA.
 	IssuingCA *string `json:"issuingCa,omitempty" tf:"issuing_ca,omitempty"`
@@ -165,6 +189,20 @@ type SecretBackendRootCertObservation struct {
 	// The number of bits to use
 	// The number of bits to use.
 	KeyBits *float64 `json:"keyBits,omitempty" tf:"key_bits,omitempty"`
+
+	// The ID of the generated key.
+	// The ID of the generated key.
+	KeyID *string `json:"keyId,omitempty" tf:"key_id,omitempty"`
+
+	// When a new key is created with this request, optionally specifies
+	// the name for this. The global ref default may not be used as a name.
+	// When a new key is created with this request, optionally specifies the name for this.
+	KeyName *string `json:"keyName,omitempty" tf:"key_name,omitempty"`
+
+	// Specifies the key (either default, by name, or by identifier) to use
+	// for generating this request. Only suitable for type=existing requests.
+	// Specifies the key to use for generating this request.
+	KeyRef *string `json:"keyRef,omitempty" tf:"key_ref,omitempty"`
 
 	// The desired key type
 	// The desired key type.
@@ -241,7 +279,7 @@ type SecretBackendRootCertObservation struct {
 
 	// Type of intermediate to create. Must be either "exported", "internal"
 	// or "kms"
-	// Type of root to create. Must be either "exported" or "internal".
+	// Type of root to create. Must be either "existing", "exported", "internal" or "kms"
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// List of alternative URIs
@@ -286,10 +324,28 @@ type SecretBackendRootCertParameters struct {
 	// +kubebuilder:validation:Optional
 	IPSans []*string `json:"ipSans,omitempty" tf:"ip_sans,omitempty"`
 
+	// Provides a name to the specified issuer. The name must be unique
+	// across all issuers and not be the reserved value default
+	// Provides a name to the specified issuer. The name must be unique across all issuers and not be the reserved value 'default'.
+	// +kubebuilder:validation:Optional
+	IssuerName *string `json:"issuerName,omitempty" tf:"issuer_name,omitempty"`
+
 	// The number of bits to use
 	// The number of bits to use.
 	// +kubebuilder:validation:Optional
 	KeyBits *float64 `json:"keyBits,omitempty" tf:"key_bits,omitempty"`
+
+	// When a new key is created with this request, optionally specifies
+	// the name for this. The global ref default may not be used as a name.
+	// When a new key is created with this request, optionally specifies the name for this.
+	// +kubebuilder:validation:Optional
+	KeyName *string `json:"keyName,omitempty" tf:"key_name,omitempty"`
+
+	// Specifies the key (either default, by name, or by identifier) to use
+	// for generating this request. Only suitable for type=existing requests.
+	// Specifies the key to use for generating this request.
+	// +kubebuilder:validation:Optional
+	KeyRef *string `json:"keyRef,omitempty" tf:"key_ref,omitempty"`
 
 	// The desired key type
 	// The desired key type.
@@ -373,7 +429,7 @@ type SecretBackendRootCertParameters struct {
 
 	// Type of intermediate to create. Must be either "exported", "internal"
 	// or "kms"
-	// Type of root to create. Must be either "exported" or "internal".
+	// Type of root to create. Must be either "existing", "exported", "internal" or "kms"
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 

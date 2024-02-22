@@ -16,11 +16,14 @@ import (
 type MfaPingidInitParameters struct {
 
 	// Target namespace. (requires Enterprise)
+	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// A base64-encoded third-party settings contents as retrieved from PingID's configuration page.
+	// A base64-encoded third-party settings contents as retrieved from PingID's configuration page.
 	SettingsFileBase64 *string `json:"settingsFileBase64,omitempty" tf:"settings_file_base64,omitempty"`
 
+	// A template string for mapping Identity names to MFA methods.
 	// A template string for mapping Identity names to MFA methods.
 	UsernameFormat *string `json:"usernameFormat,omitempty" tf:"username_format,omitempty"`
 }
@@ -28,19 +31,24 @@ type MfaPingidInitParameters struct {
 type MfaPingidObservation struct {
 
 	// The admin URL, derived from "settings_file_base64"
+	// The admin URL, derived from "settings_file_base64"
 	AdminURL *string `json:"adminUrl,omitempty" tf:"admin_url,omitempty"`
 
+	// A unique identifier of the organization, derived from "settings_file_base64"
 	// A unique identifier of the organization, derived from "settings_file_base64"
 	AuthenticatorURL *string `json:"authenticatorUrl,omitempty" tf:"authenticator_url,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The IDP URL, derived from "settings_file_base64"
+	// The IDP URL, derived from "settings_file_base64"
 	IdpURL *string `json:"idpUrl,omitempty" tf:"idp_url,omitempty"`
 
 	// Method ID.
+	// Method ID.
 	MethodID *string `json:"methodId,omitempty" tf:"method_id,omitempty"`
 
+	// Mount accessor.
 	// Mount accessor.
 	MountAccessor *string `json:"mountAccessor,omitempty" tf:"mount_accessor,omitempty"`
 
@@ -48,29 +56,38 @@ type MfaPingidObservation struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Target namespace. (requires Enterprise)
+	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Method's namespace ID.
 	// Method's namespace ID.
 	NamespaceID *string `json:"namespaceId,omitempty" tf:"namespace_id,omitempty"`
 
 	// Method's namespace path.
+	// Method's namespace path.
 	NamespacePath *string `json:"namespacePath,omitempty" tf:"namespace_path,omitempty"`
 
+	// The name of the PingID client organization, derived from "settings_file_base64"
 	// The name of the PingID client organization, derived from "settings_file_base64"
 	OrgAlias *string `json:"orgAlias,omitempty" tf:"org_alias,omitempty"`
 
 	// A base64-encoded third-party settings contents as retrieved from PingID's configuration page.
+	// A base64-encoded third-party settings contents as retrieved from PingID's configuration page.
 	SettingsFileBase64 *string `json:"settingsFileBase64,omitempty" tf:"settings_file_base64,omitempty"`
 
+	// MFA type.
 	// MFA type.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// Resource UUID.
+	// Resource UUID.
 	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
 
 	// Use signature value, derived from "settings_file_base64"
+	// Use signature value, derived from "settings_file_base64"
 	UseSignature *bool `json:"useSignature,omitempty" tf:"use_signature,omitempty"`
 
+	// A template string for mapping Identity names to MFA methods.
 	// A template string for mapping Identity names to MFA methods.
 	UsernameFormat *string `json:"usernameFormat,omitempty" tf:"username_format,omitempty"`
 }
@@ -78,13 +95,16 @@ type MfaPingidObservation struct {
 type MfaPingidParameters struct {
 
 	// Target namespace. (requires Enterprise)
+	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// A base64-encoded third-party settings contents as retrieved from PingID's configuration page.
+	// A base64-encoded third-party settings contents as retrieved from PingID's configuration page.
 	// +kubebuilder:validation:Optional
 	SettingsFileBase64 *string `json:"settingsFileBase64,omitempty" tf:"settings_file_base64,omitempty"`
 
+	// A template string for mapping Identity names to MFA methods.
 	// A template string for mapping Identity names to MFA methods.
 	// +kubebuilder:validation:Optional
 	UsernameFormat *string `json:"usernameFormat,omitempty" tf:"username_format,omitempty"`
@@ -116,7 +136,7 @@ type MfaPingidStatus struct {
 
 // +kubebuilder:object:root=true
 
-// MfaPingid is the Schema for the MfaPingids API. <no value>
+// MfaPingid is the Schema for the MfaPingids API. Resource for configuring the pingid MFA method.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

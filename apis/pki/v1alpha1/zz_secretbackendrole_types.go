@@ -87,6 +87,10 @@ type SecretBackendRoleInitParameters struct {
 	// Flag to allow certificates matching subdomains.
 	AllowSubdomains *bool `json:"allowSubdomains,omitempty" tf:"allow_subdomains,omitempty"`
 
+	// Flag to allow wildcard certificates.
+	// Flag to allow wildcard certificates
+	AllowWildcardCertificates *bool `json:"allowWildcardCertificates,omitempty" tf:"allow_wildcard_certificates,omitempty"`
+
 	// List of allowed domains for certificates
 	// The domains of the role.
 	AllowedDomains []*string `json:"allowedDomains,omitempty" tf:"allowed_domains,omitempty"`
@@ -106,6 +110,14 @@ type SecretBackendRoleInitParameters struct {
 	// Defines allowed URI SANs
 	// Defines allowed URI SANs
 	AllowedURISans []*string `json:"allowedUriSans,omitempty" tf:"allowed_uri_sans,omitempty"`
+
+	// Flag, if set, allowed_uri_sans can be specified using identity template expressions such as {{identity.entity.aliases.<mount accessor>.name}}.
+	// Flag to indicate that `allowed_uri_sans` specifies a template expression (e.g. {{identity.entity.aliases.<mount accessor>.name}})
+	AllowedURISansTemplate *bool `json:"allowedUriSansTemplate,omitempty" tf:"allowed_uri_sans_template,omitempty"`
+
+	// Defines allowed User IDs
+	// The allowed User ID's.
+	AllowedUserIds []*string `json:"allowedUserIds,omitempty" tf:"allowed_user_ids,omitempty"`
 
 	// The path the PKI secret backend is mounted at, with no leading or trailing /s.
 	// The path of the PKI secret backend the resource belongs to.
@@ -139,9 +151,20 @@ type SecretBackendRoleInitParameters struct {
 	// Specify the allowed extended key usage constraint on issued certificates.
 	ExtKeyUsage []*string `json:"extKeyUsage,omitempty" tf:"ext_key_usage,omitempty"`
 
+	// Specify the allowed extended key usage OIDs constraint on issued certificates
+	// A list of extended key usage OIDs.
+	ExtKeyUsageOids []*string `json:"extKeyUsageOids,omitempty" tf:"ext_key_usage_oids,omitempty"`
+
 	// Flag to generate leases with certificates
 	// Flag to generate leases with certificates.
 	GenerateLease *bool `json:"generateLease,omitempty" tf:"generate_lease,omitempty"`
+
+	// Specifies the default issuer of this request. May
+	// be the value default, a name, or an issuer ID. Use ACLs to prevent access to
+	// the /pki/issuer/:issuer_ref/{issue,sign}/:name paths to prevent users
+	// overriding the role's issuer_ref value.
+	// Specifies the default issuer of this request.
+	IssuerRef *string `json:"issuerRef,omitempty" tf:"issuer_ref,omitempty"`
 
 	// The number of bits of generated keys
 	// The number of bits of generated keys.
@@ -152,7 +175,9 @@ type SecretBackendRoleInitParameters struct {
 	// The generated key type.
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
-	// Specify the allowed key usage constraint on issued certificates
+	// Specify the allowed key usage constraint on issued
+	// certificates. Defaults to ["DigitalSignature", "KeyAgreement", "KeyEncipherment"]).
+	// To specify no default key usage constraints, set this to an empty list [].
 	// Specify the allowed key usage constraint on issued certificates.
 	KeyUsage []*string `json:"keyUsage,omitempty" tf:"key_usage,omitempty"`
 
@@ -258,6 +283,10 @@ type SecretBackendRoleObservation struct {
 	// Flag to allow certificates matching subdomains.
 	AllowSubdomains *bool `json:"allowSubdomains,omitempty" tf:"allow_subdomains,omitempty"`
 
+	// Flag to allow wildcard certificates.
+	// Flag to allow wildcard certificates
+	AllowWildcardCertificates *bool `json:"allowWildcardCertificates,omitempty" tf:"allow_wildcard_certificates,omitempty"`
+
 	// List of allowed domains for certificates
 	// The domains of the role.
 	AllowedDomains []*string `json:"allowedDomains,omitempty" tf:"allowed_domains,omitempty"`
@@ -277,6 +306,14 @@ type SecretBackendRoleObservation struct {
 	// Defines allowed URI SANs
 	// Defines allowed URI SANs
 	AllowedURISans []*string `json:"allowedUriSans,omitempty" tf:"allowed_uri_sans,omitempty"`
+
+	// Flag, if set, allowed_uri_sans can be specified using identity template expressions such as {{identity.entity.aliases.<mount accessor>.name}}.
+	// Flag to indicate that `allowed_uri_sans` specifies a template expression (e.g. {{identity.entity.aliases.<mount accessor>.name}})
+	AllowedURISansTemplate *bool `json:"allowedUriSansTemplate,omitempty" tf:"allowed_uri_sans_template,omitempty"`
+
+	// Defines allowed User IDs
+	// The allowed User ID's.
+	AllowedUserIds []*string `json:"allowedUserIds,omitempty" tf:"allowed_user_ids,omitempty"`
 
 	// The path the PKI secret backend is mounted at, with no leading or trailing /s.
 	// The path of the PKI secret backend the resource belongs to.
@@ -310,11 +347,22 @@ type SecretBackendRoleObservation struct {
 	// Specify the allowed extended key usage constraint on issued certificates.
 	ExtKeyUsage []*string `json:"extKeyUsage,omitempty" tf:"ext_key_usage,omitempty"`
 
+	// Specify the allowed extended key usage OIDs constraint on issued certificates
+	// A list of extended key usage OIDs.
+	ExtKeyUsageOids []*string `json:"extKeyUsageOids,omitempty" tf:"ext_key_usage_oids,omitempty"`
+
 	// Flag to generate leases with certificates
 	// Flag to generate leases with certificates.
 	GenerateLease *bool `json:"generateLease,omitempty" tf:"generate_lease,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Specifies the default issuer of this request. May
+	// be the value default, a name, or an issuer ID. Use ACLs to prevent access to
+	// the /pki/issuer/:issuer_ref/{issue,sign}/:name paths to prevent users
+	// overriding the role's issuer_ref value.
+	// Specifies the default issuer of this request.
+	IssuerRef *string `json:"issuerRef,omitempty" tf:"issuer_ref,omitempty"`
 
 	// The number of bits of generated keys
 	// The number of bits of generated keys.
@@ -325,7 +373,9 @@ type SecretBackendRoleObservation struct {
 	// The generated key type.
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
-	// Specify the allowed key usage constraint on issued certificates
+	// Specify the allowed key usage constraint on issued
+	// certificates. Defaults to ["DigitalSignature", "KeyAgreement", "KeyEncipherment"]).
+	// To specify no default key usage constraints, set this to an empty list [].
 	// Specify the allowed key usage constraint on issued certificates.
 	KeyUsage []*string `json:"keyUsage,omitempty" tf:"key_usage,omitempty"`
 
@@ -437,6 +487,11 @@ type SecretBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	AllowSubdomains *bool `json:"allowSubdomains,omitempty" tf:"allow_subdomains,omitempty"`
 
+	// Flag to allow wildcard certificates.
+	// Flag to allow wildcard certificates
+	// +kubebuilder:validation:Optional
+	AllowWildcardCertificates *bool `json:"allowWildcardCertificates,omitempty" tf:"allow_wildcard_certificates,omitempty"`
+
 	// List of allowed domains for certificates
 	// The domains of the role.
 	// +kubebuilder:validation:Optional
@@ -461,6 +516,16 @@ type SecretBackendRoleParameters struct {
 	// Defines allowed URI SANs
 	// +kubebuilder:validation:Optional
 	AllowedURISans []*string `json:"allowedUriSans,omitempty" tf:"allowed_uri_sans,omitempty"`
+
+	// Flag, if set, allowed_uri_sans can be specified using identity template expressions such as {{identity.entity.aliases.<mount accessor>.name}}.
+	// Flag to indicate that `allowed_uri_sans` specifies a template expression (e.g. {{identity.entity.aliases.<mount accessor>.name}})
+	// +kubebuilder:validation:Optional
+	AllowedURISansTemplate *bool `json:"allowedUriSansTemplate,omitempty" tf:"allowed_uri_sans_template,omitempty"`
+
+	// Defines allowed User IDs
+	// The allowed User ID's.
+	// +kubebuilder:validation:Optional
+	AllowedUserIds []*string `json:"allowedUserIds,omitempty" tf:"allowed_user_ids,omitempty"`
 
 	// The path the PKI secret backend is mounted at, with no leading or trailing /s.
 	// The path of the PKI secret backend the resource belongs to.
@@ -502,10 +567,23 @@ type SecretBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	ExtKeyUsage []*string `json:"extKeyUsage,omitempty" tf:"ext_key_usage,omitempty"`
 
+	// Specify the allowed extended key usage OIDs constraint on issued certificates
+	// A list of extended key usage OIDs.
+	// +kubebuilder:validation:Optional
+	ExtKeyUsageOids []*string `json:"extKeyUsageOids,omitempty" tf:"ext_key_usage_oids,omitempty"`
+
 	// Flag to generate leases with certificates
 	// Flag to generate leases with certificates.
 	// +kubebuilder:validation:Optional
 	GenerateLease *bool `json:"generateLease,omitempty" tf:"generate_lease,omitempty"`
+
+	// Specifies the default issuer of this request. May
+	// be the value default, a name, or an issuer ID. Use ACLs to prevent access to
+	// the /pki/issuer/:issuer_ref/{issue,sign}/:name paths to prevent users
+	// overriding the role's issuer_ref value.
+	// Specifies the default issuer of this request.
+	// +kubebuilder:validation:Optional
+	IssuerRef *string `json:"issuerRef,omitempty" tf:"issuer_ref,omitempty"`
 
 	// The number of bits of generated keys
 	// The number of bits of generated keys.
@@ -518,7 +596,9 @@ type SecretBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
-	// Specify the allowed key usage constraint on issued certificates
+	// Specify the allowed key usage constraint on issued
+	// certificates. Defaults to ["DigitalSignature", "KeyAgreement", "KeyEncipherment"]).
+	// To specify no default key usage constraints, set this to an empty list [].
 	// Specify the allowed key usage constraint on issued certificates.
 	// +kubebuilder:validation:Optional
 	KeyUsage []*string `json:"keyUsage,omitempty" tf:"key_usage,omitempty"`

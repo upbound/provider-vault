@@ -25,6 +25,7 @@ type AuthBackendRoleInitParameters struct {
 	// The auth type permitted for this role.
 	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
 
+	// Path to the mounted aws auth backend.
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -209,6 +210,7 @@ type AuthBackendRoleObservation struct {
 	// The auth type permitted for this role.
 	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
 
+	// Path to the mounted aws auth backend.
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -401,6 +403,7 @@ type AuthBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	AuthType *string `json:"authType,omitempty" tf:"auth_type,omitempty"`
 
+	// Path to the mounted aws auth backend.
 	// Unique name of the auth backend to configure.
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`

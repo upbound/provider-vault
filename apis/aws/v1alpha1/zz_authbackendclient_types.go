@@ -52,6 +52,14 @@ type AuthBackendClientInitParameters struct {
 	// calls. The sts_endpoint argument must be set when using sts_region.
 	// Region to override the default region for making AWS STS API calls.
 	StsRegion *string `json:"stsRegion,omitempty" tf:"sts_region,omitempty"`
+
+	// Available in Vault v1.15+. If set,
+	// overrides both sts_endpoint and sts_region to instead use the region
+	// specified in the client request headers for IAM-based authentication.
+	// This can be useful when you have client requests coming from different
+	// regions and want flexibility in which regional STS API is used.
+	// If set, will override sts_region and use the region from the client request's header
+	UseStsRegionFromClient *bool `json:"useStsRegionFromClient,omitempty" tf:"use_sts_region_from_client,omitempty"`
 }
 
 type AuthBackendClientObservation struct {
@@ -95,6 +103,14 @@ type AuthBackendClientObservation struct {
 	// calls. The sts_endpoint argument must be set when using sts_region.
 	// Region to override the default region for making AWS STS API calls.
 	StsRegion *string `json:"stsRegion,omitempty" tf:"sts_region,omitempty"`
+
+	// Available in Vault v1.15+. If set,
+	// overrides both sts_endpoint and sts_region to instead use the region
+	// specified in the client request headers for IAM-based authentication.
+	// This can be useful when you have client requests coming from different
+	// regions and want flexibility in which regional STS API is used.
+	// If set, will override sts_region and use the region from the client request's header
+	UseStsRegionFromClient *bool `json:"useStsRegionFromClient,omitempty" tf:"use_sts_region_from_client,omitempty"`
 }
 
 type AuthBackendClientParameters struct {
@@ -155,6 +171,15 @@ type AuthBackendClientParameters struct {
 	// Region to override the default region for making AWS STS API calls.
 	// +kubebuilder:validation:Optional
 	StsRegion *string `json:"stsRegion,omitempty" tf:"sts_region,omitempty"`
+
+	// Available in Vault v1.15+. If set,
+	// overrides both sts_endpoint and sts_region to instead use the region
+	// specified in the client request headers for IAM-based authentication.
+	// This can be useful when you have client requests coming from different
+	// regions and want flexibility in which regional STS API is used.
+	// If set, will override sts_region and use the region from the client request's header
+	// +kubebuilder:validation:Optional
+	UseStsRegionFromClient *bool `json:"useStsRegionFromClient,omitempty" tf:"use_sts_region_from_client,omitempty"`
 }
 
 // AuthBackendClientSpec defines the desired state of AuthBackendClient
