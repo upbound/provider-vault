@@ -27,14 +27,6 @@ func (mg *Autopilot) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this Autopilot.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *Autopilot) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this Autopilot.
 func (mg *Autopilot) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -63,14 +55,6 @@ func (mg *Autopilot) SetManagementPolicies(r xpv1.ManagementPolicies) {
 // SetProviderConfigReference of this Autopilot.
 func (mg *Autopilot) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this Autopilot.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *Autopilot) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this Autopilot.
@@ -103,14 +87,6 @@ func (mg *SnapshotAgentConfig) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this SnapshotAgentConfig.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *SnapshotAgentConfig) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this SnapshotAgentConfig.
 func (mg *SnapshotAgentConfig) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -139,14 +115,6 @@ func (mg *SnapshotAgentConfig) SetManagementPolicies(r xpv1.ManagementPolicies) 
 // SetProviderConfigReference of this SnapshotAgentConfig.
 func (mg *SnapshotAgentConfig) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this SnapshotAgentConfig.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *SnapshotAgentConfig) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this SnapshotAgentConfig.
