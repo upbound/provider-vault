@@ -158,9 +158,6 @@ type SecretBackendRootSignIntermediateObservation struct {
 	// Revoke the certificate upon resource destruction.
 	Revoke *bool `json:"revoke,omitempty" tf:"revoke,omitempty"`
 
-	// The serial number.
-	Serial *string `json:"serial,omitempty" tf:"serial,omitempty"`
-
 	// The certificate's serial number, hex formatted.
 	SerialNumber *string `json:"serialNumber,omitempty" tf:"serial_number,omitempty"`
 

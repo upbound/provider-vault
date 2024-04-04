@@ -78,11 +78,6 @@ type SecretBackendRoleInitParameters struct {
 	// Specifies the TTL for this role.
 	// Specifies the TTL for this role.
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
-
-	// Specifies the type of token to create when using this role. Valid values are "client" or "management".
-	// Deprecated: Consul 1.11 and later removed the legacy ACL system which supported this field.
-	// Specifies the type of token to create when using this role. Valid values are "client" or "management".
-	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 }
 
 type SecretBackendRoleObservation struct {
@@ -152,11 +147,6 @@ type SecretBackendRoleObservation struct {
 	// Specifies the TTL for this role.
 	// Specifies the TTL for this role.
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
-
-	// Specifies the type of token to create when using this role. Valid values are "client" or "management".
-	// Deprecated: Consul 1.11 and later removed the legacy ACL system which supported this field.
-	// Specifies the type of token to create when using this role. Valid values are "client" or "management".
-	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 }
 
 type SecretBackendRoleParameters struct {
@@ -237,12 +227,6 @@ type SecretBackendRoleParameters struct {
 	// Specifies the TTL for this role.
 	// +kubebuilder:validation:Optional
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
-
-	// Specifies the type of token to create when using this role. Valid values are "client" or "management".
-	// Deprecated: Consul 1.11 and later removed the legacy ACL system which supported this field.
-	// Specifies the type of token to create when using this role. Valid values are "client" or "management".
-	// +kubebuilder:validation:Optional
-	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 }
 
 // SecretBackendRoleSpec defines the desired state of SecretBackendRole

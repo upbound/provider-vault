@@ -48,11 +48,6 @@ func (in *SecretBackendKeyInitParameters) DeepCopyInto(out *SecretBackendKeyInit
 		*out = new(bool)
 		**out = **in
 	}
-	if in.AutoRotateInterval != nil {
-		in, out := &in.AutoRotateInterval, &out.AutoRotateInterval
-		*out = new(float64)
-		**out = **in
-	}
 	if in.AutoRotatePeriod != nil {
 		in, out := &in.AutoRotatePeriod, &out.AutoRotatePeriod
 		*out = new(float64)
@@ -163,11 +158,6 @@ func (in *SecretBackendKeyObservation) DeepCopyInto(out *SecretBackendKeyObserva
 	if in.AllowPlaintextBackup != nil {
 		in, out := &in.AllowPlaintextBackup, &out.AllowPlaintextBackup
 		*out = new(bool)
-		**out = **in
-	}
-	if in.AutoRotateInterval != nil {
-		in, out := &in.AutoRotateInterval, &out.AutoRotateInterval
-		*out = new(float64)
 		**out = **in
 	}
 	if in.AutoRotatePeriod != nil {
@@ -304,11 +294,6 @@ func (in *SecretBackendKeyParameters) DeepCopyInto(out *SecretBackendKeyParamete
 	if in.AllowPlaintextBackup != nil {
 		in, out := &in.AllowPlaintextBackup, &out.AllowPlaintextBackup
 		*out = new(bool)
-		**out = **in
-	}
-	if in.AutoRotateInterval != nil {
-		in, out := &in.AutoRotateInterval, &out.AutoRotateInterval
-		*out = new(float64)
 		**out = **in
 	}
 	if in.AutoRotatePeriod != nil {

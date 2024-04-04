@@ -83,10 +83,6 @@ spec:
                     items:
                       type: string
                     type: array
-                  allowedOrganizationUnits:
-                    items:
-                      type: string
-                    type: array
                   allowedOrganizationalUnits:
                     items:
                       type: string
@@ -196,10 +192,6 @@ spec:
                       type: string
                     type: array
                   allowedNames:
-                    items:
-                      type: string
-                    type: array
-                  allowedOrganizationUnits:
                     items:
                       type: string
                     type: array
@@ -510,10 +502,6 @@ spec:
                       type: string
                     type: array
                   allowedNames:
-                    items:
-                      type: string
-                    type: array
-                  allowedOrganizationUnits:
                     items:
                       type: string
                     type: array

@@ -7,8 +7,11 @@ package config
 import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
+	"fmt"
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
+
+	vaultnamespace "github.com/upbound/provider-vault/config/vault_namespace"
 )
 
 const (
@@ -33,6 +36,7 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
+		vaultnamespace.Configure,
 	} {
 		configure(pc)
 	}
@@ -50,6 +54,7 @@ func ResourcesWithExternalNameConfig() []string {
 		// Expected format is regex and we'd like to have exact matches.
 		l[i] = name + "$"
 		i++
+		fmt.Printf("name: %v\n\n", name)
 	}
 	return l
 }
