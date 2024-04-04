@@ -77,6 +77,8 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           version: ${{ env.GOLANGCI_VERSION }}
+          skip-pkg-cache: true
+          skip-build-cache: true
 
   check-diff:
     runs-on: ubuntu-22.04
