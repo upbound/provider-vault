@@ -61,6 +61,10 @@ type SecretBackendInitParameters struct {
 	// Use anonymous bind to discover the bind DN of a user.
 	Discoverdn *bool `json:"discoverdn,omitempty" tf:"discoverdn,omitempty"`
 
+	// Deprecated use password_policy. Text to insert the password into, ex. "customPrefix{{PASSWORD}}customSuffix".
+	// Text to insert the password into, ex. "customPrefix{{PASSWORD}}customSuffix".
+	Formatter *string `json:"formatter,omitempty" tf:"formatter,omitempty"`
+
 	// LDAP attribute to follow on objects returned by  in order to enumerate
 	// user group membership. Examples: cn or memberOf, etc. Defaults to cn.
 	// LDAP attribute to follow on objects returned by <groupfilter> in order to enumerate user group membership. Examples: "cn" or "memberOf", etc. Default: cn
@@ -85,6 +89,11 @@ type SecretBackendInitParameters struct {
 	// The number of seconds after a Vault rotation where, if Active Directory shows a later rotation, it should be considered out-of-band.
 	LastRotationTolerance *float64 `json:"lastRotationTolerance,omitempty" tf:"last_rotation_tolerance,omitempty"`
 
+	// Deprecated use password_policy. The desired length of passwords that Vault generates.
+	// Mutually exclusive with
+	// The desired length of passwords that Vault generates.
+	Length *float64 `json:"length,omitempty" tf:"length,omitempty"`
+
 	// Mark the secrets engine as local-only. Local engines are not replicated or removed by
 	// replication.Tolerance duration to use when checking the last rotation time.
 	// Mark the secrets engine as local-only. Local engines are not replicated or removed by replication.Tolerance duration to use when checking the last rotation time.
@@ -105,7 +114,7 @@ type SecretBackendInitParameters struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// Name of the password policy to use to generate passwords.
+	// 1.11+
 	// Name of the password policy to use to generate passwords.
 	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
 
@@ -212,6 +221,10 @@ type SecretBackendObservation struct {
 	// Use anonymous bind to discover the bind DN of a user.
 	Discoverdn *bool `json:"discoverdn,omitempty" tf:"discoverdn,omitempty"`
 
+	// Deprecated use password_policy. Text to insert the password into, ex. "customPrefix{{PASSWORD}}customSuffix".
+	// Text to insert the password into, ex. "customPrefix{{PASSWORD}}customSuffix".
+	Formatter *string `json:"formatter,omitempty" tf:"formatter,omitempty"`
+
 	// LDAP attribute to follow on objects returned by  in order to enumerate
 	// user group membership. Examples: cn or memberOf, etc. Defaults to cn.
 	// LDAP attribute to follow on objects returned by <groupfilter> in order to enumerate user group membership. Examples: "cn" or "memberOf", etc. Default: cn
@@ -238,6 +251,11 @@ type SecretBackendObservation struct {
 	// The number of seconds after a Vault rotation where, if Active Directory shows a later rotation, it should be considered out-of-band.
 	LastRotationTolerance *float64 `json:"lastRotationTolerance,omitempty" tf:"last_rotation_tolerance,omitempty"`
 
+	// Deprecated use password_policy. The desired length of passwords that Vault generates.
+	// Mutually exclusive with
+	// The desired length of passwords that Vault generates.
+	Length *float64 `json:"length,omitempty" tf:"length,omitempty"`
+
 	// Mark the secrets engine as local-only. Local engines are not replicated or removed by
 	// replication.Tolerance duration to use when checking the last rotation time.
 	// Mark the secrets engine as local-only. Local engines are not replicated or removed by replication.Tolerance duration to use when checking the last rotation time.
@@ -258,7 +276,7 @@ type SecretBackendObservation struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// Name of the password policy to use to generate passwords.
+	// 1.11+
 	// Name of the password policy to use to generate passwords.
 	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
 
@@ -390,6 +408,11 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	Discoverdn *bool `json:"discoverdn,omitempty" tf:"discoverdn,omitempty"`
 
+	// Deprecated use password_policy. Text to insert the password into, ex. "customPrefix{{PASSWORD}}customSuffix".
+	// Text to insert the password into, ex. "customPrefix{{PASSWORD}}customSuffix".
+	// +kubebuilder:validation:Optional
+	Formatter *string `json:"formatter,omitempty" tf:"formatter,omitempty"`
+
 	// LDAP attribute to follow on objects returned by  in order to enumerate
 	// user group membership. Examples: cn or memberOf, etc. Defaults to cn.
 	// LDAP attribute to follow on objects returned by <groupfilter> in order to enumerate user group membership. Examples: "cn" or "memberOf", etc. Default: cn
@@ -419,6 +442,12 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	LastRotationTolerance *float64 `json:"lastRotationTolerance,omitempty" tf:"last_rotation_tolerance,omitempty"`
 
+	// Deprecated use password_policy. The desired length of passwords that Vault generates.
+	// Mutually exclusive with
+	// The desired length of passwords that Vault generates.
+	// +kubebuilder:validation:Optional
+	Length *float64 `json:"length,omitempty" tf:"length,omitempty"`
+
 	// Mark the secrets engine as local-only. Local engines are not replicated or removed by
 	// replication.Tolerance duration to use when checking the last rotation time.
 	// Mark the secrets engine as local-only. Local engines are not replicated or removed by replication.Tolerance duration to use when checking the last rotation time.
@@ -443,7 +472,7 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// Name of the password policy to use to generate passwords.
+	// 1.11+
 	// Name of the password policy to use to generate passwords.
 	// +kubebuilder:validation:Optional
 	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`

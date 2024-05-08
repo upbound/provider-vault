@@ -108,6 +108,11 @@ type SecretBackendRoleInitParameters struct {
 	// Set of allowed public key types and their relevant configuration
 	AllowedUserKeyConfig []AllowedUserKeyConfigInitParameters `json:"allowedUserKeyConfig,omitempty" tf:"allowed_user_key_config,omitempty"`
 
+	// Specifies a map of ssh key types and their expected sizes which
+	// are allowed to be signed by the CA type.
+	// Deprecated: use allowed_user_key_config instead
+	AllowedUserKeyLengths map[string]*float64 `json:"allowedUserKeyLengths,omitempty" tf:"allowed_user_key_lengths,omitempty"`
+
 	// Specifies a comma-separated list of usernames that are to be allowed, only if certain usernames are to be allowed.
 	AllowedUsers *string `json:"allowedUsers,omitempty" tf:"allowed_users,omitempty"`
 
@@ -199,6 +204,11 @@ type SecretBackendRoleObservation struct {
 	// See
 	// Set of allowed public key types and their relevant configuration
 	AllowedUserKeyConfig []AllowedUserKeyConfigObservation `json:"allowedUserKeyConfig,omitempty" tf:"allowed_user_key_config,omitempty"`
+
+	// Specifies a map of ssh key types and their expected sizes which
+	// are allowed to be signed by the CA type.
+	// Deprecated: use allowed_user_key_config instead
+	AllowedUserKeyLengths map[string]*float64 `json:"allowedUserKeyLengths,omitempty" tf:"allowed_user_key_lengths,omitempty"`
 
 	// Specifies a comma-separated list of usernames that are to be allowed, only if certain usernames are to be allowed.
 	AllowedUsers *string `json:"allowedUsers,omitempty" tf:"allowed_users,omitempty"`
@@ -304,6 +314,12 @@ type SecretBackendRoleParameters struct {
 	// Set of allowed public key types and their relevant configuration
 	// +kubebuilder:validation:Optional
 	AllowedUserKeyConfig []AllowedUserKeyConfigParameters `json:"allowedUserKeyConfig,omitempty" tf:"allowed_user_key_config,omitempty"`
+
+	// Specifies a map of ssh key types and their expected sizes which
+	// are allowed to be signed by the CA type.
+	// Deprecated: use allowed_user_key_config instead
+	// +kubebuilder:validation:Optional
+	AllowedUserKeyLengths map[string]*float64 `json:"allowedUserKeyLengths,omitempty" tf:"allowed_user_key_lengths,omitempty"`
 
 	// Specifies a comma-separated list of usernames that are to be allowed, only if certain usernames are to be allowed.
 	// +kubebuilder:validation:Optional

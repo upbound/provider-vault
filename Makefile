@@ -8,7 +8,7 @@ export TERRAFORM_VERSION := 1.5.5
 
 export TERRAFORM_PROVIDER_SOURCE ?= hashicorp/vault
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/hashicorp/terraform-provider-vault
-export TERRAFORM_PROVIDER_VERSION ?= 4.2.0
+export TERRAFORM_PROVIDER_VERSION ?= 3.25.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-vault
 export TERRAFORM_DOCS_PATH ?= website/docs/r
 
@@ -47,7 +47,7 @@ GO_SUBDIRS += cmd internal apis
 # Setup Kubernetes tools
 
 KIND_VERSION = v0.18.0
-UP_VERSION = v0.18.0
+UP_VERSION = v0.29.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.2.1
 RELDIR = "examples/release"

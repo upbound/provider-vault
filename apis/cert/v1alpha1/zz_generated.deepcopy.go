@@ -87,6 +87,17 @@ func (in *AuthBackendRoleInitParameters) DeepCopyInto(out *AuthBackendRoleInitPa
 			}
 		}
 	}
+	if in.AllowedOrganizationUnits != nil {
+		in, out := &in.AllowedOrganizationUnits, &out.AllowedOrganizationUnits
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.AllowedOrganizationalUnits != nil {
 		in, out := &in.AllowedOrganizationalUnits, &out.AllowedOrganizationalUnits
 		*out = make([]*string, len(*in))
@@ -324,6 +335,17 @@ func (in *AuthBackendRoleObservation) DeepCopyInto(out *AuthBackendRoleObservati
 			}
 		}
 	}
+	if in.AllowedOrganizationUnits != nil {
+		in, out := &in.AllowedOrganizationUnits, &out.AllowedOrganizationUnits
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.AllowedOrganizationalUnits != nil {
 		in, out := &in.AllowedOrganizationalUnits, &out.AllowedOrganizationalUnits
 		*out = make([]*string, len(*in))
@@ -525,6 +547,17 @@ func (in *AuthBackendRoleParameters) DeepCopyInto(out *AuthBackendRoleParameters
 	}
 	if in.AllowedNames != nil {
 		in, out := &in.AllowedNames, &out.AllowedNames
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.AllowedOrganizationUnits != nil {
+		in, out := &in.AllowedOrganizationUnits, &out.AllowedOrganizationUnits
 		*out = make([]*string, len(*in))
 		for i := range *in {
 			if (*in)[i] != nil {

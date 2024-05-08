@@ -164,6 +164,10 @@ type SecretBackendSignObservation struct {
 	// Initially false, and then set to true during refresh once the expiration is less than min_seconds_remaining in the future.
 	RenewPending *bool `json:"renewPending,omitempty" tf:"renew_pending,omitempty"`
 
+	// Use serial_number instead.
+	// The serial number.
+	Serial *string `json:"serial,omitempty" tf:"serial,omitempty"`
+
 	// The certificate's serial number, hex formatted.
 	// The certificate's serial number, hex formatted.
 	SerialNumber *string `json:"serialNumber,omitempty" tf:"serial_number,omitempty"`
