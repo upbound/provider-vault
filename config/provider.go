@@ -10,7 +10,7 @@ import (
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
 
-	vaultnamespace "github.com/upbound/provider-vault/config/vault_namespace"
+	vaultnamespace "github.com/upbound/provider-vault/config/vault"
 )
 
 const (

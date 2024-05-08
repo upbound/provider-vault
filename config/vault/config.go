@@ -1,4 +1,4 @@
-package vault_namespace
+package vault
 
 import "github.com/upbound/upjet/pkg/config"
 
@@ -7,7 +7,5 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("vault_namespace", func(r *config.Resource) {
 		r.Kind = "VaultNamespace"
 		r.ShortGroup = "vault"
-		r.UseAsync = true
-		r.ExternalName = config.IdentifierFromProvider
 	})
 }
