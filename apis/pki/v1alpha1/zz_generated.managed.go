@@ -27,14 +27,6 @@ func (mg *SecretBackendCert) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this SecretBackendCert.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *SecretBackendCert) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this SecretBackendCert.
 func (mg *SecretBackendCert) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -63,14 +55,6 @@ func (mg *SecretBackendCert) SetManagementPolicies(r xpv1.ManagementPolicies) {
 // SetProviderConfigReference of this SecretBackendCert.
 func (mg *SecretBackendCert) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this SecretBackendCert.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *SecretBackendCert) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this SecretBackendCert.
@@ -103,14 +87,6 @@ func (mg *SecretBackendConfigCA) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this SecretBackendConfigCA.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *SecretBackendConfigCA) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this SecretBackendConfigCA.
 func (mg *SecretBackendConfigCA) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -139,14 +115,6 @@ func (mg *SecretBackendConfigCA) SetManagementPolicies(r xpv1.ManagementPolicies
 // SetProviderConfigReference of this SecretBackendConfigCA.
 func (mg *SecretBackendConfigCA) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this SecretBackendConfigCA.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *SecretBackendConfigCA) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this SecretBackendConfigCA.
@@ -179,14 +147,6 @@ func (mg *SecretBackendConfigUrls) GetProviderConfigReference() *xpv1.Reference 
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this SecretBackendConfigUrls.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *SecretBackendConfigUrls) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this SecretBackendConfigUrls.
 func (mg *SecretBackendConfigUrls) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -215,14 +175,6 @@ func (mg *SecretBackendConfigUrls) SetManagementPolicies(r xpv1.ManagementPolici
 // SetProviderConfigReference of this SecretBackendConfigUrls.
 func (mg *SecretBackendConfigUrls) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this SecretBackendConfigUrls.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *SecretBackendConfigUrls) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this SecretBackendConfigUrls.
@@ -255,14 +207,6 @@ func (mg *SecretBackendCrlConfig) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this SecretBackendCrlConfig.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *SecretBackendCrlConfig) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this SecretBackendCrlConfig.
 func (mg *SecretBackendCrlConfig) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -291,14 +235,6 @@ func (mg *SecretBackendCrlConfig) SetManagementPolicies(r xpv1.ManagementPolicie
 // SetProviderConfigReference of this SecretBackendCrlConfig.
 func (mg *SecretBackendCrlConfig) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this SecretBackendCrlConfig.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *SecretBackendCrlConfig) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this SecretBackendCrlConfig.
@@ -331,14 +267,6 @@ func (mg *SecretBackendIntermediateCertRequest) GetProviderConfigReference() *xp
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this SecretBackendIntermediateCertRequest.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *SecretBackendIntermediateCertRequest) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this SecretBackendIntermediateCertRequest.
 func (mg *SecretBackendIntermediateCertRequest) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -367,14 +295,6 @@ func (mg *SecretBackendIntermediateCertRequest) SetManagementPolicies(r xpv1.Man
 // SetProviderConfigReference of this SecretBackendIntermediateCertRequest.
 func (mg *SecretBackendIntermediateCertRequest) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this SecretBackendIntermediateCertRequest.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *SecretBackendIntermediateCertRequest) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this SecretBackendIntermediateCertRequest.
@@ -407,14 +327,6 @@ func (mg *SecretBackendIntermediateSetSigned) GetProviderConfigReference() *xpv1
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this SecretBackendIntermediateSetSigned.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *SecretBackendIntermediateSetSigned) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this SecretBackendIntermediateSetSigned.
 func (mg *SecretBackendIntermediateSetSigned) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -443,14 +355,6 @@ func (mg *SecretBackendIntermediateSetSigned) SetManagementPolicies(r xpv1.Manag
 // SetProviderConfigReference of this SecretBackendIntermediateSetSigned.
 func (mg *SecretBackendIntermediateSetSigned) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this SecretBackendIntermediateSetSigned.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *SecretBackendIntermediateSetSigned) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this SecretBackendIntermediateSetSigned.
@@ -483,14 +387,6 @@ func (mg *SecretBackendRole) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this SecretBackendRole.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *SecretBackendRole) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this SecretBackendRole.
 func (mg *SecretBackendRole) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -519,14 +415,6 @@ func (mg *SecretBackendRole) SetManagementPolicies(r xpv1.ManagementPolicies) {
 // SetProviderConfigReference of this SecretBackendRole.
 func (mg *SecretBackendRole) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this SecretBackendRole.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *SecretBackendRole) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this SecretBackendRole.
@@ -559,14 +447,6 @@ func (mg *SecretBackendRootCert) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this SecretBackendRootCert.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *SecretBackendRootCert) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this SecretBackendRootCert.
 func (mg *SecretBackendRootCert) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -595,14 +475,6 @@ func (mg *SecretBackendRootCert) SetManagementPolicies(r xpv1.ManagementPolicies
 // SetProviderConfigReference of this SecretBackendRootCert.
 func (mg *SecretBackendRootCert) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this SecretBackendRootCert.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *SecretBackendRootCert) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this SecretBackendRootCert.
@@ -635,14 +507,6 @@ func (mg *SecretBackendRootSignIntermediate) GetProviderConfigReference() *xpv1.
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this SecretBackendRootSignIntermediate.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *SecretBackendRootSignIntermediate) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this SecretBackendRootSignIntermediate.
 func (mg *SecretBackendRootSignIntermediate) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -671,14 +535,6 @@ func (mg *SecretBackendRootSignIntermediate) SetManagementPolicies(r xpv1.Manage
 // SetProviderConfigReference of this SecretBackendRootSignIntermediate.
 func (mg *SecretBackendRootSignIntermediate) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this SecretBackendRootSignIntermediate.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *SecretBackendRootSignIntermediate) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this SecretBackendRootSignIntermediate.
@@ -711,14 +567,6 @@ func (mg *SecretBackendSign) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this SecretBackendSign.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *SecretBackendSign) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this SecretBackendSign.
 func (mg *SecretBackendSign) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -747,14 +595,6 @@ func (mg *SecretBackendSign) SetManagementPolicies(r xpv1.ManagementPolicies) {
 // SetProviderConfigReference of this SecretBackendSign.
 func (mg *SecretBackendSign) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this SecretBackendSign.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *SecretBackendSign) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this SecretBackendSign.

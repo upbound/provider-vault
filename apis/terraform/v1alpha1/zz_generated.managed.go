@@ -27,14 +27,6 @@ func (mg *CloudSecretBackend) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this CloudSecretBackend.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *CloudSecretBackend) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this CloudSecretBackend.
 func (mg *CloudSecretBackend) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -63,14 +55,6 @@ func (mg *CloudSecretBackend) SetManagementPolicies(r xpv1.ManagementPolicies) {
 // SetProviderConfigReference of this CloudSecretBackend.
 func (mg *CloudSecretBackend) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this CloudSecretBackend.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *CloudSecretBackend) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this CloudSecretBackend.
@@ -103,14 +87,6 @@ func (mg *CloudSecretCreds) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this CloudSecretCreds.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *CloudSecretCreds) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this CloudSecretCreds.
 func (mg *CloudSecretCreds) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -139,14 +115,6 @@ func (mg *CloudSecretCreds) SetManagementPolicies(r xpv1.ManagementPolicies) {
 // SetProviderConfigReference of this CloudSecretCreds.
 func (mg *CloudSecretCreds) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this CloudSecretCreds.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *CloudSecretCreds) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this CloudSecretCreds.
@@ -179,14 +147,6 @@ func (mg *CloudSecretRole) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this CloudSecretRole.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *CloudSecretRole) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this CloudSecretRole.
 func (mg *CloudSecretRole) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -215,14 +175,6 @@ func (mg *CloudSecretRole) SetManagementPolicies(r xpv1.ManagementPolicies) {
 // SetProviderConfigReference of this CloudSecretRole.
 func (mg *CloudSecretRole) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this CloudSecretRole.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *CloudSecretRole) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this CloudSecretRole.
