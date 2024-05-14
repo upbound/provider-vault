@@ -13,7 +13,7 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type NamespaceInitParameters struct {
+type VaultNamespaceInitParameters struct {
 
 	// Custom metadata describing this namespace. Value type
 	// is map[string]string. Requires Vault version 1.12+.
@@ -37,7 +37,7 @@ type NamespaceInitParameters struct {
 	PathFq *string `json:"pathFq,omitempty" tf:"path_fq,omitempty"`
 }
 
-type NamespaceObservation struct {
+type VaultNamespaceObservation struct {
 
 	// Custom metadata describing this namespace. Value type
 	// is map[string]string. Requires Vault version 1.12+.
@@ -68,7 +68,7 @@ type NamespaceObservation struct {
 	PathFq *string `json:"pathFq,omitempty" tf:"path_fq,omitempty"`
 }
 
-type NamespaceParameters struct {
+type VaultNamespaceParameters struct {
 
 	// Custom metadata describing this namespace. Value type
 	// is map[string]string. Requires Vault version 1.12+.
@@ -96,10 +96,10 @@ type NamespaceParameters struct {
 	PathFq *string `json:"pathFq,omitempty" tf:"path_fq,omitempty"`
 }
 
-// NamespaceSpec defines the desired state of Namespace
-type NamespaceSpec struct {
+// VaultNamespaceSpec defines the desired state of VaultNamespace
+type VaultNamespaceSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     NamespaceParameters `json:"forProvider"`
+	ForProvider     VaultNamespaceParameters `json:"forProvider"`
 	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
 	// unless the relevant Crossplane feature flag is enabled, and may be
 	// changed or removed without notice.
@@ -111,49 +111,49 @@ type NamespaceSpec struct {
 	// required on creation, but we do not desire to update them after creation,
 	// for example because of an external controller is managing them, like an
 	// autoscaler.
-	InitProvider NamespaceInitParameters `json:"initProvider,omitempty"`
+	InitProvider VaultNamespaceInitParameters `json:"initProvider,omitempty"`
 }
 
-// NamespaceStatus defines the observed state of Namespace.
-type NamespaceStatus struct {
+// VaultNamespaceStatus defines the observed state of VaultNamespace.
+type VaultNamespaceStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        NamespaceObservation `json:"atProvider,omitempty"`
+	AtProvider        VaultNamespaceObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// Namespace is the Schema for the Namespaces API. Writes namespaces for Vault
+// VaultNamespace is the Schema for the VaultNamespaces API. Writes namespaces for Vault
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
-type Namespace struct {
+type VaultNamespace struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || has(self.initProvider.path)",message="path is a required parameter"
-	Spec   NamespaceSpec   `json:"spec"`
-	Status NamespaceStatus `json:"status,omitempty"`
+	Spec   VaultNamespaceSpec   `json:"spec"`
+	Status VaultNamespaceStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// NamespaceList contains a list of Namespaces
-type NamespaceList struct {
+// VaultNamespaceList contains a list of VaultNamespaces
+type VaultNamespaceList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Namespace `json:"items"`
+	Items           []VaultNamespace `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	Namespace_Kind             = "Namespace"
-	Namespace_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: Namespace_Kind}.String()
-	Namespace_KindAPIVersion   = Namespace_Kind + "." + CRDGroupVersion.String()
-	Namespace_GroupVersionKind = CRDGroupVersion.WithKind(Namespace_Kind)
+	VaultNamespace_Kind             = "VaultNamespace"
+	VaultNamespace_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: VaultNamespace_Kind}.String()
+	VaultNamespace_KindAPIVersion   = VaultNamespace_Kind + "." + CRDGroupVersion.String()
+	VaultNamespace_GroupVersionKind = CRDGroupVersion.WithKind(VaultNamespace_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&Namespace{}, &NamespaceList{})
+	SchemeBuilder.Register(&VaultNamespace{}, &VaultNamespaceList{})
 }

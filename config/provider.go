@@ -9,6 +9,8 @@ import (
 	_ "embed"
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
+
+	"github.com/upbound/provider-vault/config/vault"
 )
 
 const (
@@ -33,6 +35,7 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
+		vault.Configure,
 	} {
 		configure(pc)
 	}

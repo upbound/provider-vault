@@ -4,7 +4,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.12.1
-  name: namespaces.vault.vault.upbound.io
+  name: vaultnamespaces.vault.vault.upbound.io
 spec:
   group: vault.vault.upbound.io
   names:
@@ -12,10 +12,10 @@ spec:
     - crossplane
     - managed
     - vault
-    kind: Namespace
-    listKind: NamespaceList
-    plural: namespaces
-    singular: namespace
+    kind: VaultNamespace
+    listKind: VaultNamespaceList
+    plural: vaultnamespaces
+    singular: vaultnamespace
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Namespace is the Schema for the Namespaces API. Writes namespaces
-          for Vault
+        description: VaultNamespace is the Schema for the VaultNamespaces API. Writes
+          namespaces for Vault
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: NamespaceSpec defines the desired state of Namespace
+            description: VaultNamespaceSpec defines the desired state of VaultNamespace
             properties:
               deletionPolicy:
                 default: Delete
@@ -333,7 +333,7 @@ spec:
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.path)
                 || has(self.initProvider.path)'
           status:
-            description: NamespaceStatus defines the observed state of Namespace.
+            description: VaultNamespaceStatus defines the observed state of VaultNamespace.
             properties:
               atProvider:
                 properties:

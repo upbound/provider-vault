@@ -131,9 +131,9 @@ import (
 	secretbackendkey "github.com/upbound/provider-vault/internal/controller/transit/secretbackendkey"
 	audit "github.com/upbound/provider-vault/internal/controller/vault/audit"
 	mount "github.com/upbound/provider-vault/internal/controller/vault/mount"
-	namespace "github.com/upbound/provider-vault/internal/controller/vault/namespace"
 	policyvault "github.com/upbound/provider-vault/internal/controller/vault/policy"
 	token "github.com/upbound/provider-vault/internal/controller/vault/token"
+	vaultnamespace "github.com/upbound/provider-vault/internal/controller/vault/vaultnamespace"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to
@@ -262,9 +262,9 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		secretbackendkey.Setup,
 		audit.Setup,
 		mount.Setup,
-		namespace.Setup,
 		policyvault.Setup,
 		token.Setup,
+		vaultnamespace.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err

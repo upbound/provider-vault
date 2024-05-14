@@ -1,6 +1,6 @@
 module github.com/upbound/provider-vault
 
-go 1.19
+go 1.20
 
 require (
 	github.com/crossplane/crossplane-runtime v0.20.0

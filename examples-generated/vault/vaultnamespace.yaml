@@ -1,8 +1,8 @@
 apiVersion: vault.vault.upbound.io/v1alpha1
-kind: Namespace
+kind: VaultNamespace
 metadata:
   annotations:
-    meta.upbound.io/example-id: vault/v1alpha1/namespace
+    meta.upbound.io/example-id: vault/v1alpha1/vaultnamespace
   labels:
     testing.upbound.io/example-name: ns1
   name: ns1
