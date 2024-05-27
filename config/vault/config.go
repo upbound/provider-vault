@@ -1,6 +1,9 @@
 package vault
 
-import "github.com/upbound/upjet/pkg/config"
+import (
+	"github.com/upbound/provider-vault/config/common"
+	"github.com/upbound/upjet/pkg/config"
+)
 
 // ConfigureNamespace configures the namespace resource.
 func Configure(p *config.Provider) {
@@ -16,15 +19,7 @@ func Configure(p *config.Provider) {
         }
         r.References["mount_accessor"] = config.Reference{
             Type: "github.com/upbound/provider-vault/apis/jwt/v1alpha1.AuthBackend",
-        }
-        r.References["mount_accessor"] = config.Reference{
-            Type: "github.com/upbound/provider-vault/apis/github/v1alpha1.AuthBackend",
-        }
-        r.References["mount_accessor"] = config.Reference{
-            Type: "github.com/upbound/provider-vault/apis/ldap/v1alpha1.AuthBackend",
-        }
-        r.References["mount_accessor"] = config.Reference{
-            Type: "github.com/upbound/provider-vault/apis/okta/v1alpha1.AuthBackend",
+            Extractor: common.AccessorExtractor,
         }
     })
 }
