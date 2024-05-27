@@ -8,8 +8,12 @@ metadata:
   name: group-alias
 spec:
   forProvider:
-    canonicalId: ${vault_identity_group.group.id}
-    mountAccessor: ${vault_auth_backend.github.accessor}
+    canonicalIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: group
+    mountAccessorSelector:
+      matchLabels:
+        testing.upbound.io/example-name: github
     name: Github_Team_Slug
 
 ---

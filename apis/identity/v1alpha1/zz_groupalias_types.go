@@ -15,14 +15,6 @@ import (
 
 type GroupAliasInitParameters struct {
 
-	// ID of the group to which this is an alias.
-	// ID of the group to which this is an alias.
-	CanonicalID *string `json:"canonicalId,omitempty" tf:"canonical_id,omitempty"`
-
-	// Mount accessor of the authentication backend to which this alias belongs to.
-	// Mount accessor to which this alias belongs to.
-	MountAccessor *string `json:"mountAccessor,omitempty" tf:"mount_accessor,omitempty"`
-
 	// Name of the group alias to create.
 	// Name of the group alias.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -64,13 +56,32 @@ type GroupAliasParameters struct {
 
 	// ID of the group to which this is an alias.
 	// ID of the group to which this is an alias.
+	// +crossplane:generate:reference:type=Group
 	// +kubebuilder:validation:Optional
 	CanonicalID *string `json:"canonicalId,omitempty" tf:"canonical_id,omitempty"`
 
+	// Reference to a Group to populate canonicalId.
+	// +kubebuilder:validation:Optional
+	CanonicalIDRef *v1.Reference `json:"canonicalIdRef,omitempty" tf:"-"`
+
+	// Selector for a Group to populate canonicalId.
+	// +kubebuilder:validation:Optional
+	CanonicalIDSelector *v1.Selector `json:"canonicalIdSelector,omitempty" tf:"-"`
+
 	// Mount accessor of the authentication backend to which this alias belongs to.
 	// Mount accessor to which this alias belongs to.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/jwt/v1alpha1.AuthBackend
+	// +crossplane:generate:reference:extractor=github.com/upbound/provider-vault/config/common.ExtractAccessor()
 	// +kubebuilder:validation:Optional
 	MountAccessor *string `json:"mountAccessor,omitempty" tf:"mount_accessor,omitempty"`
+
+	// Reference to a AuthBackend in jwt to populate mountAccessor.
+	// +kubebuilder:validation:Optional
+	MountAccessorRef *v1.Reference `json:"mountAccessorRef,omitempty" tf:"-"`
+
+	// Selector for a AuthBackend in jwt to populate mountAccessor.
+	// +kubebuilder:validation:Optional
+	MountAccessorSelector *v1.Selector `json:"mountAccessorSelector,omitempty" tf:"-"`
 
 	// Name of the group alias to create.
 	// Name of the group alias.
@@ -122,8 +133,6 @@ type GroupAliasStatus struct {
 type GroupAlias struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.canonicalId) || has(self.initProvider.canonicalId)",message="canonicalId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mountAccessor) || has(self.initProvider.mountAccessor)",message="mountAccessor is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
 	Spec   GroupAliasSpec   `json:"spec"`
 	Status GroupAliasStatus `json:"status,omitempty"`
