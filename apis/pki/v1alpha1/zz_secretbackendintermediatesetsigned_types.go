@@ -19,12 +19,6 @@ type SecretBackendIntermediateSetSignedInitParameters struct {
 	// The PKI secret backend the resource belongs to.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
-	// Specifies the PEM encoded certificate. May optionally append additional
-	// CA certificates to populate the whole chain, which will then enable returning the full chain from
-	// issue and sign operations.
-	// The certificate.
-	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
-
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -75,8 +69,18 @@ type SecretBackendIntermediateSetSignedParameters struct {
 	// CA certificates to populate the whole chain, which will then enable returning the full chain from
 	// issue and sign operations.
 	// The certificate.
+	// +crossplane:generate:reference:type=SecretBackendRootSignIntermediate
+	// +crossplane:generate:reference:extractor=github.com/upbound/provider-vault/config/common.ExtractCrt()
 	// +kubebuilder:validation:Optional
 	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	// Reference to a SecretBackendRootSignIntermediate to populate certificate.
+	// +kubebuilder:validation:Optional
+	CertificateRef *v1.Reference `json:"certificateRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackendRootSignIntermediate to populate certificate.
+	// +kubebuilder:validation:Optional
+	CertificateSelector *v1.Selector `json:"certificateSelector,omitempty" tf:"-"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -124,7 +128,6 @@ type SecretBackendIntermediateSetSigned struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.certificate) || has(self.initProvider.certificate)",message="certificate is a required parameter"
 	Spec   SecretBackendIntermediateSetSignedSpec   `json:"spec"`
 	Status SecretBackendIntermediateSetSignedStatus `json:"status,omitempty"`
 }
