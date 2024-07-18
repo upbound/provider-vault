@@ -1240,11 +1240,6 @@ func (in *GroupMemberEntityIdsObservation) DeepCopyInto(out *GroupMemberEntityId
 		*out = new(string)
 		**out = **in
 	}
-	if in.GroupName != nil {
-		in, out := &in.GroupName, &out.GroupName
-		*out = new(string)
-		**out = **in
-	}
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
 		*out = new(string)

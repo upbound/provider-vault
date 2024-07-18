@@ -69,7 +69,8 @@ spec:
                 properties:
                   accessKeySecretRef:
                     description: The AWS access key that Vault should use for the
-                      auth backend. AWS Access key with permissions to query AWS APIs.
+                      auth backend. Mutually exclusive with identity_token_audience.
+                      AWS Access key with permissions to query AWS APIs.
                     properties:
                       key:
                         description: The key to select.
@@ -107,12 +108,33 @@ spec:
                       header as part of GetCallerIdentity requests that are used in
                       the iam auth method.
                     type: string
+                  identityTokenAudience:
+                    description: The audience claim value. Mutually exclusive with
+                      access_key. Requires Vault 1.17+. Available only for Vault Enterprise
+                      The audience claim value.
+                    type: string
+                  identityTokenTtl:
+                    description: The TTL of generated identity tokens in seconds.
+                      Requires Vault 1.17+. Available only for Vault Enterprise The
+                      TTL of generated identity tokens in seconds.
+                    type: number
+                  maxRetries:
+                    description: Number of max retries the client should use for recoverable
+                      errors. The default -1 falls back to the AWS SDK's default behavior.
+                      Number of max retries the client should use for recoverable
+                      errors.
+                    type: number
                   namespace:
                     description: The namespace to provision the resource in. The value
                       should not contain leading or trailing forward slashes. The
                       namespace is always relative to the provider's configured namespace.
                       Available only for Vault Enterprise. Target namespace. (requires
                       Enterprise)
+                    type: string
+                  roleArn:
+                    description: Role ARN to assume for plugin identity token federation.
+                      Requires Vault 1.17+. Available only for Vault Enterprise Role
+                      ARN to assume for plugin identity token federation.
                     type: string
                   secretKeySecretRef:
                     description: The AWS secret key that Vault should use for the
@@ -188,12 +210,33 @@ spec:
                       header as part of GetCallerIdentity requests that are used in
                       the iam auth method.
                     type: string
+                  identityTokenAudience:
+                    description: The audience claim value. Mutually exclusive with
+                      access_key. Requires Vault 1.17+. Available only for Vault Enterprise
+                      The audience claim value.
+                    type: string
+                  identityTokenTtl:
+                    description: The TTL of generated identity tokens in seconds.
+                      Requires Vault 1.17+. Available only for Vault Enterprise The
+                      TTL of generated identity tokens in seconds.
+                    type: number
+                  maxRetries:
+                    description: Number of max retries the client should use for recoverable
+                      errors. The default -1 falls back to the AWS SDK's default behavior.
+                      Number of max retries the client should use for recoverable
+                      errors.
+                    type: number
                   namespace:
                     description: The namespace to provision the resource in. The value
                       should not contain leading or trailing forward slashes. The
                       namespace is always relative to the provider's configured namespace.
                       Available only for Vault Enterprise. Target namespace. (requires
                       Enterprise)
+                    type: string
+                  roleArn:
+                    description: Role ARN to assume for plugin identity token federation.
+                      Requires Vault 1.17+. Available only for Vault Enterprise Role
+                      ARN to assume for plugin identity token federation.
                     type: string
                   stsEndpoint:
                     description: Override the URL Vault uses when making STS API calls.
@@ -442,12 +485,33 @@ spec:
                     type: string
                   id:
                     type: string
+                  identityTokenAudience:
+                    description: The audience claim value. Mutually exclusive with
+                      access_key. Requires Vault 1.17+. Available only for Vault Enterprise
+                      The audience claim value.
+                    type: string
+                  identityTokenTtl:
+                    description: The TTL of generated identity tokens in seconds.
+                      Requires Vault 1.17+. Available only for Vault Enterprise The
+                      TTL of generated identity tokens in seconds.
+                    type: number
+                  maxRetries:
+                    description: Number of max retries the client should use for recoverable
+                      errors. The default -1 falls back to the AWS SDK's default behavior.
+                      Number of max retries the client should use for recoverable
+                      errors.
+                    type: number
                   namespace:
                     description: The namespace to provision the resource in. The value
                       should not contain leading or trailing forward slashes. The
                       namespace is always relative to the provider's configured namespace.
                       Available only for Vault Enterprise. Target namespace. (requires
                       Enterprise)
+                    type: string
+                  roleArn:
+                    description: Role ARN to assume for plugin identity token federation.
+                      Requires Vault 1.17+. Available only for Vault Enterprise Role
+                      ARN to assume for plugin identity token federation.
                     type: string
                   stsEndpoint:
                     description: Override the URL Vault uses when making STS API calls.

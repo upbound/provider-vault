@@ -67,6 +67,7 @@ type OidcClientObservation struct {
 	// A list of assignment resources associated with the client.
 	Assignments []*string `json:"assignments,omitempty" tf:"assignments,omitempty"`
 
+	// The Client ID returned by Vault.
 	// The Client ID from Vault.
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
 

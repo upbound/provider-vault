@@ -54,6 +54,16 @@ func (in *AuthBackendConfigInitParameters) DeepCopyInto(out *AuthBackendConfigIn
 		*out = new(string)
 		**out = **in
 	}
+	if in.IdentityTokenAudience != nil {
+		in, out := &in.IdentityTokenAudience, &out.IdentityTokenAudience
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenTTL != nil {
+		in, out := &in.IdentityTokenTTL, &out.IdentityTokenTTL
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -126,6 +136,16 @@ func (in *AuthBackendConfigObservation) DeepCopyInto(out *AuthBackendConfigObser
 		*out = new(string)
 		**out = **in
 	}
+	if in.IdentityTokenAudience != nil {
+		in, out := &in.IdentityTokenAudience, &out.IdentityTokenAudience
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenTTL != nil {
+		in, out := &in.IdentityTokenTTL, &out.IdentityTokenTTL
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -169,6 +189,16 @@ func (in *AuthBackendConfigParameters) DeepCopyInto(out *AuthBackendConfigParame
 	if in.Environment != nil {
 		in, out := &in.Environment, &out.Environment
 		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenAudience != nil {
+		in, out := &in.IdentityTokenAudience, &out.IdentityTokenAudience
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenTTL != nil {
+		in, out := &in.IdentityTokenTTL, &out.IdentityTokenTTL
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Namespace != nil {
@@ -987,6 +1017,21 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 		*out = new(string)
 		**out = **in
 	}
+	if in.IdentityTokenAudience != nil {
+		in, out := &in.IdentityTokenAudience, &out.IdentityTokenAudience
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenKey != nil {
+		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenTTL != nil {
+		in, out := &in.IdentityTokenTTL, &out.IdentityTokenTTL
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -1069,6 +1114,21 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.IdentityTokenAudience != nil {
+		in, out := &in.IdentityTokenAudience, &out.IdentityTokenAudience
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenKey != nil {
+		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenTTL != nil {
+		in, out := &in.IdentityTokenTTL, &out.IdentityTokenTTL
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -1122,6 +1182,21 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 	if in.Environment != nil {
 		in, out := &in.Environment, &out.Environment
 		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenAudience != nil {
+		in, out := &in.IdentityTokenAudience, &out.IdentityTokenAudience
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenKey != nil {
+		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenTTL != nil {
+		in, out := &in.IdentityTokenTTL, &out.IdentityTokenTTL
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Namespace != nil {

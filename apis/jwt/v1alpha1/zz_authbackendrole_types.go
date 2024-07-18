@@ -25,9 +25,7 @@ type AuthBackendRoleInitParameters struct {
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
-	// (For "jwt" roles, at least one of bound_audiences, bound_subject, bound_claims
-	// or token_bound_cidrs is required. Optional for "oidc" roles.) List of aud claims to match against.
-	// Any match is sufficient.
+	// List of aud claims to match against. Any match is sufficient.
 	// List of aud claims to match against. Any match is sufficient.
 	BoundAudiences []*string `json:"boundAudiences,omitempty" tf:"bound_audiences,omitempty"`
 
@@ -63,9 +61,9 @@ type AuthBackendRoleInitParameters struct {
 	DisableBoundClaimsParsing *bool `json:"disableBoundClaimsParsing,omitempty" tf:"disable_bound_claims_parsing,omitempty"`
 
 	// The amount of leeway to add to expiration (exp) claims to account for
-	// clock skew, in seconds. Defaults to 60 seconds if set to 0 and can be disabled if set to -1.
+	// clock skew, in seconds. Defaults to 150 seconds if set to 0 and can be disabled if set to -1.
 	// Only applicable with "jwt" roles.
-	// The amount of leeway to add to expiration (exp) claims to account for clock skew, in seconds. Defaults to 60 seconds if set to 0 and can be disabled if set to -1. Only applicable with 'jwt' roles.
+	// The amount of leeway to add to expiration (exp) claims to account for clock skew, in seconds. Defaults to 150 seconds if set to 0 and can be disabled if set to -1. Only applicable with 'jwt' roles.
 	ExpirationLeeway *float64 `json:"expirationLeeway,omitempty" tf:"expiration_leeway,omitempty"`
 
 	// The claim to use to uniquely identify
@@ -88,7 +86,7 @@ type AuthBackendRoleInitParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// The amount of leeway to add to not before (nbf) claims to account for
-	// clock skew, in seconds. Defaults to 60 seconds if set to 0 and can be disabled if set to -1.
+	// clock skew, in seconds. Defaults to 150 seconds if set to 0 and can be disabled if set to -1.
 	// Only applicable with "jwt" roles.
 	// The amount of leeway to add to not before (nbf) claims to account for clock skew, in seconds. Defaults to 150 seconds if set to 0 and can be disabled if set to -1. Only applicable with 'jwt' roles.
 	NotBeforeLeeway *float64 `json:"notBeforeLeeway,omitempty" tf:"not_before_leeway,omitempty"`
@@ -191,9 +189,7 @@ type AuthBackendRoleObservation struct {
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
-	// (For "jwt" roles, at least one of bound_audiences, bound_subject, bound_claims
-	// or token_bound_cidrs is required. Optional for "oidc" roles.) List of aud claims to match against.
-	// Any match is sufficient.
+	// List of aud claims to match against. Any match is sufficient.
 	// List of aud claims to match against. Any match is sufficient.
 	BoundAudiences []*string `json:"boundAudiences,omitempty" tf:"bound_audiences,omitempty"`
 
@@ -229,9 +225,9 @@ type AuthBackendRoleObservation struct {
 	DisableBoundClaimsParsing *bool `json:"disableBoundClaimsParsing,omitempty" tf:"disable_bound_claims_parsing,omitempty"`
 
 	// The amount of leeway to add to expiration (exp) claims to account for
-	// clock skew, in seconds. Defaults to 60 seconds if set to 0 and can be disabled if set to -1.
+	// clock skew, in seconds. Defaults to 150 seconds if set to 0 and can be disabled if set to -1.
 	// Only applicable with "jwt" roles.
-	// The amount of leeway to add to expiration (exp) claims to account for clock skew, in seconds. Defaults to 60 seconds if set to 0 and can be disabled if set to -1. Only applicable with 'jwt' roles.
+	// The amount of leeway to add to expiration (exp) claims to account for clock skew, in seconds. Defaults to 150 seconds if set to 0 and can be disabled if set to -1. Only applicable with 'jwt' roles.
 	ExpirationLeeway *float64 `json:"expirationLeeway,omitempty" tf:"expiration_leeway,omitempty"`
 
 	// The claim to use to uniquely identify
@@ -256,7 +252,7 @@ type AuthBackendRoleObservation struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// The amount of leeway to add to not before (nbf) claims to account for
-	// clock skew, in seconds. Defaults to 60 seconds if set to 0 and can be disabled if set to -1.
+	// clock skew, in seconds. Defaults to 150 seconds if set to 0 and can be disabled if set to -1.
 	// Only applicable with "jwt" roles.
 	// The amount of leeway to add to not before (nbf) claims to account for clock skew, in seconds. Defaults to 150 seconds if set to 0 and can be disabled if set to -1. Only applicable with 'jwt' roles.
 	NotBeforeLeeway *float64 `json:"notBeforeLeeway,omitempty" tf:"not_before_leeway,omitempty"`
@@ -361,9 +357,7 @@ type AuthBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
-	// (For "jwt" roles, at least one of bound_audiences, bound_subject, bound_claims
-	// or token_bound_cidrs is required. Optional for "oidc" roles.) List of aud claims to match against.
-	// Any match is sufficient.
+	// List of aud claims to match against. Any match is sufficient.
 	// List of aud claims to match against. Any match is sufficient.
 	// +kubebuilder:validation:Optional
 	BoundAudiences []*string `json:"boundAudiences,omitempty" tf:"bound_audiences,omitempty"`
@@ -406,9 +400,9 @@ type AuthBackendRoleParameters struct {
 	DisableBoundClaimsParsing *bool `json:"disableBoundClaimsParsing,omitempty" tf:"disable_bound_claims_parsing,omitempty"`
 
 	// The amount of leeway to add to expiration (exp) claims to account for
-	// clock skew, in seconds. Defaults to 60 seconds if set to 0 and can be disabled if set to -1.
+	// clock skew, in seconds. Defaults to 150 seconds if set to 0 and can be disabled if set to -1.
 	// Only applicable with "jwt" roles.
-	// The amount of leeway to add to expiration (exp) claims to account for clock skew, in seconds. Defaults to 60 seconds if set to 0 and can be disabled if set to -1. Only applicable with 'jwt' roles.
+	// The amount of leeway to add to expiration (exp) claims to account for clock skew, in seconds. Defaults to 150 seconds if set to 0 and can be disabled if set to -1. Only applicable with 'jwt' roles.
 	// +kubebuilder:validation:Optional
 	ExpirationLeeway *float64 `json:"expirationLeeway,omitempty" tf:"expiration_leeway,omitempty"`
 
@@ -435,7 +429,7 @@ type AuthBackendRoleParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// The amount of leeway to add to not before (nbf) claims to account for
-	// clock skew, in seconds. Defaults to 60 seconds if set to 0 and can be disabled if set to -1.
+	// clock skew, in seconds. Defaults to 150 seconds if set to 0 and can be disabled if set to -1.
 	// Only applicable with "jwt" roles.
 	// The amount of leeway to add to not before (nbf) claims to account for clock skew, in seconds. Defaults to 150 seconds if set to 0 and can be disabled if set to -1. Only applicable with 'jwt' roles.
 	// +kubebuilder:validation:Optional

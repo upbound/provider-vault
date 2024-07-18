@@ -79,11 +79,9 @@ spec:
                       Defaults to jwt. Unique name of the auth backend to configure.
                     type: string
                   boundAudiences:
-                    description: (For "jwt" roles, at least one of bound_audiences,
-                      bound_subject, bound_claims or token_bound_cidrs is required.
-                      Optional for "oidc" roles.) List of aud claims to match against.
-                      Any match is sufficient. List of aud claims to match against.
-                      Any match is sufficient.
+                    description: List of aud claims to match against. Any match is
+                      sufficient. List of aud claims to match against. Any match is
+                      sufficient.
                     items:
                       type: string
                     type: array
@@ -129,11 +127,11 @@ spec:
                     type: boolean
                   expirationLeeway:
                     description: The amount of leeway to add to expiration (exp) claims
-                      to account for clock skew, in seconds. Defaults to 60 seconds
+                      to account for clock skew, in seconds. Defaults to 150 seconds
                       if set to 0 and can be disabled if set to -1. Only applicable
                       with "jwt" roles. The amount of leeway to add to expiration
                       (exp) claims to account for clock skew, in seconds. Defaults
-                      to 60 seconds if set to 0 and can be disabled if set to -1.
+                      to 150 seconds if set to 0 and can be disabled if set to -1.
                       Only applicable with 'jwt' roles.
                     type: number
                   groupsClaim:
@@ -161,7 +159,7 @@ spec:
                     type: string
                   notBeforeLeeway:
                     description: The amount of leeway to add to not before (nbf) claims
-                      to account for clock skew, in seconds. Defaults to 60 seconds
+                      to account for clock skew, in seconds. Defaults to 150 seconds
                       if set to 0 and can be disabled if set to -1. Only applicable
                       with "jwt" roles. The amount of leeway to add to not before
                       (nbf) claims to account for clock skew, in seconds. Defaults
@@ -290,11 +288,9 @@ spec:
                       Defaults to jwt. Unique name of the auth backend to configure.
                     type: string
                   boundAudiences:
-                    description: (For "jwt" roles, at least one of bound_audiences,
-                      bound_subject, bound_claims or token_bound_cidrs is required.
-                      Optional for "oidc" roles.) List of aud claims to match against.
-                      Any match is sufficient. List of aud claims to match against.
-                      Any match is sufficient.
+                    description: List of aud claims to match against. Any match is
+                      sufficient. List of aud claims to match against. Any match is
+                      sufficient.
                     items:
                       type: string
                     type: array
@@ -340,11 +336,11 @@ spec:
                     type: boolean
                   expirationLeeway:
                     description: The amount of leeway to add to expiration (exp) claims
-                      to account for clock skew, in seconds. Defaults to 60 seconds
+                      to account for clock skew, in seconds. Defaults to 150 seconds
                       if set to 0 and can be disabled if set to -1. Only applicable
                       with "jwt" roles. The amount of leeway to add to expiration
                       (exp) claims to account for clock skew, in seconds. Defaults
-                      to 60 seconds if set to 0 and can be disabled if set to -1.
+                      to 150 seconds if set to 0 and can be disabled if set to -1.
                       Only applicable with 'jwt' roles.
                     type: number
                   groupsClaim:
@@ -372,7 +368,7 @@ spec:
                     type: string
                   notBeforeLeeway:
                     description: The amount of leeway to add to not before (nbf) claims
-                      to account for clock skew, in seconds. Defaults to 60 seconds
+                      to account for clock skew, in seconds. Defaults to 150 seconds
                       if set to 0 and can be disabled if set to -1. Only applicable
                       with "jwt" roles. The amount of leeway to add to not before
                       (nbf) claims to account for clock skew, in seconds. Defaults
@@ -699,11 +695,9 @@ spec:
                       Defaults to jwt. Unique name of the auth backend to configure.
                     type: string
                   boundAudiences:
-                    description: (For "jwt" roles, at least one of bound_audiences,
-                      bound_subject, bound_claims or token_bound_cidrs is required.
-                      Optional for "oidc" roles.) List of aud claims to match against.
-                      Any match is sufficient. List of aud claims to match against.
-                      Any match is sufficient.
+                    description: List of aud claims to match against. Any match is
+                      sufficient. List of aud claims to match against. Any match is
+                      sufficient.
                     items:
                       type: string
                     type: array
@@ -749,11 +743,11 @@ spec:
                     type: boolean
                   expirationLeeway:
                     description: The amount of leeway to add to expiration (exp) claims
-                      to account for clock skew, in seconds. Defaults to 60 seconds
+                      to account for clock skew, in seconds. Defaults to 150 seconds
                       if set to 0 and can be disabled if set to -1. Only applicable
                       with "jwt" roles. The amount of leeway to add to expiration
                       (exp) claims to account for clock skew, in seconds. Defaults
-                      to 60 seconds if set to 0 and can be disabled if set to -1.
+                      to 150 seconds if set to 0 and can be disabled if set to -1.
                       Only applicable with 'jwt' roles.
                     type: number
                   groupsClaim:
@@ -783,7 +777,7 @@ spec:
                     type: string
                   notBeforeLeeway:
                     description: The amount of leeway to add to not before (nbf) claims
-                      to account for clock skew, in seconds. Defaults to 60 seconds
+                      to account for clock skew, in seconds. Defaults to 150 seconds
                       if set to 0 and can be disabled if set to -1. Only applicable
                       with "jwt" roles. The amount of leeway to add to not before
                       (nbf) claims to account for clock skew, in seconds. Defaults

@@ -116,6 +116,15 @@ spec:
                   disableRemount:
                     description: If set, opts out of mount migration on path updates.
                     type: boolean
+                  identityTokenAudience:
+                    description: The audience claim value for plugin identity tokens.
+                    type: string
+                  identityTokenKey:
+                    description: The key to use for signing identity tokens.
+                    type: string
+                  identityTokenTtl:
+                    description: The TTL of generated tokens.
+                    type: number
                   local:
                     description: Specifies if the auth method is local only
                     type: boolean
@@ -127,6 +136,10 @@ spec:
                   privateKeyId:
                     type: string
                   projectId:
+                    type: string
+                  serviceAccountEmail:
+                    description: Service Account to impersonate for plugin workload
+                      identity federation.
                     type: string
                   tune:
                     items:
@@ -203,6 +216,15 @@ spec:
                   disableRemount:
                     description: If set, opts out of mount migration on path updates.
                     type: boolean
+                  identityTokenAudience:
+                    description: The audience claim value for plugin identity tokens.
+                    type: string
+                  identityTokenKey:
+                    description: The key to use for signing identity tokens.
+                    type: string
+                  identityTokenTtl:
+                    description: The TTL of generated tokens.
+                    type: number
                   local:
                     description: Specifies if the auth method is local only
                     type: boolean
@@ -214,6 +236,10 @@ spec:
                   privateKeyId:
                     type: string
                   projectId:
+                    type: string
+                  serviceAccountEmail:
+                    description: Service Account to impersonate for plugin workload
+                      identity federation.
                     type: string
                   tune:
                     items:
@@ -484,6 +510,15 @@ spec:
                     type: boolean
                   id:
                     type: string
+                  identityTokenAudience:
+                    description: The audience claim value for plugin identity tokens.
+                    type: string
+                  identityTokenKey:
+                    description: The key to use for signing identity tokens.
+                    type: string
+                  identityTokenTtl:
+                    description: The TTL of generated tokens.
+                    type: number
                   local:
                     description: Specifies if the auth method is local only
                     type: boolean
@@ -495,6 +530,10 @@ spec:
                   privateKeyId:
                     type: string
                   projectId:
+                    type: string
+                  serviceAccountEmail:
+                    description: Service Account to impersonate for plugin workload
+                      identity federation.
                     type: string
                   tune:
                     items:

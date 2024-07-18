@@ -36,12 +36,32 @@ type AuthBackendClientInitParameters struct {
 	// The value to require in the X-Vault-AWS-IAM-Server-ID header as part of GetCallerIdentity requests that are used in the iam auth method.
 	IAMServerIDHeaderValue *string `json:"iamServerIdHeaderValue,omitempty" tf:"iam_server_id_header_value,omitempty"`
 
+	// The audience claim value. Mutually exclusive with access_key.
+	// Requires Vault 1.17+. Available only for Vault Enterprise
+	// The audience claim value.
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The TTL of generated identity tokens in seconds. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// The TTL of generated identity tokens in seconds.
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
+
+	// Number of max retries the client should use for recoverable errors.
+	// The default -1 falls back to the AWS SDK's default behavior.
+	// Number of max retries the client should use for recoverable errors.
+	MaxRetries *float64 `json:"maxRetries,omitempty" tf:"max_retries,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
 	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Role ARN to assume for plugin identity token federation. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// Role ARN to assume for plugin identity token federation.
+	RoleArn *string `json:"roleArn,omitempty" tf:"role_arn,omitempty"`
 
 	// Override the URL Vault uses when making STS API
 	// calls.
@@ -87,12 +107,32 @@ type AuthBackendClientObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The audience claim value. Mutually exclusive with access_key.
+	// Requires Vault 1.17+. Available only for Vault Enterprise
+	// The audience claim value.
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The TTL of generated identity tokens in seconds. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// The TTL of generated identity tokens in seconds.
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
+
+	// Number of max retries the client should use for recoverable errors.
+	// The default -1 falls back to the AWS SDK's default behavior.
+	// Number of max retries the client should use for recoverable errors.
+	MaxRetries *float64 `json:"maxRetries,omitempty" tf:"max_retries,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
 	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Role ARN to assume for plugin identity token federation. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// Role ARN to assume for plugin identity token federation.
+	RoleArn *string `json:"roleArn,omitempty" tf:"role_arn,omitempty"`
 
 	// Override the URL Vault uses when making STS API
 	// calls.
@@ -116,7 +156,7 @@ type AuthBackendClientObservation struct {
 type AuthBackendClientParameters struct {
 
 	// The AWS access key that Vault should use for the
-	// auth backend.
+	// auth backend. Mutually exclusive with identity_token_audience.
 	// AWS Access key with permissions to query AWS APIs.
 	// +kubebuilder:validation:Optional
 	AccessKeySecretRef *v1.SecretKeySelector `json:"accessKeySecretRef,omitempty" tf:"-"`
@@ -146,6 +186,24 @@ type AuthBackendClientParameters struct {
 	// +kubebuilder:validation:Optional
 	IAMServerIDHeaderValue *string `json:"iamServerIdHeaderValue,omitempty" tf:"iam_server_id_header_value,omitempty"`
 
+	// The audience claim value. Mutually exclusive with access_key.
+	// Requires Vault 1.17+. Available only for Vault Enterprise
+	// The audience claim value.
+	// +kubebuilder:validation:Optional
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The TTL of generated identity tokens in seconds. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// The TTL of generated identity tokens in seconds.
+	// +kubebuilder:validation:Optional
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
+
+	// Number of max retries the client should use for recoverable errors.
+	// The default -1 falls back to the AWS SDK's default behavior.
+	// Number of max retries the client should use for recoverable errors.
+	// +kubebuilder:validation:Optional
+	MaxRetries *float64 `json:"maxRetries,omitempty" tf:"max_retries,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -153,6 +211,12 @@ type AuthBackendClientParameters struct {
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Role ARN to assume for plugin identity token federation. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// Role ARN to assume for plugin identity token federation.
+	// +kubebuilder:validation:Optional
+	RoleArn *string `json:"roleArn,omitempty" tf:"role_arn,omitempty"`
 
 	// The AWS secret key that Vault should use for the
 	// auth backend.

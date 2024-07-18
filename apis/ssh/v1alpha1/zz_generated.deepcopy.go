@@ -147,6 +147,16 @@ func (in *SecretBackendCAInitParameters) DeepCopyInto(out *SecretBackendCAInitPa
 		*out = new(bool)
 		**out = **in
 	}
+	if in.KeyBits != nil {
+		in, out := &in.KeyBits, &out.KeyBits
+		*out = new(float64)
+		**out = **in
+	}
+	if in.KeyType != nil {
+		in, out := &in.KeyType, &out.KeyType
+		*out = new(string)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -219,6 +229,16 @@ func (in *SecretBackendCAObservation) DeepCopyInto(out *SecretBackendCAObservati
 		*out = new(string)
 		**out = **in
 	}
+	if in.KeyBits != nil {
+		in, out := &in.KeyBits, &out.KeyBits
+		*out = new(float64)
+		**out = **in
+	}
+	if in.KeyType != nil {
+		in, out := &in.KeyType, &out.KeyType
+		*out = new(string)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -252,6 +272,16 @@ func (in *SecretBackendCAParameters) DeepCopyInto(out *SecretBackendCAParameters
 	if in.GenerateSigningKey != nil {
 		in, out := &in.GenerateSigningKey, &out.GenerateSigningKey
 		*out = new(bool)
+		**out = **in
+	}
+	if in.KeyBits != nil {
+		in, out := &in.KeyBits, &out.KeyBits
+		*out = new(float64)
+		**out = **in
+	}
+	if in.KeyType != nil {
+		in, out := &in.KeyType, &out.KeyType
+		*out = new(string)
 		**out = **in
 	}
 	if in.Namespace != nil {
@@ -401,21 +431,6 @@ func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleIn
 		*out = make([]AllowedUserKeyConfigInitParameters, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
-	if in.AllowedUserKeyLengths != nil {
-		in, out := &in.AllowedUserKeyLengths, &out.AllowedUserKeyLengths
-		*out = make(map[string]*float64, len(*in))
-		for key, val := range *in {
-			var outVal *float64
-			if val == nil {
-				(*out)[key] = nil
-			} else {
-				in, out := &val, &outVal
-				*out = new(float64)
-				**out = **in
-			}
-			(*out)[key] = outVal
 		}
 	}
 	if in.AllowedUsers != nil {
@@ -617,21 +632,6 @@ func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObser
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.AllowedUserKeyLengths != nil {
-		in, out := &in.AllowedUserKeyLengths, &out.AllowedUserKeyLengths
-		*out = make(map[string]*float64, len(*in))
-		for key, val := range *in {
-			var outVal *float64
-			if val == nil {
-				(*out)[key] = nil
-			} else {
-				in, out := &val, &outVal
-				*out = new(float64)
-				**out = **in
-			}
-			(*out)[key] = outVal
-		}
-	}
 	if in.AllowedUsers != nil {
 		in, out := &in.AllowedUsers, &out.AllowedUsers
 		*out = new(string)
@@ -802,21 +802,6 @@ func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParame
 		*out = make([]AllowedUserKeyConfigParameters, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
-	if in.AllowedUserKeyLengths != nil {
-		in, out := &in.AllowedUserKeyLengths, &out.AllowedUserKeyLengths
-		*out = make(map[string]*float64, len(*in))
-		for key, val := range *in {
-			var outVal *float64
-			if val == nil {
-				(*out)[key] = nil
-			} else {
-				in, out := &val, &outVal
-				*out = new(float64)
-				**out = **in
-			}
-			(*out)[key] = outVal
 		}
 	}
 	if in.AllowedUsers != nil {

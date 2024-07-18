@@ -47,12 +47,6 @@ type GroupMemberEntityIdsObservation struct {
 	// ID of the group.
 	GroupID *string `json:"groupId,omitempty" tf:"group_id,omitempty"`
 
-	// The name of the group that are assigned the member entities.
-	// Deprecated: The value for group_name may not always be accurate
-	// use data.vault_identity_group.*.group_name, or vault_identity_group.*.group_name instead.
-	// Name of the group.
-	GroupName *string `json:"groupName,omitempty" tf:"group_name,omitempty"`
-
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// List of member entities that belong to the group

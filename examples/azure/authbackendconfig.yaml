@@ -5,7 +5,7 @@ metadata:
     meta.upbound.io/example-id: azure/v1alpha1/authbackendconfig
   labels:
     testing.upbound.io/example-name: example
-  name: example
+  name: azure-authbackendconfig-secretref
 spec:
   forProvider:
     backend: cert
@@ -13,8 +13,11 @@ spec:
       key: example-key
       name: example-secret
       namespace: upbound-system
-    identityTokenAudience: <TOKEN_AUDIENCE>
-    identityTokenTtl: <TOKEN_TTL>
+    clientSecretSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    resource: https://vault.hashicorp.com
     tenantIdSecretRef:
       key: example-key
       name: example-secret
@@ -32,5 +35,4 @@ metadata:
   name: example
 spec:
   forProvider:
-    identityTokenKey: example-key
     type: azure

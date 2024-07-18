@@ -23,6 +23,14 @@ type SecretBackendCAInitParameters struct {
 	// Whether Vault should generate the signing key pair internally.
 	GenerateSigningKey *bool `json:"generateSigningKey,omitempty" tf:"generate_signing_key,omitempty"`
 
+	// Specifies the desired key bits for the generated SSH CA key when generate_signing_key is set to true.
+	// Specifies the desired key bits for the generated SSH CA key when `generate_signing_key` is set to `true`.
+	KeyBits *float64 `json:"keyBits,omitempty" tf:"key_bits,omitempty"`
+
+	// Specifies the desired key type for the generated SSH CA key when generate_signing_key is set to true.
+	// Specifies the desired key type for the generated SSH CA key when `generate_signing_key` is set to `true`.
+	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -47,6 +55,14 @@ type SecretBackendCAObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Specifies the desired key bits for the generated SSH CA key when generate_signing_key is set to true.
+	// Specifies the desired key bits for the generated SSH CA key when `generate_signing_key` is set to `true`.
+	KeyBits *float64 `json:"keyBits,omitempty" tf:"key_bits,omitempty"`
+
+	// Specifies the desired key type for the generated SSH CA key when generate_signing_key is set to true.
+	// Specifies the desired key type for the generated SSH CA key when `generate_signing_key` is set to `true`.
+	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -70,6 +86,16 @@ type SecretBackendCAParameters struct {
 	// Whether Vault should generate the signing key pair internally.
 	// +kubebuilder:validation:Optional
 	GenerateSigningKey *bool `json:"generateSigningKey,omitempty" tf:"generate_signing_key,omitempty"`
+
+	// Specifies the desired key bits for the generated SSH CA key when generate_signing_key is set to true.
+	// Specifies the desired key bits for the generated SSH CA key when `generate_signing_key` is set to `true`.
+	// +kubebuilder:validation:Optional
+	KeyBits *float64 `json:"keyBits,omitempty" tf:"key_bits,omitempty"`
+
+	// Specifies the desired key type for the generated SSH CA key when generate_signing_key is set to true.
+	// Specifies the desired key type for the generated SSH CA key when `generate_signing_key` is set to `true`.
+	// +kubebuilder:validation:Optional
+	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.

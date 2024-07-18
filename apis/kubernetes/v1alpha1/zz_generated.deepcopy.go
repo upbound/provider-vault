@@ -798,6 +798,17 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 			}
 		}
 	}
+	if in.AllowedResponseHeaders != nil {
+		in, out := &in.AllowedResponseHeaders, &out.AllowedResponseHeaders
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.AuditNonHMACRequestKeys != nil {
 		in, out := &in.AuditNonHMACRequestKeys, &out.AuditNonHMACRequestKeys
 		*out = make([]*string, len(*in))
@@ -825,6 +836,17 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 		*out = new(float64)
 		**out = **in
 	}
+	if in.DelegatedAuthAccessors != nil {
+		in, out := &in.DelegatedAuthAccessors, &out.DelegatedAuthAccessors
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
@@ -840,6 +862,11 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 		*out = new(bool)
 		**out = **in
 	}
+	if in.IdentityTokenKey != nil {
+		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
+		*out = new(string)
+		**out = **in
+	}
 	if in.KubernetesCACert != nil {
 		in, out := &in.KubernetesCACert, &out.KubernetesCACert
 		*out = new(string)
@@ -847,6 +874,11 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 	}
 	if in.KubernetesHost != nil {
 		in, out := &in.KubernetesHost, &out.KubernetesHost
+		*out = new(string)
+		**out = **in
+	}
+	if in.ListingVisibility != nil {
+		in, out := &in.ListingVisibility, &out.ListingVisibility
 		*out = new(string)
 		**out = **in
 	}
@@ -880,8 +912,24 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 			(*out)[key] = outVal
 		}
 	}
+	if in.PassthroughRequestHeaders != nil {
+		in, out := &in.PassthroughRequestHeaders, &out.PassthroughRequestHeaders
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
+		*out = new(string)
+		**out = **in
+	}
+	if in.PluginVersion != nil {
+		in, out := &in.PluginVersion, &out.PluginVersion
 		*out = new(string)
 		**out = **in
 	}
@@ -953,6 +1001,17 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 			}
 		}
 	}
+	if in.AllowedResponseHeaders != nil {
+		in, out := &in.AllowedResponseHeaders, &out.AllowedResponseHeaders
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.AuditNonHMACRequestKeys != nil {
 		in, out := &in.AuditNonHMACRequestKeys, &out.AuditNonHMACRequestKeys
 		*out = make([]*string, len(*in))
@@ -980,6 +1039,17 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 		*out = new(float64)
 		**out = **in
 	}
+	if in.DelegatedAuthAccessors != nil {
+		in, out := &in.DelegatedAuthAccessors, &out.DelegatedAuthAccessors
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
@@ -1000,6 +1070,11 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.IdentityTokenKey != nil {
+		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
+		*out = new(string)
+		**out = **in
+	}
 	if in.KubernetesCACert != nil {
 		in, out := &in.KubernetesCACert, &out.KubernetesCACert
 		*out = new(string)
@@ -1007,6 +1082,11 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 	}
 	if in.KubernetesHost != nil {
 		in, out := &in.KubernetesHost, &out.KubernetesHost
+		*out = new(string)
+		**out = **in
+	}
+	if in.ListingVisibility != nil {
+		in, out := &in.ListingVisibility, &out.ListingVisibility
 		*out = new(string)
 		**out = **in
 	}
@@ -1040,8 +1120,24 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 			(*out)[key] = outVal
 		}
 	}
+	if in.PassthroughRequestHeaders != nil {
+		in, out := &in.PassthroughRequestHeaders, &out.PassthroughRequestHeaders
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
+		*out = new(string)
+		**out = **in
+	}
+	if in.PluginVersion != nil {
+		in, out := &in.PluginVersion, &out.PluginVersion
 		*out = new(string)
 		**out = **in
 	}
@@ -1076,6 +1172,17 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 			}
 		}
 	}
+	if in.AllowedResponseHeaders != nil {
+		in, out := &in.AllowedResponseHeaders, &out.AllowedResponseHeaders
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.AuditNonHMACRequestKeys != nil {
 		in, out := &in.AuditNonHMACRequestKeys, &out.AuditNonHMACRequestKeys
 		*out = make([]*string, len(*in))
@@ -1103,6 +1210,17 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.DelegatedAuthAccessors != nil {
+		in, out := &in.DelegatedAuthAccessors, &out.DelegatedAuthAccessors
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
@@ -1118,6 +1236,11 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.IdentityTokenKey != nil {
+		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
+		*out = new(string)
+		**out = **in
+	}
 	if in.KubernetesCACert != nil {
 		in, out := &in.KubernetesCACert, &out.KubernetesCACert
 		*out = new(string)
@@ -1125,6 +1248,11 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 	}
 	if in.KubernetesHost != nil {
 		in, out := &in.KubernetesHost, &out.KubernetesHost
+		*out = new(string)
+		**out = **in
+	}
+	if in.ListingVisibility != nil {
+		in, out := &in.ListingVisibility, &out.ListingVisibility
 		*out = new(string)
 		**out = **in
 	}
@@ -1158,8 +1286,24 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 			(*out)[key] = outVal
 		}
 	}
+	if in.PassthroughRequestHeaders != nil {
+		in, out := &in.PassthroughRequestHeaders, &out.PassthroughRequestHeaders
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
+		*out = new(string)
+		**out = **in
+	}
+	if in.PluginVersion != nil {
+		in, out := &in.PluginVersion, &out.PluginVersion
 		*out = new(string)
 		**out = **in
 	}
@@ -1215,6 +1359,11 @@ func (in *SecretBackendRole) DeepCopyObject() runtime.Object {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleInitParameters) {
 	*out = *in
+	if in.AllowedKubernetesNamespaceSelector != nil {
+		in, out := &in.AllowedKubernetesNamespaceSelector, &out.AllowedKubernetesNamespaceSelector
+		*out = new(string)
+		**out = **in
+	}
 	if in.AllowedKubernetesNamespaces != nil {
 		in, out := &in.AllowedKubernetesNamespaces, &out.AllowedKubernetesNamespaces
 		*out = make([]*string, len(*in))
@@ -1353,6 +1502,11 @@ func (in *SecretBackendRoleList) DeepCopyObject() runtime.Object {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObservation) {
 	*out = *in
+	if in.AllowedKubernetesNamespaceSelector != nil {
+		in, out := &in.AllowedKubernetesNamespaceSelector, &out.AllowedKubernetesNamespaceSelector
+		*out = new(string)
+		**out = **in
+	}
 	if in.AllowedKubernetesNamespaces != nil {
 		in, out := &in.AllowedKubernetesNamespaces, &out.AllowedKubernetesNamespaces
 		*out = make([]*string, len(*in))
@@ -1464,6 +1618,11 @@ func (in *SecretBackendRoleObservation) DeepCopy() *SecretBackendRoleObservation
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParameters) {
 	*out = *in
+	if in.AllowedKubernetesNamespaceSelector != nil {
+		in, out := &in.AllowedKubernetesNamespaceSelector, &out.AllowedKubernetesNamespaceSelector
+		*out = new(string)
+		**out = **in
+	}
 	if in.AllowedKubernetesNamespaces != nil {
 		in, out := &in.AllowedKubernetesNamespaces, &out.AllowedKubernetesNamespaces
 		*out = make([]*string, len(*in))

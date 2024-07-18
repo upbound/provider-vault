@@ -8,7 +8,7 @@ export TERRAFORM_VERSION := 1.5.5
 
 export TERRAFORM_PROVIDER_SOURCE ?= hashicorp/vault
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/hashicorp/terraform-provider-vault
-export TERRAFORM_PROVIDER_VERSION ?= 3.25.0
+export TERRAFORM_PROVIDER_VERSION ?= 4.4.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-vault
 export TERRAFORM_DOCS_PATH ?= website/docs/r
 
@@ -37,7 +37,7 @@ NPROCS ?= 1
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
-GO_REQUIRED_VERSION ?= 1.20
+GO_REQUIRED_VERSION ?= 1.21
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
 GO_SUBDIRS += cmd internal apis
