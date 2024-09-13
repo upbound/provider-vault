@@ -4,7 +4,7 @@
 PROJECT_NAME ?= provider-vault
 PROJECT_REPO ?= github.com/upbound/$(PROJECT_NAME)
 
-export TERRAFORM_VERSION := 1.5.5
+export TERRAFORM_VERSION := 1.7.2
 
 export TERRAFORM_PROVIDER_SOURCE ?= hashicorp/vault
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/hashicorp/terraform-provider-vault
@@ -100,11 +100,11 @@ TERRAFORM_PROVIDER_SCHEMA := config/schema.json
 
 $(TERRAFORM):
 	@$(INFO) installing terraform $(HOSTOS)-$(HOSTARCH)
-	@mkdir -p $(TOOLS_HOST_DIR)/tmp-terraform
-	@curl -fsSL https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(SAFEHOST_PLATFORM).zip -o $(TOOLS_HOST_DIR)/tmp-terraform/terraform.zip
-	@unzip $(TOOLS_HOST_DIR)/tmp-terraform/terraform.zip -d $(TOOLS_HOST_DIR)/tmp-terraform
-	@mv $(TOOLS_HOST_DIR)/tmp-terraform/terraform $(TERRAFORM)
-	@rm -fr $(TOOLS_HOST_DIR)/tmp-terraform
+	@mkdir -p $(TOOLS_HOST_DIR)/tmp-tofu
+	@curl -fsSL https://github.com/opentofu/opentofu/releases/download/v$(TERRAFORM_VERSION)/tofu_$(TERRAFORM_VERSION)_$(SAFEHOST_PLATFORM).zip -o $(TOOLS_HOST_DIR)/tmp-tofu/tofu.zip
+	@unzip $(TOOLS_HOST_DIR)/tmp-tofu/tofu.zip -d $(TOOLS_HOST_DIR)/tmp-tofu
+	@mv $(TOOLS_HOST_DIR)/tmp-tofu/tofu $(TERRAFORM)
+	@rm -fr $(TOOLS_HOST_DIR)/tmp-tofu
 	@$(OK) installing terraform $(HOSTOS)-$(HOSTARCH)
 
 $(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM)
