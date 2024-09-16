@@ -19,10 +19,6 @@ type SecretBackendKeyInitParameters struct {
 	// If set, enables taking backup of named key in the plaintext format. Once set, this cannot be disabled.
 	AllowPlaintextBackup *bool `json:"allowPlaintextBackup,omitempty" tf:"allow_plaintext_backup,omitempty"`
 
-	// Replaced by auto_rotate_period.
-	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
-	AutoRotateInterval *float64 `json:"autoRotateInterval,omitempty" tf:"auto_rotate_interval,omitempty"`
-
 	// Amount of seconds the key should live before being automatically rotated.
 	// A value of 0 disables automatic rotation for the key.
 	// Amount of seconds the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
@@ -81,10 +77,6 @@ type SecretBackendKeyObservation struct {
 	// Enables taking backup of entire keyring in the plaintext format. Once set, this cannot be disabled.
 	// If set, enables taking backup of named key in the plaintext format. Once set, this cannot be disabled.
 	AllowPlaintextBackup *bool `json:"allowPlaintextBackup,omitempty" tf:"allow_plaintext_backup,omitempty"`
-
-	// Replaced by auto_rotate_period.
-	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
-	AutoRotateInterval *float64 `json:"autoRotateInterval,omitempty" tf:"auto_rotate_interval,omitempty"`
 
 	// Amount of seconds the key should live before being automatically rotated.
 	// A value of 0 disables automatic rotation for the key.
@@ -175,11 +167,6 @@ type SecretBackendKeyParameters struct {
 	// If set, enables taking backup of named key in the plaintext format. Once set, this cannot be disabled.
 	// +kubebuilder:validation:Optional
 	AllowPlaintextBackup *bool `json:"allowPlaintextBackup,omitempty" tf:"allow_plaintext_backup,omitempty"`
-
-	// Replaced by auto_rotate_period.
-	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
-	// +kubebuilder:validation:Optional
-	AutoRotateInterval *float64 `json:"autoRotateInterval,omitempty" tf:"auto_rotate_interval,omitempty"`
 
 	// Amount of seconds the key should live before being automatically rotated.
 	// A value of 0 disables automatic rotation for the key.

@@ -34,6 +34,11 @@ type SecretBackendRoleInitParameters struct {
 	// The default TTL in seconds for STS credentials. When a TTL is not specified when STS credentials are requested, and a default TTL is specified on the role, then this default TTL will be used. Valid only when credential_type is one of assumed_role or federation_token.
 	DefaultStsTTL *float64 `json:"defaultStsTtl,omitempty" tf:"default_sts_ttl,omitempty"`
 
+	// External ID to set for assume role creds.
+	// Valid only when credential_type is set to assumed_role.
+	// External ID to set for assume role creds.
+	ExternalID *string `json:"externalId,omitempty" tf:"external_id,omitempty"`
+
 	// A list of IAM group names. IAM users generated
 	// against this vault role will be added to these IAM Groups. For a credential
 	// type of assumed_role or federation_token, the policies sent to the
@@ -42,6 +47,11 @@ type SecretBackendRoleInitParameters struct {
 	// and policy_arns parameters.
 	// A list of IAM group names. IAM users generated against this vault role will be added to these IAM Groups. For a credential type of assumed_role or federation_token, the policies sent to the corresponding AWS call (sts:AssumeRole or sts:GetFederation) will be the policies from each group in iam_groups combined with the policy_document and policy_arns parameters.
 	IAMGroups []*string `json:"iamGroups,omitempty" tf:"iam_groups,omitempty"`
+
+	// A map of strings representing key/value pairs
+	// to be used as tags for any IAM user that is created by this role.
+	// A map of strings representing key/value pairs used as tags for any IAM user created by this role.
+	IAMTags map[string]*string `json:"iamTags,omitempty" tf:"iam_tags,omitempty"`
 
 	// The max allowed TTL in seconds for STS credentials
 	// (credentials TTL are capped to max_sts_ttl). Valid only when credential_type is
@@ -92,6 +102,12 @@ type SecretBackendRoleInitParameters struct {
 	// ARNs of AWS roles allowed to be assumed. Only valid when credential_type is 'assumed_role'
 	RoleArns []*string `json:"roleArns,omitempty" tf:"role_arns,omitempty"`
 
+	// A map of strings representing key/value pairs to be set
+	// during assume role creds creation. Valid only when credential_type is set to
+	// assumed_role.
+	// Session tags to be set for assume role creds created.
+	SessionTags map[string]*string `json:"sessionTags,omitempty" tf:"session_tags,omitempty"`
+
 	// The path for the user name. Valid only when
 	// credential_type is iam_user. Default is /.
 	// The path for the user name. Valid only when credential_type is iam_user. Default is /
@@ -119,6 +135,11 @@ type SecretBackendRoleObservation struct {
 	// The default TTL in seconds for STS credentials. When a TTL is not specified when STS credentials are requested, and a default TTL is specified on the role, then this default TTL will be used. Valid only when credential_type is one of assumed_role or federation_token.
 	DefaultStsTTL *float64 `json:"defaultStsTtl,omitempty" tf:"default_sts_ttl,omitempty"`
 
+	// External ID to set for assume role creds.
+	// Valid only when credential_type is set to assumed_role.
+	// External ID to set for assume role creds.
+	ExternalID *string `json:"externalId,omitempty" tf:"external_id,omitempty"`
+
 	// A list of IAM group names. IAM users generated
 	// against this vault role will be added to these IAM Groups. For a credential
 	// type of assumed_role or federation_token, the policies sent to the
@@ -127,6 +148,11 @@ type SecretBackendRoleObservation struct {
 	// and policy_arns parameters.
 	// A list of IAM group names. IAM users generated against this vault role will be added to these IAM Groups. For a credential type of assumed_role or federation_token, the policies sent to the corresponding AWS call (sts:AssumeRole or sts:GetFederation) will be the policies from each group in iam_groups combined with the policy_document and policy_arns parameters.
 	IAMGroups []*string `json:"iamGroups,omitempty" tf:"iam_groups,omitempty"`
+
+	// A map of strings representing key/value pairs
+	// to be used as tags for any IAM user that is created by this role.
+	// A map of strings representing key/value pairs used as tags for any IAM user created by this role.
+	IAMTags map[string]*string `json:"iamTags,omitempty" tf:"iam_tags,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -179,6 +205,12 @@ type SecretBackendRoleObservation struct {
 	// ARNs of AWS roles allowed to be assumed. Only valid when credential_type is 'assumed_role'
 	RoleArns []*string `json:"roleArns,omitempty" tf:"role_arns,omitempty"`
 
+	// A map of strings representing key/value pairs to be set
+	// during assume role creds creation. Valid only when credential_type is set to
+	// assumed_role.
+	// Session tags to be set for assume role creds created.
+	SessionTags map[string]*string `json:"sessionTags,omitempty" tf:"session_tags,omitempty"`
+
 	// The path for the user name. Valid only when
 	// credential_type is iam_user. Default is /.
 	// The path for the user name. Valid only when credential_type is iam_user. Default is /
@@ -209,6 +241,12 @@ type SecretBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	DefaultStsTTL *float64 `json:"defaultStsTtl,omitempty" tf:"default_sts_ttl,omitempty"`
 
+	// External ID to set for assume role creds.
+	// Valid only when credential_type is set to assumed_role.
+	// External ID to set for assume role creds.
+	// +kubebuilder:validation:Optional
+	ExternalID *string `json:"externalId,omitempty" tf:"external_id,omitempty"`
+
 	// A list of IAM group names. IAM users generated
 	// against this vault role will be added to these IAM Groups. For a credential
 	// type of assumed_role or federation_token, the policies sent to the
@@ -218,6 +256,12 @@ type SecretBackendRoleParameters struct {
 	// A list of IAM group names. IAM users generated against this vault role will be added to these IAM Groups. For a credential type of assumed_role or federation_token, the policies sent to the corresponding AWS call (sts:AssumeRole or sts:GetFederation) will be the policies from each group in iam_groups combined with the policy_document and policy_arns parameters.
 	// +kubebuilder:validation:Optional
 	IAMGroups []*string `json:"iamGroups,omitempty" tf:"iam_groups,omitempty"`
+
+	// A map of strings representing key/value pairs
+	// to be used as tags for any IAM user that is created by this role.
+	// A map of strings representing key/value pairs used as tags for any IAM user created by this role.
+	// +kubebuilder:validation:Optional
+	IAMTags map[string]*string `json:"iamTags,omitempty" tf:"iam_tags,omitempty"`
 
 	// The max allowed TTL in seconds for STS credentials
 	// (credentials TTL are capped to max_sts_ttl). Valid only when credential_type is
@@ -274,6 +318,13 @@ type SecretBackendRoleParameters struct {
 	// ARNs of AWS roles allowed to be assumed. Only valid when credential_type is 'assumed_role'
 	// +kubebuilder:validation:Optional
 	RoleArns []*string `json:"roleArns,omitempty" tf:"role_arns,omitempty"`
+
+	// A map of strings representing key/value pairs to be set
+	// during assume role creds creation. Valid only when credential_type is set to
+	// assumed_role.
+	// Session tags to be set for assume role creds created.
+	// +kubebuilder:validation:Optional
+	SessionTags map[string]*string `json:"sessionTags,omitempty" tf:"session_tags,omitempty"`
 
 	// The path for the user name. Valid only when
 	// credential_type is iam_user. Default is /.

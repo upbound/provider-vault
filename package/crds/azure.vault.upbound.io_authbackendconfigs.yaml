@@ -117,6 +117,17 @@ spec:
                       to AzurePublicCloud. The Azure cloud environment. Valid values:
                       AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud, AzureGermanCloud.'
                     type: string
+                  identityTokenAudience:
+                    description: The audience claim value for plugin identity tokens.
+                      Requires Vault 1.17+. Available only for Vault Enterprise The
+                      audience claim value.
+                    type: string
+                  identityTokenTtl:
+                    description: The TTL of generated identity tokens in seconds.
+                      Defaults to 1 hour. Uses duration format strings. Requires Vault
+                      1.17+. Available only for Vault Enterprise The TTL of generated
+                      identity tokens in seconds.
+                    type: number
                   namespace:
                     description: The namespace to provision the resource in. The value
                       should not contain leading or trailing forward slashes. The
@@ -172,6 +183,17 @@ spec:
                       to AzurePublicCloud. The Azure cloud environment. Valid values:
                       AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud, AzureGermanCloud.'
                     type: string
+                  identityTokenAudience:
+                    description: The audience claim value for plugin identity tokens.
+                      Requires Vault 1.17+. Available only for Vault Enterprise The
+                      audience claim value.
+                    type: string
+                  identityTokenTtl:
+                    description: The TTL of generated identity tokens in seconds.
+                      Defaults to 1 hour. Uses duration format strings. Requires Vault
+                      1.17+. Available only for Vault Enterprise The TTL of generated
+                      identity tokens in seconds.
+                    type: number
                   namespace:
                     description: The namespace to provision the resource in. The value
                       should not contain leading or trailing forward slashes. The
@@ -408,6 +430,17 @@ spec:
                     type: string
                   id:
                     type: string
+                  identityTokenAudience:
+                    description: The audience claim value for plugin identity tokens.
+                      Requires Vault 1.17+. Available only for Vault Enterprise The
+                      audience claim value.
+                    type: string
+                  identityTokenTtl:
+                    description: The TTL of generated identity tokens in seconds.
+                      Defaults to 1 hour. Uses duration format strings. Requires Vault
+                      1.17+. Available only for Vault Enterprise The TTL of generated
+                      identity tokens in seconds.
+                    type: number
                   namespace:
                     description: The namespace to provision the resource in. The value
                       should not contain leading or trailing forward slashes. The

@@ -396,7 +396,8 @@ spec:
                       type: string
                     type: array
                   clientId:
-                    description: The Client ID from Vault.
+                    description: The Client ID returned by Vault. The Client ID from
+                      Vault.
                     type: string
                   clientType:
                     description: 'The client type based on its ability to maintain

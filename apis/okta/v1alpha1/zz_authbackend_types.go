@@ -44,6 +44,33 @@ type AuthBackendInitParameters struct {
 	// Duration after which authentication will be expired
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
+	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
+
+	// Generated Token's Explicit Maximum TTL in seconds
+	TokenExplicitMaxTTL *float64 `json:"tokenExplicitMaxTtl,omitempty" tf:"token_explicit_max_ttl,omitempty"`
+
+	// The maximum lifetime of the generated token
+	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
+
+	// If true, the 'default' policy will not automatically be added to generated tokens
+	TokenNoDefaultPolicy *bool `json:"tokenNoDefaultPolicy,omitempty" tf:"token_no_default_policy,omitempty"`
+
+	// The maximum number of times a token may be used, a value of zero means unlimited
+	TokenNumUses *float64 `json:"tokenNumUses,omitempty" tf:"token_num_uses,omitempty"`
+
+	// Generated Token's Period
+	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
+
+	// Generated Token's Policies
+	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
+
+	// The initial ttl of the token to generate in seconds
+	TokenTTL *float64 `json:"tokenTtl,omitempty" tf:"token_ttl,omitempty"`
+
+	// The type of token to generate, service or batch
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
+
 	User []UserInitParameters `json:"user,omitempty" tf:"user,omitempty"`
 }
 
@@ -82,6 +109,33 @@ type AuthBackendObservation struct {
 
 	// Duration after which authentication will be expired
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
+
+	// Generated Token's Explicit Maximum TTL in seconds
+	TokenExplicitMaxTTL *float64 `json:"tokenExplicitMaxTtl,omitempty" tf:"token_explicit_max_ttl,omitempty"`
+
+	// The maximum lifetime of the generated token
+	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
+
+	// If true, the 'default' policy will not automatically be added to generated tokens
+	TokenNoDefaultPolicy *bool `json:"tokenNoDefaultPolicy,omitempty" tf:"token_no_default_policy,omitempty"`
+
+	// The maximum number of times a token may be used, a value of zero means unlimited
+	TokenNumUses *float64 `json:"tokenNumUses,omitempty" tf:"token_num_uses,omitempty"`
+
+	// Generated Token's Period
+	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
+
+	// Generated Token's Policies
+	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
+
+	// The initial ttl of the token to generate in seconds
+	TokenTTL *float64 `json:"tokenTtl,omitempty" tf:"token_ttl,omitempty"`
+
+	// The type of token to generate, service or batch
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 
 	User []UserObservation `json:"user,omitempty" tf:"user,omitempty"`
 }
@@ -127,9 +181,45 @@ type AuthBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
+	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +kubebuilder:validation:Optional
+	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
+
+	// Generated Token's Explicit Maximum TTL in seconds
+	// +kubebuilder:validation:Optional
+	TokenExplicitMaxTTL *float64 `json:"tokenExplicitMaxTtl,omitempty" tf:"token_explicit_max_ttl,omitempty"`
+
+	// The maximum lifetime of the generated token
+	// +kubebuilder:validation:Optional
+	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
+
+	// If true, the 'default' policy will not automatically be added to generated tokens
+	// +kubebuilder:validation:Optional
+	TokenNoDefaultPolicy *bool `json:"tokenNoDefaultPolicy,omitempty" tf:"token_no_default_policy,omitempty"`
+
+	// The maximum number of times a token may be used, a value of zero means unlimited
+	// +kubebuilder:validation:Optional
+	TokenNumUses *float64 `json:"tokenNumUses,omitempty" tf:"token_num_uses,omitempty"`
+
+	// Generated Token's Period
+	// +kubebuilder:validation:Optional
+	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
+
+	// Generated Token's Policies
+	// +kubebuilder:validation:Optional
+	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
+
 	// The Okta API token. This is required to query Okta for user group membership. If this is not supplied only locally configured groups will be enabled.
 	// +kubebuilder:validation:Optional
 	TokenSecretRef *v1.SecretKeySelector `json:"tokenSecretRef,omitempty" tf:"-"`
+
+	// The initial ttl of the token to generate in seconds
+	// +kubebuilder:validation:Optional
+	TokenTTL *float64 `json:"tokenTtl,omitempty" tf:"token_ttl,omitempty"`
+
+	// The type of token to generate, service or batch
+	// +kubebuilder:validation:Optional
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	User []UserParameters `json:"user,omitempty" tf:"user,omitempty"`

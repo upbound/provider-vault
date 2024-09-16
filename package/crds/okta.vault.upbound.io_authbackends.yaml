@@ -106,6 +106,34 @@ spec:
                   path:
                     description: path to mount the backend
                     type: string
+                  tokenBoundCidrs:
+                    description: Specifies the blocks of IP addresses which are allowed
+                      to use the generated token
+                    items:
+                      type: string
+                    type: array
+                  tokenExplicitMaxTtl:
+                    description: Generated Token's Explicit Maximum TTL in seconds
+                    type: number
+                  tokenMaxTtl:
+                    description: The maximum lifetime of the generated token
+                    type: number
+                  tokenNoDefaultPolicy:
+                    description: If true, the 'default' policy will not automatically
+                      be added to generated tokens
+                    type: boolean
+                  tokenNumUses:
+                    description: The maximum number of times a token may be used,
+                      a value of zero means unlimited
+                    type: number
+                  tokenPeriod:
+                    description: Generated Token's Period
+                    type: number
+                  tokenPolicies:
+                    description: Generated Token's Policies
+                    items:
+                      type: string
+                    type: array
                   tokenSecretRef:
                     description: The Okta API token. This is required to query Okta
                       for user group membership. If this is not supplied only locally
@@ -125,6 +153,12 @@ spec:
                     - name
                     - namespace
                     type: object
+                  tokenTtl:
+                    description: The initial ttl of the token to generate in seconds
+                    type: number
+                  tokenType:
+                    description: The type of token to generate, service or batch
+                    type: string
                   ttl:
                     description: Duration after which authentication will be expired
                     type: string
@@ -196,6 +230,40 @@ spec:
                     type: string
                   path:
                     description: path to mount the backend
+                    type: string
+                  tokenBoundCidrs:
+                    description: Specifies the blocks of IP addresses which are allowed
+                      to use the generated token
+                    items:
+                      type: string
+                    type: array
+                  tokenExplicitMaxTtl:
+                    description: Generated Token's Explicit Maximum TTL in seconds
+                    type: number
+                  tokenMaxTtl:
+                    description: The maximum lifetime of the generated token
+                    type: number
+                  tokenNoDefaultPolicy:
+                    description: If true, the 'default' policy will not automatically
+                      be added to generated tokens
+                    type: boolean
+                  tokenNumUses:
+                    description: The maximum number of times a token may be used,
+                      a value of zero means unlimited
+                    type: number
+                  tokenPeriod:
+                    description: Generated Token's Period
+                    type: number
+                  tokenPolicies:
+                    description: Generated Token's Policies
+                    items:
+                      type: string
+                    type: array
+                  tokenTtl:
+                    description: The initial ttl of the token to generate in seconds
+                    type: number
+                  tokenType:
+                    description: The type of token to generate, service or batch
                     type: string
                   ttl:
                     description: Duration after which authentication will be expired
@@ -467,6 +535,40 @@ spec:
                     type: string
                   path:
                     description: path to mount the backend
+                    type: string
+                  tokenBoundCidrs:
+                    description: Specifies the blocks of IP addresses which are allowed
+                      to use the generated token
+                    items:
+                      type: string
+                    type: array
+                  tokenExplicitMaxTtl:
+                    description: Generated Token's Explicit Maximum TTL in seconds
+                    type: number
+                  tokenMaxTtl:
+                    description: The maximum lifetime of the generated token
+                    type: number
+                  tokenNoDefaultPolicy:
+                    description: If true, the 'default' policy will not automatically
+                      be added to generated tokens
+                    type: boolean
+                  tokenNumUses:
+                    description: The maximum number of times a token may be used,
+                      a value of zero means unlimited
+                    type: number
+                  tokenPeriod:
+                    description: Generated Token's Period
+                    type: number
+                  tokenPolicies:
+                    description: Generated Token's Policies
+                    items:
+                      type: string
+                    type: array
+                  tokenTtl:
+                    description: The initial ttl of the token to generate in seconds
+                    type: number
+                  tokenType:
+                    description: The type of token to generate, service or batch
                     type: string
                   ttl:
                     description: Duration after which authentication will be expired

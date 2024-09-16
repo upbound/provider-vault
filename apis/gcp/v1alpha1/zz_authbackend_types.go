@@ -26,6 +26,15 @@ type AuthBackendInitParameters struct {
 	// If set, opts out of mount migration on path updates.
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
+	// The audience claim value for plugin identity tokens.
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The key to use for signing identity tokens.
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
+	// The TTL of generated tokens.
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
+
 	// Specifies if the auth method is local only
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
@@ -37,6 +46,9 @@ type AuthBackendInitParameters struct {
 	PrivateKeyID *string `json:"privateKeyId,omitempty" tf:"private_key_id,omitempty"`
 
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Service Account to impersonate for plugin workload identity federation.
+	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
 
 	Tune []TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 }
@@ -60,6 +72,15 @@ type AuthBackendObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The audience claim value for plugin identity tokens.
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The key to use for signing identity tokens.
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
+	// The TTL of generated tokens.
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
+
 	// Specifies if the auth method is local only
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
@@ -71,6 +92,9 @@ type AuthBackendObservation struct {
 	PrivateKeyID *string `json:"privateKeyId,omitempty" tf:"private_key_id,omitempty"`
 
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Service Account to impersonate for plugin workload identity federation.
+	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
 
 	Tune []TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
 }
@@ -97,6 +121,18 @@ type AuthBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
+	// The audience claim value for plugin identity tokens.
+	// +kubebuilder:validation:Optional
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The key to use for signing identity tokens.
+	// +kubebuilder:validation:Optional
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
+	// The TTL of generated tokens.
+	// +kubebuilder:validation:Optional
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
+
 	// Specifies if the auth method is local only
 	// +kubebuilder:validation:Optional
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
@@ -113,6 +149,10 @@ type AuthBackendParameters struct {
 
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Service Account to impersonate for plugin workload identity federation.
+	// +kubebuilder:validation:Optional
+	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Tune []TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`

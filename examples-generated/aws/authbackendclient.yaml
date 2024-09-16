@@ -8,15 +8,9 @@ metadata:
   name: example
 spec:
   forProvider:
-    accessKeySecretRef:
-      key: example-key
-      name: example-secret
-      namespace: upbound-system
-    backend: cert
-    secretKeySecretRef:
-      key: example-key
-      name: example-secret
-      namespace: upbound-system
+    identityTokenAudience: <TOKEN_AUDIENCE>
+    identityTokenTtl: <TOKEN_TTL>
+    roleArn: <AWS_ROLE_ARN>
 
 ---
 

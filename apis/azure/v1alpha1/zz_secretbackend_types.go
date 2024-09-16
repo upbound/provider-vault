@@ -27,6 +27,21 @@ type SecretBackendInitParameters struct {
 	// The Azure cloud environment. Valid values: AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud, AzureGermanCloud.
 	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
 
+	// The audience claim value. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// The audience claim value.
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The key to use for signing identity tokens. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// The key to use for signing identity tokens.
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
+	// The TTL of generated identity tokens in seconds. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// The TTL of generated identity tokens in seconds.
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -60,6 +75,21 @@ type SecretBackendObservation struct {
 	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The audience claim value. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// The audience claim value.
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The key to use for signing identity tokens. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// The key to use for signing identity tokens.
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
+	// The TTL of generated identity tokens in seconds. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// The TTL of generated identity tokens in seconds.
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -105,6 +135,24 @@ type SecretBackendParameters struct {
 	// The Azure cloud environment. Valid values: AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud, AzureGermanCloud.
 	// +kubebuilder:validation:Optional
 	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
+
+	// The audience claim value. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// The audience claim value.
+	// +kubebuilder:validation:Optional
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The key to use for signing identity tokens. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// The key to use for signing identity tokens.
+	// +kubebuilder:validation:Optional
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
+	// The TTL of generated identity tokens in seconds. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// The TTL of generated identity tokens in seconds.
+	// +kubebuilder:validation:Optional
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.

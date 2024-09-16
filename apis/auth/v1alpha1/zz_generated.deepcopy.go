@@ -53,6 +53,11 @@ func (in *BackendInitParameters) DeepCopyInto(out *BackendInitParameters) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.IdentityTokenKey != nil {
+		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
+		*out = new(string)
+		**out = **in
+	}
 	if in.Local != nil {
 		in, out := &in.Local, &out.Local
 		*out = new(bool)
@@ -147,6 +152,11 @@ func (in *BackendObservation) DeepCopyInto(out *BackendObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.IdentityTokenKey != nil {
+		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
+		*out = new(string)
+		**out = **in
+	}
 	if in.Local != nil {
 		in, out := &in.Local, &out.Local
 		*out = new(bool)
@@ -197,6 +207,11 @@ func (in *BackendParameters) DeepCopyInto(out *BackendParameters) {
 	if in.DisableRemount != nil {
 		in, out := &in.DisableRemount, &out.DisableRemount
 		*out = new(bool)
+		**out = **in
+	}
+	if in.IdentityTokenKey != nil {
+		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
+		*out = new(string)
 		**out = **in
 	}
 	if in.Local != nil {

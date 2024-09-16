@@ -5741,6 +5741,17 @@ func (in *SecretsMountInitParameters) DeepCopyInto(out *SecretsMountInitParamete
 			}
 		}
 	}
+	if in.AllowedResponseHeaders != nil {
+		in, out := &in.AllowedResponseHeaders, &out.AllowedResponseHeaders
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.AuditNonHMACRequestKeys != nil {
 		in, out := &in.AuditNonHMACRequestKeys, &out.AuditNonHMACRequestKeys
 		*out = make([]*string, len(*in))
@@ -5782,6 +5793,17 @@ func (in *SecretsMountInitParameters) DeepCopyInto(out *SecretsMountInitParamete
 		*out = new(float64)
 		**out = **in
 	}
+	if in.DelegatedAuthAccessors != nil {
+		in, out := &in.DelegatedAuthAccessors, &out.DelegatedAuthAccessors
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
@@ -5806,12 +5828,22 @@ func (in *SecretsMountInitParameters) DeepCopyInto(out *SecretsMountInitParamete
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.IdentityTokenKey != nil {
+		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
+		*out = new(string)
+		**out = **in
+	}
 	if in.Influxdb != nil {
 		in, out := &in.Influxdb, &out.Influxdb
 		*out = make([]SecretsMountInfluxdbInitParameters, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
+	}
+	if in.ListingVisibility != nil {
+		in, out := &in.ListingVisibility, &out.ListingVisibility
+		*out = new(string)
+		**out = **in
 	}
 	if in.Local != nil {
 		in, out := &in.Local, &out.Local
@@ -5899,8 +5931,24 @@ func (in *SecretsMountInitParameters) DeepCopyInto(out *SecretsMountInitParamete
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.PassthroughRequestHeaders != nil {
+		in, out := &in.PassthroughRequestHeaders, &out.PassthroughRequestHeaders
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
+		*out = new(string)
+		**out = **in
+	}
+	if in.PluginVersion != nil {
+		in, out := &in.PluginVersion, &out.PluginVersion
 		*out = new(string)
 		**out = **in
 	}
@@ -8205,6 +8253,17 @@ func (in *SecretsMountObservation) DeepCopyInto(out *SecretsMountObservation) {
 			}
 		}
 	}
+	if in.AllowedResponseHeaders != nil {
+		in, out := &in.AllowedResponseHeaders, &out.AllowedResponseHeaders
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.AuditNonHMACRequestKeys != nil {
 		in, out := &in.AuditNonHMACRequestKeys, &out.AuditNonHMACRequestKeys
 		*out = make([]*string, len(*in))
@@ -8246,6 +8305,17 @@ func (in *SecretsMountObservation) DeepCopyInto(out *SecretsMountObservation) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.DelegatedAuthAccessors != nil {
+		in, out := &in.DelegatedAuthAccessors, &out.DelegatedAuthAccessors
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
@@ -8280,12 +8350,22 @@ func (in *SecretsMountObservation) DeepCopyInto(out *SecretsMountObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.IdentityTokenKey != nil {
+		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
+		*out = new(string)
+		**out = **in
+	}
 	if in.Influxdb != nil {
 		in, out := &in.Influxdb, &out.Influxdb
 		*out = make([]SecretsMountInfluxdbObservation, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
+	}
+	if in.ListingVisibility != nil {
+		in, out := &in.ListingVisibility, &out.ListingVisibility
+		*out = new(string)
+		**out = **in
 	}
 	if in.Local != nil {
 		in, out := &in.Local, &out.Local
@@ -8373,8 +8453,24 @@ func (in *SecretsMountObservation) DeepCopyInto(out *SecretsMountObservation) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.PassthroughRequestHeaders != nil {
+		in, out := &in.PassthroughRequestHeaders, &out.PassthroughRequestHeaders
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
+		*out = new(string)
+		**out = **in
+	}
+	if in.PluginVersion != nil {
+		in, out := &in.PluginVersion, &out.PluginVersion
 		*out = new(string)
 		**out = **in
 	}
@@ -8770,6 +8866,17 @@ func (in *SecretsMountParameters) DeepCopyInto(out *SecretsMountParameters) {
 			}
 		}
 	}
+	if in.AllowedResponseHeaders != nil {
+		in, out := &in.AllowedResponseHeaders, &out.AllowedResponseHeaders
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.AuditNonHMACRequestKeys != nil {
 		in, out := &in.AuditNonHMACRequestKeys, &out.AuditNonHMACRequestKeys
 		*out = make([]*string, len(*in))
@@ -8811,6 +8918,17 @@ func (in *SecretsMountParameters) DeepCopyInto(out *SecretsMountParameters) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.DelegatedAuthAccessors != nil {
+		in, out := &in.DelegatedAuthAccessors, &out.DelegatedAuthAccessors
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
@@ -8835,12 +8953,22 @@ func (in *SecretsMountParameters) DeepCopyInto(out *SecretsMountParameters) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.IdentityTokenKey != nil {
+		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
+		*out = new(string)
+		**out = **in
+	}
 	if in.Influxdb != nil {
 		in, out := &in.Influxdb, &out.Influxdb
 		*out = make([]SecretsMountInfluxdbParameters, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
+	}
+	if in.ListingVisibility != nil {
+		in, out := &in.ListingVisibility, &out.ListingVisibility
+		*out = new(string)
+		**out = **in
 	}
 	if in.Local != nil {
 		in, out := &in.Local, &out.Local
@@ -8928,8 +9056,24 @@ func (in *SecretsMountParameters) DeepCopyInto(out *SecretsMountParameters) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.PassthroughRequestHeaders != nil {
+		in, out := &in.PassthroughRequestHeaders, &out.PassthroughRequestHeaders
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
+		*out = new(string)
+		**out = **in
+	}
+	if in.PluginVersion != nil {
+		in, out := &in.PluginVersion, &out.PluginVersion
 		*out = new(string)
 		**out = **in
 	}

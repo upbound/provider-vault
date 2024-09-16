@@ -20,6 +20,10 @@ type RateLimitInitParameters struct {
 	// If set, when a client reaches a rate limit threshold, the client will be prohibited from any further requests until after the 'block_interval' in seconds has elapsed.
 	BlockInterval *float64 `json:"blockInterval,omitempty" tf:"block_interval,omitempty"`
 
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default. Requires Vault 1.15+.
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default.
+	Inheritable *bool `json:"inheritable,omitempty" tf:"inheritable,omitempty"`
+
 	// The duration in seconds to enforce rate limiting for.
 	// The duration in seconds to enforce rate limiting for.
 	Interval *float64 `json:"interval,omitempty" tf:"interval,omitempty"`
@@ -63,6 +67,10 @@ type RateLimitObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default. Requires Vault 1.15+.
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default.
+	Inheritable *bool `json:"inheritable,omitempty" tf:"inheritable,omitempty"`
+
 	// The duration in seconds to enforce rate limiting for.
 	// The duration in seconds to enforce rate limiting for.
 	Interval *float64 `json:"interval,omitempty" tf:"interval,omitempty"`
@@ -104,6 +112,11 @@ type RateLimitParameters struct {
 	// If set, when a client reaches a rate limit threshold, the client will be prohibited from any further requests until after the 'block_interval' in seconds has elapsed.
 	// +kubebuilder:validation:Optional
 	BlockInterval *float64 `json:"blockInterval,omitempty" tf:"block_interval,omitempty"`
+
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default. Requires Vault 1.15+.
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default.
+	// +kubebuilder:validation:Optional
+	Inheritable *bool `json:"inheritable,omitempty" tf:"inheritable,omitempty"`
 
 	// The duration in seconds to enforce rate limiting for.
 	// The duration in seconds to enforce rate limiting for.

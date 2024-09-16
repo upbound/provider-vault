@@ -15,7 +15,8 @@ import (
 
 type CloudSecretBackendInitParameters struct {
 
-	// 0.0.1:8500".
+	// The default is
+	// https://app.0.0.1:8500".
 	Address *string `json:"address,omitempty" tf:"address,omitempty"`
 
 	// The unique location this backend should be mounted at. Must not begin or end with a /
@@ -51,7 +52,8 @@ type CloudSecretBackendInitParameters struct {
 
 type CloudSecretBackendObservation struct {
 
-	// 0.0.1:8500".
+	// The default is
+	// https://app.0.0.1:8500".
 	Address *string `json:"address,omitempty" tf:"address,omitempty"`
 
 	// The unique location this backend should be mounted at. Must not begin or end with a /
@@ -89,7 +91,8 @@ type CloudSecretBackendObservation struct {
 
 type CloudSecretBackendParameters struct {
 
-	// 0.0.1:8500".
+	// The default is
+	// https://app.0.0.1:8500".
 	// +kubebuilder:validation:Optional
 	Address *string `json:"address,omitempty" tf:"address,omitempty"`
 

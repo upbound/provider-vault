@@ -283,8 +283,28 @@ func (in *AuthBackendClientInitParameters) DeepCopyInto(out *AuthBackendClientIn
 		*out = new(string)
 		**out = **in
 	}
+	if in.IdentityTokenAudience != nil {
+		in, out := &in.IdentityTokenAudience, &out.IdentityTokenAudience
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenTTL != nil {
+		in, out := &in.IdentityTokenTTL, &out.IdentityTokenTTL
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxRetries != nil {
+		in, out := &in.MaxRetries, &out.MaxRetries
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	if in.RoleArn != nil {
+		in, out := &in.RoleArn, &out.RoleArn
 		*out = new(string)
 		**out = **in
 	}
@@ -375,8 +395,28 @@ func (in *AuthBackendClientObservation) DeepCopyInto(out *AuthBackendClientObser
 		*out = new(string)
 		**out = **in
 	}
+	if in.IdentityTokenAudience != nil {
+		in, out := &in.IdentityTokenAudience, &out.IdentityTokenAudience
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenTTL != nil {
+		in, out := &in.IdentityTokenTTL, &out.IdentityTokenTTL
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxRetries != nil {
+		in, out := &in.MaxRetries, &out.MaxRetries
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	if in.RoleArn != nil {
+		in, out := &in.RoleArn, &out.RoleArn
 		*out = new(string)
 		**out = **in
 	}
@@ -435,8 +475,28 @@ func (in *AuthBackendClientParameters) DeepCopyInto(out *AuthBackendClientParame
 		*out = new(string)
 		**out = **in
 	}
+	if in.IdentityTokenAudience != nil {
+		in, out := &in.IdentityTokenAudience, &out.IdentityTokenAudience
+		*out = new(string)
+		**out = **in
+	}
+	if in.IdentityTokenTTL != nil {
+		in, out := &in.IdentityTokenTTL, &out.IdentityTokenTTL
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxRetries != nil {
+		in, out := &in.MaxRetries, &out.MaxRetries
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	if in.RoleArn != nil {
+		in, out := &in.RoleArn, &out.RoleArn
 		*out = new(string)
 		**out = **in
 	}
@@ -3197,6 +3257,11 @@ func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleIn
 		*out = new(float64)
 		**out = **in
 	}
+	if in.ExternalID != nil {
+		in, out := &in.ExternalID, &out.ExternalID
+		*out = new(string)
+		**out = **in
+	}
 	if in.IAMGroups != nil {
 		in, out := &in.IAMGroups, &out.IAMGroups
 		*out = make([]*string, len(*in))
@@ -3206,6 +3271,21 @@ func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleIn
 				*out = new(string)
 				**out = **in
 			}
+		}
+	}
+	if in.IAMTags != nil {
+		in, out := &in.IAMTags, &out.IAMTags
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				in, out := &val, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
 		}
 	}
 	if in.MaxStsTTL != nil {
@@ -3253,6 +3333,21 @@ func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleIn
 				*out = new(string)
 				**out = **in
 			}
+		}
+	}
+	if in.SessionTags != nil {
+		in, out := &in.SessionTags, &out.SessionTags
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				in, out := &val, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
 		}
 	}
 	if in.UserPath != nil {
@@ -3322,6 +3417,11 @@ func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObser
 		*out = new(float64)
 		**out = **in
 	}
+	if in.ExternalID != nil {
+		in, out := &in.ExternalID, &out.ExternalID
+		*out = new(string)
+		**out = **in
+	}
 	if in.IAMGroups != nil {
 		in, out := &in.IAMGroups, &out.IAMGroups
 		*out = make([]*string, len(*in))
@@ -3331,6 +3431,21 @@ func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObser
 				*out = new(string)
 				**out = **in
 			}
+		}
+	}
+	if in.IAMTags != nil {
+		in, out := &in.IAMTags, &out.IAMTags
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				in, out := &val, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
 		}
 	}
 	if in.ID != nil {
@@ -3385,6 +3500,21 @@ func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObser
 			}
 		}
 	}
+	if in.SessionTags != nil {
+		in, out := &in.SessionTags, &out.SessionTags
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				in, out := &val, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
+	}
 	if in.UserPath != nil {
 		in, out := &in.UserPath, &out.UserPath
 		*out = new(string)
@@ -3420,6 +3550,11 @@ func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParame
 		*out = new(float64)
 		**out = **in
 	}
+	if in.ExternalID != nil {
+		in, out := &in.ExternalID, &out.ExternalID
+		*out = new(string)
+		**out = **in
+	}
 	if in.IAMGroups != nil {
 		in, out := &in.IAMGroups, &out.IAMGroups
 		*out = make([]*string, len(*in))
@@ -3429,6 +3564,21 @@ func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParame
 				*out = new(string)
 				**out = **in
 			}
+		}
+	}
+	if in.IAMTags != nil {
+		in, out := &in.IAMTags, &out.IAMTags
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				in, out := &val, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
 		}
 	}
 	if in.MaxStsTTL != nil {
@@ -3476,6 +3626,21 @@ func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParame
 				*out = new(string)
 				**out = **in
 			}
+		}
+	}
+	if in.SessionTags != nil {
+		in, out := &in.SessionTags, &out.SessionTags
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				in, out := &val, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
 		}
 	}
 	if in.UserPath != nil {

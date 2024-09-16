@@ -67,6 +67,19 @@ spec:
                 type: string
               forProvider:
                 properties:
+                  inheritable:
+                    description: If set to true on a quota where path is set to a
+                      namespace, the same quota will be cumulatively applied to all
+                      child namespace. The inheritable parameter cannot be set to
+                      true if the path does not specify a namespace. Only the quotas
+                      associated with the root namespace are inheritable by default.
+                      Requires Vault 1.15+. If set to true on a quota where path is
+                      set to a namespace, the same quota will be cumulatively applied
+                      to all child namespace. The inheritable parameter cannot be
+                      set to true if the path does not specify a namespace. Only the
+                      quotas associated with the root namespace are inheritable by
+                      default.
+                    type: boolean
                   maxLeases:
                     description: The maximum number of leases to be allowed by the
                       quota rule. The max_leases must be positive. The maximum number
@@ -118,6 +131,19 @@ spec:
                   creation, for example because of an external controller is managing
                   them, like an autoscaler.
                 properties:
+                  inheritable:
+                    description: If set to true on a quota where path is set to a
+                      namespace, the same quota will be cumulatively applied to all
+                      child namespace. The inheritable parameter cannot be set to
+                      true if the path does not specify a namespace. Only the quotas
+                      associated with the root namespace are inheritable by default.
+                      Requires Vault 1.15+. If set to true on a quota where path is
+                      set to a namespace, the same quota will be cumulatively applied
+                      to all child namespace. The inheritable parameter cannot be
+                      set to true if the path does not specify a namespace. Only the
+                      quotas associated with the root namespace are inheritable by
+                      default.
+                    type: boolean
                   maxLeases:
                     description: The maximum number of leases to be allowed by the
                       quota rule. The max_leases must be positive. The maximum number
@@ -369,6 +395,19 @@ spec:
                 properties:
                   id:
                     type: string
+                  inheritable:
+                    description: If set to true on a quota where path is set to a
+                      namespace, the same quota will be cumulatively applied to all
+                      child namespace. The inheritable parameter cannot be set to
+                      true if the path does not specify a namespace. Only the quotas
+                      associated with the root namespace are inheritable by default.
+                      Requires Vault 1.15+. If set to true on a quota where path is
+                      set to a namespace, the same quota will be cumulatively applied
+                      to all child namespace. The inheritable parameter cannot be
+                      set to true if the path does not specify a namespace. Only the
+                      quotas associated with the root namespace are inheritable by
+                      default.
+                    type: boolean
                   maxLeases:
                     description: The maximum number of leases to be allowed by the
                       quota rule. The max_leases must be positive. The maximum number

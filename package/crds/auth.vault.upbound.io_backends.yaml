@@ -73,6 +73,9 @@ spec:
                   disableRemount:
                     description: If set, opts out of mount migration on path updates.
                     type: boolean
+                  identityTokenKey:
+                    description: The key to use for signing identity tokens.
+                    type: string
                   local:
                     description: Specifies if the auth method is local only
                     type: boolean
@@ -145,6 +148,9 @@ spec:
                   disableRemount:
                     description: If set, opts out of mount migration on path updates.
                     type: boolean
+                  identityTokenKey:
+                    description: The key to use for signing identity tokens.
+                    type: string
                   local:
                     description: Specifies if the auth method is local only
                     type: boolean
@@ -415,6 +421,9 @@ spec:
                     description: If set, opts out of mount migration on path updates.
                     type: boolean
                   id:
+                    type: string
+                  identityTokenKey:
+                    description: The key to use for signing identity tokens.
                     type: string
                   local:
                     description: Specifies if the auth method is local only

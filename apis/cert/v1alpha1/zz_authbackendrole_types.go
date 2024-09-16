@@ -22,8 +22,6 @@ type AuthBackendRoleInitParameters struct {
 
 	AllowedNames []*string `json:"allowedNames,omitempty" tf:"allowed_names,omitempty"`
 
-	AllowedOrganizationUnits []*string `json:"allowedOrganizationUnits,omitempty" tf:"allowed_organization_units,omitempty"`
-
 	AllowedOrganizationalUnits []*string `json:"allowedOrganizationalUnits,omitempty" tf:"allowed_organizational_units,omitempty"`
 
 	AllowedURISans []*string `json:"allowedUriSans,omitempty" tf:"allowed_uri_sans,omitempty"`
@@ -92,8 +90,6 @@ type AuthBackendRoleObservation struct {
 	AllowedEmailSans []*string `json:"allowedEmailSans,omitempty" tf:"allowed_email_sans,omitempty"`
 
 	AllowedNames []*string `json:"allowedNames,omitempty" tf:"allowed_names,omitempty"`
-
-	AllowedOrganizationUnits []*string `json:"allowedOrganizationUnits,omitempty" tf:"allowed_organization_units,omitempty"`
 
 	AllowedOrganizationalUnits []*string `json:"allowedOrganizationalUnits,omitempty" tf:"allowed_organizational_units,omitempty"`
 
@@ -170,9 +166,6 @@ type AuthBackendRoleParameters struct {
 
 	// +kubebuilder:validation:Optional
 	AllowedNames []*string `json:"allowedNames,omitempty" tf:"allowed_names,omitempty"`
-
-	// +kubebuilder:validation:Optional
-	AllowedOrganizationUnits []*string `json:"allowedOrganizationUnits,omitempty" tf:"allowed_organization_units,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	AllowedOrganizationalUnits []*string `json:"allowedOrganizationalUnits,omitempty" tf:"allowed_organizational_units,omitempty"`

@@ -74,6 +74,13 @@ spec:
                     items:
                       type: string
                     type: array
+                  allowedResponseHeaders:
+                    description: List of headers to allow, allowing a plugin to include
+                      them in the response. List of headers to allow and pass from
+                      the request to the plugin
+                    items:
+                      type: string
+                    type: array
                   auditNonHmacRequestKeys:
                     description: Specifies the list of keys that will not be HMAC'd
                       by audit devices in the request data object. Specifies the list
@@ -94,6 +101,13 @@ spec:
                     description: Default lease duration for tokens and secrets in
                       seconds Default lease duration for tokens and secrets in seconds
                     type: number
+                  delegatedAuthAccessors:
+                    description: List of allowed authentication mount accessors the
+                      backend can request delegated authentication for. List of headers
+                      to allow and pass from the request to the plugin
+                    items:
+                      type: string
+                    type: array
                   description:
                     description: Human-friendly description of the mount Human-friendly
                       description of the mount
@@ -104,6 +118,17 @@ spec:
                       source Enable the secrets engine to access Vault's external
                       entropy source
                     type: boolean
+                  identityTokenKey:
+                    description: The key to use for signing plugin workload identity
+                      tokens. If not provided, this will default to Vault's OIDC default
+                      key. The key to use for signing plugin workload identity tokens
+                    type: string
+                  listingVisibility:
+                    description: Specifies whether to show this mount in the UI-specific
+                      listing endpoint. Valid values are unauth or hidden. If not
+                      set, behaves like hidden. Specifies whether to show this mount
+                      in the UI-specific listing endpoint
+                    type: string
                   local:
                     description: Boolean flag that can be explicitly set to true to
                       enforce local mount in HA environment Local mount flag that
@@ -128,9 +153,24 @@ spec:
                       to the backend Specifies mount type specific options that are
                       passed to the backend
                     type: object
+                  passthroughRequestHeaders:
+                    description: List of headers to allow and pass from the request
+                      to the plugin. List of headers to allow and pass from the request
+                      to the plugin
+                    items:
+                      type: string
+                    type: array
                   path:
                     description: Where the secret backend will be mounted Where the
                       secret backend will be mounted
+                    type: string
+                  pluginVersion:
+                    description: Specifies the semantic version of the plugin to use,
+                      e.g. "v1.0.0". If unspecified, the server will select any matching
+                      unversioned plugin that may have been registered, the latest
+                      versioned plugin registered, or a built-in plugin in that order
+                      of precedence. Specifies the semantic version of the plugin
+                      to use, e.g. 'v1.0.0'
                     type: string
                   sealWrap:
                     description: Boolean flag that can be explicitly set to true to
@@ -164,6 +204,13 @@ spec:
                     items:
                       type: string
                     type: array
+                  allowedResponseHeaders:
+                    description: List of headers to allow, allowing a plugin to include
+                      them in the response. List of headers to allow and pass from
+                      the request to the plugin
+                    items:
+                      type: string
+                    type: array
                   auditNonHmacRequestKeys:
                     description: Specifies the list of keys that will not be HMAC'd
                       by audit devices in the request data object. Specifies the list
@@ -184,6 +231,13 @@ spec:
                     description: Default lease duration for tokens and secrets in
                       seconds Default lease duration for tokens and secrets in seconds
                     type: number
+                  delegatedAuthAccessors:
+                    description: List of allowed authentication mount accessors the
+                      backend can request delegated authentication for. List of headers
+                      to allow and pass from the request to the plugin
+                    items:
+                      type: string
+                    type: array
                   description:
                     description: Human-friendly description of the mount Human-friendly
                       description of the mount
@@ -194,6 +248,17 @@ spec:
                       source Enable the secrets engine to access Vault's external
                       entropy source
                     type: boolean
+                  identityTokenKey:
+                    description: The key to use for signing plugin workload identity
+                      tokens. If not provided, this will default to Vault's OIDC default
+                      key. The key to use for signing plugin workload identity tokens
+                    type: string
+                  listingVisibility:
+                    description: Specifies whether to show this mount in the UI-specific
+                      listing endpoint. Valid values are unauth or hidden. If not
+                      set, behaves like hidden. Specifies whether to show this mount
+                      in the UI-specific listing endpoint
+                    type: string
                   local:
                     description: Boolean flag that can be explicitly set to true to
                       enforce local mount in HA environment Local mount flag that
@@ -218,9 +283,24 @@ spec:
                       to the backend Specifies mount type specific options that are
                       passed to the backend
                     type: object
+                  passthroughRequestHeaders:
+                    description: List of headers to allow and pass from the request
+                      to the plugin. List of headers to allow and pass from the request
+                      to the plugin
+                    items:
+                      type: string
+                    type: array
                   path:
                     description: Where the secret backend will be mounted Where the
                       secret backend will be mounted
+                    type: string
+                  pluginVersion:
+                    description: Specifies the semantic version of the plugin to use,
+                      e.g. "v1.0.0". If unspecified, the server will select any matching
+                      unversioned plugin that may have been registered, the latest
+                      versioned plugin registered, or a built-in plugin in that order
+                      of precedence. Specifies the semantic version of the plugin
+                      to use, e.g. 'v1.0.0'
                     type: string
                   sealWrap:
                     description: Boolean flag that can be explicitly set to true to
@@ -455,6 +535,13 @@ spec:
                     items:
                       type: string
                     type: array
+                  allowedResponseHeaders:
+                    description: List of headers to allow, allowing a plugin to include
+                      them in the response. List of headers to allow and pass from
+                      the request to the plugin
+                    items:
+                      type: string
+                    type: array
                   auditNonHmacRequestKeys:
                     description: Specifies the list of keys that will not be HMAC'd
                       by audit devices in the request data object. Specifies the list
@@ -475,6 +562,13 @@ spec:
                     description: Default lease duration for tokens and secrets in
                       seconds Default lease duration for tokens and secrets in seconds
                     type: number
+                  delegatedAuthAccessors:
+                    description: List of allowed authentication mount accessors the
+                      backend can request delegated authentication for. List of headers
+                      to allow and pass from the request to the plugin
+                    items:
+                      type: string
+                    type: array
                   description:
                     description: Human-friendly description of the mount Human-friendly
                       description of the mount
@@ -486,6 +580,17 @@ spec:
                       entropy source
                     type: boolean
                   id:
+                    type: string
+                  identityTokenKey:
+                    description: The key to use for signing plugin workload identity
+                      tokens. If not provided, this will default to Vault's OIDC default
+                      key. The key to use for signing plugin workload identity tokens
+                    type: string
+                  listingVisibility:
+                    description: Specifies whether to show this mount in the UI-specific
+                      listing endpoint. Valid values are unauth or hidden. If not
+                      set, behaves like hidden. Specifies whether to show this mount
+                      in the UI-specific listing endpoint
                     type: string
                   local:
                     description: Boolean flag that can be explicitly set to true to
@@ -511,9 +616,24 @@ spec:
                       to the backend Specifies mount type specific options that are
                       passed to the backend
                     type: object
+                  passthroughRequestHeaders:
+                    description: List of headers to allow and pass from the request
+                      to the plugin. List of headers to allow and pass from the request
+                      to the plugin
+                    items:
+                      type: string
+                    type: array
                   path:
                     description: Where the secret backend will be mounted Where the
                       secret backend will be mounted
+                    type: string
+                  pluginVersion:
+                    description: Specifies the semantic version of the plugin to use,
+                      e.g. "v1.0.0". If unspecified, the server will select any matching
+                      unversioned plugin that may have been registered, the latest
+                      versioned plugin registered, or a built-in plugin in that order
+                      of precedence. Specifies the semantic version of the plugin
+                      to use, e.g. 'v1.0.0'
                     type: string
                   sealWrap:
                     description: Boolean flag that can be explicitly set to true to

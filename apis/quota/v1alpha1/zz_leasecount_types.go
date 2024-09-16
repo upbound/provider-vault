@@ -15,6 +15,10 @@ import (
 
 type LeaseCountInitParameters struct {
 
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default. Requires Vault 1.15+.
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default.
+	Inheritable *bool `json:"inheritable,omitempty" tf:"inheritable,omitempty"`
+
 	// The maximum number of leases to be allowed by the quota
 	// rule. The max_leases must be positive.
 	// The maximum number of leases to be allowed by the quota rule. The max_leases must be positive.
@@ -48,6 +52,10 @@ type LeaseCountInitParameters struct {
 type LeaseCountObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default. Requires Vault 1.15+.
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default.
+	Inheritable *bool `json:"inheritable,omitempty" tf:"inheritable,omitempty"`
+
 	// The maximum number of leases to be allowed by the quota
 	// rule. The max_leases must be positive.
 	// The maximum number of leases to be allowed by the quota rule. The max_leases must be positive.
@@ -79,6 +87,11 @@ type LeaseCountObservation struct {
 }
 
 type LeaseCountParameters struct {
+
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default. Requires Vault 1.15+.
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default.
+	// +kubebuilder:validation:Optional
+	Inheritable *bool `json:"inheritable,omitempty" tf:"inheritable,omitempty"`
 
 	// The maximum number of leases to be allowed by the quota
 	// rule. The max_leases must be positive.

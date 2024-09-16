@@ -261,10 +261,6 @@ type SecretBackendRootCertObservation struct {
 	// The province.
 	Province *string `json:"province,omitempty" tf:"province,omitempty"`
 
-	// Deprecated, use serial_number instead.
-	// The serial number.
-	Serial *string `json:"serial,omitempty" tf:"serial,omitempty"`
-
 	// The certificate's serial number, hex formatted.
 	// The certificate's serial number, hex formatted.
 	SerialNumber *string `json:"serialNumber,omitempty" tf:"serial_number,omitempty"`

@@ -1027,6 +1027,9 @@ type SecretsMountInitParameters struct {
 	// List of managed key registry entry names that the mount in question is allowed to access
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
 
+	// List of headers to allow and pass from the request to the plugin
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
+
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
 	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
@@ -1049,6 +1052,9 @@ type SecretsMountInitParameters struct {
 	// Default lease duration for tokens and secrets in seconds
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
 
+	// List of headers to allow and pass from the request to the plugin
+	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
+
 	// Human-friendly description of the mount
 	// Human-friendly description of the mount
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -1067,10 +1073,16 @@ type SecretsMountInitParameters struct {
 	// Connection parameters for the hana-database-plugin plugin.
 	Hana []SecretsMountHanaInitParameters `json:"hana,omitempty" tf:"hana,omitempty"`
 
+	// The key to use for signing plugin workload identity tokens
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
 	// A nested block containing configuration options for InfluxDB connections.
 	// See
 	// Connection parameters for the influxdb-database-plugin plugin.
 	Influxdb []SecretsMountInfluxdbInitParameters `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
+
+	// Specifies whether to show this mount in the UI-specific listing endpoint
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
 
 	// Boolean flag that can be explicitly set to true to enforce local mount in HA environment
 	// Local mount flag that can be explicitly set to true to enforce local mount in HA environment
@@ -1127,9 +1139,15 @@ type SecretsMountInitParameters struct {
 	// Connection parameters for the oracle-database-plugin plugin.
 	Oracle []SecretsMountOracleInitParameters `json:"oracle,omitempty" tf:"oracle,omitempty"`
 
+	// List of headers to allow and pass from the request to the plugin
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
+
 	// Where the secret backend will be mounted
 	// Where the secret backend will be mounted
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A nested block containing configuration options for PostgreSQL connections.
 	// See
@@ -2582,6 +2600,9 @@ type SecretsMountObservation struct {
 	// List of managed key registry entry names that the mount in question is allowed to access
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
 
+	// List of headers to allow and pass from the request to the plugin
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
+
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
 	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
@@ -2603,6 +2624,9 @@ type SecretsMountObservation struct {
 	// Default lease duration for tokens and secrets in seconds
 	// Default lease duration for tokens and secrets in seconds
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
 
 	// Human-friendly description of the mount
 	// Human-friendly description of the mount
@@ -2628,10 +2652,16 @@ type SecretsMountObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The key to use for signing plugin workload identity tokens
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
 	// A nested block containing configuration options for InfluxDB connections.
 	// See
 	// Connection parameters for the influxdb-database-plugin plugin.
 	Influxdb []SecretsMountInfluxdbObservation `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
+
+	// Specifies whether to show this mount in the UI-specific listing endpoint
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
 
 	// Boolean flag that can be explicitly set to true to enforce local mount in HA environment
 	// Local mount flag that can be explicitly set to true to enforce local mount in HA environment
@@ -2688,9 +2718,15 @@ type SecretsMountObservation struct {
 	// Connection parameters for the oracle-database-plugin plugin.
 	Oracle []SecretsMountOracleObservation `json:"oracle,omitempty" tf:"oracle,omitempty"`
 
+	// List of headers to allow and pass from the request to the plugin
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
+
 	// Where the secret backend will be mounted
 	// Where the secret backend will be mounted
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A nested block containing configuration options for PostgreSQL connections.
 	// See
@@ -2937,6 +2973,10 @@ type SecretsMountParameters struct {
 	// +kubebuilder:validation:Optional
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
 
+	// List of headers to allow and pass from the request to the plugin
+	// +kubebuilder:validation:Optional
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
+
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
 	// +kubebuilder:validation:Optional
@@ -2964,6 +3004,10 @@ type SecretsMountParameters struct {
 	// +kubebuilder:validation:Optional
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
 
+	// List of headers to allow and pass from the request to the plugin
+	// +kubebuilder:validation:Optional
+	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
+
 	// Human-friendly description of the mount
 	// Human-friendly description of the mount
 	// +kubebuilder:validation:Optional
@@ -2986,11 +3030,19 @@ type SecretsMountParameters struct {
 	// +kubebuilder:validation:Optional
 	Hana []SecretsMountHanaParameters `json:"hana,omitempty" tf:"hana,omitempty"`
 
+	// The key to use for signing plugin workload identity tokens
+	// +kubebuilder:validation:Optional
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
 	// A nested block containing configuration options for InfluxDB connections.
 	// See
 	// Connection parameters for the influxdb-database-plugin plugin.
 	// +kubebuilder:validation:Optional
 	Influxdb []SecretsMountInfluxdbParameters `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
+
+	// Specifies whether to show this mount in the UI-specific listing endpoint
+	// +kubebuilder:validation:Optional
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
 
 	// Boolean flag that can be explicitly set to true to enforce local mount in HA environment
 	// Local mount flag that can be explicitly set to true to enforce local mount in HA environment
@@ -3059,10 +3111,18 @@ type SecretsMountParameters struct {
 	// +kubebuilder:validation:Optional
 	Oracle []SecretsMountOracleParameters `json:"oracle,omitempty" tf:"oracle,omitempty"`
 
+	// List of headers to allow and pass from the request to the plugin
+	// +kubebuilder:validation:Optional
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
+
 	// Where the secret backend will be mounted
 	// Where the secret backend will be mounted
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A nested block containing configuration options for PostgreSQL connections.
 	// See

@@ -848,6 +848,11 @@ func (in *SecretBackendConfigUrlsInitParameters) DeepCopyInto(out *SecretBackend
 			}
 		}
 	}
+	if in.EnableTemplating != nil {
+		in, out := &in.EnableTemplating, &out.EnableTemplating
+		*out = new(bool)
+		**out = **in
+	}
 	if in.IssuingCertificates != nil {
 		in, out := &in.IssuingCertificates, &out.IssuingCertificates
 		*out = make([]*string, len(*in))
@@ -938,6 +943,11 @@ func (in *SecretBackendConfigUrlsObservation) DeepCopyInto(out *SecretBackendCon
 			}
 		}
 	}
+	if in.EnableTemplating != nil {
+		in, out := &in.EnableTemplating, &out.EnableTemplating
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
 		*out = new(string)
@@ -1000,6 +1010,11 @@ func (in *SecretBackendConfigUrlsParameters) DeepCopyInto(out *SecretBackendConf
 				**out = **in
 			}
 		}
+	}
+	if in.EnableTemplating != nil {
+		in, out := &in.EnableTemplating, &out.EnableTemplating
+		*out = new(bool)
+		**out = **in
 	}
 	if in.IssuingCertificates != nil {
 		in, out := &in.IssuingCertificates, &out.IssuingCertificates
@@ -3775,11 +3790,6 @@ func (in *SecretBackendRootCertObservation) DeepCopyInto(out *SecretBackendRootC
 		*out = new(string)
 		**out = **in
 	}
-	if in.Serial != nil {
-		in, out := &in.Serial, &out.Serial
-		*out = new(string)
-		**out = **in
-	}
 	if in.SerialNumber != nil {
 		in, out := &in.SerialNumber, &out.SerialNumber
 		*out = new(string)
@@ -4415,11 +4425,6 @@ func (in *SecretBackendRootSignIntermediateObservation) DeepCopyInto(out *Secret
 		*out = new(bool)
 		**out = **in
 	}
-	if in.Serial != nil {
-		in, out := &in.Serial, &out.Serial
-		*out = new(string)
-		**out = **in
-	}
 	if in.SerialNumber != nil {
 		in, out := &in.SerialNumber, &out.SerialNumber
 		*out = new(string)
@@ -4951,11 +4956,6 @@ func (in *SecretBackendSignObservation) DeepCopyInto(out *SecretBackendSignObser
 	if in.RenewPending != nil {
 		in, out := &in.RenewPending, &out.RenewPending
 		*out = new(bool)
-		**out = **in
-	}
-	if in.Serial != nil {
-		in, out := &in.Serial, &out.Serial
-		*out = new(string)
 		**out = **in
 	}
 	if in.SerialNumber != nil {
