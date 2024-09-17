@@ -20,6 +20,16 @@ type AuthBackendConfigInitParameters struct {
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// The client id for credentials to query the Azure APIs.
+	// Currently read permissions to query compute resources are required.
+	// The client id for credentials to query the Azure APIs. Currently read permissions to query compute resources are required.
+	ClientIDSecretRef *v1.SecretKeySelector `json:"clientIdSecretRef,omitempty" tf:"-"`
+
+	// The client secret for credentials to query the
+	// Azure APIs.
+	// The client secret for credentials to query the Azure APIs
+	ClientSecretSecretRef *v1.SecretKeySelector `json:"clientSecretSecretRef,omitempty" tf:"-"`
+
 	// The Azure cloud environment. Valid values:
 	// AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud,
 	// AzureGermanCloud.  Defaults to AzurePublicCloud.
@@ -48,6 +58,11 @@ type AuthBackendConfigInitParameters struct {
 	// Azure Active Directory.
 	// The configured URL for the application registered in Azure Active Directory.
 	Resource *string `json:"resource,omitempty" tf:"resource,omitempty"`
+
+	// The tenant id for the Azure Active Directory
+	// organization.
+	// The tenant id for the Azure Active Directory organization.
+	TenantIDSecretRef v1.SecretKeySelector `json:"tenantIdSecretRef" tf:"-"`
 }
 
 type AuthBackendConfigObservation struct {
@@ -154,9 +169,8 @@ type AuthBackendConfigParameters struct {
 type AuthBackendConfigSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendConfigParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -175,19 +189,20 @@ type AuthBackendConfigStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // AuthBackendConfig is the Schema for the AuthBackendConfigs API. Configures the Azure Auth Backend in Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type AuthBackendConfig struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.resource) || has(self.initProvider.resource)",message="resource is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.tenantIdSecretRef)",message="tenantIdSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.resource) || (has(self.initProvider) && has(self.initProvider.resource))",message="spec.forProvider.resource is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.tenantIdSecretRef)",message="spec.forProvider.tenantIdSecretRef is a required parameter"
 	Spec   AuthBackendConfigSpec   `json:"spec"`
 	Status AuthBackendConfigStatus `json:"status,omitempty"`
 }

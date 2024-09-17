@@ -3260,14 +3260,12 @@ resources:
             entity_id: '- (Required) Entity ID to assign policies to.'
             entity_name: '- The name of the entity that are assigned the policies.'
             exclusive: '- (Optional) Defaults to true.'
-            "false": ', this resource will simply ensure that the policies specified in the resource are present in the entity. When destroying the resource, the resource will ensure that the policies specified in the resource are removed.'
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
             policies: '- (Required) List of policies to assign to the entity'
-            "true": ', this resource will take exclusive control of the policies assigned to the entity and will set it equal to what is specified in the resource.'
         importStatements: []
     vault_identity_group:
         subCategory: ""
@@ -3497,7 +3495,6 @@ resources:
                     }
         argumentDocs:
             exclusive: '- (Optional) Defaults to true.'
-            "false": ', this resource will simply ensure that the member entities specified in the resource are present in the group. When destroying the resource, the resource will ensure that the member entities specified in the resource are removed.'
             group_id: '- (Required) Group ID to assign member entities to.'
             member_entity_ids: '- (Required) List of member entities that belong to the group'
             namespace: |-
@@ -3505,7 +3502,6 @@ resources:
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
-            "true": ', this resource will take exclusive control of the member entities that belong to the group and will set it equal to what is specified in the resource.'
         importStatements: []
     vault_identity_group_member_group_ids:
         subCategory: ""
@@ -3571,10 +3567,6 @@ resources:
                     }
         argumentDocs:
             exclusive: '- (Optional) Defaults to true.'
-            "false": |-
-                , this resource will simply ensure that the member groups specified in the resource are present
-                in the group. When destroying the resource, the resource will ensure that the member groups specified in the resource
-                are removed.
             group_id: '- (Required) Group ID to assign member entities to.'
             member_group_ids: '- (Required) List of member groups that belong to the group'
             namespace: |-
@@ -3582,9 +3574,6 @@ resources:
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
-            "true": |-
-                , this resource will take exclusive control of the member groups that belong to the group and will set
-                it equal to what is specified in the resource.
         importStatements: []
     vault_identity_group_policies:
         subCategory: ""
@@ -3659,7 +3648,6 @@ resources:
                     }
         argumentDocs:
             exclusive: '- (Optional) Defaults to true.'
-            "false": ', this resource will simply ensure that the policies specified in the resource are present in the group. When destroying the resource, the resource will ensure that the policies specified in the resource are removed.'
             group_id: '- (Required) Group ID to assign policies to.'
             group_name: '- The name of the group that are assigned the policies.'
             namespace: |-
@@ -3668,7 +3656,6 @@ resources:
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
             policies: '- (Required) List of policies to assign to the group'
-            "true": ', this resource will take exclusive control of the policies assigned to the group and will set it equal to what is specified in the resource.'
         importStatements: []
     vault_identity_mfa_duo:
         subCategory: ""

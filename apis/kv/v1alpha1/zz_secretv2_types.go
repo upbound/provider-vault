@@ -22,6 +22,7 @@ type CustomMetadataInitParameters struct {
 
 	// A string to string map describing the secret.
 	// A map of arbitrary string to string valued user-provided metadata meant to describe the secret.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// If set, specifies the length of time before
@@ -43,6 +44,7 @@ type CustomMetadataObservation struct {
 
 	// A string to string map describing the secret.
 	// A map of arbitrary string to string valued user-provided metadata meant to describe the secret.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// If set, specifies the length of time before
@@ -66,6 +68,7 @@ type CustomMetadataParameters struct {
 	// A string to string map describing the secret.
 	// A map of arbitrary string to string valued user-provided metadata meant to describe the secret.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// If set, specifies the length of time before
@@ -94,6 +97,11 @@ type SecretV2InitParameters struct {
 	// Configuration Options for more info.
 	// Custom metadata to be set for the secret.
 	CustomMetadata []CustomMetadataInitParameters `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
+
+	// JSON-encoded string that will be
+	// written as the secret data at the given path.
+	// JSON-encoded secret data to write.
+	DataJSONSecretRef v1.SecretKeySelector `json:"dataJsonSecretRef" tf:"-"`
 
 	// If set to true, permanently deletes all
 	// versions for the specified key.
@@ -125,6 +133,7 @@ type SecretV2InitParameters struct {
 
 	// An object that holds option settings.
 	// An object that holds option settings.
+	// +mapType=granular
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 }
 
@@ -157,6 +166,7 @@ type SecretV2Observation struct {
 
 	// Metadata associated with this secret read from Vault.
 	// Metadata associated with this secret read from Vault.
+	// +mapType=granular
 	Metadata map[string]*string `json:"metadata,omitempty" tf:"metadata,omitempty"`
 
 	// Path where KV-V2 engine is mounted.
@@ -179,6 +189,7 @@ type SecretV2Observation struct {
 
 	// An object that holds option settings.
 	// An object that holds option settings.
+	// +mapType=granular
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 
 	// Full path where the KV-V2 secret will be written.
@@ -245,6 +256,7 @@ type SecretV2Parameters struct {
 	// An object that holds option settings.
 	// An object that holds option settings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 }
 
@@ -252,9 +264,8 @@ type SecretV2Parameters struct {
 type SecretV2Spec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretV2Parameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -273,20 +284,21 @@ type SecretV2Status struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretV2 is the Schema for the SecretV2s API. Writes a KV-V2 secret to a given path in Vault
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretV2 struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dataJsonSecretRef)",message="dataJsonSecretRef is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mount) || has(self.initProvider.mount)",message="mount is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dataJsonSecretRef)",message="spec.forProvider.dataJsonSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mount) || (has(self.initProvider) && has(self.initProvider.mount))",message="spec.forProvider.mount is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   SecretV2Spec   `json:"spec"`
 	Status SecretV2Status `json:"status,omitempty"`
 }

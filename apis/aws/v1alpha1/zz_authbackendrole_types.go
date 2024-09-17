@@ -34,6 +34,7 @@ type AuthBackendRoleInitParameters struct {
 	// specified by this field. auth_type must be set to ec2 or
 	// inferred_entity_type must be set to ec2_instance to use this constraint.
 	// Only EC2 instances using this AMI ID will be permitted to log in.
+	// +listType=set
 	BoundAMIIds []*string `json:"boundAmiIds,omitempty" tf:"bound_ami_ids,omitempty"`
 
 	// If set, defines a constraint on the EC2
@@ -41,9 +42,11 @@ type AuthBackendRoleInitParameters struct {
 	// account ID specified by this field. auth_type must be set to ec2 or
 	// inferred_entity_type must be set to ec2_instance to use this constraint.
 	// Only EC2 instances with this account ID in their identity document will be permitted to log in.
+	// +listType=set
 	BoundAccountIds []*string `json:"boundAccountIds,omitempty" tf:"bound_account_ids,omitempty"`
 
 	// Only EC2 instances that match this instance ID will be permitted to log in.
+	// +listType=set
 	BoundEC2InstanceIds []*string `json:"boundEc2InstanceIds,omitempty" tf:"bound_ec2_instance_ids,omitempty"`
 
 	// If set, defines a constraint on
@@ -53,12 +56,14 @@ type AuthBackendRoleInitParameters struct {
 	// were a glob ending in *. auth_type must be set to ec2 or
 	// inferred_entity_type must be set to ec2_instance to use this constraint.
 	// Only EC2 instances associated with an IAM instance profile ARN that matches this value will be permitted to log in.
+	// +listType=set
 	BoundIAMInstanceProfileArns []*string `json:"boundIamInstanceProfileArns,omitempty" tf:"bound_iam_instance_profile_arns,omitempty"`
 
 	// If set, defines the IAM principal that
 	// must be authenticated when auth_type is set to iam. Wildcards are
 	// supported at the end of the ARN.
 	// The IAM principal that must be authenticated using the iam auth method.
+	// +listType=set
 	BoundIAMPrincipalArns []*string `json:"boundIamPrincipalArns,omitempty" tf:"bound_iam_principal_arns,omitempty"`
 
 	// If set, defines a constraint on the EC2
@@ -66,6 +71,7 @@ type AuthBackendRoleInitParameters struct {
 	// role ARN specified by this field. auth_type must be set to ec2 or
 	// inferred_entity_type must be set to ec2_instance to use this constraint.
 	// Only EC2 instances that match this IAM role ARN will be permitted to log in.
+	// +listType=set
 	BoundIAMRoleArns []*string `json:"boundIamRoleArns,omitempty" tf:"bound_iam_role_arns,omitempty"`
 
 	// If set, defines a constraint on the EC2 instances
@@ -74,6 +80,7 @@ type AuthBackendRoleInitParameters struct {
 	// to ec2 or inferred_entity_type must be set to ec2_instance to use this
 	// constraint.
 	// Only EC2 instances in this region will be permitted to log in.
+	// +listType=set
 	BoundRegions []*string `json:"boundRegions,omitempty" tf:"bound_regions,omitempty"`
 
 	// If set, defines a constraint on the EC2
@@ -82,6 +89,7 @@ type AuthBackendRoleInitParameters struct {
 	// must be set to ec2 or inferred_entity_type must be set to ec2_instance
 	// to use this constraint.
 	// Only EC2 instances associated with this subnet ID will be permitted to log in.
+	// +listType=set
 	BoundSubnetIds []*string `json:"boundSubnetIds,omitempty" tf:"bound_subnet_ids,omitempty"`
 
 	// If set, defines a constraint on the EC2 instances
@@ -90,6 +98,7 @@ type AuthBackendRoleInitParameters struct {
 	// ec2 or inferred_entity_type must be set to ec2_instance to use this
 	// constraint.
 	// Only EC2 instances associated with this VPC ID will be permitted to log in.
+	// +listType=set
 	BoundVPCIds []*string `json:"boundVpcIds,omitempty" tf:"bound_vpc_ids,omitempty"`
 
 	// IF set to true, only allows a
@@ -148,6 +157,7 @@ type AuthBackendRoleInitParameters struct {
 	// addresses which can authenticate successfully, and ties the resulting token to these blocks
 	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// If set, will encode an
@@ -182,6 +192,7 @@ type AuthBackendRoleInitParameters struct {
 	// List of policies to encode onto generated tokens. Depending
 	// on the auth method, this list may be supplemented by user/group/other values.
 	// Generated Token's Policies
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The incremental lifetime for generated tokens in number of seconds.
@@ -219,6 +230,7 @@ type AuthBackendRoleObservation struct {
 	// specified by this field. auth_type must be set to ec2 or
 	// inferred_entity_type must be set to ec2_instance to use this constraint.
 	// Only EC2 instances using this AMI ID will be permitted to log in.
+	// +listType=set
 	BoundAMIIds []*string `json:"boundAmiIds,omitempty" tf:"bound_ami_ids,omitempty"`
 
 	// If set, defines a constraint on the EC2
@@ -226,9 +238,11 @@ type AuthBackendRoleObservation struct {
 	// account ID specified by this field. auth_type must be set to ec2 or
 	// inferred_entity_type must be set to ec2_instance to use this constraint.
 	// Only EC2 instances with this account ID in their identity document will be permitted to log in.
+	// +listType=set
 	BoundAccountIds []*string `json:"boundAccountIds,omitempty" tf:"bound_account_ids,omitempty"`
 
 	// Only EC2 instances that match this instance ID will be permitted to log in.
+	// +listType=set
 	BoundEC2InstanceIds []*string `json:"boundEc2InstanceIds,omitempty" tf:"bound_ec2_instance_ids,omitempty"`
 
 	// If set, defines a constraint on
@@ -238,12 +252,14 @@ type AuthBackendRoleObservation struct {
 	// were a glob ending in *. auth_type must be set to ec2 or
 	// inferred_entity_type must be set to ec2_instance to use this constraint.
 	// Only EC2 instances associated with an IAM instance profile ARN that matches this value will be permitted to log in.
+	// +listType=set
 	BoundIAMInstanceProfileArns []*string `json:"boundIamInstanceProfileArns,omitempty" tf:"bound_iam_instance_profile_arns,omitempty"`
 
 	// If set, defines the IAM principal that
 	// must be authenticated when auth_type is set to iam. Wildcards are
 	// supported at the end of the ARN.
 	// The IAM principal that must be authenticated using the iam auth method.
+	// +listType=set
 	BoundIAMPrincipalArns []*string `json:"boundIamPrincipalArns,omitempty" tf:"bound_iam_principal_arns,omitempty"`
 
 	// If set, defines a constraint on the EC2
@@ -251,6 +267,7 @@ type AuthBackendRoleObservation struct {
 	// role ARN specified by this field. auth_type must be set to ec2 or
 	// inferred_entity_type must be set to ec2_instance to use this constraint.
 	// Only EC2 instances that match this IAM role ARN will be permitted to log in.
+	// +listType=set
 	BoundIAMRoleArns []*string `json:"boundIamRoleArns,omitempty" tf:"bound_iam_role_arns,omitempty"`
 
 	// If set, defines a constraint on the EC2 instances
@@ -259,6 +276,7 @@ type AuthBackendRoleObservation struct {
 	// to ec2 or inferred_entity_type must be set to ec2_instance to use this
 	// constraint.
 	// Only EC2 instances in this region will be permitted to log in.
+	// +listType=set
 	BoundRegions []*string `json:"boundRegions,omitempty" tf:"bound_regions,omitempty"`
 
 	// If set, defines a constraint on the EC2
@@ -267,6 +285,7 @@ type AuthBackendRoleObservation struct {
 	// must be set to ec2 or inferred_entity_type must be set to ec2_instance
 	// to use this constraint.
 	// Only EC2 instances associated with this subnet ID will be permitted to log in.
+	// +listType=set
 	BoundSubnetIds []*string `json:"boundSubnetIds,omitempty" tf:"bound_subnet_ids,omitempty"`
 
 	// If set, defines a constraint on the EC2 instances
@@ -275,6 +294,7 @@ type AuthBackendRoleObservation struct {
 	// ec2 or inferred_entity_type must be set to ec2_instance to use this
 	// constraint.
 	// Only EC2 instances associated with this VPC ID will be permitted to log in.
+	// +listType=set
 	BoundVPCIds []*string `json:"boundVpcIds,omitempty" tf:"bound_vpc_ids,omitempty"`
 
 	// IF set to true, only allows a
@@ -339,6 +359,7 @@ type AuthBackendRoleObservation struct {
 	// addresses which can authenticate successfully, and ties the resulting token to these blocks
 	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// If set, will encode an
@@ -373,6 +394,7 @@ type AuthBackendRoleObservation struct {
 	// List of policies to encode onto generated tokens. Depending
 	// on the auth method, this list may be supplemented by user/group/other values.
 	// Generated Token's Policies
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The incremental lifetime for generated tokens in number of seconds.
@@ -414,6 +436,7 @@ type AuthBackendRoleParameters struct {
 	// inferred_entity_type must be set to ec2_instance to use this constraint.
 	// Only EC2 instances using this AMI ID will be permitted to log in.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	BoundAMIIds []*string `json:"boundAmiIds,omitempty" tf:"bound_ami_ids,omitempty"`
 
 	// If set, defines a constraint on the EC2
@@ -422,10 +445,12 @@ type AuthBackendRoleParameters struct {
 	// inferred_entity_type must be set to ec2_instance to use this constraint.
 	// Only EC2 instances with this account ID in their identity document will be permitted to log in.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	BoundAccountIds []*string `json:"boundAccountIds,omitempty" tf:"bound_account_ids,omitempty"`
 
 	// Only EC2 instances that match this instance ID will be permitted to log in.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	BoundEC2InstanceIds []*string `json:"boundEc2InstanceIds,omitempty" tf:"bound_ec2_instance_ids,omitempty"`
 
 	// If set, defines a constraint on
@@ -436,6 +461,7 @@ type AuthBackendRoleParameters struct {
 	// inferred_entity_type must be set to ec2_instance to use this constraint.
 	// Only EC2 instances associated with an IAM instance profile ARN that matches this value will be permitted to log in.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	BoundIAMInstanceProfileArns []*string `json:"boundIamInstanceProfileArns,omitempty" tf:"bound_iam_instance_profile_arns,omitempty"`
 
 	// If set, defines the IAM principal that
@@ -443,6 +469,7 @@ type AuthBackendRoleParameters struct {
 	// supported at the end of the ARN.
 	// The IAM principal that must be authenticated using the iam auth method.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	BoundIAMPrincipalArns []*string `json:"boundIamPrincipalArns,omitempty" tf:"bound_iam_principal_arns,omitempty"`
 
 	// If set, defines a constraint on the EC2
@@ -451,6 +478,7 @@ type AuthBackendRoleParameters struct {
 	// inferred_entity_type must be set to ec2_instance to use this constraint.
 	// Only EC2 instances that match this IAM role ARN will be permitted to log in.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	BoundIAMRoleArns []*string `json:"boundIamRoleArns,omitempty" tf:"bound_iam_role_arns,omitempty"`
 
 	// If set, defines a constraint on the EC2 instances
@@ -460,6 +488,7 @@ type AuthBackendRoleParameters struct {
 	// constraint.
 	// Only EC2 instances in this region will be permitted to log in.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	BoundRegions []*string `json:"boundRegions,omitempty" tf:"bound_regions,omitempty"`
 
 	// If set, defines a constraint on the EC2
@@ -469,6 +498,7 @@ type AuthBackendRoleParameters struct {
 	// to use this constraint.
 	// Only EC2 instances associated with this subnet ID will be permitted to log in.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	BoundSubnetIds []*string `json:"boundSubnetIds,omitempty" tf:"bound_subnet_ids,omitempty"`
 
 	// If set, defines a constraint on the EC2 instances
@@ -478,6 +508,7 @@ type AuthBackendRoleParameters struct {
 	// constraint.
 	// Only EC2 instances associated with this VPC ID will be permitted to log in.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	BoundVPCIds []*string `json:"boundVpcIds,omitempty" tf:"bound_vpc_ids,omitempty"`
 
 	// IF set to true, only allows a
@@ -544,6 +575,7 @@ type AuthBackendRoleParameters struct {
 	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// If set, will encode an
@@ -584,6 +616,7 @@ type AuthBackendRoleParameters struct {
 	// on the auth method, this list may be supplemented by user/group/other values.
 	// Generated Token's Policies
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The incremental lifetime for generated tokens in number of seconds.
@@ -606,9 +639,8 @@ type AuthBackendRoleParameters struct {
 type AuthBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendRoleParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -627,18 +659,19 @@ type AuthBackendRoleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // AuthBackendRole is the Schema for the AuthBackendRoles API. Manages AWS auth backend roles in Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type AuthBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.role) || has(self.initProvider.role)",message="role is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.role) || (has(self.initProvider) && has(self.initProvider.role))",message="spec.forProvider.role is a required parameter"
 	Spec   AuthBackendRoleSpec   `json:"spec"`
 	Status AuthBackendRoleStatus `json:"status,omitempty"`
 }

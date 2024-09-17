@@ -27,6 +27,7 @@ type SecretsMountCassandraInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The hosts to connect to.
@@ -41,6 +42,19 @@ type SecretsMountCassandraInitParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The password to authenticate with.
+	// The password to use when authenticating with Cassandra.
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// Concatenated PEM blocks configuring the certificate
+	// chain.
+	// Concatenated PEM blocks containing a certificate and private key; a certificate, private key, and issuing CA certificate; or just a CA certificate.
+	PemBundleSecretRef *v1.SecretKeySelector `json:"pemBundleSecretRef,omitempty" tf:"-"`
+
+	// A JSON structure configuring the certificate chain.
+	// Specifies JSON containing a certificate and private key; a certificate, private key, and issuing CA certificate; or just a CA certificate.
+	PemJSONSecretRef *v1.SecretKeySelector `json:"pemJsonSecretRef,omitempty" tf:"-"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -87,6 +101,7 @@ type SecretsMountCassandraObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The hosts to connect to.
@@ -150,6 +165,7 @@ type SecretsMountCassandraParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The hosts to connect to.
@@ -166,7 +182,7 @@ type SecretsMountCassandraParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// The password to use when authenticating with Cassandra.
@@ -229,12 +245,17 @@ type SecretsMountCouchbaseInitParameters struct {
 	// A list of roles that are allowed to use this connection.
 	AllowedRoles []*string `json:"allowedRoles,omitempty" tf:"allowed_roles,omitempty"`
 
+	// Required if tls is true. Specifies the certificate authority of the Couchbase server, as a PEM certificate that has been base64 encoded.
+	// Required if `tls` is `true`. Specifies the certificate authority of the Couchbase server, as a PEM certificate that has been base64 encoded.
+	Base64PemSecretRef *v1.SecretKeySelector `json:"base64PemSecretRef,omitempty" tf:"-"`
+
 	// Required for Couchbase versions prior to 6.5.0. This is only used to verify vault's connection to the server.
 	// Required for Couchbase versions prior to 6.5.0. This is only used to verify vault's connection to the server.
 	BucketName *string `json:"bucketName,omitempty" tf:"bucket_name,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The hosts to connect to.
@@ -249,6 +270,10 @@ type SecretsMountCouchbaseInitParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The password to authenticate with.
+	// Specifies the password corresponding to the given username.
+	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -289,6 +314,7 @@ type SecretsMountCouchbaseObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The hosts to connect to.
@@ -351,12 +377,13 @@ type SecretsMountCouchbaseParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The hosts to connect to.
 	// A set of Couchbase URIs to connect to. Must use `couchbases://` scheme if `tls` is `true`.
 	// +kubebuilder:validation:Optional
-	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
+	Hosts []*string `json:"hosts" tf:"hosts,omitempty"`
 
 	// Whether to skip verification of the server
 	// certificate when using TLS.
@@ -367,11 +394,11 @@ type SecretsMountCouchbaseParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// Specifies the name of the plugin to use.
@@ -392,7 +419,7 @@ type SecretsMountCouchbaseParameters struct {
 	// The username to authenticate with.
 	// Specifies the username for Vault to use.
 	// +kubebuilder:validation:Optional
-	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+	Username *string `json:"username" tf:"username,omitempty"`
 
 	// Template describing how dynamic usernames are generated.
 	// Template describing how dynamic usernames are generated.
@@ -431,6 +458,7 @@ type SecretsMountElasticsearchInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Whether to disable certificate verification.
@@ -440,6 +468,10 @@ type SecretsMountElasticsearchInitParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The password to authenticate with.
+	// The password to be used in the connection URL
+	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -497,6 +529,7 @@ type SecretsMountElasticsearchObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Whether to disable certificate verification.
@@ -569,6 +602,7 @@ type SecretsMountElasticsearchParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Whether to disable certificate verification.
@@ -579,11 +613,11 @@ type SecretsMountElasticsearchParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// The password to be used in the connection URL
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// Specifies the name of the plugin to use.
@@ -605,12 +639,12 @@ type SecretsMountElasticsearchParameters struct {
 	// by trusted CA if used.
 	// The URL for Elasticsearch's API
 	// +kubebuilder:validation:Optional
-	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+	URL *string `json:"url" tf:"url,omitempty"`
 
 	// The username to authenticate with.
 	// The username to be used in the connection URL
 	// +kubebuilder:validation:Optional
-	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+	Username *string `json:"username" tf:"username,omitempty"`
 
 	// Template describing how dynamic usernames are generated.
 	// Template describing how dynamic usernames are generated.
@@ -638,6 +672,7 @@ type SecretsMountHanaInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Disable special character escaping in username and password.
@@ -662,6 +697,10 @@ type SecretsMountHanaInitParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -695,6 +734,7 @@ type SecretsMountHanaObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Disable special character escaping in username and password.
@@ -755,6 +795,7 @@ type SecretsMountHanaParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Disable special character escaping in username and password.
@@ -783,7 +824,7 @@ type SecretsMountHanaParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
@@ -826,6 +867,7 @@ type SecretsMountInfluxdbInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The host to connect to.
@@ -840,6 +882,19 @@ type SecretsMountInfluxdbInitParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The password to authenticate with.
+	// Specifies the password corresponding to the given username.
+	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
+
+	// Concatenated PEM blocks configuring the certificate
+	// chain.
+	// Concatenated PEM blocks containing a certificate and private key; a certificate, private key, and issuing CA certificate; or just a CA certificate.
+	PemBundleSecretRef *v1.SecretKeySelector `json:"pemBundleSecretRef,omitempty" tf:"-"`
+
+	// A JSON structure configuring the certificate chain.
+	// Specifies JSON containing a certificate and private key; a certificate, private key, and issuing CA certificate; or just a CA certificate.
+	PemJSONSecretRef *v1.SecretKeySelector `json:"pemJsonSecretRef,omitempty" tf:"-"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -886,6 +941,7 @@ type SecretsMountInfluxdbObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The host to connect to.
@@ -949,12 +1005,13 @@ type SecretsMountInfluxdbParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The host to connect to.
 	// Influxdb host to connect to.
 	// +kubebuilder:validation:Optional
-	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+	Host *string `json:"host" tf:"host,omitempty"`
 
 	// Whether to skip verification of the server
 	// certificate when using TLS.
@@ -965,11 +1022,11 @@ type SecretsMountInfluxdbParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// Concatenated PEM blocks configuring the certificate
@@ -1007,7 +1064,7 @@ type SecretsMountInfluxdbParameters struct {
 	// The username to authenticate with.
 	// Specifies the username to use for superuser access.
 	// +kubebuilder:validation:Optional
-	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+	Username *string `json:"username" tf:"username,omitempty"`
 
 	// Template describing how dynamic usernames are generated.
 	// Template describing how dynamic usernames are generated.
@@ -1025,6 +1082,7 @@ type SecretsMountInitParameters struct {
 
 	// Set of managed key registry entry names that the mount in question is allowed to access
 	// List of managed key registry entry names that the mount in question is allowed to access
+	// +listType=set
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
 
 	// List of headers to allow and pass from the request to the plugin
@@ -1132,6 +1190,7 @@ type SecretsMountInitParameters struct {
 
 	// Specifies mount type specific options that are passed to the backend
 	// Specifies mount type specific options that are passed to the backend
+	// +mapType=granular
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 
 	// A nested block containing configuration options for Oracle connections.
@@ -1193,6 +1252,7 @@ type SecretsMountMongodbInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -1213,6 +1273,10 @@ type SecretsMountMongodbInitParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -1250,6 +1314,7 @@ type SecretsMountMongodbObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -1310,6 +1375,7 @@ type SecretsMountMongodbParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -1333,7 +1399,7 @@ type SecretsMountMongodbParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
@@ -1376,6 +1442,7 @@ type SecretsMountMongodbatlasInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// for any configured database engine is changed
@@ -1385,6 +1452,10 @@ type SecretsMountMongodbatlasInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
+	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
+	PrivateKeySecretRef v1.SecretKeySelector `json:"privateKeySecretRef" tf:"-"`
 
 	// The Project ID the Database User should be created within.
 	// The Project ID the Database User should be created within.
@@ -1413,6 +1484,7 @@ type SecretsMountMongodbatlasObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// for any configured database engine is changed
@@ -1452,12 +1524,13 @@ type SecretsMountMongodbatlasParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -1466,18 +1539,18 @@ type SecretsMountMongodbatlasParameters struct {
 
 	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
 	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PrivateKeySecretRef v1.SecretKeySelector `json:"privateKeySecretRef" tf:"-"`
 
 	// The Project ID the Database User should be created within.
 	// The Project ID the Database User should be created within.
 	// +kubebuilder:validation:Optional
-	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+	ProjectID *string `json:"projectId" tf:"project_id,omitempty"`
 
 	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
 	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
 	// +kubebuilder:validation:Optional
-	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
+	PublicKey *string `json:"publicKey" tf:"public_key,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -1511,6 +1584,7 @@ type SecretsMountMssqlInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Disable special character escaping in username and password.
@@ -1535,6 +1609,10 @@ type SecretsMountMssqlInitParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -1578,6 +1656,7 @@ type SecretsMountMssqlObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Disable special character escaping in username and password.
@@ -1649,6 +1728,7 @@ type SecretsMountMssqlParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Disable special character escaping in username and password.
@@ -1677,7 +1757,7 @@ type SecretsMountMssqlParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
@@ -1728,6 +1808,7 @@ type SecretsMountMySQLAuroraInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -1749,6 +1830,10 @@ type SecretsMountMySQLAuroraInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -1757,9 +1842,16 @@ type SecretsMountMySQLAuroraInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// A JSON encoded credential for use with IAM authorization
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1792,6 +1884,7 @@ type SecretsMountMySQLAuroraObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -1860,6 +1953,7 @@ type SecretsMountMySQLAuroraParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -1883,7 +1977,7 @@ type SecretsMountMySQLAuroraParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
@@ -1948,6 +2042,7 @@ type SecretsMountMySQLInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -1969,6 +2064,10 @@ type SecretsMountMySQLInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -1977,9 +2076,16 @@ type SecretsMountMySQLInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// A JSON encoded credential for use with IAM authorization
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2012,6 +2118,7 @@ type SecretsMountMySQLLegacyInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -2033,6 +2140,10 @@ type SecretsMountMySQLLegacyInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -2041,9 +2152,16 @@ type SecretsMountMySQLLegacyInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// A JSON encoded credential for use with IAM authorization
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2076,6 +2194,7 @@ type SecretsMountMySQLLegacyObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -2144,6 +2263,7 @@ type SecretsMountMySQLLegacyParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -2167,7 +2287,7 @@ type SecretsMountMySQLLegacyParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
@@ -2232,6 +2352,7 @@ type SecretsMountMySQLObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -2300,6 +2421,7 @@ type SecretsMountMySQLParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -2323,7 +2445,7 @@ type SecretsMountMySQLParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
@@ -2388,6 +2510,7 @@ type SecretsMountMySQLRDSInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -2409,6 +2532,10 @@ type SecretsMountMySQLRDSInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -2417,9 +2544,16 @@ type SecretsMountMySQLRDSInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// A JSON encoded credential for use with IAM authorization
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2452,6 +2586,7 @@ type SecretsMountMySQLRDSObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -2520,6 +2655,7 @@ type SecretsMountMySQLRDSParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -2543,7 +2679,7 @@ type SecretsMountMySQLRDSParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
@@ -2598,6 +2734,7 @@ type SecretsMountObservation struct {
 
 	// Set of managed key registry entry names that the mount in question is allowed to access
 	// List of managed key registry entry names that the mount in question is allowed to access
+	// +listType=set
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
 
 	// List of headers to allow and pass from the request to the plugin
@@ -2711,6 +2848,7 @@ type SecretsMountObservation struct {
 
 	// Specifies mount type specific options that are passed to the backend
 	// Specifies mount type specific options that are passed to the backend
+	// +mapType=granular
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 
 	// A nested block containing configuration options for Oracle connections.
@@ -2772,6 +2910,7 @@ type SecretsMountOracleInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Set to true to disconnect any open sessions prior to running the revocation statements.
@@ -2795,6 +2934,10 @@ type SecretsMountOracleInitParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -2835,6 +2978,7 @@ type SecretsMountOracleObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Set to true to disconnect any open sessions prior to running the revocation statements.
@@ -2901,6 +3045,7 @@ type SecretsMountOracleParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Set to true to disconnect any open sessions prior to running the revocation statements.
@@ -2928,7 +3073,7 @@ type SecretsMountOracleParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
@@ -2971,6 +3116,7 @@ type SecretsMountParameters struct {
 	// Set of managed key registry entry names that the mount in question is allowed to access
 	// List of managed key registry entry names that the mount in question is allowed to access
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
 
 	// List of headers to allow and pass from the request to the plugin
@@ -3103,6 +3249,7 @@ type SecretsMountParameters struct {
 	// Specifies mount type specific options that are passed to the backend
 	// Specifies mount type specific options that are passed to the backend
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 
 	// A nested block containing configuration options for Oracle connections.
@@ -3177,6 +3324,7 @@ type SecretsMountPostgresqlInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Disable special character escaping in username and password.
@@ -3202,6 +3350,10 @@ type SecretsMountPostgresqlInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -3209,6 +3361,9 @@ type SecretsMountPostgresqlInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// A JSON encoded credential for use with IAM authorization
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -3241,6 +3396,7 @@ type SecretsMountPostgresqlObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Disable special character escaping in username and password.
@@ -3309,6 +3465,7 @@ type SecretsMountPostgresqlParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Disable special character escaping in username and password.
@@ -3337,7 +3494,7 @@ type SecretsMountPostgresqlParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
@@ -3384,11 +3541,16 @@ type SecretsMountRedisElasticacheInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The password to authenticate with.
+	// The AWS secret key id to use to talk to ElastiCache. If omitted the credentials chain provider is used instead.
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -3408,6 +3570,10 @@ type SecretsMountRedisElasticacheInitParameters struct {
 	// The configuration endpoint for the ElastiCache cluster to connect to.
 	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 
+	// The username to authenticate with.
+	// The AWS access key id to use to talk to ElastiCache. If omitted the credentials chain provider is used instead.
+	UsernameSecretRef *v1.SecretKeySelector `json:"usernameSecretRef,omitempty" tf:"-"`
+
 	// Whether the connection should be verified on
 	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
@@ -3423,6 +3589,7 @@ type SecretsMountRedisElasticacheObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// for any configured database engine is changed
@@ -3464,12 +3631,13 @@ type SecretsMountRedisElasticacheParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// The AWS secret key id to use to talk to ElastiCache. If omitted the credentials chain provider is used instead.
@@ -3496,7 +3664,7 @@ type SecretsMountRedisElasticacheParameters struct {
 	// by trusted CA if used.
 	// The configuration endpoint for the ElastiCache cluster to connect to.
 	// +kubebuilder:validation:Optional
-	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+	URL *string `json:"url" tf:"url,omitempty"`
 
 	// The username to authenticate with.
 	// The AWS access key id to use to talk to ElastiCache. If omitted the credentials chain provider is used instead.
@@ -3523,6 +3691,7 @@ type SecretsMountRedisInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The host to connect to.
@@ -3537,6 +3706,10 @@ type SecretsMountRedisInitParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The password to authenticate with.
+	// Specifies the password corresponding to the given username.
+	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -3578,6 +3751,7 @@ type SecretsMountRedisObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The host to connect to.
@@ -3636,12 +3810,13 @@ type SecretsMountRedisParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The host to connect to.
 	// Specifies the host to connect to
 	// +kubebuilder:validation:Optional
-	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+	Host *string `json:"host" tf:"host,omitempty"`
 
 	// Whether to skip verification of the server
 	// certificate when using TLS.
@@ -3652,11 +3827,11 @@ type SecretsMountRedisParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// Specifies the name of the plugin to use.
@@ -3683,7 +3858,7 @@ type SecretsMountRedisParameters struct {
 	// The username to authenticate with.
 	// Specifies the username for Vault to use.
 	// +kubebuilder:validation:Optional
-	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+	Username *string `json:"username" tf:"username,omitempty"`
 
 	// Whether the connection should be verified on
 	// initial configuration or not.
@@ -3706,6 +3881,7 @@ type SecretsMountRedshiftInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Disable special character escaping in username and password.
@@ -3730,6 +3906,10 @@ type SecretsMountRedshiftInitParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -3767,6 +3947,7 @@ type SecretsMountRedshiftObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Disable special character escaping in username and password.
@@ -3831,6 +4012,7 @@ type SecretsMountRedshiftParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// Disable special character escaping in username and password.
@@ -3859,7 +4041,7 @@ type SecretsMountRedshiftParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
@@ -3907,6 +4089,7 @@ type SecretsMountSnowflakeInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -3927,6 +4110,10 @@ type SecretsMountSnowflakeInitParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -3964,6 +4151,7 @@ type SecretsMountSnowflakeObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -4024,6 +4212,7 @@ type SecretsMountSnowflakeParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// The maximum number of seconds to keep
@@ -4047,7 +4236,7 @@ type SecretsMountSnowflakeParameters struct {
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
@@ -4085,9 +4274,8 @@ type SecretsMountSnowflakeParameters struct {
 type SecretsMountSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretsMountParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -4106,18 +4294,19 @@ type SecretsMountStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretsMount is the Schema for the SecretsMounts API. Configures any number of database secrets engines under a single mount resource
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretsMount struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || has(self.initProvider.path)",message="path is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || (has(self.initProvider) && has(self.initProvider.path))",message="spec.forProvider.path is a required parameter"
 	Spec   SecretsMountSpec   `json:"spec"`
 	Status SecretsMountStatus `json:"status,omitempty"`
 }

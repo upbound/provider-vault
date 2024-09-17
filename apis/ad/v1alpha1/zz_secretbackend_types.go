@@ -29,6 +29,10 @@ type SecretBackendInitParameters struct {
 	// Distinguished name of object to bind when performing user and group search.
 	Binddn *string `json:"binddn,omitempty" tf:"binddn,omitempty"`
 
+	// Password to use along with binddn when performing user search.
+	// LDAP password for searching for the user DN.
+	BindpassSecretRef v1.SecretKeySelector `json:"bindpassSecretRef" tf:"-"`
+
 	// If set, user and group names assigned to policies within the
 	// backend will be case sensitive. Otherwise, names will be normalized to lower case.
 	// If true, case sensitivity will be used when comparing usernames and groups for matching policies.
@@ -38,6 +42,14 @@ type SecretBackendInitParameters struct {
 	// x509 PEM encoded.
 	// CA certificate to use when verifying LDAP server certificate, must be x509 PEM encoded.
 	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	// Client certificate to provide to the LDAP server, must be x509 PEM encoded.
+	// Client certificate to provide to the LDAP server, must be x509 PEM encoded.
+	ClientTLSCertSecretRef *v1.SecretKeySelector `json:"clientTlsCertSecretRef,omitempty" tf:"-"`
+
+	// Client certificate key to provide to the LDAP server, must be x509 PEM encoded.
+	// Client certificate key to provide to the LDAP server, must be x509 PEM encoded.
+	ClientTLSKeySecretRef *v1.SecretKeySelector `json:"clientTlsKeySecretRef,omitempty" tf:"-"`
 
 	// Default lease duration for secrets in seconds.
 	// Default lease duration for secrets in seconds
@@ -518,9 +530,8 @@ type SecretBackendParameters struct {
 type SecretBackendSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -539,19 +550,20 @@ type SecretBackendStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretBackend is the Schema for the SecretBackends API. Creates an Active Directory secret backend for Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretBackend struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.binddn) || has(self.initProvider.binddn)",message="binddn is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.bindpassSecretRef)",message="bindpassSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.binddn) || (has(self.initProvider) && has(self.initProvider.binddn))",message="spec.forProvider.binddn is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.bindpassSecretRef)",message="spec.forProvider.bindpassSecretRef is a required parameter"
 	Spec   SecretBackendSpec   `json:"spec"`
 	Status SecretBackendStatus `json:"status,omitempty"`
 }

@@ -15,6 +15,14 @@ import (
 
 type SecretBackendInitParameters struct {
 
+	// The OAuth2 client id to connect to Azure.
+	// The client id for credentials to query the Azure APIs. Currently read permissions to query compute resources are required.
+	ClientIDSecretRef *v1.SecretKeySelector `json:"clientIdSecretRef,omitempty" tf:"-"`
+
+	// The OAuth2 client secret to connect to Azure.
+	// The client secret for credentials to query the Azure APIs
+	ClientSecretSecretRef *v1.SecretKeySelector `json:"clientSecretSecretRef,omitempty" tf:"-"`
+
 	// Human-friendly description of the mount for the backend.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
@@ -52,6 +60,14 @@ type SecretBackendInitParameters struct {
 	// The unique path this backend should be mounted at. Defaults to azure.
 	// Path to mount the backend at.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// The subscription id for the Azure Active Directory.
+	// The subscription id for the Azure Active Directory.
+	SubscriptionIDSecretRef v1.SecretKeySelector `json:"subscriptionIdSecretRef" tf:"-"`
+
+	// The tenant id for the Azure Active Directory.
+	// The tenant id for the Azure Active Directory organization.
+	TenantIDSecretRef v1.SecretKeySelector `json:"tenantIdSecretRef" tf:"-"`
 
 	// Indicates whether the secrets engine should use
 	// the Microsoft Graph API. This parameter has been deprecated and will be ignored in vault-1.12+.
@@ -189,9 +205,8 @@ type SecretBackendParameters struct {
 type SecretBackendSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -210,19 +225,20 @@ type SecretBackendStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretBackend is the Schema for the SecretBackends API. Creates an azure secret backend for Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretBackend struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.subscriptionIdSecretRef)",message="subscriptionIdSecretRef is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.tenantIdSecretRef)",message="tenantIdSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.subscriptionIdSecretRef)",message="spec.forProvider.subscriptionIdSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.tenantIdSecretRef)",message="spec.forProvider.tenantIdSecretRef is a required parameter"
 	Spec   SecretBackendSpec   `json:"spec"`
 	Status SecretBackendStatus `json:"status,omitempty"`
 }

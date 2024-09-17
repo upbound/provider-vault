@@ -20,6 +20,7 @@ type EntityAliasInitParameters struct {
 	CanonicalID *string `json:"canonicalId,omitempty" tf:"canonical_id,omitempty"`
 
 	// Custom metadata to be associated with this alias.
+	// +mapType=granular
 	CustomMetadata map[string]*string `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
 	// Accessor of the mount to which the alias should belong to.
@@ -45,6 +46,7 @@ type EntityAliasObservation struct {
 	CanonicalID *string `json:"canonicalId,omitempty" tf:"canonical_id,omitempty"`
 
 	// Custom metadata to be associated with this alias.
+	// +mapType=granular
 	CustomMetadata map[string]*string `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
 	// ID of the entity alias.
@@ -75,6 +77,7 @@ type EntityAliasParameters struct {
 
 	// Custom metadata to be associated with this alias.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	CustomMetadata map[string]*string `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
 	// Accessor of the mount to which the alias should belong to.
@@ -100,9 +103,8 @@ type EntityAliasParameters struct {
 type EntityAliasSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     EntityAliasParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -121,20 +123,21 @@ type EntityAliasStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // EntityAlias is the Schema for the EntityAliass API. Creates an Identity Entity Alias for Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type EntityAlias struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.canonicalId) || has(self.initProvider.canonicalId)",message="canonicalId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mountAccessor) || has(self.initProvider.mountAccessor)",message="mountAccessor is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.canonicalId) || (has(self.initProvider) && has(self.initProvider.canonicalId))",message="spec.forProvider.canonicalId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mountAccessor) || (has(self.initProvider) && has(self.initProvider.mountAccessor))",message="spec.forProvider.mountAccessor is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   EntityAliasSpec   `json:"spec"`
 	Status EntityAliasStatus `json:"status,omitempty"`
 }
