@@ -132,6 +132,7 @@ import (
 	secretbackendkey "github.com/upbound/provider-vault/internal/controller/transit/secretbackendkey"
 	audit "github.com/upbound/provider-vault/internal/controller/vault/audit"
 	mount "github.com/upbound/provider-vault/internal/controller/vault/mount"
+	plugin "github.com/upbound/provider-vault/internal/controller/vault/plugin"
 	policyvault "github.com/upbound/provider-vault/internal/controller/vault/policy"
 	token "github.com/upbound/provider-vault/internal/controller/vault/token"
 	vaultnamespace "github.com/upbound/provider-vault/internal/controller/vault/vaultnamespace"
@@ -264,6 +265,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		secretbackendkey.Setup,
 		audit.Setup,
 		mount.Setup,
+		plugin.Setup,
 		policyvault.Setup,
 		token.Setup,
 		vaultnamespace.Setup,
