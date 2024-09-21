@@ -1,0 +1,17 @@
+apiVersion: config.vault.upbound.io/v1alpha1
+kind: UICustomMessage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: config/v1alpha1/uicustommessage
+  labels:
+    testing.upbound.io/example-name: maintenance
+  name: maintenance
+spec:
+  forProvider:
+    authenticated: true
+    endTime: "2024-02-01T05:00:00.000Z"
+    message: ${base64encode("Vault will be offline for planned maintenance on February
+      1st, 2024 from 05:00Z to 08:00Z")}
+    startTime: "2024-01-01T00:00:00.000Z"
+    title: Upcoming maintenance
+    type: banner

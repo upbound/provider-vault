@@ -18,6 +18,7 @@ import (
 	v1alpha1aws "github.com/upbound/provider-vault/apis/aws/v1alpha1"
 	v1alpha1azure "github.com/upbound/provider-vault/apis/azure/v1alpha1"
 	v1alpha1cert "github.com/upbound/provider-vault/apis/cert/v1alpha1"
+	v1alpha1config "github.com/upbound/provider-vault/apis/config/v1alpha1"
 	v1alpha1consul "github.com/upbound/provider-vault/apis/consul/v1alpha1"
 	v1alpha1database "github.com/upbound/provider-vault/apis/database/v1alpha1"
 	v1alpha1egp "github.com/upbound/provider-vault/apis/egp/v1alpha1"
@@ -62,6 +63,7 @@ func init() {
 		v1alpha1aws.SchemeBuilder.AddToScheme,
 		v1alpha1azure.SchemeBuilder.AddToScheme,
 		v1alpha1cert.SchemeBuilder.AddToScheme,
+		v1alpha1config.SchemeBuilder.AddToScheme,
 		v1alpha1consul.SchemeBuilder.AddToScheme,
 		v1alpha1database.SchemeBuilder.AddToScheme,
 		v1alpha1egp.SchemeBuilder.AddToScheme,

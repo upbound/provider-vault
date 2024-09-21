@@ -36,6 +36,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"vault_azure_secret_backend":                         config.IdentifierFromProvider,
 	"vault_azure_secret_backend_role":                    config.IdentifierFromProvider,
 	"vault_cert_auth_backend_role":                       config.IdentifierFromProvider,
+	"vault_config_ui_custom_message":                     config.IdentifierFromProvider,
 	"vault_consul_secret_backend":                        config.IdentifierFromProvider,
 	"vault_consul_secret_backend_role":                   config.IdentifierFromProvider,
 	"vault_database_secret_backend_connection":           config.IdentifierFromProvider,

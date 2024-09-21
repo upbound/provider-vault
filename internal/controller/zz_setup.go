@@ -33,6 +33,7 @@ import (
 	secretbackendazure "github.com/upbound/provider-vault/internal/controller/azure/secretbackend"
 	secretbackendroleazure "github.com/upbound/provider-vault/internal/controller/azure/secretbackendrole"
 	authbackendrolecert "github.com/upbound/provider-vault/internal/controller/cert/authbackendrole"
+	uicustommessage "github.com/upbound/provider-vault/internal/controller/config/uicustommessage"
 	secretbackendconsul "github.com/upbound/provider-vault/internal/controller/consul/secretbackend"
 	secretbackendroleconsul "github.com/upbound/provider-vault/internal/controller/consul/secretbackendrole"
 	secretbackendconnection "github.com/upbound/provider-vault/internal/controller/database/secretbackendconnection"
@@ -164,6 +165,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		secretbackendazure.Setup,
 		secretbackendroleazure.Setup,
 		authbackendrolecert.Setup,
+		uicustommessage.Setup,
 		secretbackendconsul.Setup,
 		secretbackendroleconsul.Setup,
 		secretbackendconnection.Setup,
