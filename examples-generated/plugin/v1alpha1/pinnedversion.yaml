@@ -1,0 +1,49 @@
+apiVersion: plugin.vault.upbound.io/v1alpha1
+kind: PinnedVersion
+metadata:
+  annotations:
+    meta.upbound.io/example-id: plugin/v1alpha1/pinnedversion
+  labels:
+    testing.upbound.io/example-name: jwt_pin
+  name: jwt-pin
+spec:
+  forProvider:
+    name: jwt
+    type: auth
+    version: v0.17.0
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: plugin/v1alpha1/pinnedversion
+  labels:
+    testing.upbound.io/example-name: jwt_auth
+  name: jwt-auth
+spec:
+  forProvider:
+    type: jwt
+
+---
+
+apiVersion: vault.vault.upbound.io/v1alpha1
+kind: Plugin
+metadata:
+  annotations:
+    meta.upbound.io/example-id: plugin/v1alpha1/pinnedversion
+  labels:
+    testing.upbound.io/example-name: jwt
+  name: jwt
+spec:
+  forProvider:
+    command: vault-plugin-auth-jwt
+    envSecretRef:
+    - key: example-key
+      name: example-secret
+      namespace: upbound-system
+    name: jwt
+    sha256: 6bd0a803ed742aa3ce35e4fa23d2c8d550e6c1567bf63410cec489c28b68b0fc
+    type: auth
+    version: v0.17.0

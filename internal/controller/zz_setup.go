@@ -111,6 +111,7 @@ import (
 	secretbackendrootcert "github.com/upbound/provider-vault/internal/controller/pki/secretbackendrootcert"
 	secretbackendrootsignintermediate "github.com/upbound/provider-vault/internal/controller/pki/secretbackendrootsignintermediate"
 	secretbackendsign "github.com/upbound/provider-vault/internal/controller/pki/secretbackendsign"
+	pinnedversion "github.com/upbound/provider-vault/internal/controller/plugin/pinnedversion"
 	providerconfig "github.com/upbound/provider-vault/internal/controller/providerconfig"
 	leasecount "github.com/upbound/provider-vault/internal/controller/quota/leasecount"
 	ratelimit "github.com/upbound/provider-vault/internal/controller/quota/ratelimit"
@@ -244,6 +245,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		secretbackendrootcert.Setup,
 		secretbackendrootsignintermediate.Setup,
 		secretbackendsign.Setup,
+		pinnedversion.Setup,
 		providerconfig.Setup,
 		leasecount.Setup,
 		ratelimit.Setup,
