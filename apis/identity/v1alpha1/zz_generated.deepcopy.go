@@ -940,6 +940,7 @@ func (in *GroupAliasParameters) DeepCopyInto(out *GroupAliasParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	out.CanonicalIDFromGroupRef = in.CanonicalIDFromGroupRef
 	if in.MountAccessor != nil {
 		in, out := &in.MountAccessor, &out.MountAccessor
 		*out = new(string)

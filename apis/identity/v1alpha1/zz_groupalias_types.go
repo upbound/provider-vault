@@ -67,6 +67,10 @@ type GroupAliasParameters struct {
 	// +kubebuilder:validation:Optional
 	CanonicalID *string `json:"canonicalId,omitempty" tf:"canonical_id,omitempty"`
 
+	// Reference to a Group in identity to populate canonicalIdFromGroupRef.
+	// +kubebuilder:validation:Optional
+	CanonicalIDFromGroupRef *v1.Reference `json:"canonicalIdFromGroupRef,omitempty" tf:"-"`
+
 	// Mount accessor of the authentication backend to which this alias belongs to.
 	// Mount accessor to which this alias belongs to.
 	// +kubebuilder:validation:Optional
