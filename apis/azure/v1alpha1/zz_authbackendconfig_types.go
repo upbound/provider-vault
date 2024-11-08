@@ -18,13 +18,44 @@ type AuthBackendConfigInitParameters struct {
 	// The path the Azure auth backend being configured was
 	// mounted at.  Defaults to azure.
 	// Unique name of the auth backend to configure.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
+
+	// The client id for credentials to query the Azure APIs.
+	// Currently read permissions to query compute resources are required.
+	// The client id for credentials to query the Azure APIs. Currently read permissions to query compute resources are required.
+	ClientIDSecretRef *v1.SecretKeySelector `json:"clientIdSecretRef,omitempty" tf:"-"`
+
+	// The client secret for credentials to query the
+	// Azure APIs.
+	// The client secret for credentials to query the Azure APIs
+	ClientSecretSecretRef *v1.SecretKeySelector `json:"clientSecretSecretRef,omitempty" tf:"-"`
 
 	// The Azure cloud environment. Valid values:
 	// AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud,
 	// AzureGermanCloud.  Defaults to AzurePublicCloud.
 	// The Azure cloud environment. Valid values: AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud, AzureGermanCloud.
 	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
+
+	// The audience claim value for plugin identity tokens. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// The audience claim value.
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The TTL of generated identity tokens in seconds.
+	// Defaults to 1 hour. Uses duration format strings.
+	// Requires Vault 1.17+. Available only for Vault Enterprise
+	// The TTL of generated identity tokens in seconds.
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -37,6 +68,11 @@ type AuthBackendConfigInitParameters struct {
 	// Azure Active Directory.
 	// The configured URL for the application registered in Azure Active Directory.
 	Resource *string `json:"resource,omitempty" tf:"resource,omitempty"`
+
+	// The tenant id for the Azure Active Directory
+	// organization.
+	// The tenant id for the Azure Active Directory organization.
+	TenantIDSecretRef v1.SecretKeySelector `json:"tenantIdSecretRef" tf:"-"`
 }
 
 type AuthBackendConfigObservation struct {
@@ -53,6 +89,17 @@ type AuthBackendConfigObservation struct {
 	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The audience claim value for plugin identity tokens. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// The audience claim value.
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The TTL of generated identity tokens in seconds.
+	// Defaults to 1 hour. Uses duration format strings.
+	// Requires Vault 1.17+. Available only for Vault Enterprise
+	// The TTL of generated identity tokens in seconds.
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -72,8 +119,18 @@ type AuthBackendConfigParameters struct {
 	// The path the Azure auth backend being configured was
 	// mounted at.  Defaults to azure.
 	// Unique name of the auth backend to configure.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// The client id for credentials to query the Azure APIs.
 	// Currently read permissions to query compute resources are required.
@@ -93,6 +150,19 @@ type AuthBackendConfigParameters struct {
 	// The Azure cloud environment. Valid values: AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud, AzureGermanCloud.
 	// +kubebuilder:validation:Optional
 	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
+
+	// The audience claim value for plugin identity tokens. Requires Vault 1.17+.
+	// Available only for Vault Enterprise
+	// The audience claim value.
+	// +kubebuilder:validation:Optional
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The TTL of generated identity tokens in seconds.
+	// Defaults to 1 hour. Uses duration format strings.
+	// Requires Vault 1.17+. Available only for Vault Enterprise
+	// The TTL of generated identity tokens in seconds.
+	// +kubebuilder:validation:Optional
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -119,9 +189,8 @@ type AuthBackendConfigParameters struct {
 type AuthBackendConfigSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendConfigParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -140,19 +209,20 @@ type AuthBackendConfigStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // AuthBackendConfig is the Schema for the AuthBackendConfigs API. Configures the Azure Auth Backend in Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type AuthBackendConfig struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.resource) || has(self.initProvider.resource)",message="resource is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.tenantIdSecretRef)",message="tenantIdSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.resource) || (has(self.initProvider) && has(self.initProvider.resource))",message="spec.forProvider.resource is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.tenantIdSecretRef)",message="spec.forProvider.tenantIdSecretRef is a required parameter"
 	Spec   AuthBackendConfigSpec   `json:"spec"`
 	Status AuthBackendConfigStatus `json:"status,omitempty"`
 }

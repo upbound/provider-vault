@@ -17,22 +17,27 @@ type AuthBackendRoleInitParameters struct {
 
 	// List of allowed entity aliases.
 	// Set of allowed entity aliases for this role.
+	// +listType=set
 	AllowedEntityAliases []*string `json:"allowedEntityAliases,omitempty" tf:"allowed_entity_aliases,omitempty"`
 
 	// List of allowed policies for given role.
 	// List of allowed policies for given role.
+	// +listType=set
 	AllowedPolicies []*string `json:"allowedPolicies,omitempty" tf:"allowed_policies,omitempty"`
 
 	// Set of allowed policies with glob match for given role.
 	// Set of allowed policies with glob match for given role.
+	// +listType=set
 	AllowedPoliciesGlob []*string `json:"allowedPoliciesGlob,omitempty" tf:"allowed_policies_glob,omitempty"`
 
 	// List of disallowed policies for given role.
 	// List of disallowed policies for given role.
+	// +listType=set
 	DisallowedPolicies []*string `json:"disallowedPolicies,omitempty" tf:"disallowed_policies,omitempty"`
 
 	// Set of disallowed policies with glob match for given role.
 	// Set of disallowed policies with glob match for given role.
+	// +listType=set
 	DisallowedPoliciesGlob []*string `json:"disallowedPoliciesGlob,omitempty" tf:"disallowed_policies_glob,omitempty"`
 
 	// The namespace to provision the resource in.
@@ -62,6 +67,7 @@ type AuthBackendRoleInitParameters struct {
 	// addresses which can authenticate successfully, and ties the resulting token to these blocks
 	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// If set, will encode an
@@ -94,6 +100,7 @@ type AuthBackendRoleInitParameters struct {
 	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
 
 	// Generated Token's Policies
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The incremental lifetime for generated tokens in number of seconds.
@@ -114,22 +121,27 @@ type AuthBackendRoleObservation struct {
 
 	// List of allowed entity aliases.
 	// Set of allowed entity aliases for this role.
+	// +listType=set
 	AllowedEntityAliases []*string `json:"allowedEntityAliases,omitempty" tf:"allowed_entity_aliases,omitempty"`
 
 	// List of allowed policies for given role.
 	// List of allowed policies for given role.
+	// +listType=set
 	AllowedPolicies []*string `json:"allowedPolicies,omitempty" tf:"allowed_policies,omitempty"`
 
 	// Set of allowed policies with glob match for given role.
 	// Set of allowed policies with glob match for given role.
+	// +listType=set
 	AllowedPoliciesGlob []*string `json:"allowedPoliciesGlob,omitempty" tf:"allowed_policies_glob,omitempty"`
 
 	// List of disallowed policies for given role.
 	// List of disallowed policies for given role.
+	// +listType=set
 	DisallowedPolicies []*string `json:"disallowedPolicies,omitempty" tf:"disallowed_policies,omitempty"`
 
 	// Set of disallowed policies with glob match for given role.
 	// Set of disallowed policies with glob match for given role.
+	// +listType=set
 	DisallowedPoliciesGlob []*string `json:"disallowedPoliciesGlob,omitempty" tf:"disallowed_policies_glob,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -161,6 +173,7 @@ type AuthBackendRoleObservation struct {
 	// addresses which can authenticate successfully, and ties the resulting token to these blocks
 	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// If set, will encode an
@@ -193,6 +206,7 @@ type AuthBackendRoleObservation struct {
 	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
 
 	// Generated Token's Policies
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The incremental lifetime for generated tokens in number of seconds.
@@ -214,26 +228,31 @@ type AuthBackendRoleParameters struct {
 	// List of allowed entity aliases.
 	// Set of allowed entity aliases for this role.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedEntityAliases []*string `json:"allowedEntityAliases,omitempty" tf:"allowed_entity_aliases,omitempty"`
 
 	// List of allowed policies for given role.
 	// List of allowed policies for given role.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedPolicies []*string `json:"allowedPolicies,omitempty" tf:"allowed_policies,omitempty"`
 
 	// Set of allowed policies with glob match for given role.
 	// Set of allowed policies with glob match for given role.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedPoliciesGlob []*string `json:"allowedPoliciesGlob,omitempty" tf:"allowed_policies_glob,omitempty"`
 
 	// List of disallowed policies for given role.
 	// List of disallowed policies for given role.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	DisallowedPolicies []*string `json:"disallowedPolicies,omitempty" tf:"disallowed_policies,omitempty"`
 
 	// Set of disallowed policies with glob match for given role.
 	// Set of disallowed policies with glob match for given role.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	DisallowedPoliciesGlob []*string `json:"disallowedPoliciesGlob,omitempty" tf:"disallowed_policies_glob,omitempty"`
 
 	// The namespace to provision the resource in.
@@ -269,6 +288,7 @@ type AuthBackendRoleParameters struct {
 	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// If set, will encode an
@@ -307,6 +327,7 @@ type AuthBackendRoleParameters struct {
 
 	// Generated Token's Policies
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The incremental lifetime for generated tokens in number of seconds.
@@ -329,9 +350,8 @@ type AuthBackendRoleParameters struct {
 type AuthBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendRoleParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -350,18 +370,19 @@ type AuthBackendRoleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // AuthBackendRole is the Schema for the AuthBackendRoles API. Manages Token auth backend roles in Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type AuthBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.roleName) || has(self.initProvider.roleName)",message="roleName is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.roleName) || (has(self.initProvider) && has(self.initProvider.roleName))",message="spec.forProvider.roleName is a required parameter"
 	Spec   AuthBackendRoleSpec   `json:"spec"`
 	Status AuthBackendRoleStatus `json:"status,omitempty"`
 }

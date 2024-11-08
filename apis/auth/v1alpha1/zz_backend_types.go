@@ -21,6 +21,9 @@ type BackendInitParameters struct {
 	// If set, opts out of mount migration on path updates.
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
+	// The key to use for signing identity tokens.
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
 	// Specifies if the auth method is local only
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
@@ -34,7 +37,7 @@ type BackendInitParameters struct {
 	// path to mount the backend. This defaults to the type.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
-	Tune []TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
+	Tune *TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 
 	// Name of the auth backend
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -53,6 +56,9 @@ type BackendObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The key to use for signing identity tokens.
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
 	// Specifies if the auth method is local only
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
@@ -66,7 +72,7 @@ type BackendObservation struct {
 	// path to mount the backend. This defaults to the type.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
-	Tune []TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
+	Tune *TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
 
 	// Name of the auth backend
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -82,6 +88,10 @@ type BackendParameters struct {
 	// +kubebuilder:validation:Optional
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
+	// The key to use for signing identity tokens.
+	// +kubebuilder:validation:Optional
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
 	// Specifies if the auth method is local only
 	// +kubebuilder:validation:Optional
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
@@ -99,7 +109,7 @@ type BackendParameters struct {
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	Tune []TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`
+	Tune *TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 
 	// Name of the auth backend
 	// +kubebuilder:validation:Optional
@@ -188,9 +198,8 @@ type TuneParameters struct {
 type BackendSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     BackendParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -209,18 +218,19 @@ type BackendStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Backend is the Schema for the Backends API. Managing roles in an Cert auth backend in Vault
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type Backend struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || has(self.initProvider.type)",message="type is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"
 	Spec   BackendSpec   `json:"spec"`
 	Status BackendStatus `json:"status,omitempty"`
 }

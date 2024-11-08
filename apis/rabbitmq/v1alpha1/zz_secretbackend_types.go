@@ -49,10 +49,18 @@ type SecretBackendInitParameters struct {
 	// Specifies a password policy to use when creating dynamic credentials. Defaults to generating an alphanumeric password if not set.
 	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
 
+	// Specifies the RabbitMQ management administrator password.
+	// Specifies the RabbitMQ management administrator password
+	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
+
 	// The unique path this backend should be mounted at. Must
 	// not begin or end with a /. Defaults to rabbitmq.
 	// The path of the RabbitMQ Secret Backend where the connection should be configured
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Specifies the RabbitMQ management administrator username.
+	// Specifies the RabbitMQ management administrator username
+	UsernameSecretRef v1.SecretKeySelector `json:"usernameSecretRef" tf:"-"`
 
 	// Template describing how dynamic usernames are generated.
 	// Template describing how dynamic usernames are generated.
@@ -192,9 +200,8 @@ type SecretBackendParameters struct {
 type SecretBackendSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -213,20 +220,21 @@ type SecretBackendStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretBackend is the Schema for the SecretBackends API. Creates an RabbitMQ secret backend for Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretBackend struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.connectionUri) || has(self.initProvider.connectionUri)",message="connectionUri is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.passwordSecretRef)",message="passwordSecretRef is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.usernameSecretRef)",message="usernameSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.connectionUri) || (has(self.initProvider) && has(self.initProvider.connectionUri))",message="spec.forProvider.connectionUri is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.passwordSecretRef)",message="spec.forProvider.passwordSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.usernameSecretRef)",message="spec.forProvider.usernameSecretRef is a required parameter"
 	Spec   SecretBackendSpec   `json:"spec"`
 	Status SecretBackendStatus `json:"status,omitempty"`
 }

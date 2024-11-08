@@ -23,7 +23,17 @@ type OidcRoleInitParameters struct {
 	// A configured named key, the key must already exist
 	// before tokens can be issued.
 	// A configured named key, the key must already exist.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.OidcKey
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Reference to a OidcKey in identity to populate key.
+	// +kubebuilder:validation:Optional
+	KeyRef *v1.Reference `json:"keyRef,omitempty" tf:"-"`
+
+	// Selector for a OidcKey in identity to populate key.
+	// +kubebuilder:validation:Optional
+	KeySelector *v1.Selector `json:"keySelector,omitempty" tf:"-"`
 
 	// Name of the OIDC Role to create.
 	// Name of the role.
@@ -97,8 +107,18 @@ type OidcRoleParameters struct {
 	// A configured named key, the key must already exist
 	// before tokens can be issued.
 	// A configured named key, the key must already exist.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.OidcKey
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Reference to a OidcKey in identity to populate key.
+	// +kubebuilder:validation:Optional
+	KeyRef *v1.Reference `json:"keyRef,omitempty" tf:"-"`
+
+	// Selector for a OidcKey in identity to populate key.
+	// +kubebuilder:validation:Optional
+	KeySelector *v1.Selector `json:"keySelector,omitempty" tf:"-"`
 
 	// Name of the OIDC Role to create.
 	// Name of the role.
@@ -131,9 +151,8 @@ type OidcRoleParameters struct {
 type OidcRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OidcRoleParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -152,19 +171,19 @@ type OidcRoleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // OidcRole is the Schema for the OidcRoles API. Creates an Identity OIDC Role for Vault
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type OidcRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.key) || has(self.initProvider.key)",message="key is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   OidcRoleSpec   `json:"spec"`
 	Status OidcRoleStatus `json:"status,omitempty"`
 }

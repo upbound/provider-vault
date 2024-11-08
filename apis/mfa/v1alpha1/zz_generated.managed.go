@@ -27,14 +27,6 @@ func (mg *Duo) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this Duo.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *Duo) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this Duo.
 func (mg *Duo) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -63,14 +55,6 @@ func (mg *Duo) SetManagementPolicies(r xpv1.ManagementPolicies) {
 // SetProviderConfigReference of this Duo.
 func (mg *Duo) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this Duo.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *Duo) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this Duo.
@@ -103,14 +87,6 @@ func (mg *Okta) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this Okta.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *Okta) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this Okta.
 func (mg *Okta) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -139,14 +115,6 @@ func (mg *Okta) SetManagementPolicies(r xpv1.ManagementPolicies) {
 // SetProviderConfigReference of this Okta.
 func (mg *Okta) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this Okta.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *Okta) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this Okta.
@@ -179,14 +147,6 @@ func (mg *Pingid) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this Pingid.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *Pingid) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this Pingid.
 func (mg *Pingid) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -215,14 +175,6 @@ func (mg *Pingid) SetManagementPolicies(r xpv1.ManagementPolicies) {
 // SetProviderConfigReference of this Pingid.
 func (mg *Pingid) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this Pingid.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *Pingid) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this Pingid.
@@ -255,14 +207,6 @@ func (mg *Totp) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this Totp.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *Totp) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this Totp.
 func (mg *Totp) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -291,14 +235,6 @@ func (mg *Totp) SetManagementPolicies(r xpv1.ManagementPolicies) {
 // SetProviderConfigReference of this Totp.
 func (mg *Totp) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this Totp.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *Totp) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this Totp.

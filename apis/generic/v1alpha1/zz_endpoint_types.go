@@ -15,6 +15,11 @@ import (
 
 type EndpointInitParameters struct {
 
+	// String containing a JSON-encoded object that will be
+	// written to the given path as the secret data.
+	// JSON-encoded data to write.
+	DataJSONSecretRef v1.SecretKeySelector `json:"dataJsonSecretRef" tf:"-"`
+
 	// True/false. Set this to true if your
 	// vault authentication is not able to delete the data or if the endpoint
 	// does not support the DELETE method. Defaults to false.
@@ -112,6 +117,7 @@ type EndpointObservation struct {
 	// any non-string values returned from Vault are serialized as JSON.
 	// Only fields set in write_fields are present in the JSON data.
 	// Map of strings returned by write operation
+	// +mapType=granular
 	WriteData map[string]*string `json:"writeData,omitempty" tf:"write_data,omitempty"`
 
 	// The JSON data returned by the write operation.
@@ -197,9 +203,8 @@ type EndpointParameters struct {
 type EndpointSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     EndpointParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -218,19 +223,20 @@ type EndpointStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Endpoint is the Schema for the Endpoints API. Writes arbitrary data to a given path in Vault
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type Endpoint struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dataJsonSecretRef)",message="dataJsonSecretRef is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || has(self.initProvider.path)",message="path is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dataJsonSecretRef)",message="spec.forProvider.dataJsonSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || (has(self.initProvider) && has(self.initProvider.path))",message="spec.forProvider.path is a required parameter"
 	Spec   EndpointSpec   `json:"spec"`
 	Status EndpointStatus `json:"status,omitempty"`
 }

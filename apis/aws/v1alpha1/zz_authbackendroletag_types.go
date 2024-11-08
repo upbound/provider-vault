@@ -22,7 +22,17 @@ type AuthBackendRoleTagInitParameters struct {
 	// The path to the AWS auth backend to
 	// read role tags from, with no leading or trailing /s. Defaults to "aws".
 	// AWS auth backend to read tags from.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// If set, only allows a single token to be granted per instance ID.
 	// Only allow a single token to be granted per instance ID.
@@ -45,12 +55,23 @@ type AuthBackendRoleTagInitParameters struct {
 
 	// The policies to be associated with the tag. Must be a subset of the policies associated with the role.
 	// Policies to be associated with the tag.
+	// +listType=set
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 
 	// The name of the AWS auth backend role to read
 	// role tags from, with no leading or trailing /s.
 	// Name of the role.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/aws/v1alpha1.AuthBackendRole
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("role",false)
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
+
+	// Reference to a AuthBackendRole in aws to populate role.
+	// +kubebuilder:validation:Optional
+	RoleRef *v1.Reference `json:"roleRef,omitempty" tf:"-"`
+
+	// Selector for a AuthBackendRole in aws to populate role.
+	// +kubebuilder:validation:Optional
+	RoleSelector *v1.Selector `json:"roleSelector,omitempty" tf:"-"`
 }
 
 type AuthBackendRoleTagObservation struct {
@@ -87,6 +108,7 @@ type AuthBackendRoleTagObservation struct {
 
 	// The policies to be associated with the tag. Must be a subset of the policies associated with the role.
 	// Policies to be associated with the tag.
+	// +listType=set
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 
 	// The name of the AWS auth backend role to read
@@ -111,8 +133,18 @@ type AuthBackendRoleTagParameters struct {
 	// The path to the AWS auth backend to
 	// read role tags from, with no leading or trailing /s. Defaults to "aws".
 	// AWS auth backend to read tags from.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// If set, only allows a single token to be granted per instance ID.
 	// Only allow a single token to be granted per instance ID.
@@ -140,22 +172,32 @@ type AuthBackendRoleTagParameters struct {
 	// The policies to be associated with the tag. Must be a subset of the policies associated with the role.
 	// Policies to be associated with the tag.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 
 	// The name of the AWS auth backend role to read
 	// role tags from, with no leading or trailing /s.
 	// Name of the role.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/aws/v1alpha1.AuthBackendRole
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("role",false)
 	// +kubebuilder:validation:Optional
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
+
+	// Reference to a AuthBackendRole in aws to populate role.
+	// +kubebuilder:validation:Optional
+	RoleRef *v1.Reference `json:"roleRef,omitempty" tf:"-"`
+
+	// Selector for a AuthBackendRole in aws to populate role.
+	// +kubebuilder:validation:Optional
+	RoleSelector *v1.Selector `json:"roleSelector,omitempty" tf:"-"`
 }
 
 // AuthBackendRoleTagSpec defines the desired state of AuthBackendRoleTag
 type AuthBackendRoleTagSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendRoleTagParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -174,20 +216,20 @@ type AuthBackendRoleTagStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // AuthBackendRoleTag is the Schema for the AuthBackendRoleTags API. Reads role tags from a Vault AWS auth backend.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type AuthBackendRoleTag struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.role) || has(self.initProvider.role)",message="role is a required parameter"
-	Spec   AuthBackendRoleTagSpec   `json:"spec"`
-	Status AuthBackendRoleTagStatus `json:"status,omitempty"`
+	Spec              AuthBackendRoleTagSpec   `json:"spec"`
+	Status            AuthBackendRoleTagStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

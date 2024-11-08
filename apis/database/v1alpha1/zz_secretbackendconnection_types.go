@@ -29,6 +29,19 @@ type CassandraInitParameters struct {
 	// Whether to skip verification of the server certificate when using TLS.
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
 
+	// The password to authenticate with.
+	// The password to use when authenticating with Cassandra.
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// Concatenated PEM blocks configuring the certificate
+	// chain.
+	// Concatenated PEM blocks containing a certificate and private key; a certificate, private key, and issuing CA certificate; or just a CA certificate.
+	PemBundleSecretRef *v1.SecretKeySelector `json:"pemBundleSecretRef,omitempty" tf:"-"`
+
+	// A JSON structure configuring the certificate chain.
+	// Specifies JSON containing a certificate and private key; a certificate, private key, and issuing CA certificate; or just a CA certificate.
+	PemJSONSecretRef *v1.SecretKeySelector `json:"pemJsonSecretRef,omitempty" tf:"-"`
+
 	// The default port to connect to if no port is specified as
 	// part of the host.
 	// The transport port to use to connect to Cassandra.
@@ -140,6 +153,10 @@ type CassandraParameters struct {
 
 type CouchbaseInitParameters struct {
 
+	// Required if tls is true. Specifies the certificate authority of the Couchbase server, as a PEM certificate that has been base64 encoded.
+	// Required if `tls` is `true`. Specifies the certificate authority of the Couchbase server, as a PEM certificate that has been base64 encoded.
+	Base64PemSecretRef *v1.SecretKeySelector `json:"base64PemSecretRef,omitempty" tf:"-"`
+
 	// Required for Couchbase versions prior to 6.5.0. This is only used to verify vault's connection to the server.
 	// Required for Couchbase versions prior to 6.5.0. This is only used to verify vault's connection to the server.
 	BucketName *string `json:"bucketName,omitempty" tf:"bucket_name,omitempty"`
@@ -152,6 +169,10 @@ type CouchbaseInitParameters struct {
 	// certificate when using TLS.
 	// Specifies whether to skip verification of the server certificate when using TLS.
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
+
+	// The password to authenticate with.
+	// Specifies the password corresponding to the given username.
+	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Couchbase.
@@ -209,7 +230,7 @@ type CouchbaseParameters struct {
 	// The hosts to connect to.
 	// A set of Couchbase URIs to connect to. Must use `couchbases://` scheme if `tls` is `true`.
 	// +kubebuilder:validation:Optional
-	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
+	Hosts []*string `json:"hosts" tf:"hosts,omitempty"`
 
 	// Whether to skip verification of the server
 	// certificate when using TLS.
@@ -219,7 +240,7 @@ type CouchbaseParameters struct {
 
 	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// Whether to use TLS when connecting to Cassandra.
@@ -230,7 +251,7 @@ type CouchbaseParameters struct {
 	// The username to authenticate with.
 	// Specifies the username for Vault to use.
 	// +kubebuilder:validation:Optional
-	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+	Username *string `json:"username" tf:"username,omitempty"`
 
 	// Template describing how dynamic usernames are generated.
 	// Template describing how dynamic usernames are generated.
@@ -259,6 +280,10 @@ type ElasticsearchInitParameters struct {
 	// Whether to disable certificate verification.
 	// Whether to disable certificate verification
 	Insecure *bool `json:"insecure,omitempty" tf:"insecure,omitempty"`
+
+	// The password to authenticate with.
+	// The password to be used in the connection URL
+	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// This, if set, is used to set the SNI host when connecting via TLS.
 	// This, if set, is used to set the SNI host when connecting via TLS
@@ -345,7 +370,7 @@ type ElasticsearchParameters struct {
 
 	// The password to authenticate with.
 	// The password to be used in the connection URL
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// This, if set, is used to set the SNI host when connecting via TLS.
@@ -356,12 +381,12 @@ type ElasticsearchParameters struct {
 	// The url to connect to including the port; e.g. master.my-cluster.xxxxxx.use1.cache.amazonaws.com:6379.
 	// The URL for Elasticsearch's API
 	// +kubebuilder:validation:Optional
-	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+	URL *string `json:"url" tf:"url,omitempty"`
 
 	// The username to authenticate with.
 	// The username to be used in the connection URL
 	// +kubebuilder:validation:Optional
-	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+	Username *string `json:"username" tf:"username,omitempty"`
 
 	// Template describing how dynamic usernames are generated.
 	// Template describing how dynamic usernames are generated.
@@ -396,6 +421,10 @@ type HanaInitParameters struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -495,6 +524,19 @@ type InfluxdbInitParameters struct {
 	// Whether to skip verification of the server certificate when using TLS.
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
 
+	// The password to authenticate with.
+	// Specifies the password corresponding to the given username.
+	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
+
+	// Concatenated PEM blocks configuring the certificate
+	// chain.
+	// Concatenated PEM blocks containing a certificate and private key; a certificate, private key, and issuing CA certificate; or just a CA certificate.
+	PemBundleSecretRef *v1.SecretKeySelector `json:"pemBundleSecretRef,omitempty" tf:"-"`
+
+	// A JSON structure configuring the certificate chain.
+	// Specifies JSON containing a certificate and private key; a certificate, private key, and issuing CA certificate; or just a CA certificate.
+	PemJSONSecretRef *v1.SecretKeySelector `json:"pemJsonSecretRef,omitempty" tf:"-"`
+
 	// The default port to connect to if no port is specified as
 	// part of the host.
 	// The transport port to use to connect to Influxdb.
@@ -558,7 +600,7 @@ type InfluxdbParameters struct {
 	// The host to connect to.
 	// Influxdb host to connect to.
 	// +kubebuilder:validation:Optional
-	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+	Host *string `json:"host" tf:"host,omitempty"`
 
 	// Whether to skip verification of the server
 	// certificate when using TLS.
@@ -568,7 +610,7 @@ type InfluxdbParameters struct {
 
 	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// Concatenated PEM blocks configuring the certificate
@@ -596,7 +638,7 @@ type InfluxdbParameters struct {
 	// The username to authenticate with.
 	// Specifies the username to use for superuser access.
 	// +kubebuilder:validation:Optional
-	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+	Username *string `json:"username" tf:"username,omitempty"`
 
 	// Template describing how dynamic usernames are generated.
 	// Template describing how dynamic usernames are generated.
@@ -627,6 +669,10 @@ type MongodbInitParameters struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -716,6 +762,10 @@ type MongodbParameters struct {
 
 type MongodbatlasInitParameters struct {
 
+	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
+	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
+	PrivateKeySecretRef v1.SecretKeySelector `json:"privateKeySecretRef" tf:"-"`
+
 	// The Project ID the Database User should be created within.
 	// The Project ID the Database User should be created within.
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
@@ -740,18 +790,18 @@ type MongodbatlasParameters struct {
 
 	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
 	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PrivateKeySecretRef v1.SecretKeySelector `json:"privateKeySecretRef" tf:"-"`
 
 	// The Project ID the Database User should be created within.
 	// The Project ID the Database User should be created within.
 	// +kubebuilder:validation:Optional
-	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+	ProjectID *string `json:"projectId" tf:"project_id,omitempty"`
 
 	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
 	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
 	// +kubebuilder:validation:Optional
-	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
+	PublicKey *string `json:"publicKey" tf:"public_key,omitempty"`
 }
 
 type MssqlInitParameters struct {
@@ -788,6 +838,10 @@ type MssqlInitParameters struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -927,9 +981,21 @@ type MySQLAuroraInitParameters struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
+	// A JSON encoded credential for use with IAM authorization
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1073,9 +1139,21 @@ type MySQLInitParameters struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
+	// A JSON encoded credential for use with IAM authorization
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1114,9 +1192,21 @@ type MySQLLegacyInitParameters struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
+	// A JSON encoded credential for use with IAM authorization
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1365,9 +1455,21 @@ type MySQLRDSInitParameters struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
+	// A JSON encoded credential for use with IAM authorization
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1511,6 +1613,10 @@ type OracleInitParameters struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
 	// Enable spliting statements after semi-colons.
 	// Set to true in order to split statements after semi-colons.
 	SplitStatements *bool `json:"splitStatements,omitempty" tf:"split_statements,omitempty"`
@@ -1651,6 +1757,14 @@ type PostgresqlInitParameters struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
+	// A JSON encoded credential for use with IAM authorization
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -1762,6 +1876,10 @@ type PostgresqlParameters struct {
 
 type RedisElasticacheInitParameters struct {
 
+	// The password to authenticate with.
+	// The AWS secret key id to use to talk to ElastiCache. If omitted the credentials chain provider is used instead.
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
 	// The region where the ElastiCache cluster is hosted. If omitted Vault tries to infer from the environment instead.
 	// The AWS region where the ElastiCache cluster is hosted. If omitted the plugin tries to infer the region from the environment.
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
@@ -1769,6 +1887,10 @@ type RedisElasticacheInitParameters struct {
 	// The url to connect to including the port; e.g. master.my-cluster.xxxxxx.use1.cache.amazonaws.com:6379.
 	// The configuration endpoint for the ElastiCache cluster to connect to.
 	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+
+	// The username to authenticate with.
+	// The AWS access key id to use to talk to ElastiCache. If omitted the credentials chain provider is used instead.
+	UsernameSecretRef *v1.SecretKeySelector `json:"usernameSecretRef,omitempty" tf:"-"`
 }
 
 type RedisElasticacheObservation struct {
@@ -1797,7 +1919,7 @@ type RedisElasticacheParameters struct {
 	// The url to connect to including the port; e.g. master.my-cluster.xxxxxx.use1.cache.amazonaws.com:6379.
 	// The configuration endpoint for the ElastiCache cluster to connect to.
 	// +kubebuilder:validation:Optional
-	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+	URL *string `json:"url" tf:"url,omitempty"`
 
 	// The username to authenticate with.
 	// The AWS access key id to use to talk to ElastiCache. If omitted the credentials chain provider is used instead.
@@ -1819,6 +1941,10 @@ type RedisInitParameters struct {
 	// certificate when using TLS.
 	// Specifies whether to skip verification of the server certificate when using TLS.
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
+
+	// The password to authenticate with.
+	// Specifies the password corresponding to the given username.
+	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// The default port to connect to if no port is specified as
 	// part of the host.
@@ -1873,7 +1999,7 @@ type RedisParameters struct {
 	// The host to connect to.
 	// Specifies the host to connect to
 	// +kubebuilder:validation:Optional
-	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+	Host *string `json:"host" tf:"host,omitempty"`
 
 	// Whether to skip verification of the server
 	// certificate when using TLS.
@@ -1883,7 +2009,7 @@ type RedisParameters struct {
 
 	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// The default port to connect to if no port is specified as
@@ -1900,7 +2026,7 @@ type RedisParameters struct {
 	// The username to authenticate with.
 	// Specifies the username for Vault to use.
 	// +kubebuilder:validation:Optional
-	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+	Username *string `json:"username" tf:"username,omitempty"`
 }
 
 type RedshiftInitParameters struct {
@@ -1930,6 +2056,10 @@ type RedshiftInitParameters struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2035,59 +2165,70 @@ type SecretBackendConnectionInitParameters struct {
 
 	// The unique name of the Vault mount to configure.
 	// Unique name of the Vault mount to configure.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// A nested block containing configuration options for Cassandra connections.
 	// Connection parameters for the cassandra-database-plugin plugin.
-	Cassandra []CassandraInitParameters `json:"cassandra,omitempty" tf:"cassandra,omitempty"`
+	Cassandra *CassandraInitParameters `json:"cassandra,omitempty" tf:"cassandra,omitempty"`
 
 	// A nested block containing configuration options for Couchbase connections.
 	// Connection parameters for the couchbase-database-plugin plugin.
-	Couchbase []CouchbaseInitParameters `json:"couchbase,omitempty" tf:"couchbase,omitempty"`
+	Couchbase *CouchbaseInitParameters `json:"couchbase,omitempty" tf:"couchbase,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// A nested block containing configuration options for Elasticsearch connections.
 	// Connection parameters for the elasticsearch-database-plugin.
-	Elasticsearch []ElasticsearchInitParameters `json:"elasticsearch,omitempty" tf:"elasticsearch,omitempty"`
+	Elasticsearch *ElasticsearchInitParameters `json:"elasticsearch,omitempty" tf:"elasticsearch,omitempty"`
 
 	// A nested block containing configuration options for SAP HanaDB connections.
 	// Connection parameters for the hana-database-plugin plugin.
-	Hana []HanaInitParameters `json:"hana,omitempty" tf:"hana,omitempty"`
+	Hana *HanaInitParameters `json:"hana,omitempty" tf:"hana,omitempty"`
 
 	// A nested block containing configuration options for InfluxDB connections.
 	// Connection parameters for the influxdb-database-plugin plugin.
-	Influxdb []InfluxdbInitParameters `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
+	Influxdb *InfluxdbInitParameters `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
 
 	// A nested block containing configuration options for MongoDB connections.
 	// Connection parameters for the mongodb-database-plugin plugin.
-	Mongodb []MongodbInitParameters `json:"mongodb,omitempty" tf:"mongodb,omitempty"`
+	Mongodb *MongodbInitParameters `json:"mongodb,omitempty" tf:"mongodb,omitempty"`
 
 	// A nested block containing configuration options for MongoDB Atlas connections.
 	// Connection parameters for the mongodbatlas-database-plugin plugin.
-	Mongodbatlas []MongodbatlasInitParameters `json:"mongodbatlas,omitempty" tf:"mongodbatlas,omitempty"`
+	Mongodbatlas *MongodbatlasInitParameters `json:"mongodbatlas,omitempty" tf:"mongodbatlas,omitempty"`
 
 	// A nested block containing configuration options for MSSQL connections.
 	// Connection parameters for the mssql-database-plugin plugin.
-	Mssql []MssqlInitParameters `json:"mssql,omitempty" tf:"mssql,omitempty"`
+	Mssql *MssqlInitParameters `json:"mssql,omitempty" tf:"mssql,omitempty"`
 
 	// A nested block containing configuration options for MySQL connections.
 	// Connection parameters for the mysql-database-plugin plugin.
-	MySQL []MySQLInitParameters `json:"mysql,omitempty" tf:"mysql,omitempty"`
+	MySQL *MySQLInitParameters `json:"mysql,omitempty" tf:"mysql,omitempty"`
 
 	// A nested block containing configuration options for Aurora MySQL connections.
 	// Connection parameters for the mysql-aurora-database-plugin plugin.
-	MySQLAurora []MySQLAuroraInitParameters `json:"mysqlAurora,omitempty" tf:"mysql_aurora,omitempty"`
+	MySQLAurora *MySQLAuroraInitParameters `json:"mysqlAurora,omitempty" tf:"mysql_aurora,omitempty"`
 
 	// A nested block containing configuration options for legacy MySQL connections.
 	// Connection parameters for the mysql-legacy-database-plugin plugin.
-	MySQLLegacy []MySQLLegacyInitParameters `json:"mysqlLegacy,omitempty" tf:"mysql_legacy,omitempty"`
+	MySQLLegacy *MySQLLegacyInitParameters `json:"mysqlLegacy,omitempty" tf:"mysql_legacy,omitempty"`
 
 	// A nested block containing configuration options for RDS MySQL connections.
 	// Connection parameters for the mysql-rds-database-plugin plugin.
-	MySQLRDS []MySQLRDSInitParameters `json:"mysqlRds,omitempty" tf:"mysql_rds,omitempty"`
+	MySQLRDS *MySQLRDSInitParameters `json:"mysqlRds,omitempty" tf:"mysql_rds,omitempty"`
 
 	// A unique name to give the database connection.
 	// Name of the database connection.
@@ -2102,7 +2243,7 @@ type SecretBackendConnectionInitParameters struct {
 
 	// A nested block containing configuration options for Oracle connections.
 	// Connection parameters for the oracle-database-plugin plugin.
-	Oracle []OracleInitParameters `json:"oracle,omitempty" tf:"oracle,omitempty"`
+	Oracle *OracleInitParameters `json:"oracle,omitempty" tf:"oracle,omitempty"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -2110,18 +2251,18 @@ type SecretBackendConnectionInitParameters struct {
 
 	// A nested block containing configuration options for PostgreSQL connections.
 	// Connection parameters for the postgresql-database-plugin plugin.
-	Postgresql []PostgresqlInitParameters `json:"postgresql,omitempty" tf:"postgresql,omitempty"`
+	Postgresql *PostgresqlInitParameters `json:"postgresql,omitempty" tf:"postgresql,omitempty"`
 
 	// A nested block containing configuration options for Redis connections.
 	// Connection parameters for the redis-database-plugin plugin.
-	Redis []RedisInitParameters `json:"redis,omitempty" tf:"redis,omitempty"`
+	Redis *RedisInitParameters `json:"redis,omitempty" tf:"redis,omitempty"`
 
 	// A nested block containing configuration options for Redis ElastiCache connections.
 	// Connection parameters for the redis-elasticache-database-plugin plugin.
-	RedisElasticache []RedisElasticacheInitParameters `json:"redisElasticache,omitempty" tf:"redis_elasticache,omitempty"`
+	RedisElasticache *RedisElasticacheInitParameters `json:"redisElasticache,omitempty" tf:"redis_elasticache,omitempty"`
 
 	// Connection parameters for the redshift-database-plugin plugin.
-	Redshift []RedshiftInitParameters `json:"redshift,omitempty" tf:"redshift,omitempty"`
+	Redshift *RedshiftInitParameters `json:"redshift,omitempty" tf:"redshift,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -2129,7 +2270,7 @@ type SecretBackendConnectionInitParameters struct {
 
 	// A nested block containing configuration options for Snowflake connections.
 	// Connection parameters for the snowflake-database-plugin plugin.
-	Snowflake []SnowflakeInitParameters `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
+	Snowflake *SnowflakeInitParameters `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
 
 	// Whether the connection should be verified on
 	// initial configuration or not.
@@ -2150,57 +2291,58 @@ type SecretBackendConnectionObservation struct {
 
 	// A nested block containing configuration options for Cassandra connections.
 	// Connection parameters for the cassandra-database-plugin plugin.
-	Cassandra []CassandraObservation `json:"cassandra,omitempty" tf:"cassandra,omitempty"`
+	Cassandra *CassandraObservation `json:"cassandra,omitempty" tf:"cassandra,omitempty"`
 
 	// A nested block containing configuration options for Couchbase connections.
 	// Connection parameters for the couchbase-database-plugin plugin.
-	Couchbase []CouchbaseObservation `json:"couchbase,omitempty" tf:"couchbase,omitempty"`
+	Couchbase *CouchbaseObservation `json:"couchbase,omitempty" tf:"couchbase,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// A nested block containing configuration options for Elasticsearch connections.
 	// Connection parameters for the elasticsearch-database-plugin.
-	Elasticsearch []ElasticsearchObservation `json:"elasticsearch,omitempty" tf:"elasticsearch,omitempty"`
+	Elasticsearch *ElasticsearchObservation `json:"elasticsearch,omitempty" tf:"elasticsearch,omitempty"`
 
 	// A nested block containing configuration options for SAP HanaDB connections.
 	// Connection parameters for the hana-database-plugin plugin.
-	Hana []HanaObservation `json:"hana,omitempty" tf:"hana,omitempty"`
+	Hana *HanaObservation `json:"hana,omitempty" tf:"hana,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// A nested block containing configuration options for InfluxDB connections.
 	// Connection parameters for the influxdb-database-plugin plugin.
-	Influxdb []InfluxdbObservation `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
+	Influxdb *InfluxdbObservation `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
 
 	// A nested block containing configuration options for MongoDB connections.
 	// Connection parameters for the mongodb-database-plugin plugin.
-	Mongodb []MongodbObservation `json:"mongodb,omitempty" tf:"mongodb,omitempty"`
+	Mongodb *MongodbObservation `json:"mongodb,omitempty" tf:"mongodb,omitempty"`
 
 	// A nested block containing configuration options for MongoDB Atlas connections.
 	// Connection parameters for the mongodbatlas-database-plugin plugin.
-	Mongodbatlas []MongodbatlasObservation `json:"mongodbatlas,omitempty" tf:"mongodbatlas,omitempty"`
+	Mongodbatlas *MongodbatlasObservation `json:"mongodbatlas,omitempty" tf:"mongodbatlas,omitempty"`
 
 	// A nested block containing configuration options for MSSQL connections.
 	// Connection parameters for the mssql-database-plugin plugin.
-	Mssql []MssqlObservation `json:"mssql,omitempty" tf:"mssql,omitempty"`
+	Mssql *MssqlObservation `json:"mssql,omitempty" tf:"mssql,omitempty"`
 
 	// A nested block containing configuration options for MySQL connections.
 	// Connection parameters for the mysql-database-plugin plugin.
-	MySQL []MySQLObservation `json:"mysql,omitempty" tf:"mysql,omitempty"`
+	MySQL *MySQLObservation `json:"mysql,omitempty" tf:"mysql,omitempty"`
 
 	// A nested block containing configuration options for Aurora MySQL connections.
 	// Connection parameters for the mysql-aurora-database-plugin plugin.
-	MySQLAurora []MySQLAuroraObservation `json:"mysqlAurora,omitempty" tf:"mysql_aurora,omitempty"`
+	MySQLAurora *MySQLAuroraObservation `json:"mysqlAurora,omitempty" tf:"mysql_aurora,omitempty"`
 
 	// A nested block containing configuration options for legacy MySQL connections.
 	// Connection parameters for the mysql-legacy-database-plugin plugin.
-	MySQLLegacy []MySQLLegacyObservation `json:"mysqlLegacy,omitempty" tf:"mysql_legacy,omitempty"`
+	MySQLLegacy *MySQLLegacyObservation `json:"mysqlLegacy,omitempty" tf:"mysql_legacy,omitempty"`
 
 	// A nested block containing configuration options for RDS MySQL connections.
 	// Connection parameters for the mysql-rds-database-plugin plugin.
-	MySQLRDS []MySQLRDSObservation `json:"mysqlRds,omitempty" tf:"mysql_rds,omitempty"`
+	MySQLRDS *MySQLRDSObservation `json:"mysqlRds,omitempty" tf:"mysql_rds,omitempty"`
 
 	// A unique name to give the database connection.
 	// Name of the database connection.
@@ -2215,7 +2357,7 @@ type SecretBackendConnectionObservation struct {
 
 	// A nested block containing configuration options for Oracle connections.
 	// Connection parameters for the oracle-database-plugin plugin.
-	Oracle []OracleObservation `json:"oracle,omitempty" tf:"oracle,omitempty"`
+	Oracle *OracleObservation `json:"oracle,omitempty" tf:"oracle,omitempty"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -2223,18 +2365,18 @@ type SecretBackendConnectionObservation struct {
 
 	// A nested block containing configuration options for PostgreSQL connections.
 	// Connection parameters for the postgresql-database-plugin plugin.
-	Postgresql []PostgresqlObservation `json:"postgresql,omitempty" tf:"postgresql,omitempty"`
+	Postgresql *PostgresqlObservation `json:"postgresql,omitempty" tf:"postgresql,omitempty"`
 
 	// A nested block containing configuration options for Redis connections.
 	// Connection parameters for the redis-database-plugin plugin.
-	Redis []RedisObservation `json:"redis,omitempty" tf:"redis,omitempty"`
+	Redis *RedisObservation `json:"redis,omitempty" tf:"redis,omitempty"`
 
 	// A nested block containing configuration options for Redis ElastiCache connections.
 	// Connection parameters for the redis-elasticache-database-plugin plugin.
-	RedisElasticache []RedisElasticacheObservation `json:"redisElasticache,omitempty" tf:"redis_elasticache,omitempty"`
+	RedisElasticache *RedisElasticacheObservation `json:"redisElasticache,omitempty" tf:"redis_elasticache,omitempty"`
 
 	// Connection parameters for the redshift-database-plugin plugin.
-	Redshift []RedshiftObservation `json:"redshift,omitempty" tf:"redshift,omitempty"`
+	Redshift *RedshiftObservation `json:"redshift,omitempty" tf:"redshift,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -2242,7 +2384,7 @@ type SecretBackendConnectionObservation struct {
 
 	// A nested block containing configuration options for Snowflake connections.
 	// Connection parameters for the snowflake-database-plugin plugin.
-	Snowflake []SnowflakeObservation `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
+	Snowflake *SnowflakeObservation `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
 
 	// Whether the connection should be verified on
 	// initial configuration or not.
@@ -2260,73 +2402,84 @@ type SecretBackendConnectionParameters struct {
 
 	// The unique name of the Vault mount to configure.
 	// Unique name of the Vault mount to configure.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// A nested block containing configuration options for Cassandra connections.
 	// Connection parameters for the cassandra-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Cassandra []CassandraParameters `json:"cassandra,omitempty" tf:"cassandra,omitempty"`
+	Cassandra *CassandraParameters `json:"cassandra,omitempty" tf:"cassandra,omitempty"`
 
 	// A nested block containing configuration options for Couchbase connections.
 	// Connection parameters for the couchbase-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Couchbase []CouchbaseParameters `json:"couchbase,omitempty" tf:"couchbase,omitempty"`
+	Couchbase *CouchbaseParameters `json:"couchbase,omitempty" tf:"couchbase,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// A nested block containing configuration options for Elasticsearch connections.
 	// Connection parameters for the elasticsearch-database-plugin.
 	// +kubebuilder:validation:Optional
-	Elasticsearch []ElasticsearchParameters `json:"elasticsearch,omitempty" tf:"elasticsearch,omitempty"`
+	Elasticsearch *ElasticsearchParameters `json:"elasticsearch,omitempty" tf:"elasticsearch,omitempty"`
 
 	// A nested block containing configuration options for SAP HanaDB connections.
 	// Connection parameters for the hana-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Hana []HanaParameters `json:"hana,omitempty" tf:"hana,omitempty"`
+	Hana *HanaParameters `json:"hana,omitempty" tf:"hana,omitempty"`
 
 	// A nested block containing configuration options for InfluxDB connections.
 	// Connection parameters for the influxdb-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Influxdb []InfluxdbParameters `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
+	Influxdb *InfluxdbParameters `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
 
 	// A nested block containing configuration options for MongoDB connections.
 	// Connection parameters for the mongodb-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Mongodb []MongodbParameters `json:"mongodb,omitempty" tf:"mongodb,omitempty"`
+	Mongodb *MongodbParameters `json:"mongodb,omitempty" tf:"mongodb,omitempty"`
 
 	// A nested block containing configuration options for MongoDB Atlas connections.
 	// Connection parameters for the mongodbatlas-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Mongodbatlas []MongodbatlasParameters `json:"mongodbatlas,omitempty" tf:"mongodbatlas,omitempty"`
+	Mongodbatlas *MongodbatlasParameters `json:"mongodbatlas,omitempty" tf:"mongodbatlas,omitempty"`
 
 	// A nested block containing configuration options for MSSQL connections.
 	// Connection parameters for the mssql-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Mssql []MssqlParameters `json:"mssql,omitempty" tf:"mssql,omitempty"`
+	Mssql *MssqlParameters `json:"mssql,omitempty" tf:"mssql,omitempty"`
 
 	// A nested block containing configuration options for MySQL connections.
 	// Connection parameters for the mysql-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	MySQL []MySQLParameters `json:"mysql,omitempty" tf:"mysql,omitempty"`
+	MySQL *MySQLParameters `json:"mysql,omitempty" tf:"mysql,omitempty"`
 
 	// A nested block containing configuration options for Aurora MySQL connections.
 	// Connection parameters for the mysql-aurora-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	MySQLAurora []MySQLAuroraParameters `json:"mysqlAurora,omitempty" tf:"mysql_aurora,omitempty"`
+	MySQLAurora *MySQLAuroraParameters `json:"mysqlAurora,omitempty" tf:"mysql_aurora,omitempty"`
 
 	// A nested block containing configuration options for legacy MySQL connections.
 	// Connection parameters for the mysql-legacy-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	MySQLLegacy []MySQLLegacyParameters `json:"mysqlLegacy,omitempty" tf:"mysql_legacy,omitempty"`
+	MySQLLegacy *MySQLLegacyParameters `json:"mysqlLegacy,omitempty" tf:"mysql_legacy,omitempty"`
 
 	// A nested block containing configuration options for RDS MySQL connections.
 	// Connection parameters for the mysql-rds-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	MySQLRDS []MySQLRDSParameters `json:"mysqlRds,omitempty" tf:"mysql_rds,omitempty"`
+	MySQLRDS *MySQLRDSParameters `json:"mysqlRds,omitempty" tf:"mysql_rds,omitempty"`
 
 	// A unique name to give the database connection.
 	// Name of the database connection.
@@ -2344,7 +2497,7 @@ type SecretBackendConnectionParameters struct {
 	// A nested block containing configuration options for Oracle connections.
 	// Connection parameters for the oracle-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Oracle []OracleParameters `json:"oracle,omitempty" tf:"oracle,omitempty"`
+	Oracle *OracleParameters `json:"oracle,omitempty" tf:"oracle,omitempty"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -2354,21 +2507,21 @@ type SecretBackendConnectionParameters struct {
 	// A nested block containing configuration options for PostgreSQL connections.
 	// Connection parameters for the postgresql-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Postgresql []PostgresqlParameters `json:"postgresql,omitempty" tf:"postgresql,omitempty"`
+	Postgresql *PostgresqlParameters `json:"postgresql,omitempty" tf:"postgresql,omitempty"`
 
 	// A nested block containing configuration options for Redis connections.
 	// Connection parameters for the redis-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Redis []RedisParameters `json:"redis,omitempty" tf:"redis,omitempty"`
+	Redis *RedisParameters `json:"redis,omitempty" tf:"redis,omitempty"`
 
 	// A nested block containing configuration options for Redis ElastiCache connections.
 	// Connection parameters for the redis-elasticache-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	RedisElasticache []RedisElasticacheParameters `json:"redisElasticache,omitempty" tf:"redis_elasticache,omitempty"`
+	RedisElasticache *RedisElasticacheParameters `json:"redisElasticache,omitempty" tf:"redis_elasticache,omitempty"`
 
 	// Connection parameters for the redshift-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Redshift []RedshiftParameters `json:"redshift,omitempty" tf:"redshift,omitempty"`
+	Redshift *RedshiftParameters `json:"redshift,omitempty" tf:"redshift,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -2378,7 +2531,7 @@ type SecretBackendConnectionParameters struct {
 	// A nested block containing configuration options for Snowflake connections.
 	// Connection parameters for the snowflake-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Snowflake []SnowflakeParameters `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
+	Snowflake *SnowflakeParameters `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
 
 	// Whether the connection should be verified on
 	// initial configuration or not.
@@ -2410,6 +2563,10 @@ type SnowflakeInitParameters struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2501,9 +2658,8 @@ type SnowflakeParameters struct {
 type SecretBackendConnectionSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendConnectionParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -2522,19 +2678,19 @@ type SecretBackendConnectionStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretBackendConnection is the Schema for the SecretBackendConnections API. Configures a database secret backend connection for Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretBackendConnection struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   SecretBackendConnectionSpec   `json:"spec"`
 	Status SecretBackendConnectionStatus `json:"status,omitempty"`
 }

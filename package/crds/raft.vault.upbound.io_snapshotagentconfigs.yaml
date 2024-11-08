@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.12.1
+    controller-gen.kubebuilder.io/version: v0.14.0
   name: snapshotagentconfigs.raft.vault.upbound.io
 spec:
   group: raft.vault.upbound.io
@@ -19,11 +19,11 @@ spec:
   scope: Cluster
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .status.conditions[?(@.type=='Ready')].status
-      name: READY
-      type: string
     - jsonPath: .status.conditions[?(@.type=='Synced')].status
       name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
       type: string
     - jsonPath: .metadata.annotations.crossplane\.io/external-name
       name: EXTERNAL-NAME
@@ -38,14 +38,19 @@ spec:
           API. Creates a Raft Snapshot Agent Configuration for Vault.
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
@@ -54,13 +59,14 @@ spec:
             properties:
               deletionPolicy:
                 default: Delete
-                description: 'DeletionPolicy specifies what will happen to the underlying
-                  external when this managed resource is deleted - either "Delete"
-                  or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicies field in a future release. Currently,
-                  both could be set independently and non-default values would be
-                  honored if the feature flag is enabled. See the design doc for more
-                  information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
+                description: |-
+                  DeletionPolicy specifies what will happen to the underlying external
+                  when this managed resource is deleted - either "Delete" or "Orphan" the
+                  external resource.
+                  This field is planned to be deprecated in favor of the ManagementPolicies
+                  field in a future release. Currently, both could be set independently and
+                  non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
                 enum:
                 - Orphan
                 - Delete
@@ -68,297 +74,366 @@ spec:
               forProvider:
                 properties:
                   awsAccessKeyId:
-                    description: AWS access key ID. AWS access key ID.
+                    description: |-
+                      AWS access key ID.
+                      AWS access key ID.
                     type: string
                   awsS3Bucket:
-                    description: S3 bucket to write snapshots to. S3 bucket to write
-                      snapshots to.
+                    description: |-
+                      S3 bucket to write snapshots to.
+                      S3 bucket to write snapshots to.
                     type: string
                   awsS3DisableTls:
-                    description: Disable TLS for the S3 endpoint. This should only
-                      be used for testing purposes, typically in conjunction with
-                      aws_s3_endpoint. Disable TLS for the S3 endpoint. This should
-                      only be used for testing purposes.
+                    description: |-
+                      Disable TLS for the S3 endpoint. This
+                      should only be used for testing purposes, typically in conjunction with
+                      aws_s3_endpoint.
+                      Disable TLS for the S3 endpoint. This should only be used for testing purposes.
                     type: boolean
                   awsS3EnableKms:
-                    description: Use KMS to encrypt bucket contents. Use KMS to encrypt
-                      bucket contents.
+                    description: |-
+                      Use KMS to encrypt bucket contents.
+                      Use KMS to encrypt bucket contents.
                     type: boolean
                   awsS3Endpoint:
-                    description: AWS endpoint. This is typically only set when using
-                      a non-AWS S3 implementation like Minio. AWS endpoint. This is
-                      typically only set when using a non-AWS S3 implementation like
-                      Minio.
+                    description: |-
+                      AWS endpoint. This is typically only set when
+                      using a non-AWS S3 implementation like Minio.
+                      AWS endpoint. This is typically only set when using a non-AWS S3 implementation like Minio.
                     type: string
                   awsS3ForcePathStyle:
-                    description: Use the endpoint/bucket URL style instead of bucket.endpoint.
-                      May be needed when setting aws_s3_endpoint. Use the endpoint/bucket
-                      URL style instead of bucket.endpoint.
+                    description: |-
+                      Use the endpoint/bucket URL style
+                      instead of bucket.endpoint. May be needed when setting aws_s3_endpoint.
+                      Use the endpoint/bucket URL style instead of bucket.endpoint.
                     type: boolean
                   awsS3KmsKey:
-                    description: Use named KMS key, when aws_s3_enable_kms = true
+                    description: |-
+                      Use named KMS key, when aws_s3_enable_kms = true
                       Use named KMS key, when aws_s3_enable_kms=true
                     type: string
                   awsS3Region:
-                    description: AWS region bucket is in. AWS region bucket is in.
+                    description: |-
+                      AWS region bucket is in.
+                      AWS region bucket is in.
                     type: string
                   awsS3ServerSideEncryption:
-                    description: Use AES256 to encrypt bucket contents. Use AES256
-                      to encrypt bucket contents.
+                    description: |-
+                      Use AES256 to encrypt bucket contents.
+                      Use AES256 to encrypt bucket contents.
                     type: boolean
                   awsSecretAccessKey:
-                    description: AWS secret access key. AWS secret access key.
+                    description: |-
+                      AWS secret access key.
+                      AWS secret access key.
                     type: string
                   awsSessionToken:
-                    description: AWS session token. AWS session token.
+                    description: |-
+                      AWS session token.
+                      AWS session token.
                     type: string
                   azureAccountKey:
-                    description: Azure account key. Azure account key.
+                    description: |-
+                      Azure account key.
+                      Azure account key.
                     type: string
                   azureAccountName:
-                    description: Azure account name. Azure account name.
+                    description: |-
+                      Azure account name.
+                      Azure account name.
                     type: string
                   azureBlobEnvironment:
-                    description: Azure blob environment. Azure blob environment.
+                    description: |-
+                      Azure blob environment.
+                      Azure blob environment.
                     type: string
                   azureContainerName:
-                    description: Azure container name to write snapshots to. Azure
-                      container name to write snapshots to.
+                    description: |-
+                      Azure container name to write
+                      snapshots to.
+                      Azure container name to write snapshots to.
                     type: string
                   azureEndpoint:
-                    description: Azure blob storage endpoint. This is typically only
-                      set when using a non-Azure implementation like Azurite. Azure
-                      blob storage endpoint. This is typically only set when using
-                      a non-Azure implementation like Azurite.
+                    description: |-
+                      Azure blob storage endpoint. This is typically
+                      only set when using a non-Azure implementation like Azurite.
+                      Azure blob storage endpoint. This is typically only set when using a non-Azure implementation like Azurite.
                     type: string
                   filePrefix:
-                    description: Within the directory or bucket prefix given by path_prefix,
-                      the file or object name of snapshot files will start with this
-                      string. The file or object name of snapshot files will start
-                      with this string.
+                    description: |-
+                      Within the directory or bucket
+                      prefix given by path_prefix, the file or object name of snapshot files
+                      will start with this string.
+                      The file or object name of snapshot files will start with this string.
                     type: string
                   googleDisableTls:
-                    description: Disable TLS for the GCS endpoint. This should only
-                      be used for testing purposes, typically in conjunction with
-                      google_endpoint. Disable TLS for the GCS endpoint.
+                    description: |-
+                      Disable TLS for the GCS endpoint. This
+                      should only be used for testing purposes, typically in conjunction with
+                      google_endpoint.
+                      Disable TLS for the GCS endpoint.
                     type: boolean
                   googleEndpoint:
-                    description: GCS endpoint. This is typically only set when using
-                      a non-Google GCS implementation like fake-gcs-server. GCS endpoint.
-                      This is typically only set when using a non-Google GCS implementation
-                      like fake-gcs-server.
+                    description: |-
+                      GCS endpoint. This is typically only set when
+                      using a non-Google GCS implementation like fake-gcs-server.
+                      GCS endpoint. This is typically only set when using a non-Google GCS implementation like fake-gcs-server.
                     type: string
                   googleGcsBucket:
-                    description: GCS bucket to write snapshots to. GCS bucket to write
-                      snapshots to.
+                    description: |-
+                      GCS bucket to write snapshots to.
+                      GCS bucket to write snapshots to.
                     type: string
                   googleServiceAccountKey:
-                    description: 'Google service account key in JSON format. The raw
-                      value looks like this: Google service account key in JSON format.'
+                    description: |-
+                      Google service account key in JSON format.
+                      The raw value looks like this:
+                      Google service account key in JSON format.
                     type: string
                   intervalSeconds:
-                    description: Time (in seconds) between snapshots. Number of seconds
-                      between snapshots.
+                    description: |-
+                      Time (in seconds) between snapshots.
+                      Number of seconds between snapshots.
                     type: number
                   localMaxSpace:
-                    description: For storage_type = local, the maximum space, in bytes,
-                      to use for snapshots. Snapshot attempts will fail if there is
-                      not enough space left in this allowance. The maximum space,
-                      in bytes, to use for snapshots.
+                    description: |-
+                      For storage_type = local, the maximum
+                      space, in bytes, to use for snapshots. Snapshot attempts will fail if there is not enough
+                      space left in this allowance.
+                      The maximum space, in bytes, to use for snapshots.
                     type: number
                   name:
-                    description: <required> – Name of the configuration to modify.
+                    description: |-
+                      <required> – Name of the configuration to modify.
                       Name of the snapshot agent configuration.
                     type: string
                   namespace:
-                    description: The namespace to provision the resource in. The value
-                      should not contain leading or trailing forward slashes. The
-                      namespace is always relative to the provider's configured namespace.
-                      Available only for Vault Enterprise. Target namespace. (requires
-                      Enterprise)
+                    description: |-
+                      The namespace to provision the resource in.
+                      The value should not contain leading or trailing forward slashes.
+                      The namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise.
+                      Target namespace. (requires Enterprise)
                     type: string
                   pathPrefix:
-                    description: For storage_type = "local", the directory to write
-                      the snapshots in. For cloud storage types, the bucket prefix
-                      to use. Types azure-s3 and google-gcs require a trailing / (slash).
-                      Types local and aws-s3 the trailing / is optional. The directory
-                      or bucket prefix to to use.
+                    description: |-
+                      For storage_type = "local", the directory to
+                      write the snapshots in. For cloud storage types, the bucket prefix to use.
+                      Types azure-s3 and google-gcs require a trailing / (slash).
+                      Types local and aws-s3 the trailing / is optional.
+                      The directory or bucket prefix to to use.
                     type: string
                   retain:
-                    description: How many snapshots are to be kept; when writing a
-                      snapshot, if there are more snapshots already stored than this
-                      number, the oldest ones will be deleted. How many snapshots
-                      are to be kept.
+                    description: |-
+                      How many snapshots are to be kept; when writing a
+                      snapshot, if there are more snapshots already stored than this number, the
+                      oldest ones will be deleted.
+                      How many snapshots are to be kept.
                     type: number
                   storageType:
-                    description: One of "local", "azure-blob", "aws-s3", or "google-gcs".
-                      The remaining parameters described below are all specific to
-                      the selected storage_type and prefixed accordingly. What storage
-                      service to send snapshots to. One of "local", "azure-blob",
-                      "aws-s3", or "google-gcs".
+                    description: |-
+                      One of "local", "azure-blob", "aws-s3",
+                      or "google-gcs". The remaining parameters described below are all specific to
+                      the selected storage_type and prefixed accordingly.
+                      What storage service to send snapshots to. One of "local", "azure-blob", "aws-s3", or "google-gcs".
                     type: string
                 type: object
               initProvider:
-                description: THIS IS AN ALPHA FIELD. Do not use it in production.
-                  It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. InitProvider
-                  holds the same fields as ForProvider, with the exception of Identifier
-                  and other resource reference fields. The fields that are in InitProvider
-                  are merged into ForProvider when the resource is created. The same
-                  fields are also added to the terraform ignore_changes hook, to avoid
-                  updating them after creation. This is useful for fields that are
-                  required on creation, but we do not desire to update them after
-                  creation, for example because of an external controller is managing
-                  them, like an autoscaler.
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
                 properties:
                   awsAccessKeyId:
-                    description: AWS access key ID. AWS access key ID.
+                    description: |-
+                      AWS access key ID.
+                      AWS access key ID.
                     type: string
                   awsS3Bucket:
-                    description: S3 bucket to write snapshots to. S3 bucket to write
-                      snapshots to.
+                    description: |-
+                      S3 bucket to write snapshots to.
+                      S3 bucket to write snapshots to.
                     type: string
                   awsS3DisableTls:
-                    description: Disable TLS for the S3 endpoint. This should only
-                      be used for testing purposes, typically in conjunction with
-                      aws_s3_endpoint. Disable TLS for the S3 endpoint. This should
-                      only be used for testing purposes.
+                    description: |-
+                      Disable TLS for the S3 endpoint. This
+                      should only be used for testing purposes, typically in conjunction with
+                      aws_s3_endpoint.
+                      Disable TLS for the S3 endpoint. This should only be used for testing purposes.
                     type: boolean
                   awsS3EnableKms:
-                    description: Use KMS to encrypt bucket contents. Use KMS to encrypt
-                      bucket contents.
+                    description: |-
+                      Use KMS to encrypt bucket contents.
+                      Use KMS to encrypt bucket contents.
                     type: boolean
                   awsS3Endpoint:
-                    description: AWS endpoint. This is typically only set when using
-                      a non-AWS S3 implementation like Minio. AWS endpoint. This is
-                      typically only set when using a non-AWS S3 implementation like
-                      Minio.
+                    description: |-
+                      AWS endpoint. This is typically only set when
+                      using a non-AWS S3 implementation like Minio.
+                      AWS endpoint. This is typically only set when using a non-AWS S3 implementation like Minio.
                     type: string
                   awsS3ForcePathStyle:
-                    description: Use the endpoint/bucket URL style instead of bucket.endpoint.
-                      May be needed when setting aws_s3_endpoint. Use the endpoint/bucket
-                      URL style instead of bucket.endpoint.
+                    description: |-
+                      Use the endpoint/bucket URL style
+                      instead of bucket.endpoint. May be needed when setting aws_s3_endpoint.
+                      Use the endpoint/bucket URL style instead of bucket.endpoint.
                     type: boolean
                   awsS3KmsKey:
-                    description: Use named KMS key, when aws_s3_enable_kms = true
+                    description: |-
+                      Use named KMS key, when aws_s3_enable_kms = true
                       Use named KMS key, when aws_s3_enable_kms=true
                     type: string
                   awsS3Region:
-                    description: AWS region bucket is in. AWS region bucket is in.
+                    description: |-
+                      AWS region bucket is in.
+                      AWS region bucket is in.
                     type: string
                   awsS3ServerSideEncryption:
-                    description: Use AES256 to encrypt bucket contents. Use AES256
-                      to encrypt bucket contents.
+                    description: |-
+                      Use AES256 to encrypt bucket contents.
+                      Use AES256 to encrypt bucket contents.
                     type: boolean
                   awsSecretAccessKey:
-                    description: AWS secret access key. AWS secret access key.
+                    description: |-
+                      AWS secret access key.
+                      AWS secret access key.
                     type: string
                   awsSessionToken:
-                    description: AWS session token. AWS session token.
+                    description: |-
+                      AWS session token.
+                      AWS session token.
                     type: string
                   azureAccountKey:
-                    description: Azure account key. Azure account key.
+                    description: |-
+                      Azure account key.
+                      Azure account key.
                     type: string
                   azureAccountName:
-                    description: Azure account name. Azure account name.
+                    description: |-
+                      Azure account name.
+                      Azure account name.
                     type: string
                   azureBlobEnvironment:
-                    description: Azure blob environment. Azure blob environment.
+                    description: |-
+                      Azure blob environment.
+                      Azure blob environment.
                     type: string
                   azureContainerName:
-                    description: Azure container name to write snapshots to. Azure
-                      container name to write snapshots to.
+                    description: |-
+                      Azure container name to write
+                      snapshots to.
+                      Azure container name to write snapshots to.
                     type: string
                   azureEndpoint:
-                    description: Azure blob storage endpoint. This is typically only
-                      set when using a non-Azure implementation like Azurite. Azure
-                      blob storage endpoint. This is typically only set when using
-                      a non-Azure implementation like Azurite.
+                    description: |-
+                      Azure blob storage endpoint. This is typically
+                      only set when using a non-Azure implementation like Azurite.
+                      Azure blob storage endpoint. This is typically only set when using a non-Azure implementation like Azurite.
                     type: string
                   filePrefix:
-                    description: Within the directory or bucket prefix given by path_prefix,
-                      the file or object name of snapshot files will start with this
-                      string. The file or object name of snapshot files will start
-                      with this string.
+                    description: |-
+                      Within the directory or bucket
+                      prefix given by path_prefix, the file or object name of snapshot files
+                      will start with this string.
+                      The file or object name of snapshot files will start with this string.
                     type: string
                   googleDisableTls:
-                    description: Disable TLS for the GCS endpoint. This should only
-                      be used for testing purposes, typically in conjunction with
-                      google_endpoint. Disable TLS for the GCS endpoint.
+                    description: |-
+                      Disable TLS for the GCS endpoint. This
+                      should only be used for testing purposes, typically in conjunction with
+                      google_endpoint.
+                      Disable TLS for the GCS endpoint.
                     type: boolean
                   googleEndpoint:
-                    description: GCS endpoint. This is typically only set when using
-                      a non-Google GCS implementation like fake-gcs-server. GCS endpoint.
-                      This is typically only set when using a non-Google GCS implementation
-                      like fake-gcs-server.
+                    description: |-
+                      GCS endpoint. This is typically only set when
+                      using a non-Google GCS implementation like fake-gcs-server.
+                      GCS endpoint. This is typically only set when using a non-Google GCS implementation like fake-gcs-server.
                     type: string
                   googleGcsBucket:
-                    description: GCS bucket to write snapshots to. GCS bucket to write
-                      snapshots to.
+                    description: |-
+                      GCS bucket to write snapshots to.
+                      GCS bucket to write snapshots to.
                     type: string
                   googleServiceAccountKey:
-                    description: 'Google service account key in JSON format. The raw
-                      value looks like this: Google service account key in JSON format.'
+                    description: |-
+                      Google service account key in JSON format.
+                      The raw value looks like this:
+                      Google service account key in JSON format.
                     type: string
                   intervalSeconds:
-                    description: Time (in seconds) between snapshots. Number of seconds
-                      between snapshots.
+                    description: |-
+                      Time (in seconds) between snapshots.
+                      Number of seconds between snapshots.
                     type: number
                   localMaxSpace:
-                    description: For storage_type = local, the maximum space, in bytes,
-                      to use for snapshots. Snapshot attempts will fail if there is
-                      not enough space left in this allowance. The maximum space,
-                      in bytes, to use for snapshots.
+                    description: |-
+                      For storage_type = local, the maximum
+                      space, in bytes, to use for snapshots. Snapshot attempts will fail if there is not enough
+                      space left in this allowance.
+                      The maximum space, in bytes, to use for snapshots.
                     type: number
                   name:
-                    description: <required> – Name of the configuration to modify.
+                    description: |-
+                      <required> – Name of the configuration to modify.
                       Name of the snapshot agent configuration.
                     type: string
                   namespace:
-                    description: The namespace to provision the resource in. The value
-                      should not contain leading or trailing forward slashes. The
-                      namespace is always relative to the provider's configured namespace.
-                      Available only for Vault Enterprise. Target namespace. (requires
-                      Enterprise)
+                    description: |-
+                      The namespace to provision the resource in.
+                      The value should not contain leading or trailing forward slashes.
+                      The namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise.
+                      Target namespace. (requires Enterprise)
                     type: string
                   pathPrefix:
-                    description: For storage_type = "local", the directory to write
-                      the snapshots in. For cloud storage types, the bucket prefix
-                      to use. Types azure-s3 and google-gcs require a trailing / (slash).
-                      Types local and aws-s3 the trailing / is optional. The directory
-                      or bucket prefix to to use.
+                    description: |-
+                      For storage_type = "local", the directory to
+                      write the snapshots in. For cloud storage types, the bucket prefix to use.
+                      Types azure-s3 and google-gcs require a trailing / (slash).
+                      Types local and aws-s3 the trailing / is optional.
+                      The directory or bucket prefix to to use.
                     type: string
                   retain:
-                    description: How many snapshots are to be kept; when writing a
-                      snapshot, if there are more snapshots already stored than this
-                      number, the oldest ones will be deleted. How many snapshots
-                      are to be kept.
+                    description: |-
+                      How many snapshots are to be kept; when writing a
+                      snapshot, if there are more snapshots already stored than this number, the
+                      oldest ones will be deleted.
+                      How many snapshots are to be kept.
                     type: number
                   storageType:
-                    description: One of "local", "azure-blob", "aws-s3", or "google-gcs".
-                      The remaining parameters described below are all specific to
-                      the selected storage_type and prefixed accordingly. What storage
-                      service to send snapshots to. One of "local", "azure-blob",
-                      "aws-s3", or "google-gcs".
+                    description: |-
+                      One of "local", "azure-blob", "aws-s3",
+                      or "google-gcs". The remaining parameters described below are all specific to
+                      the selected storage_type and prefixed accordingly.
+                      What storage service to send snapshots to. One of "local", "azure-blob", "aws-s3", or "google-gcs".
                     type: string
                 type: object
               managementPolicies:
                 default:
                 - '*'
-                description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
-                  It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicies
-                  specify the array of actions Crossplane is allowed to take on the
-                  managed and external resources. This field is planned to replace
-                  the DeletionPolicy field in a future release. Currently, both could
-                  be set independently and non-default values would be honored if
-                  the feature flag is enabled. If both are custom, the DeletionPolicy
-                  field will be ignored. See the design doc for more information:
-                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
-                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  This field is planned to replace the DeletionPolicy field in a future
+                  release. Currently, both could be set independently and non-default
+                  values would be honored if the feature flag is enabled. If both are
+                  custom, the DeletionPolicy field will be ignored.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
                 items:
-                  description: A ManagementAction represents an action that the Crossplane
-                    controllers can take on an external resource.
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
                   enum:
                   - Observe
                   - Create
@@ -371,9 +446,10 @@ spec:
               providerConfigRef:
                 default:
                   name: default
-                description: ProviderConfigReference specifies how the provider that
-                  will be used to create, observe, update, and delete this managed
-                  resource should be configured.
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
                 properties:
                   name:
                     description: Name of the referenced object.
@@ -383,57 +459,21 @@ spec:
                     properties:
                       resolution:
                         default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
+                        description: |-
+                          Resolution specifies whether resolution of this reference is required.
+                          The default is 'Required', which means the reconcile will fail if the
+                          reference cannot be resolved. 'Optional' means this reference will be
+                          a no-op if it cannot be resolved.
                         enum:
                         - Required
                         - Optional
                         type: string
                       resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              providerRef:
-                description: 'ProviderReference specifies the provider that will be
-                  used to create, observe, update, and delete this managed resource.
-                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
-                properties:
-                  name:
-                    description: Name of the referenced object.
-                    type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
+                        description: |-
+                          Resolve specifies when this reference should be resolved. The default
+                          is 'IfNotPresent', which will attempt to resolve the reference only when
+                          the corresponding field is not present. Use 'Always' to resolve the
+                          reference on every reconcile.
                         enum:
                         - Always
                         - IfNotPresent
@@ -443,17 +483,19 @@ spec:
                 - name
                 type: object
               publishConnectionDetailsTo:
-                description: PublishConnectionDetailsTo specifies the connection secret
-                  config which contains a name, metadata and a reference to secret
-                  store config to which any connection details for this managed resource
-                  should be written. Connection details frequently include the endpoint,
-                  username, and password required to connect to the managed resource.
+                description: |-
+                  PublishConnectionDetailsTo specifies the connection secret config which
+                  contains a name, metadata and a reference to secret store config to
+                  which any connection details for this managed resource should be written.
+                  Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
                 properties:
                   configRef:
                     default:
                       name: default
-                    description: SecretStoreConfigRef specifies which secret store
-                      config should be used for this ConnectionSecret.
+                    description: |-
+                      SecretStoreConfigRef specifies which secret store config should be used
+                      for this ConnectionSecret.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -463,21 +505,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -492,21 +534,22 @@ spec:
                       annotations:
                         additionalProperties:
                           type: string
-                        description: Annotations are the annotations to be added to
-                          connection secret. - For Kubernetes secrets, this will be
-                          used as "metadata.annotations". - It is up to Secret Store
-                          implementation for others store types.
+                        description: |-
+                          Annotations are the annotations to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.annotations".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       labels:
                         additionalProperties:
                           type: string
-                        description: Labels are the labels/tags to be added to connection
-                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
-                          - It is up to Secret Store implementation for others store
-                          types.
+                        description: |-
+                          Labels are the labels/tags to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       type:
-                        description: Type is the SecretType for the connection secret.
+                        description: |-
+                          Type is the SecretType for the connection secret.
                           - Only valid for Kubernetes Secret Stores.
                         type: string
                     type: object
@@ -517,14 +560,15 @@ spec:
                 - name
                 type: object
               writeConnectionSecretToRef:
-                description: WriteConnectionSecretToReference specifies the namespace
-                  and name of a Secret to which any connection details for this managed
-                  resource should be written. Connection details frequently include
-                  the endpoint, username, and password required to connect to the
-                  managed resource. This field is planned to be replaced in a future
-                  release in favor of PublishConnectionDetailsTo. Currently, both
-                  could be set independently and connection details would be published
-                  to both without affecting each other.
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                  This field is planned to be replaced in a future release in favor of
+                  PublishConnectionDetailsTo. Currently, both could be set independently
+                  and connection details would be published to both without affecting
+                  each other.
                 properties:
                   name:
                     description: Name of the secret.
@@ -540,158 +584,192 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: intervalSeconds is a required parameter
+            - message: spec.forProvider.intervalSeconds is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.intervalSeconds)
-                || has(self.initProvider.intervalSeconds)'
-            - message: name is a required parameter
+                || (has(self.initProvider) && has(self.initProvider.intervalSeconds))'
+            - message: spec.forProvider.name is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
-                || has(self.initProvider.name)'
-            - message: pathPrefix is a required parameter
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.pathPrefix is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.pathPrefix)
-                || has(self.initProvider.pathPrefix)'
-            - message: storageType is a required parameter
+                || (has(self.initProvider) && has(self.initProvider.pathPrefix))'
+            - message: spec.forProvider.storageType is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.storageType)
-                || has(self.initProvider.storageType)'
+                || (has(self.initProvider) && has(self.initProvider.storageType))'
           status:
             description: SnapshotAgentConfigStatus defines the observed state of SnapshotAgentConfig.
             properties:
               atProvider:
                 properties:
                   awsAccessKeyId:
-                    description: AWS access key ID. AWS access key ID.
+                    description: |-
+                      AWS access key ID.
+                      AWS access key ID.
                     type: string
                   awsS3Bucket:
-                    description: S3 bucket to write snapshots to. S3 bucket to write
-                      snapshots to.
+                    description: |-
+                      S3 bucket to write snapshots to.
+                      S3 bucket to write snapshots to.
                     type: string
                   awsS3DisableTls:
-                    description: Disable TLS for the S3 endpoint. This should only
-                      be used for testing purposes, typically in conjunction with
-                      aws_s3_endpoint. Disable TLS for the S3 endpoint. This should
-                      only be used for testing purposes.
+                    description: |-
+                      Disable TLS for the S3 endpoint. This
+                      should only be used for testing purposes, typically in conjunction with
+                      aws_s3_endpoint.
+                      Disable TLS for the S3 endpoint. This should only be used for testing purposes.
                     type: boolean
                   awsS3EnableKms:
-                    description: Use KMS to encrypt bucket contents. Use KMS to encrypt
-                      bucket contents.
+                    description: |-
+                      Use KMS to encrypt bucket contents.
+                      Use KMS to encrypt bucket contents.
                     type: boolean
                   awsS3Endpoint:
-                    description: AWS endpoint. This is typically only set when using
-                      a non-AWS S3 implementation like Minio. AWS endpoint. This is
-                      typically only set when using a non-AWS S3 implementation like
-                      Minio.
+                    description: |-
+                      AWS endpoint. This is typically only set when
+                      using a non-AWS S3 implementation like Minio.
+                      AWS endpoint. This is typically only set when using a non-AWS S3 implementation like Minio.
                     type: string
                   awsS3ForcePathStyle:
-                    description: Use the endpoint/bucket URL style instead of bucket.endpoint.
-                      May be needed when setting aws_s3_endpoint. Use the endpoint/bucket
-                      URL style instead of bucket.endpoint.
+                    description: |-
+                      Use the endpoint/bucket URL style
+                      instead of bucket.endpoint. May be needed when setting aws_s3_endpoint.
+                      Use the endpoint/bucket URL style instead of bucket.endpoint.
                     type: boolean
                   awsS3KmsKey:
-                    description: Use named KMS key, when aws_s3_enable_kms = true
+                    description: |-
+                      Use named KMS key, when aws_s3_enable_kms = true
                       Use named KMS key, when aws_s3_enable_kms=true
                     type: string
                   awsS3Region:
-                    description: AWS region bucket is in. AWS region bucket is in.
+                    description: |-
+                      AWS region bucket is in.
+                      AWS region bucket is in.
                     type: string
                   awsS3ServerSideEncryption:
-                    description: Use AES256 to encrypt bucket contents. Use AES256
-                      to encrypt bucket contents.
+                    description: |-
+                      Use AES256 to encrypt bucket contents.
+                      Use AES256 to encrypt bucket contents.
                     type: boolean
                   awsSecretAccessKey:
-                    description: AWS secret access key. AWS secret access key.
+                    description: |-
+                      AWS secret access key.
+                      AWS secret access key.
                     type: string
                   awsSessionToken:
-                    description: AWS session token. AWS session token.
+                    description: |-
+                      AWS session token.
+                      AWS session token.
                     type: string
                   azureAccountKey:
-                    description: Azure account key. Azure account key.
+                    description: |-
+                      Azure account key.
+                      Azure account key.
                     type: string
                   azureAccountName:
-                    description: Azure account name. Azure account name.
+                    description: |-
+                      Azure account name.
+                      Azure account name.
                     type: string
                   azureBlobEnvironment:
-                    description: Azure blob environment. Azure blob environment.
+                    description: |-
+                      Azure blob environment.
+                      Azure blob environment.
                     type: string
                   azureContainerName:
-                    description: Azure container name to write snapshots to. Azure
-                      container name to write snapshots to.
+                    description: |-
+                      Azure container name to write
+                      snapshots to.
+                      Azure container name to write snapshots to.
                     type: string
                   azureEndpoint:
-                    description: Azure blob storage endpoint. This is typically only
-                      set when using a non-Azure implementation like Azurite. Azure
-                      blob storage endpoint. This is typically only set when using
-                      a non-Azure implementation like Azurite.
+                    description: |-
+                      Azure blob storage endpoint. This is typically
+                      only set when using a non-Azure implementation like Azurite.
+                      Azure blob storage endpoint. This is typically only set when using a non-Azure implementation like Azurite.
                     type: string
                   filePrefix:
-                    description: Within the directory or bucket prefix given by path_prefix,
-                      the file or object name of snapshot files will start with this
-                      string. The file or object name of snapshot files will start
-                      with this string.
+                    description: |-
+                      Within the directory or bucket
+                      prefix given by path_prefix, the file or object name of snapshot files
+                      will start with this string.
+                      The file or object name of snapshot files will start with this string.
                     type: string
                   googleDisableTls:
-                    description: Disable TLS for the GCS endpoint. This should only
-                      be used for testing purposes, typically in conjunction with
-                      google_endpoint. Disable TLS for the GCS endpoint.
+                    description: |-
+                      Disable TLS for the GCS endpoint. This
+                      should only be used for testing purposes, typically in conjunction with
+                      google_endpoint.
+                      Disable TLS for the GCS endpoint.
                     type: boolean
                   googleEndpoint:
-                    description: GCS endpoint. This is typically only set when using
-                      a non-Google GCS implementation like fake-gcs-server. GCS endpoint.
-                      This is typically only set when using a non-Google GCS implementation
-                      like fake-gcs-server.
+                    description: |-
+                      GCS endpoint. This is typically only set when
+                      using a non-Google GCS implementation like fake-gcs-server.
+                      GCS endpoint. This is typically only set when using a non-Google GCS implementation like fake-gcs-server.
                     type: string
                   googleGcsBucket:
-                    description: GCS bucket to write snapshots to. GCS bucket to write
-                      snapshots to.
+                    description: |-
+                      GCS bucket to write snapshots to.
+                      GCS bucket to write snapshots to.
                     type: string
                   googleServiceAccountKey:
-                    description: 'Google service account key in JSON format. The raw
-                      value looks like this: Google service account key in JSON format.'
+                    description: |-
+                      Google service account key in JSON format.
+                      The raw value looks like this:
+                      Google service account key in JSON format.
                     type: string
                   id:
                     type: string
                   intervalSeconds:
-                    description: Time (in seconds) between snapshots. Number of seconds
-                      between snapshots.
+                    description: |-
+                      Time (in seconds) between snapshots.
+                      Number of seconds between snapshots.
                     type: number
                   localMaxSpace:
-                    description: For storage_type = local, the maximum space, in bytes,
-                      to use for snapshots. Snapshot attempts will fail if there is
-                      not enough space left in this allowance. The maximum space,
-                      in bytes, to use for snapshots.
+                    description: |-
+                      For storage_type = local, the maximum
+                      space, in bytes, to use for snapshots. Snapshot attempts will fail if there is not enough
+                      space left in this allowance.
+                      The maximum space, in bytes, to use for snapshots.
                     type: number
                   name:
-                    description: <required> – Name of the configuration to modify.
+                    description: |-
+                      <required> – Name of the configuration to modify.
                       Name of the snapshot agent configuration.
                     type: string
                   namespace:
-                    description: The namespace to provision the resource in. The value
-                      should not contain leading or trailing forward slashes. The
-                      namespace is always relative to the provider's configured namespace.
-                      Available only for Vault Enterprise. Target namespace. (requires
-                      Enterprise)
+                    description: |-
+                      The namespace to provision the resource in.
+                      The value should not contain leading or trailing forward slashes.
+                      The namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise.
+                      Target namespace. (requires Enterprise)
                     type: string
                   pathPrefix:
-                    description: For storage_type = "local", the directory to write
-                      the snapshots in. For cloud storage types, the bucket prefix
-                      to use. Types azure-s3 and google-gcs require a trailing / (slash).
-                      Types local and aws-s3 the trailing / is optional. The directory
-                      or bucket prefix to to use.
+                    description: |-
+                      For storage_type = "local", the directory to
+                      write the snapshots in. For cloud storage types, the bucket prefix to use.
+                      Types azure-s3 and google-gcs require a trailing / (slash).
+                      Types local and aws-s3 the trailing / is optional.
+                      The directory or bucket prefix to to use.
                     type: string
                   retain:
-                    description: How many snapshots are to be kept; when writing a
-                      snapshot, if there are more snapshots already stored than this
-                      number, the oldest ones will be deleted. How many snapshots
-                      are to be kept.
+                    description: |-
+                      How many snapshots are to be kept; when writing a
+                      snapshot, if there are more snapshots already stored than this number, the
+                      oldest ones will be deleted.
+                      How many snapshots are to be kept.
                     type: number
                   storageType:
-                    description: One of "local", "azure-blob", "aws-s3", or "google-gcs".
-                      The remaining parameters described below are all specific to
-                      the selected storage_type and prefixed accordingly. What storage
-                      service to send snapshots to. One of "local", "azure-blob",
-                      "aws-s3", or "google-gcs".
+                    description: |-
+                      One of "local", "azure-blob", "aws-s3",
+                      or "google-gcs". The remaining parameters described below are all specific to
+                      the selected storage_type and prefixed accordingly.
+                      What storage service to send snapshots to. One of "local", "azure-blob", "aws-s3", or "google-gcs".
                     type: string
                 type: object
               conditions:
@@ -700,14 +778,23 @@ spec:
                   description: A Condition that may apply to a resource.
                   properties:
                     lastTransitionTime:
-                      description: LastTransitionTime is the last time this condition
-                        transitioned from one status to another.
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
                       format: date-time
                       type: string
                     message:
-                      description: A Message containing details about this condition's
-                        last transition from one status to another, if any.
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
                       type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
                     reason:
                       description: A Reason for this condition's last transition from
                         one status to another.
@@ -717,8 +804,9 @@ spec:
                         False, or Unknown?
                       type: string
                     type:
-                      description: Type of this condition. At most one of each condition
-                        type may apply to a resource at any point in time.
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
                       type: string
                   required:
                   - lastTransitionTime
@@ -727,6 +815,16 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
             type: object
         required:
         - spec

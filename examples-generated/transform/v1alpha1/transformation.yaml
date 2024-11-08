@@ -1,0 +1,34 @@
+apiVersion: transform.vault.upbound.io/v1alpha1
+kind: Transformation
+metadata:
+  annotations:
+    meta.upbound.io/example-id: transform/v1alpha1/transformation
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    allowedRoles:
+    - payments
+    name: ccn-fpe
+    pathSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    template: ccn
+    tweakSource: internal
+    type: fpe
+
+---
+
+apiVersion: vault.vault.upbound.io/v1alpha1
+kind: Mount
+metadata:
+  annotations:
+    meta.upbound.io/example-id: transform/v1alpha1/transformation
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    path: transform
+    type: transform

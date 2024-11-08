@@ -30,6 +30,14 @@ type SecretBackendInitParameters struct {
 	// CA certificate to use when verifying Nomad server certificate, must be x509 PEM encoded.
 	CACert *string `json:"caCert,omitempty" tf:"ca_cert,omitempty"`
 
+	// Client certificate to provide to the Nomad server, must be x509 PEM encoded.
+	// Client certificate used for Nomad's TLS communication, must be x509 PEM encoded and if this is set you need to also set client_key.
+	ClientCertSecretRef *v1.SecretKeySelector `json:"clientCertSecretRef,omitempty" tf:"-"`
+
+	// Client certificate key to provide to the Nomad server, must be x509 PEM encoded.
+	// Client key used for Nomad's TLS communication, must be x509 PEM encoded and if this is set you need to also set client_cert.
+	ClientKeySecretRef *v1.SecretKeySelector `json:"clientKeySecretRef,omitempty" tf:"-"`
+
 	// Default lease duration for secrets in seconds.
 	// Default lease duration for secrets in seconds.
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
@@ -71,6 +79,10 @@ type SecretBackendInitParameters struct {
 	// Specifies the ttl of the lease for the generated token.
 	// Maximum possible lease duration for secrets in seconds.
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// Specifies the Nomad Management token to use.
+	// Specifies the Nomad Management token to use.
+	TokenSecretRef *v1.SecretKeySelector `json:"tokenSecretRef,omitempty" tf:"-"`
 }
 
 type SecretBackendObservation struct {
@@ -226,9 +238,8 @@ type SecretBackendParameters struct {
 type SecretBackendSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -247,13 +258,14 @@ type SecretBackendStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretBackend is the Schema for the SecretBackends API. Creates a Nomad secret backend for Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretBackend struct {
 	metav1.TypeMeta   `json:",inline"`

@@ -20,6 +20,10 @@ type RateLimitInitParameters struct {
 	// If set, when a client reaches a rate limit threshold, the client will be prohibited from any further requests until after the 'block_interval' in seconds has elapsed.
 	BlockInterval *float64 `json:"blockInterval,omitempty" tf:"block_interval,omitempty"`
 
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default. Requires Vault 1.15+.
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default.
+	Inheritable *bool `json:"inheritable,omitempty" tf:"inheritable,omitempty"`
+
 	// The duration in seconds to enforce rate limiting for.
 	// The duration in seconds to enforce rate limiting for.
 	Interval *float64 `json:"interval,omitempty" tf:"interval,omitempty"`
@@ -63,6 +67,10 @@ type RateLimitObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default. Requires Vault 1.15+.
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default.
+	Inheritable *bool `json:"inheritable,omitempty" tf:"inheritable,omitempty"`
+
 	// The duration in seconds to enforce rate limiting for.
 	// The duration in seconds to enforce rate limiting for.
 	Interval *float64 `json:"interval,omitempty" tf:"interval,omitempty"`
@@ -104,6 +112,11 @@ type RateLimitParameters struct {
 	// If set, when a client reaches a rate limit threshold, the client will be prohibited from any further requests until after the 'block_interval' in seconds has elapsed.
 	// +kubebuilder:validation:Optional
 	BlockInterval *float64 `json:"blockInterval,omitempty" tf:"block_interval,omitempty"`
+
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default. Requires Vault 1.15+.
+	// If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default.
+	// +kubebuilder:validation:Optional
+	Inheritable *bool `json:"inheritable,omitempty" tf:"inheritable,omitempty"`
 
 	// The duration in seconds to enforce rate limiting for.
 	// The duration in seconds to enforce rate limiting for.
@@ -149,9 +162,8 @@ type RateLimitParameters struct {
 type RateLimitSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     RateLimitParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -170,19 +182,20 @@ type RateLimitStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // RateLimit is the Schema for the RateLimits API. Manage Rate Limit Quota
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type RateLimit struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.rate) || has(self.initProvider.rate)",message="rate is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.rate) || (has(self.initProvider) && has(self.initProvider.rate))",message="spec.forProvider.rate is a required parameter"
 	Spec   RateLimitSpec   `json:"spec"`
 	Status RateLimitStatus `json:"status,omitempty"`
 }

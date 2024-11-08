@@ -18,6 +18,7 @@ type OidcProviderInitParameters struct {
 	// The client IDs that are permitted to use the provider.
 	// If empty, no clients are allowed. If *, all clients are allowed.
 	// The client IDs that are permitted to use the provider. If empty, no clients are allowed. If "*", all clients are allowed.
+	// +listType=set
 	AllowedClientIds []*string `json:"allowedClientIds,omitempty" tf:"allowed_client_ids,omitempty"`
 
 	// Set to true if the issuer endpoint uses HTTPS.
@@ -41,6 +42,7 @@ type OidcProviderInitParameters struct {
 
 	// The scopes available for requesting on the provider.
 	// The scopes available for requesting on the provider.
+	// +listType=set
 	ScopesSupported []*string `json:"scopesSupported,omitempty" tf:"scopes_supported,omitempty"`
 }
 
@@ -49,6 +51,7 @@ type OidcProviderObservation struct {
 	// The client IDs that are permitted to use the provider.
 	// If empty, no clients are allowed. If *, all clients are allowed.
 	// The client IDs that are permitted to use the provider. If empty, no clients are allowed. If "*", all clients are allowed.
+	// +listType=set
 	AllowedClientIds []*string `json:"allowedClientIds,omitempty" tf:"allowed_client_ids,omitempty"`
 
 	// Set to true if the issuer endpoint uses HTTPS.
@@ -80,6 +83,7 @@ type OidcProviderObservation struct {
 
 	// The scopes available for requesting on the provider.
 	// The scopes available for requesting on the provider.
+	// +listType=set
 	ScopesSupported []*string `json:"scopesSupported,omitempty" tf:"scopes_supported,omitempty"`
 }
 
@@ -89,6 +93,7 @@ type OidcProviderParameters struct {
 	// If empty, no clients are allowed. If *, all clients are allowed.
 	// The client IDs that are permitted to use the provider. If empty, no clients are allowed. If "*", all clients are allowed.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedClientIds []*string `json:"allowedClientIds,omitempty" tf:"allowed_client_ids,omitempty"`
 
 	// Set to true if the issuer endpoint uses HTTPS.
@@ -117,6 +122,7 @@ type OidcProviderParameters struct {
 	// The scopes available for requesting on the provider.
 	// The scopes available for requesting on the provider.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	ScopesSupported []*string `json:"scopesSupported,omitempty" tf:"scopes_supported,omitempty"`
 }
 
@@ -124,9 +130,8 @@ type OidcProviderParameters struct {
 type OidcProviderSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OidcProviderParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -145,18 +150,19 @@ type OidcProviderStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // OidcProvider is the Schema for the OidcProviders API. Provision OIDC Providers in Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type OidcProvider struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   OidcProviderSpec   `json:"spec"`
 	Status OidcProviderStatus `json:"status,omitempty"`
 }

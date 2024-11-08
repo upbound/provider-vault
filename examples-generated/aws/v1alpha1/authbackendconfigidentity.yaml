@@ -1,0 +1,31 @@
+apiVersion: aws.vault.upbound.io/v1alpha1
+kind: AuthBackendConfigIdentity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: aws/v1alpha1/authbackendconfigidentity
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: aws
+    iamAlias: full_arn
+    iamMetadata:
+    - canonical_arn
+    - account_id
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: aws/v1alpha1/authbackendconfigidentity
+  labels:
+    testing.upbound.io/example-name: aws
+  name: aws
+spec:
+  forProvider:
+    type: aws

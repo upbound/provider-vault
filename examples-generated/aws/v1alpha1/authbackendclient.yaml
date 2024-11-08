@@ -1,0 +1,27 @@
+apiVersion: aws.vault.upbound.io/v1alpha1
+kind: AuthBackendClient
+metadata:
+  annotations:
+    meta.upbound.io/example-id: aws/v1alpha1/authbackendclient
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    identityTokenAudience: <TOKEN_AUDIENCE>
+    identityTokenTtl: <TOKEN_TTL>
+    roleArn: <AWS_ROLE_ARN>
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: aws/v1alpha1/authbackendclient
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    type: aws
