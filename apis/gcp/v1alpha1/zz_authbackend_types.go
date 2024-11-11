@@ -21,7 +21,7 @@ type AuthBackendInitParameters struct {
 	CredentialsSecretRef *v1.SecretKeySelector `json:"credentialsSecretRef,omitempty" tf:"-"`
 
 	// Specifies overrides to service endpoints used when making API requests to GCP.
-	CustomEndpoint *CustomEndpointInitParameters `json:"customEndpoint,omitempty" tf:"custom_endpoint,omitempty"`
+	CustomEndpoint []CustomEndpointInitParameters `json:"customEndpoint,omitempty" tf:"custom_endpoint,omitempty"`
 
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
@@ -52,7 +52,7 @@ type AuthBackendInitParameters struct {
 	// Service Account to impersonate for plugin workload identity federation.
 	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
 
-	Tune *TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
+	Tune []TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 }
 
 type AuthBackendObservation struct {
@@ -65,7 +65,7 @@ type AuthBackendObservation struct {
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
 
 	// Specifies overrides to service endpoints used when making API requests to GCP.
-	CustomEndpoint *CustomEndpointObservation `json:"customEndpoint,omitempty" tf:"custom_endpoint,omitempty"`
+	CustomEndpoint []CustomEndpointObservation `json:"customEndpoint,omitempty" tf:"custom_endpoint,omitempty"`
 
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
@@ -98,7 +98,7 @@ type AuthBackendObservation struct {
 	// Service Account to impersonate for plugin workload identity federation.
 	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
 
-	Tune *TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
+	Tune []TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
 }
 
 type AuthBackendParameters struct {
@@ -114,7 +114,7 @@ type AuthBackendParameters struct {
 
 	// Specifies overrides to service endpoints used when making API requests to GCP.
 	// +kubebuilder:validation:Optional
-	CustomEndpoint *CustomEndpointParameters `json:"customEndpoint,omitempty" tf:"custom_endpoint,omitempty"`
+	CustomEndpoint []CustomEndpointParameters `json:"customEndpoint,omitempty" tf:"custom_endpoint,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -157,7 +157,7 @@ type AuthBackendParameters struct {
 	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	Tune *TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`
+	Tune []TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 }
 
 type CustomEndpointInitParameters struct {

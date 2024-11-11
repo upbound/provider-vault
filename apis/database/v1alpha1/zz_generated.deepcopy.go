@@ -2862,13 +2862,17 @@ func (in *SecretBackendConnectionInitParameters) DeepCopyInto(out *SecretBackend
 	}
 	if in.Cassandra != nil {
 		in, out := &in.Cassandra, &out.Cassandra
-		*out = new(CassandraInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]CassandraInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Couchbase != nil {
 		in, out := &in.Couchbase, &out.Couchbase
-		*out = new(CouchbaseInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]CouchbaseInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Data != nil {
 		in, out := &in.Data, &out.Data
@@ -2888,53 +2892,73 @@ func (in *SecretBackendConnectionInitParameters) DeepCopyInto(out *SecretBackend
 	}
 	if in.Elasticsearch != nil {
 		in, out := &in.Elasticsearch, &out.Elasticsearch
-		*out = new(ElasticsearchInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]ElasticsearchInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Hana != nil {
 		in, out := &in.Hana, &out.Hana
-		*out = new(HanaInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]HanaInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Influxdb != nil {
 		in, out := &in.Influxdb, &out.Influxdb
-		*out = new(InfluxdbInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]InfluxdbInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Mongodb != nil {
 		in, out := &in.Mongodb, &out.Mongodb
-		*out = new(MongodbInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MongodbInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Mongodbatlas != nil {
 		in, out := &in.Mongodbatlas, &out.Mongodbatlas
-		*out = new(MongodbatlasInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MongodbatlasInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Mssql != nil {
 		in, out := &in.Mssql, &out.Mssql
-		*out = new(MssqlInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MssqlInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.MySQL != nil {
 		in, out := &in.MySQL, &out.MySQL
-		*out = new(MySQLInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MySQLInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.MySQLAurora != nil {
 		in, out := &in.MySQLAurora, &out.MySQLAurora
-		*out = new(MySQLAuroraInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MySQLAuroraInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.MySQLLegacy != nil {
 		in, out := &in.MySQLLegacy, &out.MySQLLegacy
-		*out = new(MySQLLegacyInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MySQLLegacyInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.MySQLRDS != nil {
 		in, out := &in.MySQLRDS, &out.MySQLRDS
-		*out = new(MySQLRDSInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MySQLRDSInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
@@ -2948,8 +2972,10 @@ func (in *SecretBackendConnectionInitParameters) DeepCopyInto(out *SecretBackend
 	}
 	if in.Oracle != nil {
 		in, out := &in.Oracle, &out.Oracle
-		*out = new(OracleInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]OracleInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
@@ -2958,23 +2984,31 @@ func (in *SecretBackendConnectionInitParameters) DeepCopyInto(out *SecretBackend
 	}
 	if in.Postgresql != nil {
 		in, out := &in.Postgresql, &out.Postgresql
-		*out = new(PostgresqlInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]PostgresqlInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Redis != nil {
 		in, out := &in.Redis, &out.Redis
-		*out = new(RedisInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]RedisInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.RedisElasticache != nil {
 		in, out := &in.RedisElasticache, &out.RedisElasticache
-		*out = new(RedisElasticacheInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]RedisElasticacheInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Redshift != nil {
 		in, out := &in.Redshift, &out.Redshift
-		*out = new(RedshiftInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]RedshiftInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.RootRotationStatements != nil {
 		in, out := &in.RootRotationStatements, &out.RootRotationStatements
@@ -2989,8 +3023,10 @@ func (in *SecretBackendConnectionInitParameters) DeepCopyInto(out *SecretBackend
 	}
 	if in.Snowflake != nil {
 		in, out := &in.Snowflake, &out.Snowflake
-		*out = new(SnowflakeInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]SnowflakeInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.VerifyConnection != nil {
 		in, out := &in.VerifyConnection, &out.VerifyConnection
@@ -3062,13 +3098,17 @@ func (in *SecretBackendConnectionObservation) DeepCopyInto(out *SecretBackendCon
 	}
 	if in.Cassandra != nil {
 		in, out := &in.Cassandra, &out.Cassandra
-		*out = new(CassandraObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]CassandraObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Couchbase != nil {
 		in, out := &in.Couchbase, &out.Couchbase
-		*out = new(CouchbaseObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]CouchbaseObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Data != nil {
 		in, out := &in.Data, &out.Data
@@ -3088,13 +3128,17 @@ func (in *SecretBackendConnectionObservation) DeepCopyInto(out *SecretBackendCon
 	}
 	if in.Elasticsearch != nil {
 		in, out := &in.Elasticsearch, &out.Elasticsearch
-		*out = new(ElasticsearchObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]ElasticsearchObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Hana != nil {
 		in, out := &in.Hana, &out.Hana
-		*out = new(HanaObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]HanaObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
@@ -3103,43 +3147,59 @@ func (in *SecretBackendConnectionObservation) DeepCopyInto(out *SecretBackendCon
 	}
 	if in.Influxdb != nil {
 		in, out := &in.Influxdb, &out.Influxdb
-		*out = new(InfluxdbObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]InfluxdbObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Mongodb != nil {
 		in, out := &in.Mongodb, &out.Mongodb
-		*out = new(MongodbObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MongodbObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Mongodbatlas != nil {
 		in, out := &in.Mongodbatlas, &out.Mongodbatlas
-		*out = new(MongodbatlasObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MongodbatlasObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Mssql != nil {
 		in, out := &in.Mssql, &out.Mssql
-		*out = new(MssqlObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MssqlObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.MySQL != nil {
 		in, out := &in.MySQL, &out.MySQL
-		*out = new(MySQLObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MySQLObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.MySQLAurora != nil {
 		in, out := &in.MySQLAurora, &out.MySQLAurora
-		*out = new(MySQLAuroraObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MySQLAuroraObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.MySQLLegacy != nil {
 		in, out := &in.MySQLLegacy, &out.MySQLLegacy
-		*out = new(MySQLLegacyObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MySQLLegacyObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.MySQLRDS != nil {
 		in, out := &in.MySQLRDS, &out.MySQLRDS
-		*out = new(MySQLRDSObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MySQLRDSObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
@@ -3153,8 +3213,10 @@ func (in *SecretBackendConnectionObservation) DeepCopyInto(out *SecretBackendCon
 	}
 	if in.Oracle != nil {
 		in, out := &in.Oracle, &out.Oracle
-		*out = new(OracleObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]OracleObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
@@ -3163,23 +3225,31 @@ func (in *SecretBackendConnectionObservation) DeepCopyInto(out *SecretBackendCon
 	}
 	if in.Postgresql != nil {
 		in, out := &in.Postgresql, &out.Postgresql
-		*out = new(PostgresqlObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]PostgresqlObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Redis != nil {
 		in, out := &in.Redis, &out.Redis
-		*out = new(RedisObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]RedisObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.RedisElasticache != nil {
 		in, out := &in.RedisElasticache, &out.RedisElasticache
-		*out = new(RedisElasticacheObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]RedisElasticacheObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Redshift != nil {
 		in, out := &in.Redshift, &out.Redshift
-		*out = new(RedshiftObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]RedshiftObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.RootRotationStatements != nil {
 		in, out := &in.RootRotationStatements, &out.RootRotationStatements
@@ -3194,8 +3264,10 @@ func (in *SecretBackendConnectionObservation) DeepCopyInto(out *SecretBackendCon
 	}
 	if in.Snowflake != nil {
 		in, out := &in.Snowflake, &out.Snowflake
-		*out = new(SnowflakeObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]SnowflakeObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.VerifyConnection != nil {
 		in, out := &in.VerifyConnection, &out.VerifyConnection
@@ -3245,13 +3317,17 @@ func (in *SecretBackendConnectionParameters) DeepCopyInto(out *SecretBackendConn
 	}
 	if in.Cassandra != nil {
 		in, out := &in.Cassandra, &out.Cassandra
-		*out = new(CassandraParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]CassandraParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Couchbase != nil {
 		in, out := &in.Couchbase, &out.Couchbase
-		*out = new(CouchbaseParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]CouchbaseParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Data != nil {
 		in, out := &in.Data, &out.Data
@@ -3271,53 +3347,73 @@ func (in *SecretBackendConnectionParameters) DeepCopyInto(out *SecretBackendConn
 	}
 	if in.Elasticsearch != nil {
 		in, out := &in.Elasticsearch, &out.Elasticsearch
-		*out = new(ElasticsearchParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]ElasticsearchParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Hana != nil {
 		in, out := &in.Hana, &out.Hana
-		*out = new(HanaParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]HanaParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Influxdb != nil {
 		in, out := &in.Influxdb, &out.Influxdb
-		*out = new(InfluxdbParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]InfluxdbParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Mongodb != nil {
 		in, out := &in.Mongodb, &out.Mongodb
-		*out = new(MongodbParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MongodbParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Mongodbatlas != nil {
 		in, out := &in.Mongodbatlas, &out.Mongodbatlas
-		*out = new(MongodbatlasParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MongodbatlasParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Mssql != nil {
 		in, out := &in.Mssql, &out.Mssql
-		*out = new(MssqlParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MssqlParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.MySQL != nil {
 		in, out := &in.MySQL, &out.MySQL
-		*out = new(MySQLParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MySQLParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.MySQLAurora != nil {
 		in, out := &in.MySQLAurora, &out.MySQLAurora
-		*out = new(MySQLAuroraParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MySQLAuroraParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.MySQLLegacy != nil {
 		in, out := &in.MySQLLegacy, &out.MySQLLegacy
-		*out = new(MySQLLegacyParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MySQLLegacyParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.MySQLRDS != nil {
 		in, out := &in.MySQLRDS, &out.MySQLRDS
-		*out = new(MySQLRDSParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]MySQLRDSParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
@@ -3331,8 +3427,10 @@ func (in *SecretBackendConnectionParameters) DeepCopyInto(out *SecretBackendConn
 	}
 	if in.Oracle != nil {
 		in, out := &in.Oracle, &out.Oracle
-		*out = new(OracleParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]OracleParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
@@ -3341,23 +3439,31 @@ func (in *SecretBackendConnectionParameters) DeepCopyInto(out *SecretBackendConn
 	}
 	if in.Postgresql != nil {
 		in, out := &in.Postgresql, &out.Postgresql
-		*out = new(PostgresqlParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]PostgresqlParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Redis != nil {
 		in, out := &in.Redis, &out.Redis
-		*out = new(RedisParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]RedisParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.RedisElasticache != nil {
 		in, out := &in.RedisElasticache, &out.RedisElasticache
-		*out = new(RedisElasticacheParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]RedisElasticacheParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Redshift != nil {
 		in, out := &in.Redshift, &out.Redshift
-		*out = new(RedshiftParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]RedshiftParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.RootRotationStatements != nil {
 		in, out := &in.RootRotationStatements, &out.RootRotationStatements
@@ -3372,8 +3478,10 @@ func (in *SecretBackendConnectionParameters) DeepCopyInto(out *SecretBackendConn
 	}
 	if in.Snowflake != nil {
 		in, out := &in.Snowflake, &out.Snowflake
-		*out = new(SnowflakeParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]SnowflakeParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.VerifyConnection != nil {
 		in, out := &in.VerifyConnection, &out.VerifyConnection

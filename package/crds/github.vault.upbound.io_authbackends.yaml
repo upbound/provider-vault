@@ -187,58 +187,60 @@ spec:
                   tune:
                     description: Extra configuration block. Structure is documented
                       below.
-                    properties:
-                      allowedResponseHeaders:
-                        description: |-
-                          List of headers to whitelist and allowing
-                          a plugin to include them in the response.
-                        items:
+                    items:
+                      properties:
+                        allowedResponseHeaders:
+                          description: |-
+                            List of headers to whitelist and allowing
+                            a plugin to include them in the response.
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacRequestKeys:
+                          description: |-
+                            Specifies the list of keys that will
+                            not be HMAC'd by audit devices in the request data object.
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacResponseKeys:
+                          description: |-
+                            Specifies the list of keys that will
+                            not be HMAC'd by audit devices in the response data object.
+                          items:
+                            type: string
+                          type: array
+                        defaultLeaseTtl:
+                          description: |-
+                            Specifies the default time-to-live.
+                            If set, this overrides the global default.
+                            Must be a valid duration string
                           type: string
-                        type: array
-                      auditNonHmacRequestKeys:
-                        description: |-
-                          Specifies the list of keys that will
-                          not be HMAC'd by audit devices in the request data object.
-                        items:
+                        listingVisibility:
+                          description: |-
+                            Specifies whether to show this mount in
+                            the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
                           type: string
-                        type: array
-                      auditNonHmacResponseKeys:
-                        description: |-
-                          Specifies the list of keys that will
-                          not be HMAC'd by audit devices in the response data object.
-                        items:
+                        maxLeaseTtl:
+                          description: |-
+                            Specifies the maximum time-to-live.
+                            If set, this overrides the global default.
+                            Must be a valid duration string
                           type: string
-                        type: array
-                      defaultLeaseTtl:
-                        description: |-
-                          Specifies the default time-to-live.
-                          If set, this overrides the global default.
-                          Must be a valid duration string
-                        type: string
-                      listingVisibility:
-                        description: |-
-                          Specifies whether to show this mount in
-                          the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
-                        type: string
-                      maxLeaseTtl:
-                        description: |-
-                          Specifies the maximum time-to-live.
-                          If set, this overrides the global default.
-                          Must be a valid duration string
-                        type: string
-                      passthroughRequestHeaders:
-                        description: |-
-                          List of headers to whitelist and
-                          pass from the request to the backend.
-                        items:
+                        passthroughRequestHeaders:
+                          description: |-
+                            List of headers to whitelist and
+                            pass from the request to the backend.
+                          items:
+                            type: string
+                          type: array
+                        tokenType:
+                          description: |-
+                            Specifies the type of tokens that should be returned by
+                            the mount. Valid values are "default-service", "default-batch", "service", "batch".
                           type: string
-                        type: array
-                      tokenType:
-                        description: |-
-                          Specifies the type of tokens that should be returned by
-                          the mount. Valid values are "default-service", "default-batch", "service", "batch".
-                        type: string
-                    type: object
+                      type: object
+                    type: array
                 type: object
               initProvider:
                 description: |-
@@ -367,58 +369,60 @@ spec:
                   tune:
                     description: Extra configuration block. Structure is documented
                       below.
-                    properties:
-                      allowedResponseHeaders:
-                        description: |-
-                          List of headers to whitelist and allowing
-                          a plugin to include them in the response.
-                        items:
+                    items:
+                      properties:
+                        allowedResponseHeaders:
+                          description: |-
+                            List of headers to whitelist and allowing
+                            a plugin to include them in the response.
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacRequestKeys:
+                          description: |-
+                            Specifies the list of keys that will
+                            not be HMAC'd by audit devices in the request data object.
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacResponseKeys:
+                          description: |-
+                            Specifies the list of keys that will
+                            not be HMAC'd by audit devices in the response data object.
+                          items:
+                            type: string
+                          type: array
+                        defaultLeaseTtl:
+                          description: |-
+                            Specifies the default time-to-live.
+                            If set, this overrides the global default.
+                            Must be a valid duration string
                           type: string
-                        type: array
-                      auditNonHmacRequestKeys:
-                        description: |-
-                          Specifies the list of keys that will
-                          not be HMAC'd by audit devices in the request data object.
-                        items:
+                        listingVisibility:
+                          description: |-
+                            Specifies whether to show this mount in
+                            the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
                           type: string
-                        type: array
-                      auditNonHmacResponseKeys:
-                        description: |-
-                          Specifies the list of keys that will
-                          not be HMAC'd by audit devices in the response data object.
-                        items:
+                        maxLeaseTtl:
+                          description: |-
+                            Specifies the maximum time-to-live.
+                            If set, this overrides the global default.
+                            Must be a valid duration string
                           type: string
-                        type: array
-                      defaultLeaseTtl:
-                        description: |-
-                          Specifies the default time-to-live.
-                          If set, this overrides the global default.
-                          Must be a valid duration string
-                        type: string
-                      listingVisibility:
-                        description: |-
-                          Specifies whether to show this mount in
-                          the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
-                        type: string
-                      maxLeaseTtl:
-                        description: |-
-                          Specifies the maximum time-to-live.
-                          If set, this overrides the global default.
-                          Must be a valid duration string
-                        type: string
-                      passthroughRequestHeaders:
-                        description: |-
-                          List of headers to whitelist and
-                          pass from the request to the backend.
-                        items:
+                        passthroughRequestHeaders:
+                          description: |-
+                            List of headers to whitelist and
+                            pass from the request to the backend.
+                          items:
+                            type: string
+                          type: array
+                        tokenType:
+                          description: |-
+                            Specifies the type of tokens that should be returned by
+                            the mount. Valid values are "default-service", "default-batch", "service", "batch".
                           type: string
-                        type: array
-                      tokenType:
-                        description: |-
-                          Specifies the type of tokens that should be returned by
-                          the mount. Valid values are "default-service", "default-batch", "service", "batch".
-                        type: string
-                    type: object
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -718,58 +722,60 @@ spec:
                   tune:
                     description: Extra configuration block. Structure is documented
                       below.
-                    properties:
-                      allowedResponseHeaders:
-                        description: |-
-                          List of headers to whitelist and allowing
-                          a plugin to include them in the response.
-                        items:
+                    items:
+                      properties:
+                        allowedResponseHeaders:
+                          description: |-
+                            List of headers to whitelist and allowing
+                            a plugin to include them in the response.
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacRequestKeys:
+                          description: |-
+                            Specifies the list of keys that will
+                            not be HMAC'd by audit devices in the request data object.
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacResponseKeys:
+                          description: |-
+                            Specifies the list of keys that will
+                            not be HMAC'd by audit devices in the response data object.
+                          items:
+                            type: string
+                          type: array
+                        defaultLeaseTtl:
+                          description: |-
+                            Specifies the default time-to-live.
+                            If set, this overrides the global default.
+                            Must be a valid duration string
                           type: string
-                        type: array
-                      auditNonHmacRequestKeys:
-                        description: |-
-                          Specifies the list of keys that will
-                          not be HMAC'd by audit devices in the request data object.
-                        items:
+                        listingVisibility:
+                          description: |-
+                            Specifies whether to show this mount in
+                            the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
                           type: string
-                        type: array
-                      auditNonHmacResponseKeys:
-                        description: |-
-                          Specifies the list of keys that will
-                          not be HMAC'd by audit devices in the response data object.
-                        items:
+                        maxLeaseTtl:
+                          description: |-
+                            Specifies the maximum time-to-live.
+                            If set, this overrides the global default.
+                            Must be a valid duration string
                           type: string
-                        type: array
-                      defaultLeaseTtl:
-                        description: |-
-                          Specifies the default time-to-live.
-                          If set, this overrides the global default.
-                          Must be a valid duration string
-                        type: string
-                      listingVisibility:
-                        description: |-
-                          Specifies whether to show this mount in
-                          the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
-                        type: string
-                      maxLeaseTtl:
-                        description: |-
-                          Specifies the maximum time-to-live.
-                          If set, this overrides the global default.
-                          Must be a valid duration string
-                        type: string
-                      passthroughRequestHeaders:
-                        description: |-
-                          List of headers to whitelist and
-                          pass from the request to the backend.
-                        items:
+                        passthroughRequestHeaders:
+                          description: |-
+                            List of headers to whitelist and
+                            pass from the request to the backend.
+                          items:
+                            type: string
+                          type: array
+                        tokenType:
+                          description: |-
+                            Specifies the type of tokens that should be returned by
+                            the mount. Valid values are "default-service", "default-batch", "service", "batch".
                           type: string
-                        type: array
-                      tokenType:
-                        description: |-
-                          Specifies the type of tokens that should be returned by
-                          the mount. Valid values are "default-service", "default-batch", "service", "batch".
-                        type: string
-                    type: object
+                      type: object
+                    type: array
                 type: object
               conditions:
                 description: Conditions of the resource.

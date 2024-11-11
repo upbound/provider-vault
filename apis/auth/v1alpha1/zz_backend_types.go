@@ -37,7 +37,7 @@ type BackendInitParameters struct {
 	// path to mount the backend. This defaults to the type.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
-	Tune *TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
+	Tune []TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 
 	// Name of the auth backend
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -72,7 +72,7 @@ type BackendObservation struct {
 	// path to mount the backend. This defaults to the type.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
-	Tune *TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
+	Tune []TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
 
 	// Name of the auth backend
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -109,7 +109,7 @@ type BackendParameters struct {
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	Tune *TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`
+	Tune []TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 
 	// Name of the auth backend
 	// +kubebuilder:validation:Optional

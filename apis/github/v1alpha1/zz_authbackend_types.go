@@ -107,7 +107,7 @@ type AuthBackendInitParameters struct {
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 
 	// Extra configuration block. Structure is documented below.
-	Tune *TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
+	Tune []TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 }
 
 type AuthBackendObservation struct {
@@ -210,7 +210,7 @@ type AuthBackendObservation struct {
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 
 	// Extra configuration block. Structure is documented below.
-	Tune *TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
+	Tune []TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
 }
 
 type AuthBackendParameters struct {
@@ -324,7 +324,7 @@ type AuthBackendParameters struct {
 
 	// Extra configuration block. Structure is documented below.
 	// +kubebuilder:validation:Optional
-	Tune *TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`
+	Tune []TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 }
 
 type TuneInitParameters struct {

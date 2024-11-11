@@ -74,8 +74,10 @@ func (in *BackendInitParameters) DeepCopyInto(out *BackendInitParameters) {
 	}
 	if in.Tune != nil {
 		in, out := &in.Tune, &out.Tune
-		*out = new(TuneInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]TuneInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Type != nil {
 		in, out := &in.Type, &out.Type
@@ -171,8 +173,10 @@ func (in *BackendObservation) DeepCopyInto(out *BackendObservation) {
 	}
 	if in.Tune != nil {
 		in, out := &in.Tune, &out.Tune
-		*out = new(TuneObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]TuneObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Type != nil {
 		in, out := &in.Type, &out.Type
@@ -226,8 +230,10 @@ func (in *BackendParameters) DeepCopyInto(out *BackendParameters) {
 	}
 	if in.Tune != nil {
 		in, out := &in.Tune, &out.Tune
-		*out = new(TuneParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]TuneParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Type != nil {
 		in, out := &in.Type, &out.Type

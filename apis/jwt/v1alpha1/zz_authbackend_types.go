@@ -96,7 +96,7 @@ type AuthBackendInitParameters struct {
 	// +mapType=granular
 	ProviderConfig map[string]*string `json:"providerConfig,omitempty" tf:"provider_config,omitempty"`
 
-	Tune *TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
+	Tune []TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 
 	// Type of auth backend. Should be one of jwt or oidc. Default - jwt
 	// Type of backend. Can be either 'jwt' or 'oidc'
@@ -188,7 +188,7 @@ type AuthBackendObservation struct {
 	// +mapType=granular
 	ProviderConfig map[string]*string `json:"providerConfig,omitempty" tf:"provider_config,omitempty"`
 
-	Tune *TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
+	Tune []TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
 
 	// Type of auth backend. Should be one of jwt or oidc. Default - jwt
 	// Type of backend. Can be either 'jwt' or 'oidc'
@@ -298,7 +298,7 @@ type AuthBackendParameters struct {
 	ProviderConfig map[string]*string `json:"providerConfig,omitempty" tf:"provider_config,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	Tune *TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`
+	Tune []TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 
 	// Type of auth backend. Should be one of jwt or oidc. Default - jwt
 	// Type of backend. Can be either 'jwt' or 'oidc'

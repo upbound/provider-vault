@@ -137,8 +137,10 @@ func (in *AuthBackendInitParameters) DeepCopyInto(out *AuthBackendInitParameters
 	}
 	if in.Tune != nil {
 		in, out := &in.Tune, &out.Tune
-		*out = new(TuneInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]TuneInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 }
 
@@ -291,8 +293,10 @@ func (in *AuthBackendObservation) DeepCopyInto(out *AuthBackendObservation) {
 	}
 	if in.Tune != nil {
 		in, out := &in.Tune, &out.Tune
-		*out = new(TuneObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]TuneObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 }
 
@@ -403,8 +407,10 @@ func (in *AuthBackendParameters) DeepCopyInto(out *AuthBackendParameters) {
 	}
 	if in.Tune != nil {
 		in, out := &in.Tune, &out.Tune
-		*out = new(TuneParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]TuneParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 }
 

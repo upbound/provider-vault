@@ -60,8 +60,10 @@ func (in *AuthBackendInitParameters) DeepCopyInto(out *AuthBackendInitParameters
 	}
 	if in.CustomEndpoint != nil {
 		in, out := &in.CustomEndpoint, &out.CustomEndpoint
-		*out = new(CustomEndpointInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]CustomEndpointInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
@@ -120,8 +122,10 @@ func (in *AuthBackendInitParameters) DeepCopyInto(out *AuthBackendInitParameters
 	}
 	if in.Tune != nil {
 		in, out := &in.Tune, &out.Tune
-		*out = new(TuneInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]TuneInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 }
 
@@ -187,8 +191,10 @@ func (in *AuthBackendObservation) DeepCopyInto(out *AuthBackendObservation) {
 	}
 	if in.CustomEndpoint != nil {
 		in, out := &in.CustomEndpoint, &out.CustomEndpoint
-		*out = new(CustomEndpointObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]CustomEndpointObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
@@ -252,8 +258,10 @@ func (in *AuthBackendObservation) DeepCopyInto(out *AuthBackendObservation) {
 	}
 	if in.Tune != nil {
 		in, out := &in.Tune, &out.Tune
-		*out = new(TuneObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]TuneObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 }
 
@@ -287,8 +295,10 @@ func (in *AuthBackendParameters) DeepCopyInto(out *AuthBackendParameters) {
 	}
 	if in.CustomEndpoint != nil {
 		in, out := &in.CustomEndpoint, &out.CustomEndpoint
-		*out = new(CustomEndpointParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]CustomEndpointParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
@@ -347,8 +357,10 @@ func (in *AuthBackendParameters) DeepCopyInto(out *AuthBackendParameters) {
 	}
 	if in.Tune != nil {
 		in, out := &in.Tune, &out.Tune
-		*out = new(TuneParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]TuneParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 }
 

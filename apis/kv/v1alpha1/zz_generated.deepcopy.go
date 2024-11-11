@@ -603,8 +603,10 @@ func (in *SecretV2InitParameters) DeepCopyInto(out *SecretV2InitParameters) {
 	}
 	if in.CustomMetadata != nil {
 		in, out := &in.CustomMetadata, &out.CustomMetadata
-		*out = new(CustomMetadataInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]CustomMetadataInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	out.DataJSONSecretRef = in.DataJSONSecretRef
 	if in.DeleteAllVersions != nil {
@@ -712,8 +714,10 @@ func (in *SecretV2Observation) DeepCopyInto(out *SecretV2Observation) {
 	}
 	if in.CustomMetadata != nil {
 		in, out := &in.CustomMetadata, &out.CustomMetadata
-		*out = new(CustomMetadataObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]CustomMetadataObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.DeleteAllVersions != nil {
 		in, out := &in.DeleteAllVersions, &out.DeleteAllVersions
@@ -804,8 +808,10 @@ func (in *SecretV2Parameters) DeepCopyInto(out *SecretV2Parameters) {
 	}
 	if in.CustomMetadata != nil {
 		in, out := &in.CustomMetadata, &out.CustomMetadata
-		*out = new(CustomMetadataParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]CustomMetadataParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	out.DataJSONSecretRef = in.DataJSONSecretRef
 	if in.DeleteAllVersions != nil {

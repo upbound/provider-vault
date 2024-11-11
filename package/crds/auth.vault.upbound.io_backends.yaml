@@ -97,38 +97,40 @@ spec:
                     description: path to mount the backend. This defaults to the type.
                     type: string
                   tune:
-                    properties:
-                      allowedResponseHeaders:
-                        items:
+                    items:
+                      properties:
+                        allowedResponseHeaders:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacRequestKeys:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacResponseKeys:
+                          items:
+                            type: string
+                          type: array
+                        defaultLeaseTtl:
                           type: string
-                        type: array
-                      auditNonHmacRequestKeys:
-                        items:
+                        listingVisibility:
                           type: string
-                        type: array
-                      auditNonHmacResponseKeys:
-                        items:
+                        maxLeaseTtl:
                           type: string
-                        type: array
-                      defaultLeaseTtl:
-                        type: string
-                      listingVisibility:
-                        type: string
-                      maxLeaseTtl:
-                        type: string
-                      passthroughRequestHeaders:
-                        items:
+                        passthroughRequestHeaders:
+                          items:
+                            type: string
+                          type: array
+                        tokenType:
+                          description: |-
+                            The type of token that should be generated. Can be service,
+                            batch, or default to use the mount's tuned default (which unless changed will be
+                            service tokens). For token store roles, there are two additional possibilities:
+                            default-service and default-batch which specify the type to return unless the client
+                            requests a different type at generation time.
                           type: string
-                        type: array
-                      tokenType:
-                        description: |-
-                          The type of token that should be generated. Can be service,
-                          batch, or default to use the mount's tuned default (which unless changed will be
-                          service tokens). For token store roles, there are two additional possibilities:
-                          default-service and default-batch which specify the type to return unless the client
-                          requests a different type at generation time.
-                        type: string
-                    type: object
+                      type: object
+                    type: array
                   type:
                     description: Name of the auth backend
                     type: string
@@ -170,38 +172,40 @@ spec:
                     description: path to mount the backend. This defaults to the type.
                     type: string
                   tune:
-                    properties:
-                      allowedResponseHeaders:
-                        items:
+                    items:
+                      properties:
+                        allowedResponseHeaders:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacRequestKeys:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacResponseKeys:
+                          items:
+                            type: string
+                          type: array
+                        defaultLeaseTtl:
                           type: string
-                        type: array
-                      auditNonHmacRequestKeys:
-                        items:
+                        listingVisibility:
                           type: string
-                        type: array
-                      auditNonHmacResponseKeys:
-                        items:
+                        maxLeaseTtl:
                           type: string
-                        type: array
-                      defaultLeaseTtl:
-                        type: string
-                      listingVisibility:
-                        type: string
-                      maxLeaseTtl:
-                        type: string
-                      passthroughRequestHeaders:
-                        items:
+                        passthroughRequestHeaders:
+                          items:
+                            type: string
+                          type: array
+                        tokenType:
+                          description: |-
+                            The type of token that should be generated. Can be service,
+                            batch, or default to use the mount's tuned default (which unless changed will be
+                            service tokens). For token store roles, there are two additional possibilities:
+                            default-service and default-batch which specify the type to return unless the client
+                            requests a different type at generation time.
                           type: string
-                        type: array
-                      tokenType:
-                        description: |-
-                          The type of token that should be generated. Can be service,
-                          batch, or default to use the mount's tuned default (which unless changed will be
-                          service tokens). For token store roles, there are two additional possibilities:
-                          default-service and default-batch which specify the type to return unless the client
-                          requests a different type at generation time.
-                        type: string
-                    type: object
+                      type: object
+                    type: array
                   type:
                     description: Name of the auth backend
                     type: string
@@ -412,38 +416,40 @@ spec:
                     description: path to mount the backend. This defaults to the type.
                     type: string
                   tune:
-                    properties:
-                      allowedResponseHeaders:
-                        items:
+                    items:
+                      properties:
+                        allowedResponseHeaders:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacRequestKeys:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacResponseKeys:
+                          items:
+                            type: string
+                          type: array
+                        defaultLeaseTtl:
                           type: string
-                        type: array
-                      auditNonHmacRequestKeys:
-                        items:
+                        listingVisibility:
                           type: string
-                        type: array
-                      auditNonHmacResponseKeys:
-                        items:
+                        maxLeaseTtl:
                           type: string
-                        type: array
-                      defaultLeaseTtl:
-                        type: string
-                      listingVisibility:
-                        type: string
-                      maxLeaseTtl:
-                        type: string
-                      passthroughRequestHeaders:
-                        items:
+                        passthroughRequestHeaders:
+                          items:
+                            type: string
+                          type: array
+                        tokenType:
+                          description: |-
+                            The type of token that should be generated. Can be service,
+                            batch, or default to use the mount's tuned default (which unless changed will be
+                            service tokens). For token store roles, there are two additional possibilities:
+                            default-service and default-batch which specify the type to return unless the client
+                            requests a different type at generation time.
                           type: string
-                        type: array
-                      tokenType:
-                        description: |-
-                          The type of token that should be generated. Can be service,
-                          batch, or default to use the mount's tuned default (which unless changed will be
-                          service tokens). For token store roles, there are two additional possibilities:
-                          default-service and default-batch which specify the type to return unless the client
-                          requests a different type at generation time.
-                        type: string
-                    type: object
+                      type: object
+                    type: array
                   type:
                     description: Name of the auth backend
                     type: string

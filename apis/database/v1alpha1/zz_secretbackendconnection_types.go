@@ -2179,11 +2179,11 @@ type SecretBackendConnectionInitParameters struct {
 
 	// A nested block containing configuration options for Cassandra connections.
 	// Connection parameters for the cassandra-database-plugin plugin.
-	Cassandra *CassandraInitParameters `json:"cassandra,omitempty" tf:"cassandra,omitempty"`
+	Cassandra []CassandraInitParameters `json:"cassandra,omitempty" tf:"cassandra,omitempty"`
 
 	// A nested block containing configuration options for Couchbase connections.
 	// Connection parameters for the couchbase-database-plugin plugin.
-	Couchbase *CouchbaseInitParameters `json:"couchbase,omitempty" tf:"couchbase,omitempty"`
+	Couchbase []CouchbaseInitParameters `json:"couchbase,omitempty" tf:"couchbase,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
@@ -2192,43 +2192,43 @@ type SecretBackendConnectionInitParameters struct {
 
 	// A nested block containing configuration options for Elasticsearch connections.
 	// Connection parameters for the elasticsearch-database-plugin.
-	Elasticsearch *ElasticsearchInitParameters `json:"elasticsearch,omitempty" tf:"elasticsearch,omitempty"`
+	Elasticsearch []ElasticsearchInitParameters `json:"elasticsearch,omitempty" tf:"elasticsearch,omitempty"`
 
 	// A nested block containing configuration options for SAP HanaDB connections.
 	// Connection parameters for the hana-database-plugin plugin.
-	Hana *HanaInitParameters `json:"hana,omitempty" tf:"hana,omitempty"`
+	Hana []HanaInitParameters `json:"hana,omitempty" tf:"hana,omitempty"`
 
 	// A nested block containing configuration options for InfluxDB connections.
 	// Connection parameters for the influxdb-database-plugin plugin.
-	Influxdb *InfluxdbInitParameters `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
+	Influxdb []InfluxdbInitParameters `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
 
 	// A nested block containing configuration options for MongoDB connections.
 	// Connection parameters for the mongodb-database-plugin plugin.
-	Mongodb *MongodbInitParameters `json:"mongodb,omitempty" tf:"mongodb,omitempty"`
+	Mongodb []MongodbInitParameters `json:"mongodb,omitempty" tf:"mongodb,omitempty"`
 
 	// A nested block containing configuration options for MongoDB Atlas connections.
 	// Connection parameters for the mongodbatlas-database-plugin plugin.
-	Mongodbatlas *MongodbatlasInitParameters `json:"mongodbatlas,omitempty" tf:"mongodbatlas,omitempty"`
+	Mongodbatlas []MongodbatlasInitParameters `json:"mongodbatlas,omitempty" tf:"mongodbatlas,omitempty"`
 
 	// A nested block containing configuration options for MSSQL connections.
 	// Connection parameters for the mssql-database-plugin plugin.
-	Mssql *MssqlInitParameters `json:"mssql,omitempty" tf:"mssql,omitempty"`
+	Mssql []MssqlInitParameters `json:"mssql,omitempty" tf:"mssql,omitempty"`
 
 	// A nested block containing configuration options for MySQL connections.
 	// Connection parameters for the mysql-database-plugin plugin.
-	MySQL *MySQLInitParameters `json:"mysql,omitempty" tf:"mysql,omitempty"`
+	MySQL []MySQLInitParameters `json:"mysql,omitempty" tf:"mysql,omitempty"`
 
 	// A nested block containing configuration options for Aurora MySQL connections.
 	// Connection parameters for the mysql-aurora-database-plugin plugin.
-	MySQLAurora *MySQLAuroraInitParameters `json:"mysqlAurora,omitempty" tf:"mysql_aurora,omitempty"`
+	MySQLAurora []MySQLAuroraInitParameters `json:"mysqlAurora,omitempty" tf:"mysql_aurora,omitempty"`
 
 	// A nested block containing configuration options for legacy MySQL connections.
 	// Connection parameters for the mysql-legacy-database-plugin plugin.
-	MySQLLegacy *MySQLLegacyInitParameters `json:"mysqlLegacy,omitempty" tf:"mysql_legacy,omitempty"`
+	MySQLLegacy []MySQLLegacyInitParameters `json:"mysqlLegacy,omitempty" tf:"mysql_legacy,omitempty"`
 
 	// A nested block containing configuration options for RDS MySQL connections.
 	// Connection parameters for the mysql-rds-database-plugin plugin.
-	MySQLRDS *MySQLRDSInitParameters `json:"mysqlRds,omitempty" tf:"mysql_rds,omitempty"`
+	MySQLRDS []MySQLRDSInitParameters `json:"mysqlRds,omitempty" tf:"mysql_rds,omitempty"`
 
 	// A unique name to give the database connection.
 	// Name of the database connection.
@@ -2243,7 +2243,7 @@ type SecretBackendConnectionInitParameters struct {
 
 	// A nested block containing configuration options for Oracle connections.
 	// Connection parameters for the oracle-database-plugin plugin.
-	Oracle *OracleInitParameters `json:"oracle,omitempty" tf:"oracle,omitempty"`
+	Oracle []OracleInitParameters `json:"oracle,omitempty" tf:"oracle,omitempty"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -2251,18 +2251,18 @@ type SecretBackendConnectionInitParameters struct {
 
 	// A nested block containing configuration options for PostgreSQL connections.
 	// Connection parameters for the postgresql-database-plugin plugin.
-	Postgresql *PostgresqlInitParameters `json:"postgresql,omitempty" tf:"postgresql,omitempty"`
+	Postgresql []PostgresqlInitParameters `json:"postgresql,omitempty" tf:"postgresql,omitempty"`
 
 	// A nested block containing configuration options for Redis connections.
 	// Connection parameters for the redis-database-plugin plugin.
-	Redis *RedisInitParameters `json:"redis,omitempty" tf:"redis,omitempty"`
+	Redis []RedisInitParameters `json:"redis,omitempty" tf:"redis,omitempty"`
 
 	// A nested block containing configuration options for Redis ElastiCache connections.
 	// Connection parameters for the redis-elasticache-database-plugin plugin.
-	RedisElasticache *RedisElasticacheInitParameters `json:"redisElasticache,omitempty" tf:"redis_elasticache,omitempty"`
+	RedisElasticache []RedisElasticacheInitParameters `json:"redisElasticache,omitempty" tf:"redis_elasticache,omitempty"`
 
 	// Connection parameters for the redshift-database-plugin plugin.
-	Redshift *RedshiftInitParameters `json:"redshift,omitempty" tf:"redshift,omitempty"`
+	Redshift []RedshiftInitParameters `json:"redshift,omitempty" tf:"redshift,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -2270,7 +2270,7 @@ type SecretBackendConnectionInitParameters struct {
 
 	// A nested block containing configuration options for Snowflake connections.
 	// Connection parameters for the snowflake-database-plugin plugin.
-	Snowflake *SnowflakeInitParameters `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
+	Snowflake []SnowflakeInitParameters `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
 
 	// Whether the connection should be verified on
 	// initial configuration or not.
@@ -2291,11 +2291,11 @@ type SecretBackendConnectionObservation struct {
 
 	// A nested block containing configuration options for Cassandra connections.
 	// Connection parameters for the cassandra-database-plugin plugin.
-	Cassandra *CassandraObservation `json:"cassandra,omitempty" tf:"cassandra,omitempty"`
+	Cassandra []CassandraObservation `json:"cassandra,omitempty" tf:"cassandra,omitempty"`
 
 	// A nested block containing configuration options for Couchbase connections.
 	// Connection parameters for the couchbase-database-plugin plugin.
-	Couchbase *CouchbaseObservation `json:"couchbase,omitempty" tf:"couchbase,omitempty"`
+	Couchbase []CouchbaseObservation `json:"couchbase,omitempty" tf:"couchbase,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
@@ -2304,45 +2304,45 @@ type SecretBackendConnectionObservation struct {
 
 	// A nested block containing configuration options for Elasticsearch connections.
 	// Connection parameters for the elasticsearch-database-plugin.
-	Elasticsearch *ElasticsearchObservation `json:"elasticsearch,omitempty" tf:"elasticsearch,omitempty"`
+	Elasticsearch []ElasticsearchObservation `json:"elasticsearch,omitempty" tf:"elasticsearch,omitempty"`
 
 	// A nested block containing configuration options for SAP HanaDB connections.
 	// Connection parameters for the hana-database-plugin plugin.
-	Hana *HanaObservation `json:"hana,omitempty" tf:"hana,omitempty"`
+	Hana []HanaObservation `json:"hana,omitempty" tf:"hana,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// A nested block containing configuration options for InfluxDB connections.
 	// Connection parameters for the influxdb-database-plugin plugin.
-	Influxdb *InfluxdbObservation `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
+	Influxdb []InfluxdbObservation `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
 
 	// A nested block containing configuration options for MongoDB connections.
 	// Connection parameters for the mongodb-database-plugin plugin.
-	Mongodb *MongodbObservation `json:"mongodb,omitempty" tf:"mongodb,omitempty"`
+	Mongodb []MongodbObservation `json:"mongodb,omitempty" tf:"mongodb,omitempty"`
 
 	// A nested block containing configuration options for MongoDB Atlas connections.
 	// Connection parameters for the mongodbatlas-database-plugin plugin.
-	Mongodbatlas *MongodbatlasObservation `json:"mongodbatlas,omitempty" tf:"mongodbatlas,omitempty"`
+	Mongodbatlas []MongodbatlasObservation `json:"mongodbatlas,omitempty" tf:"mongodbatlas,omitempty"`
 
 	// A nested block containing configuration options for MSSQL connections.
 	// Connection parameters for the mssql-database-plugin plugin.
-	Mssql *MssqlObservation `json:"mssql,omitempty" tf:"mssql,omitempty"`
+	Mssql []MssqlObservation `json:"mssql,omitempty" tf:"mssql,omitempty"`
 
 	// A nested block containing configuration options for MySQL connections.
 	// Connection parameters for the mysql-database-plugin plugin.
-	MySQL *MySQLObservation `json:"mysql,omitempty" tf:"mysql,omitempty"`
+	MySQL []MySQLObservation `json:"mysql,omitempty" tf:"mysql,omitempty"`
 
 	// A nested block containing configuration options for Aurora MySQL connections.
 	// Connection parameters for the mysql-aurora-database-plugin plugin.
-	MySQLAurora *MySQLAuroraObservation `json:"mysqlAurora,omitempty" tf:"mysql_aurora,omitempty"`
+	MySQLAurora []MySQLAuroraObservation `json:"mysqlAurora,omitempty" tf:"mysql_aurora,omitempty"`
 
 	// A nested block containing configuration options for legacy MySQL connections.
 	// Connection parameters for the mysql-legacy-database-plugin plugin.
-	MySQLLegacy *MySQLLegacyObservation `json:"mysqlLegacy,omitempty" tf:"mysql_legacy,omitempty"`
+	MySQLLegacy []MySQLLegacyObservation `json:"mysqlLegacy,omitempty" tf:"mysql_legacy,omitempty"`
 
 	// A nested block containing configuration options for RDS MySQL connections.
 	// Connection parameters for the mysql-rds-database-plugin plugin.
-	MySQLRDS *MySQLRDSObservation `json:"mysqlRds,omitempty" tf:"mysql_rds,omitempty"`
+	MySQLRDS []MySQLRDSObservation `json:"mysqlRds,omitempty" tf:"mysql_rds,omitempty"`
 
 	// A unique name to give the database connection.
 	// Name of the database connection.
@@ -2357,7 +2357,7 @@ type SecretBackendConnectionObservation struct {
 
 	// A nested block containing configuration options for Oracle connections.
 	// Connection parameters for the oracle-database-plugin plugin.
-	Oracle *OracleObservation `json:"oracle,omitempty" tf:"oracle,omitempty"`
+	Oracle []OracleObservation `json:"oracle,omitempty" tf:"oracle,omitempty"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -2365,18 +2365,18 @@ type SecretBackendConnectionObservation struct {
 
 	// A nested block containing configuration options for PostgreSQL connections.
 	// Connection parameters for the postgresql-database-plugin plugin.
-	Postgresql *PostgresqlObservation `json:"postgresql,omitempty" tf:"postgresql,omitempty"`
+	Postgresql []PostgresqlObservation `json:"postgresql,omitempty" tf:"postgresql,omitempty"`
 
 	// A nested block containing configuration options for Redis connections.
 	// Connection parameters for the redis-database-plugin plugin.
-	Redis *RedisObservation `json:"redis,omitempty" tf:"redis,omitempty"`
+	Redis []RedisObservation `json:"redis,omitempty" tf:"redis,omitempty"`
 
 	// A nested block containing configuration options for Redis ElastiCache connections.
 	// Connection parameters for the redis-elasticache-database-plugin plugin.
-	RedisElasticache *RedisElasticacheObservation `json:"redisElasticache,omitempty" tf:"redis_elasticache,omitempty"`
+	RedisElasticache []RedisElasticacheObservation `json:"redisElasticache,omitempty" tf:"redis_elasticache,omitempty"`
 
 	// Connection parameters for the redshift-database-plugin plugin.
-	Redshift *RedshiftObservation `json:"redshift,omitempty" tf:"redshift,omitempty"`
+	Redshift []RedshiftObservation `json:"redshift,omitempty" tf:"redshift,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -2384,7 +2384,7 @@ type SecretBackendConnectionObservation struct {
 
 	// A nested block containing configuration options for Snowflake connections.
 	// Connection parameters for the snowflake-database-plugin plugin.
-	Snowflake *SnowflakeObservation `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
+	Snowflake []SnowflakeObservation `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
 
 	// Whether the connection should be verified on
 	// initial configuration or not.
@@ -2418,12 +2418,12 @@ type SecretBackendConnectionParameters struct {
 	// A nested block containing configuration options for Cassandra connections.
 	// Connection parameters for the cassandra-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Cassandra *CassandraParameters `json:"cassandra,omitempty" tf:"cassandra,omitempty"`
+	Cassandra []CassandraParameters `json:"cassandra,omitempty" tf:"cassandra,omitempty"`
 
 	// A nested block containing configuration options for Couchbase connections.
 	// Connection parameters for the couchbase-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Couchbase *CouchbaseParameters `json:"couchbase,omitempty" tf:"couchbase,omitempty"`
+	Couchbase []CouchbaseParameters `json:"couchbase,omitempty" tf:"couchbase,omitempty"`
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
@@ -2434,52 +2434,52 @@ type SecretBackendConnectionParameters struct {
 	// A nested block containing configuration options for Elasticsearch connections.
 	// Connection parameters for the elasticsearch-database-plugin.
 	// +kubebuilder:validation:Optional
-	Elasticsearch *ElasticsearchParameters `json:"elasticsearch,omitempty" tf:"elasticsearch,omitempty"`
+	Elasticsearch []ElasticsearchParameters `json:"elasticsearch,omitempty" tf:"elasticsearch,omitempty"`
 
 	// A nested block containing configuration options for SAP HanaDB connections.
 	// Connection parameters for the hana-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Hana *HanaParameters `json:"hana,omitempty" tf:"hana,omitempty"`
+	Hana []HanaParameters `json:"hana,omitempty" tf:"hana,omitempty"`
 
 	// A nested block containing configuration options for InfluxDB connections.
 	// Connection parameters for the influxdb-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Influxdb *InfluxdbParameters `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
+	Influxdb []InfluxdbParameters `json:"influxdb,omitempty" tf:"influxdb,omitempty"`
 
 	// A nested block containing configuration options for MongoDB connections.
 	// Connection parameters for the mongodb-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Mongodb *MongodbParameters `json:"mongodb,omitempty" tf:"mongodb,omitempty"`
+	Mongodb []MongodbParameters `json:"mongodb,omitempty" tf:"mongodb,omitempty"`
 
 	// A nested block containing configuration options for MongoDB Atlas connections.
 	// Connection parameters for the mongodbatlas-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Mongodbatlas *MongodbatlasParameters `json:"mongodbatlas,omitempty" tf:"mongodbatlas,omitempty"`
+	Mongodbatlas []MongodbatlasParameters `json:"mongodbatlas,omitempty" tf:"mongodbatlas,omitempty"`
 
 	// A nested block containing configuration options for MSSQL connections.
 	// Connection parameters for the mssql-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Mssql *MssqlParameters `json:"mssql,omitempty" tf:"mssql,omitempty"`
+	Mssql []MssqlParameters `json:"mssql,omitempty" tf:"mssql,omitempty"`
 
 	// A nested block containing configuration options for MySQL connections.
 	// Connection parameters for the mysql-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	MySQL *MySQLParameters `json:"mysql,omitempty" tf:"mysql,omitempty"`
+	MySQL []MySQLParameters `json:"mysql,omitempty" tf:"mysql,omitempty"`
 
 	// A nested block containing configuration options for Aurora MySQL connections.
 	// Connection parameters for the mysql-aurora-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	MySQLAurora *MySQLAuroraParameters `json:"mysqlAurora,omitempty" tf:"mysql_aurora,omitempty"`
+	MySQLAurora []MySQLAuroraParameters `json:"mysqlAurora,omitempty" tf:"mysql_aurora,omitempty"`
 
 	// A nested block containing configuration options for legacy MySQL connections.
 	// Connection parameters for the mysql-legacy-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	MySQLLegacy *MySQLLegacyParameters `json:"mysqlLegacy,omitempty" tf:"mysql_legacy,omitempty"`
+	MySQLLegacy []MySQLLegacyParameters `json:"mysqlLegacy,omitempty" tf:"mysql_legacy,omitempty"`
 
 	// A nested block containing configuration options for RDS MySQL connections.
 	// Connection parameters for the mysql-rds-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	MySQLRDS *MySQLRDSParameters `json:"mysqlRds,omitempty" tf:"mysql_rds,omitempty"`
+	MySQLRDS []MySQLRDSParameters `json:"mysqlRds,omitempty" tf:"mysql_rds,omitempty"`
 
 	// A unique name to give the database connection.
 	// Name of the database connection.
@@ -2497,7 +2497,7 @@ type SecretBackendConnectionParameters struct {
 	// A nested block containing configuration options for Oracle connections.
 	// Connection parameters for the oracle-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Oracle *OracleParameters `json:"oracle,omitempty" tf:"oracle,omitempty"`
+	Oracle []OracleParameters `json:"oracle,omitempty" tf:"oracle,omitempty"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
@@ -2507,21 +2507,21 @@ type SecretBackendConnectionParameters struct {
 	// A nested block containing configuration options for PostgreSQL connections.
 	// Connection parameters for the postgresql-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Postgresql *PostgresqlParameters `json:"postgresql,omitempty" tf:"postgresql,omitempty"`
+	Postgresql []PostgresqlParameters `json:"postgresql,omitempty" tf:"postgresql,omitempty"`
 
 	// A nested block containing configuration options for Redis connections.
 	// Connection parameters for the redis-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Redis *RedisParameters `json:"redis,omitempty" tf:"redis,omitempty"`
+	Redis []RedisParameters `json:"redis,omitempty" tf:"redis,omitempty"`
 
 	// A nested block containing configuration options for Redis ElastiCache connections.
 	// Connection parameters for the redis-elasticache-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	RedisElasticache *RedisElasticacheParameters `json:"redisElasticache,omitempty" tf:"redis_elasticache,omitempty"`
+	RedisElasticache []RedisElasticacheParameters `json:"redisElasticache,omitempty" tf:"redis_elasticache,omitempty"`
 
 	// Connection parameters for the redshift-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Redshift *RedshiftParameters `json:"redshift,omitempty" tf:"redshift,omitempty"`
+	Redshift []RedshiftParameters `json:"redshift,omitempty" tf:"redshift,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -2531,7 +2531,7 @@ type SecretBackendConnectionParameters struct {
 	// A nested block containing configuration options for Snowflake connections.
 	// Connection parameters for the snowflake-database-plugin plugin.
 	// +kubebuilder:validation:Optional
-	Snowflake *SnowflakeParameters `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
+	Snowflake []SnowflakeParameters `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
 
 	// Whether the connection should be verified on
 	// initial configuration or not.

@@ -96,7 +96,7 @@ type SecretV2InitParameters struct {
 	// KV secret. Refer to the
 	// Configuration Options for more info.
 	// Custom metadata to be set for the secret.
-	CustomMetadata *CustomMetadataInitParameters `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
+	CustomMetadata []CustomMetadataInitParameters `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
 	// JSON-encoded string that will be
 	// written as the secret data at the given path.
@@ -160,7 +160,7 @@ type SecretV2Observation struct {
 	// KV secret. Refer to the
 	// Configuration Options for more info.
 	// Custom metadata to be set for the secret.
-	CustomMetadata *CustomMetadataObservation `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
+	CustomMetadata []CustomMetadataObservation `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
 	// If set to true, permanently deletes all
 	// versions for the specified key.
@@ -222,7 +222,7 @@ type SecretV2Parameters struct {
 	// Configuration Options for more info.
 	// Custom metadata to be set for the secret.
 	// +kubebuilder:validation:Optional
-	CustomMetadata *CustomMetadataParameters `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
+	CustomMetadata []CustomMetadataParameters `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
 	// JSON-encoded string that will be
 	// written as the secret data at the given path.
