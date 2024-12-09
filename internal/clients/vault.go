@@ -138,7 +138,7 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 		}
 		return ps, errors.Wrap(
 			configureNoForkVaultClient(ctx, &ps, *tfProvider),
-			"failed to configure the no-fork GCP client",
+			"failed to configure the no-fork Vault client",
 		)
 	}
 }
