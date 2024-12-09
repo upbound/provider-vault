@@ -1,4 +1,5 @@
 kubeconfig
+vault-auto-unseal-keys.yaml
 
 /.cache
 /.work

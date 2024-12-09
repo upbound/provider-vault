@@ -163,7 +163,14 @@ local-deploy: build controlplane.up local.xpkg.deploy.provider.$(PROJECT_NAME)
 
 e2e: build controlplane.up local-deploy uptest
 
-.PHONY: uptest e2e cobertura submodules fallthrough run crds.clean
+vault.uninstall:
+	@$(INFO) uninstalling vault
+	helm uninstall vault -n vault
+	@$(KUBECTL) delete pvc -n vault --all
+	@$(KUBECTL) delete secret vault-auto-unseal-keys --ignore-not-found
+	@$(OK) uninstalled vault
+
+.PHONY: uptest e2e cobertura submodules fallthrough run crds.clean vault.uninstall
 
 # ====================================================================================
 # Special Targets
