@@ -21,6 +21,7 @@ type OidcClientInitParameters struct {
 
 	// A list of assignment resources associated with the client.
 	// A list of assignment resources associated with the client.
+	// +listType=set
 	Assignments []*string `json:"assignments,omitempty" tf:"assignments,omitempty"`
 
 	// The client type based on its ability to maintain confidentiality of credentials.
@@ -54,6 +55,7 @@ type OidcClientInitParameters struct {
 	// One of these values must exactly match the redirect_uri parameter value
 	// used in each authentication request.
 	// Redirection URI values used by the client. One of these values must exactly match the redirect_uri parameter value used in each authentication request.
+	// +listType=set
 	RedirectUris []*string `json:"redirectUris,omitempty" tf:"redirect_uris,omitempty"`
 }
 
@@ -65,8 +67,10 @@ type OidcClientObservation struct {
 
 	// A list of assignment resources associated with the client.
 	// A list of assignment resources associated with the client.
+	// +listType=set
 	Assignments []*string `json:"assignments,omitempty" tf:"assignments,omitempty"`
 
+	// The Client ID returned by Vault.
 	// The Client ID from Vault.
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
 
@@ -103,6 +107,7 @@ type OidcClientObservation struct {
 	// One of these values must exactly match the redirect_uri parameter value
 	// used in each authentication request.
 	// Redirection URI values used by the client. One of these values must exactly match the redirect_uri parameter value used in each authentication request.
+	// +listType=set
 	RedirectUris []*string `json:"redirectUris,omitempty" tf:"redirect_uris,omitempty"`
 }
 
@@ -116,6 +121,7 @@ type OidcClientParameters struct {
 	// A list of assignment resources associated with the client.
 	// A list of assignment resources associated with the client.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Assignments []*string `json:"assignments,omitempty" tf:"assignments,omitempty"`
 
 	// The client type based on its ability to maintain confidentiality of credentials.
@@ -155,6 +161,7 @@ type OidcClientParameters struct {
 	// used in each authentication request.
 	// Redirection URI values used by the client. One of these values must exactly match the redirect_uri parameter value used in each authentication request.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	RedirectUris []*string `json:"redirectUris,omitempty" tf:"redirect_uris,omitempty"`
 }
 
@@ -162,9 +169,8 @@ type OidcClientParameters struct {
 type OidcClientSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OidcClientParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -183,18 +189,19 @@ type OidcClientStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // OidcClient is the Schema for the OidcClients API. Provision OIDC Clients in Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type OidcClient struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   OidcClientSpec   `json:"spec"`
 	Status OidcClientStatus `json:"status,omitempty"`
 }

@@ -18,6 +18,7 @@ type VaultNamespaceInitParameters struct {
 	// Custom metadata describing this namespace. Value type
 	// is map[string]string. Requires Vault version 1.12+.
 	// Custom metadata describing this namespace. Value type is map[string]string.
+	// +mapType=granular
 	CustomMetadata map[string]*string `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
 	// The namespace to provision the resource in.
@@ -25,7 +26,17 @@ type VaultNamespaceInitParameters struct {
 	// The namespace is always relative to the provider's configured namespace.
 	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.VaultNamespace
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Reference to a VaultNamespace in vault to populate namespace.
+	// +kubebuilder:validation:Optional
+	NamespaceRef *v1.Reference `json:"namespaceRef,omitempty" tf:"-"`
+
+	// Selector for a VaultNamespace in vault to populate namespace.
+	// +kubebuilder:validation:Optional
+	NamespaceSelector *v1.Selector `json:"namespaceSelector,omitempty" tf:"-"`
 
 	// The path of the namespace. Must not have a trailing /.
 	// Namespace path.
@@ -42,6 +53,7 @@ type VaultNamespaceObservation struct {
 	// Custom metadata describing this namespace. Value type
 	// is map[string]string. Requires Vault version 1.12+.
 	// Custom metadata describing this namespace. Value type is map[string]string.
+	// +mapType=granular
 	CustomMetadata map[string]*string `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
 	// The fully qualified path to the namespace, including the provider namespace and a trailing slash.
@@ -74,6 +86,7 @@ type VaultNamespaceParameters struct {
 	// is map[string]string. Requires Vault version 1.12+.
 	// Custom metadata describing this namespace. Value type is map[string]string.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	CustomMetadata map[string]*string `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
 	// The namespace to provision the resource in.
@@ -81,8 +94,18 @@ type VaultNamespaceParameters struct {
 	// The namespace is always relative to the provider's configured namespace.
 	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.VaultNamespace
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Reference to a VaultNamespace in vault to populate namespace.
+	// +kubebuilder:validation:Optional
+	NamespaceRef *v1.Reference `json:"namespaceRef,omitempty" tf:"-"`
+
+	// Selector for a VaultNamespace in vault to populate namespace.
+	// +kubebuilder:validation:Optional
+	NamespaceSelector *v1.Selector `json:"namespaceSelector,omitempty" tf:"-"`
 
 	// The path of the namespace. Must not have a trailing /.
 	// Namespace path.
@@ -100,9 +123,8 @@ type VaultNamespaceParameters struct {
 type VaultNamespaceSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     VaultNamespaceParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -121,18 +143,19 @@ type VaultNamespaceStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // VaultNamespace is the Schema for the VaultNamespaces API. Writes namespaces for Vault
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type VaultNamespace struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || has(self.initProvider.path)",message="path is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || (has(self.initProvider) && has(self.initProvider.path))",message="spec.forProvider.path is a required parameter"
 	Spec   VaultNamespaceSpec   `json:"spec"`
 	Status VaultNamespaceStatus `json:"status,omitempty"`
 }

@@ -1,7 +1,7 @@
 # Provider Vault
 
 `provider-vault` is a [Crossplane](https://crossplane.io/) provider that
-is built using [Upjet](https://github.com/upbound/upjet) code
+is built using [Upjet](https://github.com/crossplane/upjet) code
 generation tools and exposes XRM-conformant managed resources for the
 Vault API.
 
@@ -111,27 +111,34 @@ You can see the API reference [here](https://doc.crds.dev/github.com/upbound/pro
 
 ## Developing
 
+Initialize the repository with
+```bash
+make submodules
+```
+
 Run code-generation pipeline:
-```console
-go run cmd/generator/main.go "$PWD"
+```bash
+make generate
 ```
 
 Run against a Kubernetes cluster:
 
-```console
+```bash
 make run
 ```
 
 Build, push, and install:
 
-```console
+```bash
 make all
 ```
 
-Build binary:
+Build binary, image and Crossplane package (xpkg):
 
-```console
+```bash
 make build
+# to build all architectures / platforms, use:
+make -j2 build.all
 ```
 
 ## Report a Bug

@@ -1,0 +1,31 @@
+apiVersion: mfa.vault.upbound.io/v1alpha1
+kind: Pingid
+metadata:
+  annotations:
+    meta.upbound.io/example-id: mfa/v1alpha1/pingid
+  labels:
+    testing.upbound.io/example-name: my_pingid
+  name: my-pingid
+spec:
+  forProvider:
+    mountAccessorSelector:
+      matchLabels:
+        testing.upbound.io/example-name: userpass
+    name: my_pingid
+    settingsFileBase64: ${var.settings_file}
+    usernameFormat: user@example.com
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: mfa/v1alpha1/pingid
+  labels:
+    testing.upbound.io/example-name: userpass
+  name: userpass
+spec:
+  forProvider:
+    path: userpass
+    type: userpass

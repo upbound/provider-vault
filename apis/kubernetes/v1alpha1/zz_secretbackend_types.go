@@ -16,7 +16,11 @@ import (
 type SecretBackendInitParameters struct {
 
 	// List of managed key registry entry names that the mount in question is allowed to access
+	// +listType=set
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
 
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
 	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
@@ -26,6 +30,9 @@ type SecretBackendInitParameters struct {
 
 	// Default lease duration for tokens and secrets in seconds
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
 
 	// Human-friendly description of the mount
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -37,6 +44,9 @@ type SecretBackendInitParameters struct {
 
 	// Enable the secrets engine to access Vault's external entropy source
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
+
+	// The key to use for signing plugin workload identity tokens
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
 
 	// A PEM-encoded CA certificate used by the
 	// secrets engine to verify the Kubernetes API server certificate. Defaults to the local
@@ -50,6 +60,9 @@ type SecretBackendInitParameters struct {
 	// are not set on the host that Vault is running on.
 	// The Kubernetes API URL to connect to.
 	KubernetesHost *string `json:"kubernetesHost,omitempty" tf:"kubernetes_host,omitempty"`
+
+	// Specifies whether to show this mount in the UI-specific listing endpoint
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
 
 	// Local mount flag that can be explicitly set to true to enforce local mount in HA environment
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
@@ -65,13 +78,26 @@ type SecretBackendInitParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Specifies mount type specific options that are passed to the backend
+	// +mapType=granular
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
 
 	// Where the secret backend will be mounted
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
+
 	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
+
+	// The JSON web token of the service account used by the
+	// secrets engine to manage Kubernetes credentials. Defaults to the local pod’s JWT if Vault
+	// is running in Kubernetes.
+	// The JSON web token of the service account used by the secrets engine to manage Kubernetes credentials. Defaults to the local pod’s JWT if found.
+	ServiceAccountJwtSecretRef *v1.SecretKeySelector `json:"serviceAccountJwtSecretRef,omitempty" tf:"-"`
 }
 
 type SecretBackendObservation struct {
@@ -80,7 +106,11 @@ type SecretBackendObservation struct {
 	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
 
 	// List of managed key registry entry names that the mount in question is allowed to access
+	// +listType=set
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
 
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
 	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
@@ -90,6 +120,9 @@ type SecretBackendObservation struct {
 
 	// Default lease duration for tokens and secrets in seconds
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
 
 	// Human-friendly description of the mount
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -104,6 +137,9 @@ type SecretBackendObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The key to use for signing plugin workload identity tokens
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
 	// A PEM-encoded CA certificate used by the
 	// secrets engine to verify the Kubernetes API server certificate. Defaults to the local
 	// pod’s CA if Vault is running in Kubernetes. Otherwise, defaults to the root CA set where
@@ -116,6 +152,9 @@ type SecretBackendObservation struct {
 	// are not set on the host that Vault is running on.
 	// The Kubernetes API URL to connect to.
 	KubernetesHost *string `json:"kubernetesHost,omitempty" tf:"kubernetes_host,omitempty"`
+
+	// Specifies whether to show this mount in the UI-specific listing endpoint
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
 
 	// Local mount flag that can be explicitly set to true to enforce local mount in HA environment
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
@@ -131,10 +170,17 @@ type SecretBackendObservation struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Specifies mount type specific options that are passed to the backend
+	// +mapType=granular
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
 
 	// Where the secret backend will be mounted
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
@@ -144,7 +190,12 @@ type SecretBackendParameters struct {
 
 	// List of managed key registry entry names that the mount in question is allowed to access
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	// +kubebuilder:validation:Optional
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
 
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
 	// +kubebuilder:validation:Optional
@@ -157,6 +208,10 @@ type SecretBackendParameters struct {
 	// Default lease duration for tokens and secrets in seconds
 	// +kubebuilder:validation:Optional
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	// +kubebuilder:validation:Optional
+	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
 
 	// Human-friendly description of the mount
 	// +kubebuilder:validation:Optional
@@ -172,6 +227,10 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
 
+	// The key to use for signing plugin workload identity tokens
+	// +kubebuilder:validation:Optional
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
 	// A PEM-encoded CA certificate used by the
 	// secrets engine to verify the Kubernetes API server certificate. Defaults to the local
 	// pod’s CA if Vault is running in Kubernetes. Otherwise, defaults to the root CA set where
@@ -186,6 +245,10 @@ type SecretBackendParameters struct {
 	// The Kubernetes API URL to connect to.
 	// +kubebuilder:validation:Optional
 	KubernetesHost *string `json:"kubernetesHost,omitempty" tf:"kubernetes_host,omitempty"`
+
+	// Specifies whether to show this mount in the UI-specific listing endpoint
+	// +kubebuilder:validation:Optional
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
 
 	// Local mount flag that can be explicitly set to true to enforce local mount in HA environment
 	// +kubebuilder:validation:Optional
@@ -205,11 +268,20 @@ type SecretBackendParameters struct {
 
 	// Specifies mount type specific options that are passed to the backend
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	// +kubebuilder:validation:Optional
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
 
 	// Where the secret backend will be mounted
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	// +kubebuilder:validation:Optional
@@ -227,9 +299,8 @@ type SecretBackendParameters struct {
 type SecretBackendSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -248,18 +319,19 @@ type SecretBackendStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretBackend is the Schema for the SecretBackends API. Creates a Kubernetes Secrets Engine in Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretBackend struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || has(self.initProvider.path)",message="path is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || (has(self.initProvider) && has(self.initProvider.path))",message="spec.forProvider.path is a required parameter"
 	Spec   SecretBackendSpec   `json:"spec"`
 	Status SecretBackendStatus `json:"status,omitempty"`
 }

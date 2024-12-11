@@ -1,0 +1,38 @@
+apiVersion: azure.vault.upbound.io/v1alpha1
+kind: AuthBackendRole
+metadata:
+  annotations:
+    meta.upbound.io/example-id: azure/v1alpha1/authbackendrole
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: azure
+    boundResourceGroups:
+    - "123456789012"
+    boundSubscriptionIds:
+    - 11111111-2222-3333-4444-555555555555
+    role: test-role
+    tokenMaxTtl: 120
+    tokenPolicies:
+    - default
+    - dev
+    - prod
+    tokenTtl: 60
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: azure/v1alpha1/authbackendrole
+  labels:
+    testing.upbound.io/example-name: azure
+  name: azure
+spec:
+  forProvider:
+    type: azure

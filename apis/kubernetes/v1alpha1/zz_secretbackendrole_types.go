@@ -15,24 +15,44 @@ import (
 
 type SecretBackendRoleInitParameters struct {
 
+	// A label selector for Kubernetes namespaces
+	// in which credentials can be generated. Accepts either a JSON or YAML object. The value should be
+	// of type LabelSelector.
+	// If set with allowed_kubernetes_namespace, the conditions are ORed.
+	// A label selector for Kubernetes namespaces in which credentials can begenerated. Accepts either a JSON or YAML object. The value should be of typeLabelSelector. If set with `allowed_kubernetes_namespace`, the conditions are `OR`ed.
+	AllowedKubernetesNamespaceSelector *string `json:"allowedKubernetesNamespaceSelector,omitempty" tf:"allowed_kubernetes_namespace_selector,omitempty"`
+
 	// The list of Kubernetes namespaces this role
-	// can generate credentials for. If set to * all namespaces are allowed.
-	// The list of Kubernetes namespaces this role can generate credentials for. If set to '*' all namespaces are allowed.
+	// can generate credentials for. If set to * all namespaces are allowed. If set with
+	// allowed_kubernetes_namespace_selector, the conditions are ORed.
+	// The list of Kubernetes namespaces this role can generate credentials for. If set to '*' all namespaces are allowed. If set with`allowed_kubernetes_namespace_selector`, the conditions are `OR`ed.
 	AllowedKubernetesNamespaces []*string `json:"allowedKubernetesNamespaces,omitempty" tf:"allowed_kubernetes_namespaces,omitempty"`
 
 	// The path of the Kubernetes Secrets Engine backend mount to create
 	// the role in.
 	// The mount path for the Kubernetes secrets engine.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/kubernetes/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a SecretBackend in kubernetes to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackend in kubernetes to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// Additional annotations to apply to all generated
 	// Kubernetes objects.
 	// Additional annotations to apply to all generated Kubernetes objects.
+	// +mapType=granular
 	ExtraAnnotations map[string]*string `json:"extraAnnotations,omitempty" tf:"extra_annotations,omitempty"`
 
 	// Additional labels to apply to all generated Kubernetes
 	// objects.
 	// Additional labels to apply to all generated Kubernetes objects.
+	// +mapType=granular
 	ExtraLabels map[string]*string `json:"extraLabels,omitempty" tf:"extra_labels,omitempty"`
 
 	// The Role or ClusterRole rules to use when generating
@@ -87,9 +107,17 @@ type SecretBackendRoleInitParameters struct {
 
 type SecretBackendRoleObservation struct {
 
+	// A label selector for Kubernetes namespaces
+	// in which credentials can be generated. Accepts either a JSON or YAML object. The value should be
+	// of type LabelSelector.
+	// If set with allowed_kubernetes_namespace, the conditions are ORed.
+	// A label selector for Kubernetes namespaces in which credentials can begenerated. Accepts either a JSON or YAML object. The value should be of typeLabelSelector. If set with `allowed_kubernetes_namespace`, the conditions are `OR`ed.
+	AllowedKubernetesNamespaceSelector *string `json:"allowedKubernetesNamespaceSelector,omitempty" tf:"allowed_kubernetes_namespace_selector,omitempty"`
+
 	// The list of Kubernetes namespaces this role
-	// can generate credentials for. If set to * all namespaces are allowed.
-	// The list of Kubernetes namespaces this role can generate credentials for. If set to '*' all namespaces are allowed.
+	// can generate credentials for. If set to * all namespaces are allowed. If set with
+	// allowed_kubernetes_namespace_selector, the conditions are ORed.
+	// The list of Kubernetes namespaces this role can generate credentials for. If set to '*' all namespaces are allowed. If set with`allowed_kubernetes_namespace_selector`, the conditions are `OR`ed.
 	AllowedKubernetesNamespaces []*string `json:"allowedKubernetesNamespaces,omitempty" tf:"allowed_kubernetes_namespaces,omitempty"`
 
 	// The path of the Kubernetes Secrets Engine backend mount to create
@@ -100,11 +128,13 @@ type SecretBackendRoleObservation struct {
 	// Additional annotations to apply to all generated
 	// Kubernetes objects.
 	// Additional annotations to apply to all generated Kubernetes objects.
+	// +mapType=granular
 	ExtraAnnotations map[string]*string `json:"extraAnnotations,omitempty" tf:"extra_annotations,omitempty"`
 
 	// Additional labels to apply to all generated Kubernetes
 	// objects.
 	// Additional labels to apply to all generated Kubernetes objects.
+	// +mapType=granular
 	ExtraLabels map[string]*string `json:"extraLabels,omitempty" tf:"extra_labels,omitempty"`
 
 	// The Role or ClusterRole rules to use when generating
@@ -161,28 +191,49 @@ type SecretBackendRoleObservation struct {
 
 type SecretBackendRoleParameters struct {
 
+	// A label selector for Kubernetes namespaces
+	// in which credentials can be generated. Accepts either a JSON or YAML object. The value should be
+	// of type LabelSelector.
+	// If set with allowed_kubernetes_namespace, the conditions are ORed.
+	// A label selector for Kubernetes namespaces in which credentials can begenerated. Accepts either a JSON or YAML object. The value should be of typeLabelSelector. If set with `allowed_kubernetes_namespace`, the conditions are `OR`ed.
+	// +kubebuilder:validation:Optional
+	AllowedKubernetesNamespaceSelector *string `json:"allowedKubernetesNamespaceSelector,omitempty" tf:"allowed_kubernetes_namespace_selector,omitempty"`
+
 	// The list of Kubernetes namespaces this role
-	// can generate credentials for. If set to * all namespaces are allowed.
-	// The list of Kubernetes namespaces this role can generate credentials for. If set to '*' all namespaces are allowed.
+	// can generate credentials for. If set to * all namespaces are allowed. If set with
+	// allowed_kubernetes_namespace_selector, the conditions are ORed.
+	// The list of Kubernetes namespaces this role can generate credentials for. If set to '*' all namespaces are allowed. If set with`allowed_kubernetes_namespace_selector`, the conditions are `OR`ed.
 	// +kubebuilder:validation:Optional
 	AllowedKubernetesNamespaces []*string `json:"allowedKubernetesNamespaces,omitempty" tf:"allowed_kubernetes_namespaces,omitempty"`
 
 	// The path of the Kubernetes Secrets Engine backend mount to create
 	// the role in.
 	// The mount path for the Kubernetes secrets engine.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/kubernetes/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a SecretBackend in kubernetes to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackend in kubernetes to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// Additional annotations to apply to all generated
 	// Kubernetes objects.
 	// Additional annotations to apply to all generated Kubernetes objects.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	ExtraAnnotations map[string]*string `json:"extraAnnotations,omitempty" tf:"extra_annotations,omitempty"`
 
 	// Additional labels to apply to all generated Kubernetes
 	// objects.
 	// Additional labels to apply to all generated Kubernetes objects.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	ExtraLabels map[string]*string `json:"extraLabels,omitempty" tf:"extra_labels,omitempty"`
 
 	// The Role or ClusterRole rules to use when generating
@@ -248,9 +299,8 @@ type SecretBackendRoleParameters struct {
 type SecretBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendRoleParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -269,20 +319,19 @@ type SecretBackendRoleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretBackendRole is the Schema for the SecretBackendRoles API. Creates a role for the Kubernetes Secrets Engine in Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.allowedKubernetesNamespaces) || has(self.initProvider.allowedKubernetesNamespaces)",message="allowedKubernetesNamespaces is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   SecretBackendRoleSpec   `json:"spec"`
 	Status SecretBackendRoleStatus `json:"status,omitempty"`
 }

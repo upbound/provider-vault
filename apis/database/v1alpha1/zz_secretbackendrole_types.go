@@ -17,7 +17,17 @@ type SecretBackendRoleInitParameters struct {
 
 	// The unique name of the Vault mount to configure.
 	// The path of the Database Secret Backend the role belongs to.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// The database statements to execute when
 	// creating a user.
@@ -27,6 +37,7 @@ type SecretBackendRoleInitParameters struct {
 	// – Specifies the configuration
 	// for the given credential_type.
 	// Specifies the configuration for the given credential_type.
+	// +mapType=granular
 	CredentialConfig map[string]*string `json:"credentialConfig,omitempty" tf:"credential_config,omitempty"`
 
 	// – Specifies the type of credential that
@@ -38,7 +49,17 @@ type SecretBackendRoleInitParameters struct {
 	// The unique name of the database connection to use for
 	// the role.
 	// Database connection to use for this role.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/database/v1alpha1.SecretBackendConnection
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	DBName *string `json:"dbName,omitempty" tf:"db_name,omitempty"`
+
+	// Reference to a SecretBackendConnection in database to populate dbName.
+	// +kubebuilder:validation:Optional
+	DBNameRef *v1.Reference `json:"dbNameRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackendConnection in database to populate dbName.
+	// +kubebuilder:validation:Optional
+	DBNameSelector *v1.Selector `json:"dbNameSelector,omitempty" tf:"-"`
 
 	// The default number of seconds for leases for this
 	// role.
@@ -91,6 +112,7 @@ type SecretBackendRoleObservation struct {
 	// – Specifies the configuration
 	// for the given credential_type.
 	// Specifies the configuration for the given credential_type.
+	// +mapType=granular
 	CredentialConfig map[string]*string `json:"credentialConfig,omitempty" tf:"credential_config,omitempty"`
 
 	// – Specifies the type of credential that
@@ -147,8 +169,18 @@ type SecretBackendRoleParameters struct {
 
 	// The unique name of the Vault mount to configure.
 	// The path of the Database Secret Backend the role belongs to.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// The database statements to execute when
 	// creating a user.
@@ -160,6 +192,7 @@ type SecretBackendRoleParameters struct {
 	// for the given credential_type.
 	// Specifies the configuration for the given credential_type.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	CredentialConfig map[string]*string `json:"credentialConfig,omitempty" tf:"credential_config,omitempty"`
 
 	// – Specifies the type of credential that
@@ -172,8 +205,18 @@ type SecretBackendRoleParameters struct {
 	// The unique name of the database connection to use for
 	// the role.
 	// Database connection to use for this role.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/database/v1alpha1.SecretBackendConnection
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	DBName *string `json:"dbName,omitempty" tf:"db_name,omitempty"`
+
+	// Reference to a SecretBackendConnection in database to populate dbName.
+	// +kubebuilder:validation:Optional
+	DBNameRef *v1.Reference `json:"dbNameRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackendConnection in database to populate dbName.
+	// +kubebuilder:validation:Optional
+	DBNameSelector *v1.Selector `json:"dbNameSelector,omitempty" tf:"-"`
 
 	// The default number of seconds for leases for this
 	// role.
@@ -223,9 +266,8 @@ type SecretBackendRoleParameters struct {
 type SecretBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendRoleParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -244,21 +286,20 @@ type SecretBackendRoleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretBackendRole is the Schema for the SecretBackendRoles API. Configures a database secret backend role for Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.creationStatements) || has(self.initProvider.creationStatements)",message="creationStatements is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dbName) || has(self.initProvider.dbName)",message="dbName is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.creationStatements) || (has(self.initProvider) && has(self.initProvider.creationStatements))",message="spec.forProvider.creationStatements is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   SecretBackendRoleSpec   `json:"spec"`
 	Status SecretBackendRoleStatus `json:"status,omitempty"`
 }

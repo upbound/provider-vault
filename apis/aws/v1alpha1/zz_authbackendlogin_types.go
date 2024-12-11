@@ -18,7 +18,17 @@ type AuthBackendLoginInitParameters struct {
 	// The unique name of the AWS auth backend. Defaults to
 	// 'aws'.
 	// AWS Auth Backend to read the token from.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// The HTTP method used in the signed IAM
 	// request.
@@ -68,7 +78,17 @@ type AuthBackendLoginInitParameters struct {
 	// The name of the AWS auth backend role to create tokens
 	// against.
 	// AWS Auth Role to read the token from.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/aws/v1alpha1.AuthBackendRole
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("role",false)
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
+
+	// Reference to a AuthBackendRole in aws to populate role.
+	// +kubebuilder:validation:Optional
+	RoleRef *v1.Reference `json:"roleRef,omitempty" tf:"-"`
+
+	// Selector for a AuthBackendRole in aws to populate role.
+	// +kubebuilder:validation:Optional
+	RoleSelector *v1.Selector `json:"roleSelector,omitempty" tf:"-"`
 
 	// The base64-encoded SHA256 RSA signature of the
 	// instance identity document to authenticate with, with all newline characters
@@ -125,13 +145,14 @@ type AuthBackendLoginObservation struct {
 	LeaseDuration *float64 `json:"leaseDuration,omitempty" tf:"lease_duration,omitempty"`
 
 	// the approximate time at which the token was created,
-	// using the clock of the system where Upbound official provider was running.
-	// time at which the lease was read, using the clock of the system where Upbound official provider was running
+	// using the clock of the system where provider was running.
+	// time at which the lease was read, using the clock of the system where provider was running
 	LeaseStartTime *string `json:"leaseStartTime,omitempty" tf:"lease_start_time,omitempty"`
 
 	// A map of information returned by the Vault server about the
 	// authentication used to generate this token.
 	// The metadata reported by the Vault server.
+	// +mapType=granular
 	Metadata map[string]*string `json:"metadata,omitempty" tf:"metadata,omitempty"`
 
 	// The namespace to provision the resource in.
@@ -179,8 +200,18 @@ type AuthBackendLoginParameters struct {
 	// The unique name of the AWS auth backend. Defaults to
 	// 'aws'.
 	// AWS Auth Backend to read the token from.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// The HTTP method used in the signed IAM
 	// request.
@@ -238,8 +269,18 @@ type AuthBackendLoginParameters struct {
 	// The name of the AWS auth backend role to create tokens
 	// against.
 	// AWS Auth Role to read the token from.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/aws/v1alpha1.AuthBackendRole
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("role",false)
 	// +kubebuilder:validation:Optional
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
+
+	// Reference to a AuthBackendRole in aws to populate role.
+	// +kubebuilder:validation:Optional
+	RoleRef *v1.Reference `json:"roleRef,omitempty" tf:"-"`
+
+	// Selector for a AuthBackendRole in aws to populate role.
+	// +kubebuilder:validation:Optional
+	RoleSelector *v1.Selector `json:"roleSelector,omitempty" tf:"-"`
 
 	// The base64-encoded SHA256 RSA signature of the
 	// instance identity document to authenticate with, with all newline characters
@@ -253,9 +294,8 @@ type AuthBackendLoginParameters struct {
 type AuthBackendLoginSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendLoginParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -274,13 +314,14 @@ type AuthBackendLoginStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // AuthBackendLogin is the Schema for the AuthBackendLogins API. Manages Vault tokens acquired using the AWS auth backend.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type AuthBackendLogin struct {
 	metav1.TypeMeta   `json:",inline"`

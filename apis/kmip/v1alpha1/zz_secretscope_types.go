@@ -29,7 +29,17 @@ type SecretScopeInitParameters struct {
 	// The unique path this backend should be mounted at. Must
 	// not begin or end with a /. Defaults to kmip.
 	// Path where KMIP backend is mounted
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/kmip/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Reference to a SecretBackend in kmip to populate path.
+	// +kubebuilder:validation:Optional
+	PathRef *v1.Reference `json:"pathRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackend in kmip to populate path.
+	// +kubebuilder:validation:Optional
+	PathSelector *v1.Selector `json:"pathSelector,omitempty" tf:"-"`
 
 	// Name of the scope.
 	// Name of the scope
@@ -79,8 +89,18 @@ type SecretScopeParameters struct {
 	// The unique path this backend should be mounted at. Must
 	// not begin or end with a /. Defaults to kmip.
 	// Path where KMIP backend is mounted
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/kmip/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Reference to a SecretBackend in kmip to populate path.
+	// +kubebuilder:validation:Optional
+	PathRef *v1.Reference `json:"pathRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackend in kmip to populate path.
+	// +kubebuilder:validation:Optional
+	PathSelector *v1.Selector `json:"pathSelector,omitempty" tf:"-"`
 
 	// Name of the scope.
 	// Name of the scope
@@ -92,9 +112,8 @@ type SecretScopeParameters struct {
 type SecretScopeSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretScopeParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -113,19 +132,19 @@ type SecretScopeStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretScope is the Schema for the SecretScopes API. Provision KMIP Secret scopes in Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretScope struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || has(self.initProvider.path)",message="path is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.scope) || has(self.initProvider.scope)",message="scope is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.scope) || (has(self.initProvider) && has(self.initProvider.scope))",message="spec.forProvider.scope is a required parameter"
 	Spec   SecretScopeSpec   `json:"spec"`
 	Status SecretScopeStatus `json:"status,omitempty"`
 }

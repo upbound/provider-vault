@@ -1,0 +1,38 @@
+apiVersion: azure.vault.upbound.io/v1alpha1
+kind: AuthBackendConfig
+metadata:
+  annotations:
+    meta.upbound.io/example-id: azure/v1alpha1/authbackendconfig
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    clientIdSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    identityTokenAudience: <TOKEN_AUDIENCE>
+    identityTokenTtl: <TOKEN_TTL>
+    tenantIdSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: azure/v1alpha1/authbackendconfig
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    identityTokenKey: example-key
+    type: azure

@@ -81,7 +81,17 @@ type SecretRoleInitParameters struct {
 	// The unique path this backend should be mounted at. Must
 	// not begin or end with a /. Defaults to kmip.
 	// Path where KMIP backend is mounted
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/kmip/v1alpha1.SecretScope
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Reference to a SecretScope in kmip to populate path.
+	// +kubebuilder:validation:Optional
+	PathRef *v1.Reference `json:"pathRef,omitempty" tf:"-"`
+
+	// Selector for a SecretScope in kmip to populate path.
+	// +kubebuilder:validation:Optional
+	PathSelector *v1.Selector `json:"pathSelector,omitempty" tf:"-"`
 
 	// Name of the role.
 	// Name of the role
@@ -89,7 +99,17 @@ type SecretRoleInitParameters struct {
 
 	// Name of the scope.
 	// Name of the scope
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/kmip/v1alpha1.SecretScope
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("scope",false)
 	Scope *string `json:"scope,omitempty" tf:"scope,omitempty"`
+
+	// Reference to a SecretScope in kmip to populate scope.
+	// +kubebuilder:validation:Optional
+	ScopeRef *v1.Reference `json:"scopeRef,omitempty" tf:"-"`
+
+	// Selector for a SecretScope in kmip to populate scope.
+	// +kubebuilder:validation:Optional
+	ScopeSelector *v1.Selector `json:"scopeSelector,omitempty" tf:"-"`
 
 	// Client certificate key bits, valid values depend on key type.
 	// Client certificate key bits, valid values depend on key type
@@ -279,8 +299,18 @@ type SecretRoleParameters struct {
 	// The unique path this backend should be mounted at. Must
 	// not begin or end with a /. Defaults to kmip.
 	// Path where KMIP backend is mounted
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/kmip/v1alpha1.SecretScope
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Reference to a SecretScope in kmip to populate path.
+	// +kubebuilder:validation:Optional
+	PathRef *v1.Reference `json:"pathRef,omitempty" tf:"-"`
+
+	// Selector for a SecretScope in kmip to populate path.
+	// +kubebuilder:validation:Optional
+	PathSelector *v1.Selector `json:"pathSelector,omitempty" tf:"-"`
 
 	// Name of the role.
 	// Name of the role
@@ -289,8 +319,18 @@ type SecretRoleParameters struct {
 
 	// Name of the scope.
 	// Name of the scope
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/kmip/v1alpha1.SecretScope
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("scope",false)
 	// +kubebuilder:validation:Optional
 	Scope *string `json:"scope,omitempty" tf:"scope,omitempty"`
+
+	// Reference to a SecretScope in kmip to populate scope.
+	// +kubebuilder:validation:Optional
+	ScopeRef *v1.Reference `json:"scopeRef,omitempty" tf:"-"`
+
+	// Selector for a SecretScope in kmip to populate scope.
+	// +kubebuilder:validation:Optional
+	ScopeSelector *v1.Selector `json:"scopeSelector,omitempty" tf:"-"`
 
 	// Client certificate key bits, valid values depend on key type.
 	// Client certificate key bits, valid values depend on key type
@@ -312,9 +352,8 @@ type SecretRoleParameters struct {
 type SecretRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretRoleParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -333,20 +372,19 @@ type SecretRoleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretRole is the Schema for the SecretRoles API. Provision KMIP Secret roles in Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.path) || has(self.initProvider.path)",message="path is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.role) || has(self.initProvider.role)",message="role is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.scope) || has(self.initProvider.scope)",message="scope is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.role) || (has(self.initProvider) && has(self.initProvider.role))",message="spec.forProvider.role is a required parameter"
 	Spec   SecretRoleSpec   `json:"spec"`
 	Status SecretRoleStatus `json:"status,omitempty"`
 }

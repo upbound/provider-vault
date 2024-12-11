@@ -20,24 +20,40 @@ type AuthBackendRoleInitParameters struct {
 	AllowGceInference *bool `json:"allowGceInference,omitempty" tf:"allow_gce_inference,omitempty"`
 
 	// Path to the mounted GCP auth backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// Reference to a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
+
 	// The instance groups that an authorized instance must belong to in order to be authenticated. If specified, either bound_zones or bound_regions must be set too.
+	// +listType=set
 	BoundInstanceGroups []*string `json:"boundInstanceGroups,omitempty" tf:"bound_instance_groups,omitempty"`
 
 	// A comma-separated list of GCP labels formatted as "key:value" strings that must be set on authorized GCE instances. Because GCP labels are not currently ACL'd, we recommend that this be used in conjunction with other restrictions.
+	// +listType=set
 	BoundLabels []*string `json:"boundLabels,omitempty" tf:"bound_labels,omitempty"`
 
 	// An array of GCP project IDs. Only entities belonging to this project can authenticate under the role.
+	// +listType=set
 	BoundProjects []*string `json:"boundProjects,omitempty" tf:"bound_projects,omitempty"`
 
 	// The list of regions that a GCE instance must belong to in order to be authenticated. If bound_instance_groups is provided, it is assumed to be a regional group and the group must belong to this region. If bound_zones are provided, this attribute is ignored.
+	// +listType=set
 	BoundRegions []*string `json:"boundRegions,omitempty" tf:"bound_regions,omitempty"`
 
 	// GCP Service Accounts allowed to issue tokens under this role. (Note: Required if role is iam)
+	// +listType=set
 	BoundServiceAccounts []*string `json:"boundServiceAccounts,omitempty" tf:"bound_service_accounts,omitempty"`
 
 	// The list of zones that a GCE instance must belong to in order to be authenticated. If bound_instance_groups is provided, it is assumed to be a zonal group and the group must belong to this zone.
+	// +listType=set
 	BoundZones []*string `json:"boundZones,omitempty" tf:"bound_zones,omitempty"`
 
 	// The number of seconds past the time of authentication that the login param JWT must expire within. For example, if a user attempts to login with a token that expires within an hour and this is set to 15 minutes, Vault will return an error prompting the user to create a new signed JWT with a shorter exp. The GCE metadata tokens currently do not allow the exp claim to be customized.
@@ -57,6 +73,7 @@ type AuthBackendRoleInitParameters struct {
 	// addresses which can authenticate successfully, and ties the resulting token to these blocks
 	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// If set, will encode an
@@ -91,6 +108,7 @@ type AuthBackendRoleInitParameters struct {
 	// List of policies to encode onto generated tokens. Depending
 	// on the auth method, this list may be supplemented by user/group/other values.
 	// Generated Token's Policies
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The incremental lifetime for generated tokens in number of seconds.
@@ -120,21 +138,27 @@ type AuthBackendRoleObservation struct {
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
 	// The instance groups that an authorized instance must belong to in order to be authenticated. If specified, either bound_zones or bound_regions must be set too.
+	// +listType=set
 	BoundInstanceGroups []*string `json:"boundInstanceGroups,omitempty" tf:"bound_instance_groups,omitempty"`
 
 	// A comma-separated list of GCP labels formatted as "key:value" strings that must be set on authorized GCE instances. Because GCP labels are not currently ACL'd, we recommend that this be used in conjunction with other restrictions.
+	// +listType=set
 	BoundLabels []*string `json:"boundLabels,omitempty" tf:"bound_labels,omitempty"`
 
 	// An array of GCP project IDs. Only entities belonging to this project can authenticate under the role.
+	// +listType=set
 	BoundProjects []*string `json:"boundProjects,omitempty" tf:"bound_projects,omitempty"`
 
 	// The list of regions that a GCE instance must belong to in order to be authenticated. If bound_instance_groups is provided, it is assumed to be a regional group and the group must belong to this region. If bound_zones are provided, this attribute is ignored.
+	// +listType=set
 	BoundRegions []*string `json:"boundRegions,omitempty" tf:"bound_regions,omitempty"`
 
 	// GCP Service Accounts allowed to issue tokens under this role. (Note: Required if role is iam)
+	// +listType=set
 	BoundServiceAccounts []*string `json:"boundServiceAccounts,omitempty" tf:"bound_service_accounts,omitempty"`
 
 	// The list of zones that a GCE instance must belong to in order to be authenticated. If bound_instance_groups is provided, it is assumed to be a zonal group and the group must belong to this zone.
+	// +listType=set
 	BoundZones []*string `json:"boundZones,omitempty" tf:"bound_zones,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -156,6 +180,7 @@ type AuthBackendRoleObservation struct {
 	// addresses which can authenticate successfully, and ties the resulting token to these blocks
 	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// If set, will encode an
@@ -190,6 +215,7 @@ type AuthBackendRoleObservation struct {
 	// List of policies to encode onto generated tokens. Depending
 	// on the auth method, this list may be supplemented by user/group/other values.
 	// Generated Token's Policies
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The incremental lifetime for generated tokens in number of seconds.
@@ -219,31 +245,47 @@ type AuthBackendRoleParameters struct {
 	AllowGceInference *bool `json:"allowGceInference,omitempty" tf:"allow_gce_inference,omitempty"`
 
 	// Path to the mounted GCP auth backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// Reference to a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
+
 	// The instance groups that an authorized instance must belong to in order to be authenticated. If specified, either bound_zones or bound_regions must be set too.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	BoundInstanceGroups []*string `json:"boundInstanceGroups,omitempty" tf:"bound_instance_groups,omitempty"`
 
 	// A comma-separated list of GCP labels formatted as "key:value" strings that must be set on authorized GCE instances. Because GCP labels are not currently ACL'd, we recommend that this be used in conjunction with other restrictions.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	BoundLabels []*string `json:"boundLabels,omitempty" tf:"bound_labels,omitempty"`
 
 	// An array of GCP project IDs. Only entities belonging to this project can authenticate under the role.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	BoundProjects []*string `json:"boundProjects,omitempty" tf:"bound_projects,omitempty"`
 
 	// The list of regions that a GCE instance must belong to in order to be authenticated. If bound_instance_groups is provided, it is assumed to be a regional group and the group must belong to this region. If bound_zones are provided, this attribute is ignored.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	BoundRegions []*string `json:"boundRegions,omitempty" tf:"bound_regions,omitempty"`
 
 	// GCP Service Accounts allowed to issue tokens under this role. (Note: Required if role is iam)
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	BoundServiceAccounts []*string `json:"boundServiceAccounts,omitempty" tf:"bound_service_accounts,omitempty"`
 
 	// The list of zones that a GCE instance must belong to in order to be authenticated. If bound_instance_groups is provided, it is assumed to be a zonal group and the group must belong to this zone.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	BoundZones []*string `json:"boundZones,omitempty" tf:"bound_zones,omitempty"`
 
 	// The number of seconds past the time of authentication that the login param JWT must expire within. For example, if a user attempts to login with a token that expires within an hour and this is set to 15 minutes, Vault will return an error prompting the user to create a new signed JWT with a shorter exp. The GCE metadata tokens currently do not allow the exp claim to be customized.
@@ -267,6 +309,7 @@ type AuthBackendRoleParameters struct {
 	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// If set, will encode an
@@ -307,6 +350,7 @@ type AuthBackendRoleParameters struct {
 	// on the auth method, this list may be supplemented by user/group/other values.
 	// Generated Token's Policies
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The incremental lifetime for generated tokens in number of seconds.
@@ -333,9 +377,8 @@ type AuthBackendRoleParameters struct {
 type AuthBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendRoleParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -354,19 +397,20 @@ type AuthBackendRoleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // AuthBackendRole is the Schema for the AuthBackendRoles API. Managing roles in an GCP auth backend in Vault
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type AuthBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.role) || has(self.initProvider.role)",message="role is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || has(self.initProvider.type)",message="type is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.role) || (has(self.initProvider) && has(self.initProvider.role))",message="spec.forProvider.role is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"
 	Spec   AuthBackendRoleSpec   `json:"spec"`
 	Status AuthBackendRoleStatus `json:"status,omitempty"`
 }

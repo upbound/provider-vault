@@ -29,6 +29,19 @@ type CassandraInitParameters struct {
 	// Whether to skip verification of the server certificate when using TLS.
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
 
+	// The password to authenticate with.
+	// The password to use when authenticating with Cassandra.
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// Concatenated PEM blocks configuring the certificate
+	// chain.
+	// Concatenated PEM blocks containing a certificate and private key; a certificate, private key, and issuing CA certificate; or just a CA certificate.
+	PemBundleSecretRef *v1.SecretKeySelector `json:"pemBundleSecretRef,omitempty" tf:"-"`
+
+	// A JSON structure configuring the certificate chain.
+	// Specifies JSON containing a certificate and private key; a certificate, private key, and issuing CA certificate; or just a CA certificate.
+	PemJSONSecretRef *v1.SecretKeySelector `json:"pemJsonSecretRef,omitempty" tf:"-"`
+
 	// The default port to connect to if no port is specified as
 	// part of the host.
 	// The transport port to use to connect to Cassandra.
@@ -140,6 +153,10 @@ type CassandraParameters struct {
 
 type CouchbaseInitParameters struct {
 
+	// Required if tls is true. Specifies the certificate authority of the Couchbase server, as a PEM certificate that has been base64 encoded.
+	// Required if `tls` is `true`. Specifies the certificate authority of the Couchbase server, as a PEM certificate that has been base64 encoded.
+	Base64PemSecretRef *v1.SecretKeySelector `json:"base64PemSecretRef,omitempty" tf:"-"`
+
 	// Required for Couchbase versions prior to 6.5.0. This is only used to verify vault's connection to the server.
 	// Required for Couchbase versions prior to 6.5.0. This is only used to verify vault's connection to the server.
 	BucketName *string `json:"bucketName,omitempty" tf:"bucket_name,omitempty"`
@@ -152,6 +169,10 @@ type CouchbaseInitParameters struct {
 	// certificate when using TLS.
 	// Specifies whether to skip verification of the server certificate when using TLS.
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
+
+	// The password to authenticate with.
+	// Specifies the password corresponding to the given username.
+	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Couchbase.
@@ -209,7 +230,7 @@ type CouchbaseParameters struct {
 	// The hosts to connect to.
 	// A set of Couchbase URIs to connect to. Must use `couchbases://` scheme if `tls` is `true`.
 	// +kubebuilder:validation:Optional
-	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
+	Hosts []*string `json:"hosts" tf:"hosts,omitempty"`
 
 	// Whether to skip verification of the server
 	// certificate when using TLS.
@@ -219,7 +240,7 @@ type CouchbaseParameters struct {
 
 	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// Whether to use TLS when connecting to Cassandra.
@@ -230,7 +251,7 @@ type CouchbaseParameters struct {
 	// The username to authenticate with.
 	// Specifies the username for Vault to use.
 	// +kubebuilder:validation:Optional
-	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+	Username *string `json:"username" tf:"username,omitempty"`
 
 	// Template describing how dynamic usernames are generated.
 	// Template describing how dynamic usernames are generated.
@@ -259,6 +280,10 @@ type ElasticsearchInitParameters struct {
 	// Whether to disable certificate verification.
 	// Whether to disable certificate verification
 	Insecure *bool `json:"insecure,omitempty" tf:"insecure,omitempty"`
+
+	// The password to authenticate with.
+	// The password to be used in the connection URL
+	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// This, if set, is used to set the SNI host when connecting via TLS.
 	// This, if set, is used to set the SNI host when connecting via TLS
@@ -345,7 +370,7 @@ type ElasticsearchParameters struct {
 
 	// The password to authenticate with.
 	// The password to be used in the connection URL
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// This, if set, is used to set the SNI host when connecting via TLS.
@@ -356,12 +381,12 @@ type ElasticsearchParameters struct {
 	// The url to connect to including the port; e.g. master.my-cluster.xxxxxx.use1.cache.amazonaws.com:6379.
 	// The URL for Elasticsearch's API
 	// +kubebuilder:validation:Optional
-	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+	URL *string `json:"url" tf:"url,omitempty"`
 
 	// The username to authenticate with.
 	// The username to be used in the connection URL
 	// +kubebuilder:validation:Optional
-	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+	Username *string `json:"username" tf:"username,omitempty"`
 
 	// Template describing how dynamic usernames are generated.
 	// Template describing how dynamic usernames are generated.
@@ -396,6 +421,10 @@ type HanaInitParameters struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -495,6 +524,19 @@ type InfluxdbInitParameters struct {
 	// Whether to skip verification of the server certificate when using TLS.
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
 
+	// The password to authenticate with.
+	// Specifies the password corresponding to the given username.
+	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
+
+	// Concatenated PEM blocks configuring the certificate
+	// chain.
+	// Concatenated PEM blocks containing a certificate and private key; a certificate, private key, and issuing CA certificate; or just a CA certificate.
+	PemBundleSecretRef *v1.SecretKeySelector `json:"pemBundleSecretRef,omitempty" tf:"-"`
+
+	// A JSON structure configuring the certificate chain.
+	// Specifies JSON containing a certificate and private key; a certificate, private key, and issuing CA certificate; or just a CA certificate.
+	PemJSONSecretRef *v1.SecretKeySelector `json:"pemJsonSecretRef,omitempty" tf:"-"`
+
 	// The default port to connect to if no port is specified as
 	// part of the host.
 	// The transport port to use to connect to Influxdb.
@@ -558,7 +600,7 @@ type InfluxdbParameters struct {
 	// The host to connect to.
 	// Influxdb host to connect to.
 	// +kubebuilder:validation:Optional
-	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+	Host *string `json:"host" tf:"host,omitempty"`
 
 	// Whether to skip verification of the server
 	// certificate when using TLS.
@@ -568,7 +610,7 @@ type InfluxdbParameters struct {
 
 	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// Concatenated PEM blocks configuring the certificate
@@ -596,7 +638,7 @@ type InfluxdbParameters struct {
 	// The username to authenticate with.
 	// Specifies the username to use for superuser access.
 	// +kubebuilder:validation:Optional
-	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+	Username *string `json:"username" tf:"username,omitempty"`
 
 	// Template describing how dynamic usernames are generated.
 	// Template describing how dynamic usernames are generated.
@@ -627,6 +669,10 @@ type MongodbInitParameters struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -716,6 +762,10 @@ type MongodbParameters struct {
 
 type MongodbatlasInitParameters struct {
 
+	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
+	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
+	PrivateKeySecretRef v1.SecretKeySelector `json:"privateKeySecretRef" tf:"-"`
+
 	// The Project ID the Database User should be created within.
 	// The Project ID the Database User should be created within.
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
@@ -740,18 +790,18 @@ type MongodbatlasParameters struct {
 
 	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
 	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PrivateKeySecretRef v1.SecretKeySelector `json:"privateKeySecretRef" tf:"-"`
 
 	// The Project ID the Database User should be created within.
 	// The Project ID the Database User should be created within.
 	// +kubebuilder:validation:Optional
-	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+	ProjectID *string `json:"projectId" tf:"project_id,omitempty"`
 
 	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
 	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
 	// +kubebuilder:validation:Optional
-	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
+	PublicKey *string `json:"publicKey" tf:"public_key,omitempty"`
 }
 
 type MssqlInitParameters struct {
@@ -788,6 +838,10 @@ type MssqlInitParameters struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -927,9 +981,21 @@ type MySQLAuroraInitParameters struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
+	// A JSON encoded credential for use with IAM authorization
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1073,9 +1139,21 @@ type MySQLInitParameters struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
+	// A JSON encoded credential for use with IAM authorization
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1114,9 +1192,21 @@ type MySQLLegacyInitParameters struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
+	// A JSON encoded credential for use with IAM authorization
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1365,9 +1455,21 @@ type MySQLRDSInitParameters struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
+	// A JSON encoded credential for use with IAM authorization
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1511,6 +1613,10 @@ type OracleInitParameters struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
 	// Enable spliting statements after semi-colons.
 	// Set to true in order to split statements after semi-colons.
 	SplitStatements *bool `json:"splitStatements,omitempty" tf:"split_statements,omitempty"`
@@ -1651,6 +1757,14 @@ type PostgresqlInitParameters struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
+	// A JSON encoded credential for use with IAM authorization
+	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -1762,6 +1876,10 @@ type PostgresqlParameters struct {
 
 type RedisElasticacheInitParameters struct {
 
+	// The password to authenticate with.
+	// The AWS secret key id to use to talk to ElastiCache. If omitted the credentials chain provider is used instead.
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
 	// The region where the ElastiCache cluster is hosted. If omitted Vault tries to infer from the environment instead.
 	// The AWS region where the ElastiCache cluster is hosted. If omitted the plugin tries to infer the region from the environment.
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
@@ -1769,6 +1887,10 @@ type RedisElasticacheInitParameters struct {
 	// The url to connect to including the port; e.g. master.my-cluster.xxxxxx.use1.cache.amazonaws.com:6379.
 	// The configuration endpoint for the ElastiCache cluster to connect to.
 	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+
+	// The username to authenticate with.
+	// The AWS access key id to use to talk to ElastiCache. If omitted the credentials chain provider is used instead.
+	UsernameSecretRef *v1.SecretKeySelector `json:"usernameSecretRef,omitempty" tf:"-"`
 }
 
 type RedisElasticacheObservation struct {
@@ -1797,7 +1919,7 @@ type RedisElasticacheParameters struct {
 	// The url to connect to including the port; e.g. master.my-cluster.xxxxxx.use1.cache.amazonaws.com:6379.
 	// The configuration endpoint for the ElastiCache cluster to connect to.
 	// +kubebuilder:validation:Optional
-	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+	URL *string `json:"url" tf:"url,omitempty"`
 
 	// The username to authenticate with.
 	// The AWS access key id to use to talk to ElastiCache. If omitted the credentials chain provider is used instead.
@@ -1819,6 +1941,10 @@ type RedisInitParameters struct {
 	// certificate when using TLS.
 	// Specifies whether to skip verification of the server certificate when using TLS.
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
+
+	// The password to authenticate with.
+	// Specifies the password corresponding to the given username.
+	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// The default port to connect to if no port is specified as
 	// part of the host.
@@ -1873,7 +1999,7 @@ type RedisParameters struct {
 	// The host to connect to.
 	// Specifies the host to connect to
 	// +kubebuilder:validation:Optional
-	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+	Host *string `json:"host" tf:"host,omitempty"`
 
 	// Whether to skip verification of the server
 	// certificate when using TLS.
@@ -1883,7 +2009,7 @@ type RedisParameters struct {
 
 	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// The default port to connect to if no port is specified as
@@ -1900,7 +2026,7 @@ type RedisParameters struct {
 	// The username to authenticate with.
 	// Specifies the username for Vault to use.
 	// +kubebuilder:validation:Optional
-	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+	Username *string `json:"username" tf:"username,omitempty"`
 }
 
 type RedshiftInitParameters struct {
@@ -1930,6 +2056,10 @@ type RedshiftInitParameters struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2035,7 +2165,17 @@ type SecretBackendConnectionInitParameters struct {
 
 	// The unique name of the Vault mount to configure.
 	// Unique name of the Vault mount to configure.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// A nested block containing configuration options for Cassandra connections.
 	// Connection parameters for the cassandra-database-plugin plugin.
@@ -2047,6 +2187,7 @@ type SecretBackendConnectionInitParameters struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// A nested block containing configuration options for Elasticsearch connections.
@@ -2158,6 +2299,7 @@ type SecretBackendConnectionObservation struct {
 
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// A nested block containing configuration options for Elasticsearch connections.
@@ -2260,8 +2402,18 @@ type SecretBackendConnectionParameters struct {
 
 	// The unique name of the Vault mount to configure.
 	// Unique name of the Vault mount to configure.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// A nested block containing configuration options for Cassandra connections.
 	// Connection parameters for the cassandra-database-plugin plugin.
@@ -2276,6 +2428,7 @@ type SecretBackendConnectionParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
 	// A nested block containing configuration options for Elasticsearch connections.
@@ -2411,6 +2564,10 @@ type SnowflakeInitParameters struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// The password to authenticate with.
+	// The root credential password used in the connection URL
+	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -2501,9 +2658,8 @@ type SnowflakeParameters struct {
 type SecretBackendConnectionSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendConnectionParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -2522,19 +2678,19 @@ type SecretBackendConnectionStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretBackendConnection is the Schema for the SecretBackendConnections API. Configures a database secret backend connection for Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretBackendConnection struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   SecretBackendConnectionSpec   `json:"spec"`
 	Status SecretBackendConnectionStatus `json:"status,omitempty"`
 }

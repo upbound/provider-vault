@@ -19,9 +19,23 @@ type DuoInitParameters struct {
 	// API hostname for Duo.
 	APIHostname *string `json:"apiHostname,omitempty" tf:"api_hostname,omitempty"`
 
+	// Integration key for Duo.
+	// Integration key for Duo.
+	IntegrationKeySecretRef v1.SecretKeySelector `json:"integrationKeySecretRef" tf:"-"`
+
 	// The mount to tie this method to for use in automatic mappings. The mapping will use the Name field of Aliases associated with this mount as the username in the mapping.
 	// The mount to tie this method to for use in automatic mappings. The mapping will use the Name field of Aliases associated with this mount as the username in the mapping.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("accessor",true)
 	MountAccessor *string `json:"mountAccessor,omitempty" tf:"mount_accessor,omitempty"`
+
+	// Reference to a Backend in auth to populate mountAccessor.
+	// +kubebuilder:validation:Optional
+	MountAccessorRef *v1.Reference `json:"mountAccessorRef,omitempty" tf:"-"`
+
+	// Selector for a Backend in auth to populate mountAccessor.
+	// +kubebuilder:validation:Optional
+	MountAccessorSelector *v1.Selector `json:"mountAccessorSelector,omitempty" tf:"-"`
 
 	// (string: <required>) – Name of the MFA method.
 	// Name of the MFA method.
@@ -37,6 +51,10 @@ type DuoInitParameters struct {
 	// Push information for Duo.
 	// Push information for Duo.
 	PushInfo *string `json:"pushInfo,omitempty" tf:"push_info,omitempty"`
+
+	// Secret key for Duo.
+	// Secret key for Duo.
+	SecretKeySecretRef v1.SecretKeySelector `json:"secretKeySecretRef" tf:"-"`
 
 	// A format string for mapping Identity names to MFA method names. Values to substitute should be placed in {{}}. For example, "{{alias.name}}@example.com". If blank, the Alias's Name field will be used as-is. Currently-supported mappings:
 	// A format string for mapping Identity names to MFA method names. Values to substitute should be placed in `{{}}`.
@@ -89,8 +107,18 @@ type DuoParameters struct {
 
 	// The mount to tie this method to for use in automatic mappings. The mapping will use the Name field of Aliases associated with this mount as the username in the mapping.
 	// The mount to tie this method to for use in automatic mappings. The mapping will use the Name field of Aliases associated with this mount as the username in the mapping.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("accessor",true)
 	// +kubebuilder:validation:Optional
 	MountAccessor *string `json:"mountAccessor,omitempty" tf:"mount_accessor,omitempty"`
+
+	// Reference to a Backend in auth to populate mountAccessor.
+	// +kubebuilder:validation:Optional
+	MountAccessorRef *v1.Reference `json:"mountAccessorRef,omitempty" tf:"-"`
+
+	// Selector for a Backend in auth to populate mountAccessor.
+	// +kubebuilder:validation:Optional
+	MountAccessorSelector *v1.Selector `json:"mountAccessorSelector,omitempty" tf:"-"`
 
 	// (string: <required>) – Name of the MFA method.
 	// Name of the MFA method.
@@ -125,9 +153,8 @@ type DuoParameters struct {
 type DuoSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     DuoParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -146,22 +173,22 @@ type DuoStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Duo is the Schema for the Duos API. Managing the MFA Duo method configuration
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type Duo struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.apiHostname) || has(self.initProvider.apiHostname)",message="apiHostname is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.integrationKeySecretRef)",message="integrationKeySecretRef is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mountAccessor) || has(self.initProvider.mountAccessor)",message="mountAccessor is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.secretKeySecretRef)",message="secretKeySecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.apiHostname) || (has(self.initProvider) && has(self.initProvider.apiHostname))",message="spec.forProvider.apiHostname is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.integrationKeySecretRef)",message="spec.forProvider.integrationKeySecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.secretKeySecretRef)",message="spec.forProvider.secretKeySecretRef is a required parameter"
 	Spec   DuoSpec   `json:"spec"`
 	Status DuoStatus `json:"status,omitempty"`
 }

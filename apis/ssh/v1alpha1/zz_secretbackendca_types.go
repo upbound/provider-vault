@@ -17,11 +17,29 @@ type SecretBackendCAInitParameters struct {
 
 	// The path where the SSH secret backend is mounted. Defaults to 'ssh'
 	// The path of the SSH Secret Backend where the CA should be configured
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// Whether Vault should generate the signing key pair internally. Defaults to true
 	// Whether Vault should generate the signing key pair internally.
 	GenerateSigningKey *bool `json:"generateSigningKey,omitempty" tf:"generate_signing_key,omitempty"`
+
+	// Specifies the desired key bits for the generated SSH CA key when generate_signing_key is set to true.
+	// Specifies the desired key bits for the generated SSH CA key when `generate_signing_key` is set to `true`.
+	KeyBits *float64 `json:"keyBits,omitempty" tf:"key_bits,omitempty"`
+
+	// Specifies the desired key type for the generated SSH CA key when generate_signing_key is set to true.
+	// Specifies the desired key type for the generated SSH CA key when `generate_signing_key` is set to `true`.
+	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -29,6 +47,10 @@ type SecretBackendCAInitParameters struct {
 	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The private key part the SSH CA key pair; required if generate_signing_key is false.
+	// Private key part the SSH CA key pair; required if generate_signing_key is false.
+	PrivateKeySecretRef *v1.SecretKeySelector `json:"privateKeySecretRef,omitempty" tf:"-"`
 
 	// The public key part the SSH CA key pair; required if generate_signing_key is false.
 	// Public key part the SSH CA key pair; required if generate_signing_key is false.
@@ -47,6 +69,14 @@ type SecretBackendCAObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Specifies the desired key bits for the generated SSH CA key when generate_signing_key is set to true.
+	// Specifies the desired key bits for the generated SSH CA key when `generate_signing_key` is set to `true`.
+	KeyBits *float64 `json:"keyBits,omitempty" tf:"key_bits,omitempty"`
+
+	// Specifies the desired key type for the generated SSH CA key when generate_signing_key is set to true.
+	// Specifies the desired key type for the generated SSH CA key when `generate_signing_key` is set to `true`.
+	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -63,13 +93,33 @@ type SecretBackendCAParameters struct {
 
 	// The path where the SSH secret backend is mounted. Defaults to 'ssh'
 	// The path of the SSH Secret Backend where the CA should be configured
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// Whether Vault should generate the signing key pair internally. Defaults to true
 	// Whether Vault should generate the signing key pair internally.
 	// +kubebuilder:validation:Optional
 	GenerateSigningKey *bool `json:"generateSigningKey,omitempty" tf:"generate_signing_key,omitempty"`
+
+	// Specifies the desired key bits for the generated SSH CA key when generate_signing_key is set to true.
+	// Specifies the desired key bits for the generated SSH CA key when `generate_signing_key` is set to `true`.
+	// +kubebuilder:validation:Optional
+	KeyBits *float64 `json:"keyBits,omitempty" tf:"key_bits,omitempty"`
+
+	// Specifies the desired key type for the generated SSH CA key when generate_signing_key is set to true.
+	// Specifies the desired key type for the generated SSH CA key when `generate_signing_key` is set to `true`.
+	// +kubebuilder:validation:Optional
+	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -94,9 +144,8 @@ type SecretBackendCAParameters struct {
 type SecretBackendCASpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendCAParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -115,13 +164,14 @@ type SecretBackendCAStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretBackendCA is the Schema for the SecretBackendCAs API. Managing CA information in an SSH secret backend in Vault
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretBackendCA struct {
 	metav1.TypeMeta   `json:",inline"`

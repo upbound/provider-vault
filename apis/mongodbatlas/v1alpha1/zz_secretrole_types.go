@@ -29,7 +29,17 @@ type SecretRoleInitParameters struct {
 
 	// Path where the MongoDB Atlas Secrets Engine is mounted.
 	// Path where MongoDB Atlas secret backend is mounted
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`
+
+	// Reference to a Mount in vault to populate mount.
+	// +kubebuilder:validation:Optional
+	MountRef *v1.Reference `json:"mountRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate mount.
+	// +kubebuilder:validation:Optional
+	MountSelector *v1.Selector `json:"mountSelector,omitempty" tf:"-"`
 
 	// The name of the role.
 	// Name of the role
@@ -52,11 +62,11 @@ type SecretRoleInitParameters struct {
 	// ID for the project to which the target API Key belongs
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Roles assigned when an org API key is assigned to a project API key.
+	// Roles assigned when an org API key is assigned to a project API key. Possible values are GROUP_CLUSTER_MANAGER, GROUP_DATA_ACCESS_ADMIN, GROUP_DATA_ACCESS_READ_ONLY, GROUP_DATA_ACCESS_READ_WRITE, GROUP_OWNER and GROUP_READ_ONLY.
 	// Roles assigned when an org API key is assigned to a project API key
 	ProjectRoles []*string `json:"projectRoles,omitempty" tf:"project_roles,omitempty"`
 
-	// List of roles that the API Key needs to have.
+	// List of roles that the API Key needs to have. Possible values are ORG_OWNER, ORG_MEMBER, ORG_GROUP_CREATOR, ORG_BILLING_ADMIN and ORG_READ_ONLY.
 	// List of roles that the API Key needs to have
 	Roles []*string `json:"roles,omitempty" tf:"roles,omitempty"`
 
@@ -106,11 +116,11 @@ type SecretRoleObservation struct {
 	// ID for the project to which the target API Key belongs
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Roles assigned when an org API key is assigned to a project API key.
+	// Roles assigned when an org API key is assigned to a project API key. Possible values are GROUP_CLUSTER_MANAGER, GROUP_DATA_ACCESS_ADMIN, GROUP_DATA_ACCESS_READ_ONLY, GROUP_DATA_ACCESS_READ_WRITE, GROUP_OWNER and GROUP_READ_ONLY.
 	// Roles assigned when an org API key is assigned to a project API key
 	ProjectRoles []*string `json:"projectRoles,omitempty" tf:"project_roles,omitempty"`
 
-	// List of roles that the API Key needs to have.
+	// List of roles that the API Key needs to have. Possible values are ORG_OWNER, ORG_MEMBER, ORG_GROUP_CREATOR, ORG_BILLING_ADMIN and ORG_READ_ONLY.
 	// List of roles that the API Key needs to have
 	Roles []*string `json:"roles,omitempty" tf:"roles,omitempty"`
 
@@ -138,8 +148,18 @@ type SecretRoleParameters struct {
 
 	// Path where the MongoDB Atlas Secrets Engine is mounted.
 	// Path where MongoDB Atlas secret backend is mounted
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`
+
+	// Reference to a Mount in vault to populate mount.
+	// +kubebuilder:validation:Optional
+	MountRef *v1.Reference `json:"mountRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate mount.
+	// +kubebuilder:validation:Optional
+	MountSelector *v1.Selector `json:"mountSelector,omitempty" tf:"-"`
 
 	// The name of the role.
 	// Name of the role
@@ -166,12 +186,12 @@ type SecretRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Roles assigned when an org API key is assigned to a project API key.
+	// Roles assigned when an org API key is assigned to a project API key. Possible values are GROUP_CLUSTER_MANAGER, GROUP_DATA_ACCESS_ADMIN, GROUP_DATA_ACCESS_READ_ONLY, GROUP_DATA_ACCESS_READ_WRITE, GROUP_OWNER and GROUP_READ_ONLY.
 	// Roles assigned when an org API key is assigned to a project API key
 	// +kubebuilder:validation:Optional
 	ProjectRoles []*string `json:"projectRoles,omitempty" tf:"project_roles,omitempty"`
 
-	// List of roles that the API Key needs to have.
+	// List of roles that the API Key needs to have. Possible values are ORG_OWNER, ORG_MEMBER, ORG_GROUP_CREATOR, ORG_BILLING_ADMIN and ORG_READ_ONLY.
 	// List of roles that the API Key needs to have
 	// +kubebuilder:validation:Optional
 	Roles []*string `json:"roles,omitempty" tf:"roles,omitempty"`
@@ -186,9 +206,8 @@ type SecretRoleParameters struct {
 type SecretRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretRoleParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -207,20 +226,20 @@ type SecretRoleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretRole is the Schema for the SecretRoles API. Creates a role for the MongoDB Atlas Secret Engine in Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mount) || has(self.initProvider.mount)",message="mount is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.roles) || has(self.initProvider.roles)",message="roles is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.roles) || (has(self.initProvider) && has(self.initProvider.roles))",message="spec.forProvider.roles is a required parameter"
 	Spec   SecretRoleSpec   `json:"spec"`
 	Status SecretRoleStatus `json:"status,omitempty"`
 }

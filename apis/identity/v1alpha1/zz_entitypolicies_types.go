@@ -17,7 +17,17 @@ type EntityPoliciesInitParameters struct {
 
 	// Entity ID to assign policies to.
 	// ID of the entity.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.Entity
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
 	EntityID *string `json:"entityId,omitempty" tf:"entity_id,omitempty"`
+
+	// Reference to a Entity in identity to populate entityId.
+	// +kubebuilder:validation:Optional
+	EntityIDRef *v1.Reference `json:"entityIdRef,omitempty" tf:"-"`
+
+	// Selector for a Entity in identity to populate entityId.
+	// +kubebuilder:validation:Optional
+	EntityIDSelector *v1.Selector `json:"entityIdSelector,omitempty" tf:"-"`
 
 	// Defaults to true.
 	// Should the resource manage policies exclusively
@@ -32,6 +42,7 @@ type EntityPoliciesInitParameters struct {
 
 	// List of policies to assign to the entity
 	// Policies to be tied to the entity.
+	// +listType=set
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 }
 
@@ -60,6 +71,7 @@ type EntityPoliciesObservation struct {
 
 	// List of policies to assign to the entity
 	// Policies to be tied to the entity.
+	// +listType=set
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 }
 
@@ -67,8 +79,18 @@ type EntityPoliciesParameters struct {
 
 	// Entity ID to assign policies to.
 	// ID of the entity.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.Entity
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	EntityID *string `json:"entityId,omitempty" tf:"entity_id,omitempty"`
+
+	// Reference to a Entity in identity to populate entityId.
+	// +kubebuilder:validation:Optional
+	EntityIDRef *v1.Reference `json:"entityIdRef,omitempty" tf:"-"`
+
+	// Selector for a Entity in identity to populate entityId.
+	// +kubebuilder:validation:Optional
+	EntityIDSelector *v1.Selector `json:"entityIdSelector,omitempty" tf:"-"`
 
 	// Defaults to true.
 	// Should the resource manage policies exclusively
@@ -86,6 +108,7 @@ type EntityPoliciesParameters struct {
 	// List of policies to assign to the entity
 	// Policies to be tied to the entity.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 }
 
@@ -93,9 +116,8 @@ type EntityPoliciesParameters struct {
 type EntityPoliciesSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     EntityPoliciesParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -114,19 +136,19 @@ type EntityPoliciesStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // EntityPolicies is the Schema for the EntityPoliciess API. Manages policies for an Identity Entity for Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type EntityPolicies struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.entityId) || has(self.initProvider.entityId)",message="entityId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.policies) || has(self.initProvider.policies)",message="policies is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.policies) || (has(self.initProvider) && has(self.initProvider.policies))",message="spec.forProvider.policies is a required parameter"
 	Spec   EntityPoliciesSpec   `json:"spec"`
 	Status EntityPoliciesStatus `json:"status,omitempty"`
 }

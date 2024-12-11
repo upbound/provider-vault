@@ -1,0 +1,53 @@
+apiVersion: transform.vault.upbound.io/v1alpha1
+kind: Template
+metadata:
+  annotations:
+    meta.upbound.io/example-id: transform/v1alpha1/template
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    alphabet: numerics
+    decodeFormats:
+      last-four-digits: $4
+    encodeFormat: $1-$2-$3-$4
+    name: ccn
+    pathSelector:
+      matchLabels:
+        testing.upbound.io/example-name: numerics
+    pattern: (\d{4})[- ](\d{4})[- ](\d{4})[- ](\d{4})
+    type: regex
+
+---
+
+apiVersion: vault.vault.upbound.io/v1alpha1
+kind: Mount
+metadata:
+  annotations:
+    meta.upbound.io/example-id: transform/v1alpha1/template
+  labels:
+    testing.upbound.io/example-name: transform
+  name: transform
+spec:
+  forProvider:
+    path: transform
+    type: transform
+
+---
+
+apiVersion: transform.vault.upbound.io/v1alpha1
+kind: Alphabet
+metadata:
+  annotations:
+    meta.upbound.io/example-id: transform/v1alpha1/template
+  labels:
+    testing.upbound.io/example-name: numerics
+  name: numerics
+spec:
+  forProvider:
+    alphabet: "0123456789"
+    name: numerics
+    pathSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
