@@ -170,7 +170,11 @@ vault.uninstall:
 	@$(KUBECTL) delete secret vault-auto-unseal-keys --ignore-not-found
 	@$(OK) uninstalled vault
 
-.PHONY: uptest e2e cobertura submodules fallthrough run crds.clean vault.uninstall
+vault.token:
+	@$(KUBECTL) get secret -n vault vault-creds --template='{{ .data.credentials | base64decode }}' | jq -r '.token'
+
+.PHONY: uptest e2e cobertura submodules fallthrough run crds.clean 
+.PHONY: vault.uninstall vault.token
 
 # ====================================================================================
 # Special Targets
