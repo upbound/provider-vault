@@ -125,17 +125,24 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 
 		// Set credentials in Terraform
 		// provider configuration
-		credsKeys := [...]string{keyToken, keyTokenName, keyCaCertFile,
-			keyCaCertDir, keyAuthLoginUserpass, keyAuthLoginAWS,
-			keyAuthLoginCert, keyAuthLoginGCP, keyAuthLoginKerberos,
-			keyAuthLoginRadius, keyAuthLoginOCI, keyAuthLoginOIDC,
-			keyAuthLoginJWT, keyAuthLoginAzure, keyAuthLogin, keyClientAuth}
-
+		credsKeys := [...]string{keyToken, keyTokenName, keyCaCertFile, keyCaCertDir}
 		for _, key := range credsKeys {
 			if v, ok := creds[key]; ok {
 				ps.Configuration[key] = v
 			}
 		}
+		// structured auth methods need to be wrapped in a single element array
+		// see: https://registry.terraform.io/providers/hashicorp/vault/latest/docs#vault-authentication-configuration-options
+		authKeys := [...]string{keyAuthLoginUserpass, keyAuthLoginAWS,
+			keyAuthLoginCert, keyAuthLoginGCP, keyAuthLoginKerberos,
+			keyAuthLoginRadius, keyAuthLoginOCI, keyAuthLoginOIDC,
+			keyAuthLoginJWT, keyAuthLoginAzure, keyAuthLogin, keyClientAuth}
+		for _, key := range authKeys {
+			if v, ok := creds[key]; ok {
+				ps.Configuration[key] = []interface{}{v}
+			}
+		}
+
 		return ps, errors.Wrap(
 			configureNoForkVaultClient(ctx, &ps, *tfProvider),
 			"failed to configure the no-fork Vault client",

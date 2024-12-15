@@ -96,6 +96,13 @@ metadata:
 type: Opaque
 stringData:
   credentials: '{"token": "$VAULT_ROOT_TOKEN"}'
+  appRoleCredentials: |
+    {
+      "auth_login": {
+        "path": "auth/approle/login",
+        "parameters": {"role_id": "my-role"}
+      }
+    }
 EOF
 
 echo_info "Applying providerconfig"
@@ -115,4 +122,20 @@ spec:
       namespace: vault
       name: vault-creds
       key: credentials
+EOF
+cat <<EOF | ${KUBECTL} apply -f -
+apiVersion: vault.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: vault-provider-config-approle
+spec:
+  address: http://$VAULT_0_POD_IP:8200
+  skip_child_token: true
+  skip_tls_verify: true
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: vault
+      name: vault-creds
+      key: appRoleCredentials
 EOF
