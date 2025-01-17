@@ -17,7 +17,17 @@ type SecretBackendRoleInitParameters struct {
 
 	// The unique name of an existing Consul secrets backend mount. Must not begin or end with a /. One of path or backend is required.
 	// The path of the Consul Secret Backend the role belongs to.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/consul/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a SecretBackend in consul to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackend in consul to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// The Consul namespace that the token will be created in.
 	// Applicable for Vault 1.10+ and Consul 1.7+".
@@ -26,11 +36,13 @@ type SecretBackendRoleInitParameters struct {
 
 	// SEE NOTE The list of Consul ACL policies to associate with these roles.
 	// List of Consul policies to associate with this role
+	// +listType=set
 	ConsulPolicies []*string `json:"consulPolicies,omitempty" tf:"consul_policies,omitempty"`
 
 	// SEE NOTE Set of Consul roles to attach to the token.
 	// Applicable for Vault 1.10+ with Consul 1.5+.
 	// Set of Consul roles to attach to the token. Applicable for Vault 1.10+ with Consul 1.5+
+	// +listType=set
 	ConsulRoles []*string `json:"consulRoles,omitempty" tf:"consul_roles,omitempty"`
 
 	// Indicates that the token should not be replicated globally and instead be local to the current datacenter.
@@ -56,6 +68,7 @@ type SecretBackendRoleInitParameters struct {
 	// identities to attach to the token. Applicable for Vault 1.11+ with Consul 1.8+.
 	// Set of Consul node identities to attach to
 	// the token. Applicable for Vault 1.11+ with Consul 1.8+
+	// +listType=set
 	NodeIdentities []*string `json:"nodeIdentities,omitempty" tf:"node_identities,omitempty"`
 
 	// The admin partition that the token will be created in.
@@ -73,16 +86,12 @@ type SecretBackendRoleInitParameters struct {
 	// service identities to attach to the token. Applicable for Vault 1.11+ with Consul 1.5+.
 	// Set of Consul service identities to attach to
 	// the token. Applicable for Vault 1.11+ with Consul 1.5+
+	// +listType=set
 	ServiceIdentities []*string `json:"serviceIdentities,omitempty" tf:"service_identities,omitempty"`
 
 	// Specifies the TTL for this role.
 	// Specifies the TTL for this role.
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
-
-	// Specifies the type of token to create when using this role. Valid values are "client" or "management".
-	// Deprecated: Consul 1.11 and later removed the legacy ACL system which supported this field.
-	// Specifies the type of token to create when using this role. Valid values are "client" or "management".
-	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 }
 
 type SecretBackendRoleObservation struct {
@@ -98,11 +107,13 @@ type SecretBackendRoleObservation struct {
 
 	// SEE NOTE The list of Consul ACL policies to associate with these roles.
 	// List of Consul policies to associate with this role
+	// +listType=set
 	ConsulPolicies []*string `json:"consulPolicies,omitempty" tf:"consul_policies,omitempty"`
 
 	// SEE NOTE Set of Consul roles to attach to the token.
 	// Applicable for Vault 1.10+ with Consul 1.5+.
 	// Set of Consul roles to attach to the token. Applicable for Vault 1.10+ with Consul 1.5+
+	// +listType=set
 	ConsulRoles []*string `json:"consulRoles,omitempty" tf:"consul_roles,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -130,6 +141,7 @@ type SecretBackendRoleObservation struct {
 	// identities to attach to the token. Applicable for Vault 1.11+ with Consul 1.8+.
 	// Set of Consul node identities to attach to
 	// the token. Applicable for Vault 1.11+ with Consul 1.8+
+	// +listType=set
 	NodeIdentities []*string `json:"nodeIdentities,omitempty" tf:"node_identities,omitempty"`
 
 	// The admin partition that the token will be created in.
@@ -147,24 +159,30 @@ type SecretBackendRoleObservation struct {
 	// service identities to attach to the token. Applicable for Vault 1.11+ with Consul 1.5+.
 	// Set of Consul service identities to attach to
 	// the token. Applicable for Vault 1.11+ with Consul 1.5+
+	// +listType=set
 	ServiceIdentities []*string `json:"serviceIdentities,omitempty" tf:"service_identities,omitempty"`
 
 	// Specifies the TTL for this role.
 	// Specifies the TTL for this role.
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
-
-	// Specifies the type of token to create when using this role. Valid values are "client" or "management".
-	// Deprecated: Consul 1.11 and later removed the legacy ACL system which supported this field.
-	// Specifies the type of token to create when using this role. Valid values are "client" or "management".
-	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 }
 
 type SecretBackendRoleParameters struct {
 
 	// The unique name of an existing Consul secrets backend mount. Must not begin or end with a /. One of path or backend is required.
 	// The path of the Consul Secret Backend the role belongs to.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/consul/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a SecretBackend in consul to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackend in consul to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// The Consul namespace that the token will be created in.
 	// Applicable for Vault 1.10+ and Consul 1.7+".
@@ -175,12 +193,14 @@ type SecretBackendRoleParameters struct {
 	// SEE NOTE The list of Consul ACL policies to associate with these roles.
 	// List of Consul policies to associate with this role
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	ConsulPolicies []*string `json:"consulPolicies,omitempty" tf:"consul_policies,omitempty"`
 
 	// SEE NOTE Set of Consul roles to attach to the token.
 	// Applicable for Vault 1.10+ with Consul 1.5+.
 	// Set of Consul roles to attach to the token. Applicable for Vault 1.10+ with Consul 1.5+
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	ConsulRoles []*string `json:"consulRoles,omitempty" tf:"consul_roles,omitempty"`
 
 	// Indicates that the token should not be replicated globally and instead be local to the current datacenter.
@@ -211,6 +231,7 @@ type SecretBackendRoleParameters struct {
 	// Set of Consul node identities to attach to
 	// the token. Applicable for Vault 1.11+ with Consul 1.8+
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	NodeIdentities []*string `json:"nodeIdentities,omitempty" tf:"node_identities,omitempty"`
 
 	// The admin partition that the token will be created in.
@@ -231,27 +252,21 @@ type SecretBackendRoleParameters struct {
 	// Set of Consul service identities to attach to
 	// the token. Applicable for Vault 1.11+ with Consul 1.5+
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	ServiceIdentities []*string `json:"serviceIdentities,omitempty" tf:"service_identities,omitempty"`
 
 	// Specifies the TTL for this role.
 	// Specifies the TTL for this role.
 	// +kubebuilder:validation:Optional
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
-
-	// Specifies the type of token to create when using this role. Valid values are "client" or "management".
-	// Deprecated: Consul 1.11 and later removed the legacy ACL system which supported this field.
-	// Specifies the type of token to create when using this role. Valid values are "client" or "management".
-	// +kubebuilder:validation:Optional
-	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 }
 
 // SecretBackendRoleSpec defines the desired state of SecretBackendRole
 type SecretBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendRoleParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -270,18 +285,19 @@ type SecretBackendRoleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretBackendRole is the Schema for the SecretBackendRoles API. Manages a Consul secrets role for a Consul secrets engine in Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   SecretBackendRoleSpec   `json:"spec"`
 	Status SecretBackendRoleStatus `json:"status,omitempty"`
 }

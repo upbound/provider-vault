@@ -1,0 +1,49 @@
+apiVersion: aws.vault.upbound.io/v1alpha1
+kind: AuthBackendRole
+metadata:
+  annotations:
+    meta.upbound.io/example-id: aws/v1alpha1/authbackendrole
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    authType: iam
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: aws
+    boundAccountIds:
+    - "123456789012"
+    boundAmiIds:
+    - ami-8c1be5f6
+    boundIamInstanceProfileArns:
+    - arn:aws:iam::123456789012:instance-profile/MyProfile
+    boundIamRoleArns:
+    - arn:aws:iam::123456789012:role/MyRole
+    boundSubnetIds:
+    - vpc-133128f1
+    boundVpcIds:
+    - vpc-b61106d4
+    inferredAwsRegion: us-east-1
+    inferredEntityType: ec2_instance
+    role: test-role
+    tokenMaxTtl: 120
+    tokenPolicies:
+    - default
+    - dev
+    - prod
+    tokenTtl: 60
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: aws/v1alpha1/authbackendrole
+  labels:
+    testing.upbound.io/example-name: aws
+  name: aws
+spec:
+  forProvider:
+    type: aws

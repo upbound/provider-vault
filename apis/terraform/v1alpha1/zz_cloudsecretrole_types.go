@@ -16,14 +16,24 @@ import (
 type CloudSecretRoleInitParameters struct {
 
 	// Must not begin or end with a /.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/terraform/v1alpha1.CloudSecretBackend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("backend",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a CloudSecretBackend in terraform to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a CloudSecretBackend in terraform to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// Maximum TTL for leases associated with this role, in seconds.
 	// Maximum allowed lease for generated credentials. If not set or set to 0, will use system default.
 	MaxTTL *float64 `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
 
-	// the name of the Upbound official provider cloud secrets engine role to create.
-	// the name of an existing role against which to create this Upbound official provider cloud credential
+	// the name of the provider cloud secrets engine role to create.
+	// the name of an existing role against which to create this provider cloud credential
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The namespace to provision the resource in.
@@ -33,8 +43,8 @@ type CloudSecretRoleInitParameters struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// the organization name managing your Upbound official provider cloud instance.
-	// name of the Upbound official provider cloud or enterprise organization
+	// the organization name managing your provider cloud instance.
+	// name of the provider cloud or enterprise organization
 	Organization *string `json:"organization,omitempty" tf:"organization,omitempty"`
 
 	// Specifies the TTL for this role.
@@ -59,8 +69,8 @@ type CloudSecretRoleObservation struct {
 	// Maximum allowed lease for generated credentials. If not set or set to 0, will use system default.
 	MaxTTL *float64 `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
 
-	// the name of the Upbound official provider cloud secrets engine role to create.
-	// the name of an existing role against which to create this Upbound official provider cloud credential
+	// the name of the provider cloud secrets engine role to create.
+	// the name of an existing role against which to create this provider cloud credential
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The namespace to provision the resource in.
@@ -70,8 +80,8 @@ type CloudSecretRoleObservation struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// the organization name managing your Upbound official provider cloud instance.
-	// name of the Upbound official provider cloud or enterprise organization
+	// the organization name managing your provider cloud instance.
+	// name of the provider cloud or enterprise organization
 	Organization *string `json:"organization,omitempty" tf:"organization,omitempty"`
 
 	// Specifies the TTL for this role.
@@ -88,16 +98,26 @@ type CloudSecretRoleObservation struct {
 type CloudSecretRoleParameters struct {
 
 	// Must not begin or end with a /.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/terraform/v1alpha1.CloudSecretBackend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("backend",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a CloudSecretBackend in terraform to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a CloudSecretBackend in terraform to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// Maximum TTL for leases associated with this role, in seconds.
 	// Maximum allowed lease for generated credentials. If not set or set to 0, will use system default.
 	// +kubebuilder:validation:Optional
 	MaxTTL *float64 `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
 
-	// the name of the Upbound official provider cloud secrets engine role to create.
-	// the name of an existing role against which to create this Upbound official provider cloud credential
+	// the name of the provider cloud secrets engine role to create.
+	// the name of an existing role against which to create this provider cloud credential
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
@@ -109,8 +129,8 @@ type CloudSecretRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// the organization name managing your Upbound official provider cloud instance.
-	// name of the Upbound official provider cloud or enterprise organization
+	// the organization name managing your provider cloud instance.
+	// name of the provider cloud or enterprise organization
 	// +kubebuilder:validation:Optional
 	Organization *string `json:"organization,omitempty" tf:"organization,omitempty"`
 
@@ -132,9 +152,8 @@ type CloudSecretRoleParameters struct {
 type CloudSecretRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     CloudSecretRoleParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -153,18 +172,19 @@ type CloudSecretRoleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // CloudSecretRole is the Schema for the CloudSecretRoles API.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type CloudSecretRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   CloudSecretRoleSpec   `json:"spec"`
 	Status CloudSecretRoleStatus `json:"status,omitempty"`
 }

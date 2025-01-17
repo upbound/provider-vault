@@ -1,0 +1,38 @@
+apiVersion: mfa.vault.upbound.io/v1alpha1
+kind: Duo
+metadata:
+  annotations:
+    meta.upbound.io/example-id: mfa/v1alpha1/duo
+  labels:
+    testing.upbound.io/example-name: my_duo
+  name: my-duo
+spec:
+  forProvider:
+    apiHostname: api-2b5c39f5.duosecurity.com
+    integrationKeySecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    mountAccessorSelector:
+      matchLabels:
+        testing.upbound.io/example-name: userpass
+    name: my_duo
+    secretKeySecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: mfa/v1alpha1/duo
+  labels:
+    testing.upbound.io/example-name: userpass
+  name: userpass
+spec:
+  forProvider:
+    path: userpass
+    type: userpass

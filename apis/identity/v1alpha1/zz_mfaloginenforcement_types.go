@@ -17,22 +17,27 @@ type MfaLoginEnforcementInitParameters struct {
 
 	// Set of auth method accessor IDs.
 	// Set of auth method accessor IDs.
+	// +listType=set
 	AuthMethodAccessors []*string `json:"authMethodAccessors,omitempty" tf:"auth_method_accessors,omitempty"`
 
 	// Set of auth method types.
 	// Set of auth method types.
+	// +listType=set
 	AuthMethodTypes []*string `json:"authMethodTypes,omitempty" tf:"auth_method_types,omitempty"`
 
 	// Set of identity entity IDs.
 	// Set of identity entity IDs.
+	// +listType=set
 	IdentityEntityIds []*string `json:"identityEntityIds,omitempty" tf:"identity_entity_ids,omitempty"`
 
 	// Set of identity group IDs.
 	// Set of identity group IDs.
+	// +listType=set
 	IdentityGroupIds []*string `json:"identityGroupIds,omitempty" tf:"identity_group_ids,omitempty"`
 
 	// Set of MFA method UUIDs.
 	// Set of MFA method UUIDs.
+	// +listType=set
 	MfaMethodIds []*string `json:"mfaMethodIds,omitempty" tf:"mfa_method_ids,omitempty"`
 
 	// Login enforcement name.
@@ -48,24 +53,29 @@ type MfaLoginEnforcementObservation struct {
 
 	// Set of auth method accessor IDs.
 	// Set of auth method accessor IDs.
+	// +listType=set
 	AuthMethodAccessors []*string `json:"authMethodAccessors,omitempty" tf:"auth_method_accessors,omitempty"`
 
 	// Set of auth method types.
 	// Set of auth method types.
+	// +listType=set
 	AuthMethodTypes []*string `json:"authMethodTypes,omitempty" tf:"auth_method_types,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Set of identity entity IDs.
 	// Set of identity entity IDs.
+	// +listType=set
 	IdentityEntityIds []*string `json:"identityEntityIds,omitempty" tf:"identity_entity_ids,omitempty"`
 
 	// Set of identity group IDs.
 	// Set of identity group IDs.
+	// +listType=set
 	IdentityGroupIds []*string `json:"identityGroupIds,omitempty" tf:"identity_group_ids,omitempty"`
 
 	// Set of MFA method UUIDs.
 	// Set of MFA method UUIDs.
+	// +listType=set
 	MfaMethodIds []*string `json:"mfaMethodIds,omitempty" tf:"mfa_method_ids,omitempty"`
 
 	// Login enforcement name.
@@ -94,26 +104,31 @@ type MfaLoginEnforcementParameters struct {
 	// Set of auth method accessor IDs.
 	// Set of auth method accessor IDs.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AuthMethodAccessors []*string `json:"authMethodAccessors,omitempty" tf:"auth_method_accessors,omitempty"`
 
 	// Set of auth method types.
 	// Set of auth method types.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AuthMethodTypes []*string `json:"authMethodTypes,omitempty" tf:"auth_method_types,omitempty"`
 
 	// Set of identity entity IDs.
 	// Set of identity entity IDs.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	IdentityEntityIds []*string `json:"identityEntityIds,omitempty" tf:"identity_entity_ids,omitempty"`
 
 	// Set of identity group IDs.
 	// Set of identity group IDs.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	IdentityGroupIds []*string `json:"identityGroupIds,omitempty" tf:"identity_group_ids,omitempty"`
 
 	// Set of MFA method UUIDs.
 	// Set of MFA method UUIDs.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	MfaMethodIds []*string `json:"mfaMethodIds,omitempty" tf:"mfa_method_ids,omitempty"`
 
 	// Login enforcement name.
@@ -131,9 +146,8 @@ type MfaLoginEnforcementParameters struct {
 type MfaLoginEnforcementSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     MfaLoginEnforcementParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -152,19 +166,20 @@ type MfaLoginEnforcementStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // MfaLoginEnforcement is the Schema for the MfaLoginEnforcements API. Resource for configuring MFA login-enforcement
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type MfaLoginEnforcement struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mfaMethodIds) || has(self.initProvider.mfaMethodIds)",message="mfaMethodIds is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mfaMethodIds) || (has(self.initProvider) && has(self.initProvider.mfaMethodIds))",message="spec.forProvider.mfaMethodIds is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   MfaLoginEnforcementSpec   `json:"spec"`
 	Status MfaLoginEnforcementStatus `json:"status,omitempty"`
 }

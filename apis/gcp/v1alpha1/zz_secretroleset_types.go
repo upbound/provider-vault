@@ -21,6 +21,7 @@ type BindingInitParameters struct {
 
 	// List of GCP IAM roles for the resource.
 	// List of roles to apply to the resource
+	// +listType=set
 	Roles []*string `json:"roles,omitempty" tf:"roles,omitempty"`
 }
 
@@ -32,6 +33,7 @@ type BindingObservation struct {
 
 	// List of GCP IAM roles for the resource.
 	// List of roles to apply to the resource
+	// +listType=set
 	Roles []*string `json:"roles,omitempty" tf:"roles,omitempty"`
 }
 
@@ -40,19 +42,30 @@ type BindingParameters struct {
 	// Resource or resource path for which IAM policy information will be bound. The resource path may be specified in a few different formats.
 	// Resource name
 	// +kubebuilder:validation:Optional
-	Resource *string `json:"resource,omitempty" tf:"resource,omitempty"`
+	Resource *string `json:"resource" tf:"resource,omitempty"`
 
 	// List of GCP IAM roles for the resource.
 	// List of roles to apply to the resource
 	// +kubebuilder:validation:Optional
-	Roles []*string `json:"roles,omitempty" tf:"roles,omitempty"`
+	// +listType=set
+	Roles []*string `json:"roles" tf:"roles,omitempty"`
 }
 
 type SecretRolesetInitParameters struct {
 
 	// Path where the GCP Secrets Engine is mounted
 	// Path where the GCP secrets engine is mounted.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/gcp/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a SecretBackend in gcp to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackend in gcp to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// Bindings to create for this roleset. This can be specified multiple times for multiple bindings. Structure is documented below.
 	Binding []BindingInitParameters `json:"binding,omitempty" tf:"binding,omitempty"`
@@ -78,6 +91,7 @@ type SecretRolesetInitParameters struct {
 
 	// List of OAuth scopes to assign to access_token secrets generated under this role set (access_token role sets only).
 	// List of OAuth scopes to assign to `access_token` secrets generated under this role set (`access_token` role sets only)
+	// +listType=set
 	TokenScopes []*string `json:"tokenScopes,omitempty" tf:"token_scopes,omitempty"`
 }
 
@@ -117,6 +131,7 @@ type SecretRolesetObservation struct {
 
 	// List of OAuth scopes to assign to access_token secrets generated under this role set (access_token role sets only).
 	// List of OAuth scopes to assign to `access_token` secrets generated under this role set (`access_token` role sets only)
+	// +listType=set
 	TokenScopes []*string `json:"tokenScopes,omitempty" tf:"token_scopes,omitempty"`
 }
 
@@ -124,8 +139,18 @@ type SecretRolesetParameters struct {
 
 	// Path where the GCP Secrets Engine is mounted
 	// Path where the GCP secrets engine is mounted.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/gcp/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a SecretBackend in gcp to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackend in gcp to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// Bindings to create for this roleset. This can be specified multiple times for multiple bindings. Structure is documented below.
 	// +kubebuilder:validation:Optional
@@ -157,6 +182,7 @@ type SecretRolesetParameters struct {
 	// List of OAuth scopes to assign to access_token secrets generated under this role set (access_token role sets only).
 	// List of OAuth scopes to assign to `access_token` secrets generated under this role set (`access_token` role sets only)
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TokenScopes []*string `json:"tokenScopes,omitempty" tf:"token_scopes,omitempty"`
 }
 
@@ -164,9 +190,8 @@ type SecretRolesetParameters struct {
 type SecretRolesetSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretRolesetParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -185,21 +210,21 @@ type SecretRolesetStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretRoleset is the Schema for the SecretRolesets API. Creates a Roleset for the GCP Secret Backend for Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretRoleset struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.binding) || has(self.initProvider.binding)",message="binding is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.project) || has(self.initProvider.project)",message="project is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.roleset) || has(self.initProvider.roleset)",message="roleset is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.binding) || (has(self.initProvider) && has(self.initProvider.binding))",message="spec.forProvider.binding is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.project) || (has(self.initProvider) && has(self.initProvider.project))",message="spec.forProvider.project is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.roleset) || (has(self.initProvider) && has(self.initProvider.roleset))",message="spec.forProvider.roleset is a required parameter"
 	Spec   SecretRolesetSpec   `json:"spec"`
 	Status SecretRolesetStatus `json:"status,omitempty"`
 }

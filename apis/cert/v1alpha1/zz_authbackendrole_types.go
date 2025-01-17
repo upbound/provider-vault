@@ -14,18 +14,23 @@ import (
 )
 
 type AuthBackendRoleInitParameters struct {
+
+	// +listType=set
 	AllowedCommonNames []*string `json:"allowedCommonNames,omitempty" tf:"allowed_common_names,omitempty"`
 
+	// +listType=set
 	AllowedDNSSans []*string `json:"allowedDnsSans,omitempty" tf:"allowed_dns_sans,omitempty"`
 
+	// +listType=set
 	AllowedEmailSans []*string `json:"allowedEmailSans,omitempty" tf:"allowed_email_sans,omitempty"`
 
+	// +listType=set
 	AllowedNames []*string `json:"allowedNames,omitempty" tf:"allowed_names,omitempty"`
 
-	AllowedOrganizationUnits []*string `json:"allowedOrganizationUnits,omitempty" tf:"allowed_organization_units,omitempty"`
-
+	// +listType=set
 	AllowedOrganizationalUnits []*string `json:"allowedOrganizationalUnits,omitempty" tf:"allowed_organizational_units,omitempty"`
 
+	// +listType=set
 	AllowedURISans []*string `json:"allowedUriSans,omitempty" tf:"allowed_uri_sans,omitempty"`
 
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -52,11 +57,14 @@ type AuthBackendRoleInitParameters struct {
 	OcspQueryAllServers *bool `json:"ocspQueryAllServers,omitempty" tf:"ocsp_query_all_servers,omitempty"`
 
 	// A comma-separated list of OCSP server addresses. If unset, the OCSP server is determined from the AuthorityInformationAccess extension on the certificate being inspected.
+	// +listType=set
 	OcspServersOverride []*string `json:"ocspServersOverride,omitempty" tf:"ocsp_servers_override,omitempty"`
 
+	// +listType=set
 	RequiredExtensions []*string `json:"requiredExtensions,omitempty" tf:"required_extensions,omitempty"`
 
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// Generated Token's Explicit Maximum TTL in seconds
@@ -75,6 +83,7 @@ type AuthBackendRoleInitParameters struct {
 	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
 
 	// Generated Token's Policies
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The initial ttl of the token to generate in seconds
@@ -85,18 +94,23 @@ type AuthBackendRoleInitParameters struct {
 }
 
 type AuthBackendRoleObservation struct {
+
+	// +listType=set
 	AllowedCommonNames []*string `json:"allowedCommonNames,omitempty" tf:"allowed_common_names,omitempty"`
 
+	// +listType=set
 	AllowedDNSSans []*string `json:"allowedDnsSans,omitempty" tf:"allowed_dns_sans,omitempty"`
 
+	// +listType=set
 	AllowedEmailSans []*string `json:"allowedEmailSans,omitempty" tf:"allowed_email_sans,omitempty"`
 
+	// +listType=set
 	AllowedNames []*string `json:"allowedNames,omitempty" tf:"allowed_names,omitempty"`
 
-	AllowedOrganizationUnits []*string `json:"allowedOrganizationUnits,omitempty" tf:"allowed_organization_units,omitempty"`
-
+	// +listType=set
 	AllowedOrganizationalUnits []*string `json:"allowedOrganizationalUnits,omitempty" tf:"allowed_organizational_units,omitempty"`
 
+	// +listType=set
 	AllowedURISans []*string `json:"allowedUriSans,omitempty" tf:"allowed_uri_sans,omitempty"`
 
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -125,11 +139,14 @@ type AuthBackendRoleObservation struct {
 	OcspQueryAllServers *bool `json:"ocspQueryAllServers,omitempty" tf:"ocsp_query_all_servers,omitempty"`
 
 	// A comma-separated list of OCSP server addresses. If unset, the OCSP server is determined from the AuthorityInformationAccess extension on the certificate being inspected.
+	// +listType=set
 	OcspServersOverride []*string `json:"ocspServersOverride,omitempty" tf:"ocsp_servers_override,omitempty"`
 
+	// +listType=set
 	RequiredExtensions []*string `json:"requiredExtensions,omitempty" tf:"required_extensions,omitempty"`
 
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// Generated Token's Explicit Maximum TTL in seconds
@@ -148,6 +165,7 @@ type AuthBackendRoleObservation struct {
 	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
 
 	// Generated Token's Policies
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The initial ttl of the token to generate in seconds
@@ -160,24 +178,27 @@ type AuthBackendRoleObservation struct {
 type AuthBackendRoleParameters struct {
 
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedCommonNames []*string `json:"allowedCommonNames,omitempty" tf:"allowed_common_names,omitempty"`
 
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedDNSSans []*string `json:"allowedDnsSans,omitempty" tf:"allowed_dns_sans,omitempty"`
 
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedEmailSans []*string `json:"allowedEmailSans,omitempty" tf:"allowed_email_sans,omitempty"`
 
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedNames []*string `json:"allowedNames,omitempty" tf:"allowed_names,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	AllowedOrganizationUnits []*string `json:"allowedOrganizationUnits,omitempty" tf:"allowed_organization_units,omitempty"`
-
-	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedOrganizationalUnits []*string `json:"allowedOrganizationalUnits,omitempty" tf:"allowed_organizational_units,omitempty"`
 
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedURISans []*string `json:"allowedUriSans,omitempty" tf:"allowed_uri_sans,omitempty"`
 
 	// +kubebuilder:validation:Optional
@@ -214,13 +235,16 @@ type AuthBackendRoleParameters struct {
 
 	// A comma-separated list of OCSP server addresses. If unset, the OCSP server is determined from the AuthorityInformationAccess extension on the certificate being inspected.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	OcspServersOverride []*string `json:"ocspServersOverride,omitempty" tf:"ocsp_servers_override,omitempty"`
 
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	RequiredExtensions []*string `json:"requiredExtensions,omitempty" tf:"required_extensions,omitempty"`
 
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// Generated Token's Explicit Maximum TTL in seconds
@@ -245,6 +269,7 @@ type AuthBackendRoleParameters struct {
 
 	// Generated Token's Policies
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The initial ttl of the token to generate in seconds
@@ -260,9 +285,8 @@ type AuthBackendRoleParameters struct {
 type AuthBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendRoleParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -281,19 +305,20 @@ type AuthBackendRoleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // AuthBackendRole is the Schema for the AuthBackendRoles API. <no value>
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type AuthBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.certificate) || has(self.initProvider.certificate)",message="certificate is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.certificate) || (has(self.initProvider) && has(self.initProvider.certificate))",message="spec.forProvider.certificate is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   AuthBackendRoleSpec   `json:"spec"`
 	Status AuthBackendRoleStatus `json:"status,omitempty"`
 }

@@ -1,0 +1,35 @@
+apiVersion: mfa.vault.upbound.io/v1alpha1
+kind: Okta
+metadata:
+  annotations:
+    meta.upbound.io/example-id: mfa/v1alpha1/okta
+  labels:
+    testing.upbound.io/example-name: my_okta
+  name: my-okta
+spec:
+  forProvider:
+    apiTokenSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    mountAccessorSelector:
+      matchLabels:
+        testing.upbound.io/example-name: userpass
+    name: my_okta
+    orgName: hashicorp
+    usernameFormat: user@example.com
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: mfa/v1alpha1/okta
+  labels:
+    testing.upbound.io/example-name: userpass
+  name: userpass
+spec:
+  forProvider:
+    path: userpass
+    type: userpass

@@ -1,0 +1,31 @@
+apiVersion: github.vault.upbound.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: github/v1alpha1/team
+  labels:
+    testing.upbound.io/example-name: tf_devs
+  name: tf-devs
+spec:
+  forProvider:
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    policies:
+    - developer
+    - read-only
+    team: terraform-developers
+
+---
+
+apiVersion: github.vault.upbound.io/v1alpha1
+kind: AuthBackend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: github/v1alpha1/team
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    organization: myorg

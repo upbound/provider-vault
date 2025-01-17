@@ -37,14 +37,17 @@ type GroupInitParameters struct {
 
 	// A list of Entity IDs to be assigned as group members. Not allowed on external groups.
 	// Entity IDs to be assigned as group members.
+	// +listType=set
 	MemberEntityIds []*string `json:"memberEntityIds,omitempty" tf:"member_entity_ids,omitempty"`
 
 	// A list of Group IDs to be assigned as group members. Not allowed on external groups.
 	// Group IDs to be assigned as group members.
+	// +listType=set
 	MemberGroupIds []*string `json:"memberGroupIds,omitempty" tf:"member_group_ids,omitempty"`
 
 	// A Map of additional metadata to associate with the group.
 	// Metadata to be associated with the group.
+	// +mapType=granular
 	Metadata map[string]*string `json:"metadata,omitempty" tf:"metadata,omitempty"`
 
 	// Name of the identity group to create.
@@ -60,6 +63,7 @@ type GroupInitParameters struct {
 
 	// A list of policies to apply to the group.
 	// Policies to be tied to the group.
+	// +listType=set
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 
 	// Type of the group, internal or external. Defaults to internal.
@@ -94,14 +98,17 @@ type GroupObservation struct {
 
 	// A list of Entity IDs to be assigned as group members. Not allowed on external groups.
 	// Entity IDs to be assigned as group members.
+	// +listType=set
 	MemberEntityIds []*string `json:"memberEntityIds,omitempty" tf:"member_entity_ids,omitempty"`
 
 	// A list of Group IDs to be assigned as group members. Not allowed on external groups.
 	// Group IDs to be assigned as group members.
+	// +listType=set
 	MemberGroupIds []*string `json:"memberGroupIds,omitempty" tf:"member_group_ids,omitempty"`
 
 	// A Map of additional metadata to associate with the group.
 	// Metadata to be associated with the group.
+	// +mapType=granular
 	Metadata map[string]*string `json:"metadata,omitempty" tf:"metadata,omitempty"`
 
 	// Name of the identity group to create.
@@ -117,6 +124,7 @@ type GroupObservation struct {
 
 	// A list of policies to apply to the group.
 	// Policies to be tied to the group.
+	// +listType=set
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 
 	// Type of the group, internal or external. Defaults to internal.
@@ -152,16 +160,19 @@ type GroupParameters struct {
 	// A list of Entity IDs to be assigned as group members. Not allowed on external groups.
 	// Entity IDs to be assigned as group members.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	MemberEntityIds []*string `json:"memberEntityIds,omitempty" tf:"member_entity_ids,omitempty"`
 
 	// A list of Group IDs to be assigned as group members. Not allowed on external groups.
 	// Group IDs to be assigned as group members.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	MemberGroupIds []*string `json:"memberGroupIds,omitempty" tf:"member_group_ids,omitempty"`
 
 	// A Map of additional metadata to associate with the group.
 	// Metadata to be associated with the group.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Metadata map[string]*string `json:"metadata,omitempty" tf:"metadata,omitempty"`
 
 	// Name of the identity group to create.
@@ -180,6 +191,7 @@ type GroupParameters struct {
 	// A list of policies to apply to the group.
 	// Policies to be tied to the group.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 
 	// Type of the group, internal or external. Defaults to internal.
@@ -192,9 +204,8 @@ type GroupParameters struct {
 type GroupSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     GroupParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -213,13 +224,14 @@ type GroupStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Group is the Schema for the Groups API. Creates an Identity Group for Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type Group struct {
 	metav1.TypeMeta   `json:",inline"`

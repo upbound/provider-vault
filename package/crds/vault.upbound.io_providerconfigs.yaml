@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.12.1
+    controller-gen.kubebuilder.io/version: v0.14.0
   name: providerconfigs.vault.upbound.io
 spec:
   group: vault.upbound.io
@@ -32,14 +32,19 @@ spec:
         description: A ProviderConfig configures a Vault provider.
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
@@ -47,32 +52,41 @@ spec:
             description: A ProviderConfigSpec defines the desired state of a ProviderConfig.
             properties:
               add_address_to_env:
-                description: If true the environment variable VAULT_ADDR in the Terraform
-                  process environment will be set to the value of the address argument
+                description: |-
+                  If true the environment variable
+                  VAULT_ADDR in the Terraform process environment
+                  will be set to the value of the address argument
                   from this provider. By default, this is false.
                 type: boolean
               address:
-                description: Required origin URL of the Vault server. This is a URL
-                  with a scheme, a hostname and a port but with no path.
+                description: |-
+                  Required origin URL of the Vault server.
+                  This is a URL with a scheme, a hostname
+                  and a port but with no path.
                 type: string
               credentials:
-                description: Credentials required to authenticate to this provider.
-                  There are many options to authenticate. They include - token - (Optional)
-                  Vault token that will be used by Terraform to authenticate. May
-                  be set via the VAULT_TOKEN environment variable. If none is otherwise
-                  supplied, Terraform will attempt to read it from ~/.vault-token
-                  (where the vault command stores its current token). Terraform will
-                  issue itself a new token that is a child of the one given, with
-                  a short TTL to limit the exposure of any requested secrets, unless
-                  skip_child_token is set to true (see below). Note that the given
-                  token must have the update capability on the auth/token/create path
-                  in Vault in order to create child tokens. A token is required for
-                  the provider. A token can explicitly set via token argument, alternatively
+                description: |-
+                  Credentials required to authenticate to this provider.
+                  There are many options to authenticate. They include
+                  - token - (Optional) Vault token that will be used
+                  by Terraform to authenticate. May be set via the
+                  VAULT_TOKEN environment variable. If none is otherwise
+                  supplied, Terraform will attempt to read it from
+                  ~/.vault-token (where the vault command stores its
+                  current token). Terraform will issue itself a new token
+                  that is a child of the one given, with a short TTL to
+                  limit the exposure of any requested secrets, unless
+                  skip_child_token is set to true (see below). Note
+                  that the given token must have the update capability
+                  on the auth/token/create path in Vault in order to create
+                  child tokens. A token is required for the provider. A
+                  token can explicitly set via token argument, alternatively
                   a token can be dynamically set via an auth_login* block.
                 properties:
                   env:
-                    description: Env is a reference to an environment variable that
-                      contains credentials that must be used to connect to the provider.
+                    description: |-
+                      Env is a reference to an environment variable that contains credentials
+                      that must be used to connect to the provider.
                     properties:
                       name:
                         description: Name is the name of an environment variable.
@@ -81,8 +95,9 @@ spec:
                     - name
                     type: object
                   fs:
-                    description: Fs is a reference to a filesystem location that contains
-                      credentials that must be used to connect to the provider.
+                    description: |-
+                      Fs is a reference to a filesystem location that contains credentials that
+                      must be used to connect to the provider.
                     properties:
                       path:
                         description: Path is a filesystem path.
@@ -91,8 +106,9 @@ spec:
                     - path
                     type: object
                   secretRef:
-                    description: A SecretRef is a reference to a secret key that contains
-                      the credentials that must be used to connect to the provider.
+                    description: |-
+                      A SecretRef is a reference to a secret key that contains the credentials
+                      that must be used to connect to the provider.
                     properties:
                       key:
                         description: The key to select.
@@ -121,9 +137,11 @@ spec:
                 - source
                 type: object
               headers:
-                description: A configuration block, described below, that provides
-                  headers to be sent along with all requests to the Vault server.
-                  This block can be specified multiple times.
+                description: |-
+                  A configuration block, described below,
+                  that provides headers to be sent along with all
+                  requests to the Vault server. This block can be
+                  specified multiple times.
                 properties:
                   name:
                     description: Required header name
@@ -136,47 +154,61 @@ spec:
                 - value
                 type: object
               max_lease_ttl_seconds:
-                description: Used as the duration for the intermediate Vault token
-                  Terraform issues itself, which in turn limits the duration of secret
-                  leases issued by Vault. Defaults to 20 minutes.
+                description: |-
+                  Used as the duration for the intermediate Vault
+                  token Terraform issues itself, which in turn limits the
+                  duration of secret leases issued by Vault. Defaults to
+                  20 minutes.
                 type: integer
               max_retries:
-                description: Used as the maximum number of retries when a 5xx error
-                  code is encountered. Defaults to 2 retries.
+                description: |-
+                  Used as the maximum number of retries when a
+                  5xx error code is encountered. Defaults to 2 retries.
                 type: integer
               max_retries_ccc:
-                description: Maximum number of retries for Client Controlled Consistency
-                  related operations. Defaults to 10 retries.
+                description: |-
+                  Maximum number of retries for Client Controlled
+                  Consistency related operations. Defaults to 10 retries.
                 type: integer
               namespace:
                 description: Set the namespace to use.
                 type: string
               skip_child_token:
-                description: Set this to true to disable creation of an intermediate
-                  ephemeral Vault token for Terraform to use. Enabling this is strongly
-                  discouraged since it increases the potential for a renewable Vault
-                  token being exposed in clear text. Only change this setting when
-                  the provided token cannot be permitted to create child tokens and
-                  there is no risk of exposure from the output of Terraform.
+                description: |-
+                  Set this to true to disable creation of an
+                  intermediate ephemeral Vault token for Terraform to use.
+                  Enabling this is strongly discouraged since it increases
+                  the potential for a renewable Vault token being exposed
+                  in clear text. Only change this setting when the provided
+                  token cannot be permitted to create child tokens and there
+                  is no risk of exposure from the output of Terraform.
                 type: boolean
               skip_get_vault_version:
-                description: Skip the dynamic fetching of the Vault server version.
-                  Set to true when the /sys/seal-status API endpoint is not available.
+                description: |-
+                  Skip the dynamic fetching of the Vault server
+                  version. Set to true when the /sys/seal-status API
+                  endpoint is not available.
                 type: boolean
               skip_tls_verify:
-                description: Set this to true to disable verification of the Vault
-                  server's TLS certificate. This is strongly discouraged except in
-                  prototype or development environments, since it exposes the possibility
-                  that Terraform can be tricked into writing secrets to a server controlled
-                  by an intruder.
+                description: |-
+                  Set this to true to disable verification
+                  of the Vault server's TLS certificate. This is
+                  strongly discouraged except in prototype or
+                  development environments, since it exposes the
+                  possibility that Terraform can be tricked into
+                  writing secrets to a server controlled by an intruder.
                 type: boolean
               tls_server_name:
-                description: Name to use as the SNI host when connecting via TLS.
+                description: |-
+                  Name to use as the SNI host when connecting
+                  via TLS.
                 type: string
               vault_version_override:
-                description: Override the target Vault server semantic version. Normally
-                  the version is dynamically set from the /sys/seal-status API endpoint.
-                  In the case where this endpoint is not available an override can
+                description: |-
+                  Override the target Vault server semantic
+                  version. Normally the version is dynamically set
+                  from the /sys/seal-status API endpoint. In the case
+                  where this endpoint is not available an override can
                   be specified here.
                 type: string
             required:
@@ -191,14 +223,23 @@ spec:
                   description: A Condition that may apply to a resource.
                   properties:
                     lastTransitionTime:
-                      description: LastTransitionTime is the last time this condition
-                        transitioned from one status to another.
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
                       format: date-time
                       type: string
                     message:
-                      description: A Message containing details about this condition's
-                        last transition from one status to another, if any.
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
                       type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
                     reason:
                       description: A Reason for this condition's last transition from
                         one status to another.
@@ -208,8 +249,9 @@ spec:
                         False, or Unknown?
                       type: string
                     type:
-                      description: Type of this condition. At most one of each condition
-                        type may apply to a resource at any point in time.
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
                       type: string
                   required:
                   - lastTransitionTime
@@ -218,6 +260,9 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
               users:
                 description: Users of this provider configuration.
                 format: int64

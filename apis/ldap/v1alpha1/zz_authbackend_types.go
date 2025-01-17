@@ -16,11 +16,15 @@ import (
 type AuthBackendInitParameters struct {
 	Binddn *string `json:"binddn,omitempty" tf:"binddn,omitempty"`
 
+	BindpassSecretRef *v1.SecretKeySelector `json:"bindpassSecretRef,omitempty" tf:"-"`
+
 	CaseSensitiveNames *bool `json:"caseSensitiveNames,omitempty" tf:"case_sensitive_names,omitempty"`
 
 	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
 
 	ClientTLSCert *string `json:"clientTlsCert,omitempty" tf:"client_tls_cert,omitempty"`
+
+	ClientTLSKeySecretRef *v1.SecretKeySelector `json:"clientTlsKeySecretRef,omitempty" tf:"-"`
 
 	DenyNullBind *bool `json:"denyNullBind,omitempty" tf:"deny_null_bind,omitempty"`
 
@@ -56,6 +60,7 @@ type AuthBackendInitParameters struct {
 	TLSMinVersion *string `json:"tlsMinVersion,omitempty" tf:"tls_min_version,omitempty"`
 
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// Generated Token's Explicit Maximum TTL in seconds
@@ -74,6 +79,7 @@ type AuthBackendInitParameters struct {
 	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
 
 	// Generated Token's Policies
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The initial ttl of the token to generate in seconds
@@ -147,6 +153,7 @@ type AuthBackendObservation struct {
 	TLSMinVersion *string `json:"tlsMinVersion,omitempty" tf:"tls_min_version,omitempty"`
 
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// Generated Token's Explicit Maximum TTL in seconds
@@ -165,6 +172,7 @@ type AuthBackendObservation struct {
 	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
 
 	// Generated Token's Policies
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The initial ttl of the token to generate in seconds
@@ -259,6 +267,7 @@ type AuthBackendParameters struct {
 
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// Generated Token's Explicit Maximum TTL in seconds
@@ -283,6 +292,7 @@ type AuthBackendParameters struct {
 
 	// Generated Token's Policies
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The initial ttl of the token to generate in seconds
@@ -320,9 +330,8 @@ type AuthBackendParameters struct {
 type AuthBackendSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -341,18 +350,19 @@ type AuthBackendStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // AuthBackend is the Schema for the AuthBackends API. <no value>
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type AuthBackend struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.url) || has(self.initProvider.url)",message="url is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.url) || (has(self.initProvider) && has(self.initProvider.url))",message="spec.forProvider.url is a required parameter"
 	Spec   AuthBackendSpec   `json:"spec"`
 	Status AuthBackendStatus `json:"status,omitempty"`
 }

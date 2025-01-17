@@ -1,0 +1,40 @@
+apiVersion: gcp.vault.upbound.io/v1alpha1
+kind: AuthBackendRole
+metadata:
+  annotations:
+    meta.upbound.io/example-id: gcp/v1alpha1/authbackendrole
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    addGroupAliases: true
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: gcp
+    boundProjects:
+    - test
+    boundServiceAccounts:
+    - test
+    role: test
+    tokenMaxTtl: 600
+    tokenPolicies:
+    - policy_a
+    - policy_b
+    tokenTtl: 300
+    type: iam
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: gcp/v1alpha1/authbackendrole
+  labels:
+    testing.upbound.io/example-name: gcp
+  name: gcp
+spec:
+  forProvider:
+    path: gcp
+    type: gcp

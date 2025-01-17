@@ -44,6 +44,38 @@ type AuthBackendInitParameters struct {
 	// Duration after which authentication will be expired
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
+	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +listType=set
+	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
+
+	// Generated Token's Explicit Maximum TTL in seconds
+	TokenExplicitMaxTTL *float64 `json:"tokenExplicitMaxTtl,omitempty" tf:"token_explicit_max_ttl,omitempty"`
+
+	// The maximum lifetime of the generated token
+	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
+
+	// If true, the 'default' policy will not automatically be added to generated tokens
+	TokenNoDefaultPolicy *bool `json:"tokenNoDefaultPolicy,omitempty" tf:"token_no_default_policy,omitempty"`
+
+	// The maximum number of times a token may be used, a value of zero means unlimited
+	TokenNumUses *float64 `json:"tokenNumUses,omitempty" tf:"token_num_uses,omitempty"`
+
+	// Generated Token's Period
+	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
+
+	// Generated Token's Policies
+	// +listType=set
+	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
+
+	// The Okta API token. This is required to query Okta for user group membership. If this is not supplied only locally configured groups will be enabled.
+	TokenSecretRef *v1.SecretKeySelector `json:"tokenSecretRef,omitempty" tf:"-"`
+
+	// The initial ttl of the token to generate in seconds
+	TokenTTL *float64 `json:"tokenTtl,omitempty" tf:"token_ttl,omitempty"`
+
+	// The type of token to generate, service or batch
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
+
 	User []UserInitParameters `json:"user,omitempty" tf:"user,omitempty"`
 }
 
@@ -82,6 +114,35 @@ type AuthBackendObservation struct {
 
 	// Duration after which authentication will be expired
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +listType=set
+	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
+
+	// Generated Token's Explicit Maximum TTL in seconds
+	TokenExplicitMaxTTL *float64 `json:"tokenExplicitMaxTtl,omitempty" tf:"token_explicit_max_ttl,omitempty"`
+
+	// The maximum lifetime of the generated token
+	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
+
+	// If true, the 'default' policy will not automatically be added to generated tokens
+	TokenNoDefaultPolicy *bool `json:"tokenNoDefaultPolicy,omitempty" tf:"token_no_default_policy,omitempty"`
+
+	// The maximum number of times a token may be used, a value of zero means unlimited
+	TokenNumUses *float64 `json:"tokenNumUses,omitempty" tf:"token_num_uses,omitempty"`
+
+	// Generated Token's Period
+	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
+
+	// Generated Token's Policies
+	// +listType=set
+	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
+
+	// The initial ttl of the token to generate in seconds
+	TokenTTL *float64 `json:"tokenTtl,omitempty" tf:"token_ttl,omitempty"`
+
+	// The type of token to generate, service or batch
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 
 	User []UserObservation `json:"user,omitempty" tf:"user,omitempty"`
 }
@@ -127,9 +188,47 @@ type AuthBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
+	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
+
+	// Generated Token's Explicit Maximum TTL in seconds
+	// +kubebuilder:validation:Optional
+	TokenExplicitMaxTTL *float64 `json:"tokenExplicitMaxTtl,omitempty" tf:"token_explicit_max_ttl,omitempty"`
+
+	// The maximum lifetime of the generated token
+	// +kubebuilder:validation:Optional
+	TokenMaxTTL *float64 `json:"tokenMaxTtl,omitempty" tf:"token_max_ttl,omitempty"`
+
+	// If true, the 'default' policy will not automatically be added to generated tokens
+	// +kubebuilder:validation:Optional
+	TokenNoDefaultPolicy *bool `json:"tokenNoDefaultPolicy,omitempty" tf:"token_no_default_policy,omitempty"`
+
+	// The maximum number of times a token may be used, a value of zero means unlimited
+	// +kubebuilder:validation:Optional
+	TokenNumUses *float64 `json:"tokenNumUses,omitempty" tf:"token_num_uses,omitempty"`
+
+	// Generated Token's Period
+	// +kubebuilder:validation:Optional
+	TokenPeriod *float64 `json:"tokenPeriod,omitempty" tf:"token_period,omitempty"`
+
+	// Generated Token's Policies
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
+
 	// The Okta API token. This is required to query Okta for user group membership. If this is not supplied only locally configured groups will be enabled.
 	// +kubebuilder:validation:Optional
 	TokenSecretRef *v1.SecretKeySelector `json:"tokenSecretRef,omitempty" tf:"-"`
+
+	// The initial ttl of the token to generate in seconds
+	// +kubebuilder:validation:Optional
+	TokenTTL *float64 `json:"tokenTtl,omitempty" tf:"token_ttl,omitempty"`
+
+	// The type of token to generate, service or batch
+	// +kubebuilder:validation:Optional
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	User []UserParameters `json:"user,omitempty" tf:"user,omitempty"`
@@ -138,12 +237,14 @@ type AuthBackendParameters struct {
 type GroupInitParameters struct {
 	GroupName *string `json:"groupName,omitempty" tf:"group_name"`
 
+	// +listType=set
 	Policies []*string `json:"policies,omitempty" tf:"policies"`
 }
 
 type GroupObservation struct {
 	GroupName *string `json:"groupName,omitempty" tf:"group_name,omitempty"`
 
+	// +listType=set
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 }
 
@@ -153,20 +254,27 @@ type GroupParameters struct {
 	GroupName *string `json:"groupName,omitempty" tf:"group_name"`
 
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Policies []*string `json:"policies,omitempty" tf:"policies"`
 }
 
 type UserInitParameters struct {
+
+	// +listType=set
 	Groups []*string `json:"groups,omitempty" tf:"groups"`
 
+	// +listType=set
 	Policies []*string `json:"policies,omitempty" tf:"policies"`
 
 	Username *string `json:"username,omitempty" tf:"username"`
 }
 
 type UserObservation struct {
+
+	// +listType=set
 	Groups []*string `json:"groups,omitempty" tf:"groups,omitempty"`
 
+	// +listType=set
 	Policies []*string `json:"policies,omitempty" tf:"policies,omitempty"`
 
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -175,9 +283,11 @@ type UserObservation struct {
 type UserParameters struct {
 
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Groups []*string `json:"groups,omitempty" tf:"groups"`
 
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Policies []*string `json:"policies,omitempty" tf:"policies"`
 
 	// +kubebuilder:validation:Optional
@@ -188,9 +298,8 @@ type UserParameters struct {
 type AuthBackendSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -209,18 +318,19 @@ type AuthBackendStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // AuthBackend is the Schema for the AuthBackends API. <no value>
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type AuthBackend struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.organization) || has(self.initProvider.organization)",message="organization is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.organization) || (has(self.initProvider) && has(self.initProvider.organization))",message="spec.forProvider.organization is a required parameter"
 	Spec   AuthBackendSpec   `json:"spec"`
 	Status AuthBackendStatus `json:"status,omitempty"`
 }

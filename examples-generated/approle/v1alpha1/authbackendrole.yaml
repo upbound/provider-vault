@@ -1,0 +1,32 @@
+apiVersion: approle.vault.upbound.io/v1alpha1
+kind: AuthBackendRole
+metadata:
+  annotations:
+    meta.upbound.io/example-id: approle/v1alpha1/authbackendrole
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: approle
+    roleName: test-role
+    tokenPolicies:
+    - default
+    - dev
+    - prod
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: approle/v1alpha1/authbackendrole
+  labels:
+    testing.upbound.io/example-name: approle
+  name: approle
+spec:
+  forProvider:
+    type: approle

@@ -57,7 +57,7 @@ type AllowedUserKeyConfigParameters struct {
 	// must be set to a single element list.
 	// List of allowed key lengths, vault-1.10 and above
 	// +kubebuilder:validation:Optional
-	Lengths []*float64 `json:"lengths,omitempty" tf:"lengths,omitempty"`
+	Lengths []*float64 `json:"lengths" tf:"lengths,omitempty"`
 
 	// The SSH public key type.
 	// Supported key types are:
@@ -66,7 +66,7 @@ type AllowedUserKeyConfigParameters struct {
 	// Key type, choices:
 	// rsa, ecdsa, ec, dsa, ed25519, ssh-rsa, ssh-dss, ssh-ed25519, ecdsa-sha2-nistp256, ecdsa-sha2-nistp384, ecdsa-sha2-nistp521
 	// +kubebuilder:validation:Optional
-	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+	Type *string `json:"type" tf:"type,omitempty"`
 }
 
 type SecretBackendRoleInitParameters struct {
@@ -108,11 +108,6 @@ type SecretBackendRoleInitParameters struct {
 	// Set of allowed public key types and their relevant configuration
 	AllowedUserKeyConfig []AllowedUserKeyConfigInitParameters `json:"allowedUserKeyConfig,omitempty" tf:"allowed_user_key_config,omitempty"`
 
-	// Specifies a map of ssh key types and their expected sizes which
-	// are allowed to be signed by the CA type.
-	// Deprecated: use allowed_user_key_config instead
-	AllowedUserKeyLengths map[string]*float64 `json:"allowedUserKeyLengths,omitempty" tf:"allowed_user_key_lengths,omitempty"`
-
 	// Specifies a comma-separated list of usernames that are to be allowed, only if certain usernames are to be allowed.
 	AllowedUsers *string `json:"allowedUsers,omitempty" tf:"allowed_users,omitempty"`
 
@@ -120,15 +115,27 @@ type SecretBackendRoleInitParameters struct {
 	AllowedUsersTemplate *bool `json:"allowedUsersTemplate,omitempty" tf:"allowed_users_template,omitempty"`
 
 	// The path where the SSH secret backend is mounted.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// The comma-separated string of CIDR blocks for which this role is applicable.
 	CidrList *string `json:"cidrList,omitempty" tf:"cidr_list,omitempty"`
 
 	// Specifies a map of critical options that certificates have when signed.
+	// +mapType=granular
 	DefaultCriticalOptions map[string]*string `json:"defaultCriticalOptions,omitempty" tf:"default_critical_options,omitempty"`
 
 	// Specifies a map of extensions that certificates have when signed.
+	// +mapType=granular
 	DefaultExtensions map[string]*string `json:"defaultExtensions,omitempty" tf:"default_extensions,omitempty"`
 
 	// Specifies the default username for which a credential will be generated.
@@ -205,11 +212,6 @@ type SecretBackendRoleObservation struct {
 	// Set of allowed public key types and their relevant configuration
 	AllowedUserKeyConfig []AllowedUserKeyConfigObservation `json:"allowedUserKeyConfig,omitempty" tf:"allowed_user_key_config,omitempty"`
 
-	// Specifies a map of ssh key types and their expected sizes which
-	// are allowed to be signed by the CA type.
-	// Deprecated: use allowed_user_key_config instead
-	AllowedUserKeyLengths map[string]*float64 `json:"allowedUserKeyLengths,omitempty" tf:"allowed_user_key_lengths,omitempty"`
-
 	// Specifies a comma-separated list of usernames that are to be allowed, only if certain usernames are to be allowed.
 	AllowedUsers *string `json:"allowedUsers,omitempty" tf:"allowed_users,omitempty"`
 
@@ -223,9 +225,11 @@ type SecretBackendRoleObservation struct {
 	CidrList *string `json:"cidrList,omitempty" tf:"cidr_list,omitempty"`
 
 	// Specifies a map of critical options that certificates have when signed.
+	// +mapType=granular
 	DefaultCriticalOptions map[string]*string `json:"defaultCriticalOptions,omitempty" tf:"default_critical_options,omitempty"`
 
 	// Specifies a map of extensions that certificates have when signed.
+	// +mapType=granular
 	DefaultExtensions map[string]*string `json:"defaultExtensions,omitempty" tf:"default_extensions,omitempty"`
 
 	// Specifies the default username for which a credential will be generated.
@@ -315,12 +319,6 @@ type SecretBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	AllowedUserKeyConfig []AllowedUserKeyConfigParameters `json:"allowedUserKeyConfig,omitempty" tf:"allowed_user_key_config,omitempty"`
 
-	// Specifies a map of ssh key types and their expected sizes which
-	// are allowed to be signed by the CA type.
-	// Deprecated: use allowed_user_key_config instead
-	// +kubebuilder:validation:Optional
-	AllowedUserKeyLengths map[string]*float64 `json:"allowedUserKeyLengths,omitempty" tf:"allowed_user_key_lengths,omitempty"`
-
 	// Specifies a comma-separated list of usernames that are to be allowed, only if certain usernames are to be allowed.
 	// +kubebuilder:validation:Optional
 	AllowedUsers *string `json:"allowedUsers,omitempty" tf:"allowed_users,omitempty"`
@@ -330,8 +328,18 @@ type SecretBackendRoleParameters struct {
 	AllowedUsersTemplate *bool `json:"allowedUsersTemplate,omitempty" tf:"allowed_users_template,omitempty"`
 
 	// The path where the SSH secret backend is mounted.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// The comma-separated string of CIDR blocks for which this role is applicable.
 	// +kubebuilder:validation:Optional
@@ -339,10 +347,12 @@ type SecretBackendRoleParameters struct {
 
 	// Specifies a map of critical options that certificates have when signed.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	DefaultCriticalOptions map[string]*string `json:"defaultCriticalOptions,omitempty" tf:"default_critical_options,omitempty"`
 
 	// Specifies a map of extensions that certificates have when signed.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	DefaultExtensions map[string]*string `json:"defaultExtensions,omitempty" tf:"default_extensions,omitempty"`
 
 	// Specifies the default username for which a credential will be generated.
@@ -393,9 +403,8 @@ type SecretBackendRoleParameters struct {
 type SecretBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendRoleParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -414,20 +423,20 @@ type SecretBackendRoleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretBackendRole is the Schema for the SecretBackendRoles API. Managing roles in an SSH secret backend in Vault
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.keyType) || has(self.initProvider.keyType)",message="keyType is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.keyType) || (has(self.initProvider) && has(self.initProvider.keyType))",message="spec.forProvider.keyType is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   SecretBackendRoleSpec   `json:"spec"`
 	Status SecretBackendRoleStatus `json:"status,omitempty"`
 }
