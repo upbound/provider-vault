@@ -19,10 +19,6 @@ type SecretBackendKeyInitParameters struct {
 	// If set, enables taking backup of named key in the plaintext format. Once set, this cannot be disabled.
 	AllowPlaintextBackup *bool `json:"allowPlaintextBackup,omitempty" tf:"allow_plaintext_backup,omitempty"`
 
-	// Replaced by auto_rotate_period.
-	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
-	AutoRotateInterval *float64 `json:"autoRotateInterval,omitempty" tf:"auto_rotate_interval,omitempty"`
-
 	// Amount of seconds the key should live before being automatically rotated.
 	// A value of 0 disables automatic rotation for the key.
 	// Amount of seconds the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
@@ -30,7 +26,17 @@ type SecretBackendKeyInitParameters struct {
 
 	// The path the transit secret backend is mounted at, with no leading or trailing /s.
 	// The Transit secret backend the resource belongs to.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// Whether or not to support convergent encryption, where the same plaintext creates the same ciphertext. This requires derived to be set to true.
 	// Whether or not to support convergent encryption, where the same plaintext creates the same ciphertext. This requires derived to be set to true.
@@ -81,10 +87,6 @@ type SecretBackendKeyObservation struct {
 	// Enables taking backup of entire keyring in the plaintext format. Once set, this cannot be disabled.
 	// If set, enables taking backup of named key in the plaintext format. Once set, this cannot be disabled.
 	AllowPlaintextBackup *bool `json:"allowPlaintextBackup,omitempty" tf:"allow_plaintext_backup,omitempty"`
-
-	// Replaced by auto_rotate_period.
-	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
-	AutoRotateInterval *float64 `json:"autoRotateInterval,omitempty" tf:"auto_rotate_interval,omitempty"`
 
 	// Amount of seconds the key should live before being automatically rotated.
 	// A value of 0 disables automatic rotation for the key.
@@ -176,11 +178,6 @@ type SecretBackendKeyParameters struct {
 	// +kubebuilder:validation:Optional
 	AllowPlaintextBackup *bool `json:"allowPlaintextBackup,omitempty" tf:"allow_plaintext_backup,omitempty"`
 
-	// Replaced by auto_rotate_period.
-	// Amount of time the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
-	// +kubebuilder:validation:Optional
-	AutoRotateInterval *float64 `json:"autoRotateInterval,omitempty" tf:"auto_rotate_interval,omitempty"`
-
 	// Amount of seconds the key should live before being automatically rotated.
 	// A value of 0 disables automatic rotation for the key.
 	// Amount of seconds the key should live before being automatically rotated. A value of 0 disables automatic rotation for the key.
@@ -189,8 +186,18 @@ type SecretBackendKeyParameters struct {
 
 	// The path the transit secret backend is mounted at, with no leading or trailing /s.
 	// The Transit secret backend the resource belongs to.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// Whether or not to support convergent encryption, where the same plaintext creates the same ciphertext. This requires derived to be set to true.
 	// Whether or not to support convergent encryption, where the same plaintext creates the same ciphertext. This requires derived to be set to true.
@@ -250,9 +257,8 @@ type SecretBackendKeyParameters struct {
 type SecretBackendKeySpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendKeyParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -271,19 +277,19 @@ type SecretBackendKeyStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretBackendKey is the Schema for the SecretBackendKeys API. Create an Encryption Keyring on a Transit Secret Backend for Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretBackendKey struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   SecretBackendKeySpec   `json:"spec"`
 	Status SecretBackendKeyStatus `json:"status,omitempty"`
 }

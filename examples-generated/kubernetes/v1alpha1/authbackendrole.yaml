@@ -1,0 +1,38 @@
+apiVersion: kubernetes.vault.upbound.io/v1alpha1
+kind: AuthBackendRole
+metadata:
+  annotations:
+    meta.upbound.io/example-id: kubernetes/v1alpha1/authbackendrole
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    audience: vault
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: kubernetes
+    boundServiceAccountNames:
+    - example
+    boundServiceAccountNamespaces:
+    - example
+    roleName: example-role
+    tokenPolicies:
+    - default
+    - dev
+    - prod
+    tokenTtl: 3600
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: kubernetes/v1alpha1/authbackendrole
+  labels:
+    testing.upbound.io/example-name: kubernetes
+  name: kubernetes
+spec:
+  forProvider:
+    type: kubernetes

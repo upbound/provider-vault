@@ -31,7 +31,17 @@ type SecretBackendV2InitParameters struct {
 
 	// Path where KV-V2 engine is mounted.
 	// Path where KV-V2 engine is mounted.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`
+
+	// Reference to a Mount in vault to populate mount.
+	// +kubebuilder:validation:Optional
+	MountRef *v1.Reference `json:"mountRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate mount.
+	// +kubebuilder:validation:Optional
+	MountSelector *v1.Selector `json:"mountSelector,omitempty" tf:"-"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -92,8 +102,18 @@ type SecretBackendV2Parameters struct {
 
 	// Path where KV-V2 engine is mounted.
 	// Path where KV-V2 engine is mounted.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`
+
+	// Reference to a Mount in vault to populate mount.
+	// +kubebuilder:validation:Optional
+	MountRef *v1.Reference `json:"mountRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate mount.
+	// +kubebuilder:validation:Optional
+	MountSelector *v1.Selector `json:"mountSelector,omitempty" tf:"-"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -108,9 +128,8 @@ type SecretBackendV2Parameters struct {
 type SecretBackendV2Spec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendV2Parameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -129,20 +148,20 @@ type SecretBackendV2Status struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretBackendV2 is the Schema for the SecretBackendV2s API. Configures KV-V2 backend level settings that are applied to every key in the key-value store.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretBackendV2 struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mount) || has(self.initProvider.mount)",message="mount is a required parameter"
-	Spec   SecretBackendV2Spec   `json:"spec"`
-	Status SecretBackendV2Status `json:"status,omitempty"`
+	Spec              SecretBackendV2Spec   `json:"spec"`
+	Status            SecretBackendV2Status `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

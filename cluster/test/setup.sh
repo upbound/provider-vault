@@ -62,8 +62,16 @@ while [[ "$VAULT_NOT_RUNNING" == "true" ]]; do
     fi
 done
 
-echo "Initializing vault and obtaining unseal keys"
-${KUBECTL} exec -n vault --stdin vault-0 -- vault operator init -format=yaml > vault-auto-unseal-keys.yaml
+SECRET_EXISTS=$(${KUBECTL} get secret vault-auto-unseal-keys --ignore-not-found)
+if [[ "$SECRET_EXISTS" = "" ]]; then
+    echo "Initializing vault and obtaining unseal keys"
+    ${KUBECTL} exec -n vault --stdin vault-0 -- vault operator init -format=yaml > vault-auto-unseal-keys.yaml
+    echo "Creating secret with unseal keys"
+    ${KUBECTL} create secret generic vault-auto-unseal-keys --from-file=keys=./vault-auto-unseal-keys.yaml
+else
+    echo "Secret vault-auto-unseal-keys exists. Fetching and decoding the keys."
+    ${KUBECTL} get secret vault-auto-unseal-keys -o jsonpath='{.data.keys}' | base64 --decode > vault-auto-unseal-keys.yaml
+fi
 
 echo_info "vault-auto-unseal-keys.yaml"
 cat vault-auto-unseal-keys.yaml
@@ -87,10 +95,13 @@ metadata:
   namespace: vault
 type: Opaque
 stringData:
-  credentials: |
+  credentials: '{"token": "$VAULT_ROOT_TOKEN"}'
+  appRoleCredentials: |
     {
-      "token_name": "vault-creds-test-token",
-      "token": "$VAULT_ROOT_TOKEN"
+      "auth_login": {
+        "path": "auth/approle/login",
+        "parameters": {"role_id": "my-role"}
+      }
     }
 EOF
 
@@ -103,21 +114,28 @@ metadata:
   name: vault-provider-config
 spec:
   address: http://$VAULT_0_POD_IP:8200
-  add_address_to_env: false
-  headers: {name: test, value: "e2e"}
-  max_lease_ttl_seconds: 300
-  max_retries: 10
-  max_retries_ccc: 10
-  namespace: vault
   skip_child_token: true
-  skip_get_vault_version: true
   skip_tls_verify: true
-  tls_server_name: ""
-  vault_version_override: "1.12.0"
   credentials:
     source: Secret
     secretRef:
-      name: vault-creds
       namespace: vault
+      name: vault-creds
       key: credentials
+EOF
+cat <<EOF | ${KUBECTL} apply -f -
+apiVersion: vault.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: vault-provider-config-approle
+spec:
+  address: http://$VAULT_0_POD_IP:8200
+  skip_child_token: true
+  skip_tls_verify: true
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: vault
+      name: vault-creds
+      key: appRoleCredentials
 EOF

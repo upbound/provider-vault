@@ -1,8 +1,8 @@
 package vault
 
 import (
+	"github.com/crossplane/upjet/pkg/config"
 	"github.com/upbound/provider-vault/config/common"
-	"github.com/upbound/upjet/pkg/config"
 )
 
 // ConfigureNamespace configures the namespace resource.

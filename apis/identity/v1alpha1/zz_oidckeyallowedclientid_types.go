@@ -17,11 +17,31 @@ type OidcKeyAllowedClientIDInitParameters struct {
 
 	// Client ID to allow usage with the OIDC named key
 	// Role Client ID allowed to use the key for signing.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.OidcRole
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("client_id",false)
 	AllowedClientID *string `json:"allowedClientId,omitempty" tf:"allowed_client_id,omitempty"`
+
+	// Reference to a OidcRole in identity to populate allowedClientId.
+	// +kubebuilder:validation:Optional
+	AllowedClientIDRef *v1.Reference `json:"allowedClientIdRef,omitempty" tf:"-"`
+
+	// Selector for a OidcRole in identity to populate allowedClientId.
+	// +kubebuilder:validation:Optional
+	AllowedClientIDSelector *v1.Selector `json:"allowedClientIdSelector,omitempty" tf:"-"`
 
 	// Name of the OIDC Key allow the Client ID.
 	// Name of the key.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.OidcKey
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	KeyName *string `json:"keyName,omitempty" tf:"key_name,omitempty"`
+
+	// Reference to a OidcKey in identity to populate keyName.
+	// +kubebuilder:validation:Optional
+	KeyNameRef *v1.Reference `json:"keyNameRef,omitempty" tf:"-"`
+
+	// Selector for a OidcKey in identity to populate keyName.
+	// +kubebuilder:validation:Optional
+	KeyNameSelector *v1.Selector `json:"keyNameSelector,omitempty" tf:"-"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -55,13 +75,33 @@ type OidcKeyAllowedClientIDParameters struct {
 
 	// Client ID to allow usage with the OIDC named key
 	// Role Client ID allowed to use the key for signing.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.OidcRole
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("client_id",false)
 	// +kubebuilder:validation:Optional
 	AllowedClientID *string `json:"allowedClientId,omitempty" tf:"allowed_client_id,omitempty"`
 
+	// Reference to a OidcRole in identity to populate allowedClientId.
+	// +kubebuilder:validation:Optional
+	AllowedClientIDRef *v1.Reference `json:"allowedClientIdRef,omitempty" tf:"-"`
+
+	// Selector for a OidcRole in identity to populate allowedClientId.
+	// +kubebuilder:validation:Optional
+	AllowedClientIDSelector *v1.Selector `json:"allowedClientIdSelector,omitempty" tf:"-"`
+
 	// Name of the OIDC Key allow the Client ID.
 	// Name of the key.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.OidcKey
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	KeyName *string `json:"keyName,omitempty" tf:"key_name,omitempty"`
+
+	// Reference to a OidcKey in identity to populate keyName.
+	// +kubebuilder:validation:Optional
+	KeyNameRef *v1.Reference `json:"keyNameRef,omitempty" tf:"-"`
+
+	// Selector for a OidcKey in identity to populate keyName.
+	// +kubebuilder:validation:Optional
+	KeyNameSelector *v1.Selector `json:"keyNameSelector,omitempty" tf:"-"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -76,9 +116,8 @@ type OidcKeyAllowedClientIDParameters struct {
 type OidcKeyAllowedClientIDSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OidcKeyAllowedClientIDParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -97,21 +136,20 @@ type OidcKeyAllowedClientIDStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // OidcKeyAllowedClientID is the Schema for the OidcKeyAllowedClientIDs API. Allows an Identity OIDC Role to use an OIDC Named key.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type OidcKeyAllowedClientID struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.allowedClientId) || has(self.initProvider.allowedClientId)",message="allowedClientId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.keyName) || has(self.initProvider.keyName)",message="keyName is a required parameter"
-	Spec   OidcKeyAllowedClientIDSpec   `json:"spec"`
-	Status OidcKeyAllowedClientIDStatus `json:"status,omitempty"`
+	Spec              OidcKeyAllowedClientIDSpec   `json:"spec"`
+	Status            OidcKeyAllowedClientIDStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

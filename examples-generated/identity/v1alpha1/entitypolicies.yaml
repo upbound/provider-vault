@@ -1,0 +1,32 @@
+apiVersion: identity.vault.upbound.io/v1alpha1
+kind: EntityPolicies
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/entitypolicies
+  labels:
+    testing.upbound.io/example-name: policies
+  name: policies
+spec:
+  forProvider:
+    entityIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: entity
+    exclusive: true
+    policies:
+    - default
+    - test
+
+---
+
+apiVersion: identity.vault.upbound.io/v1alpha1
+kind: Entity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/entitypolicies
+  labels:
+    testing.upbound.io/example-name: entity
+  name: entity
+spec:
+  forProvider:
+    externalPolicies: true
+    name: entity

@@ -18,6 +18,8 @@ type AuthBackendInitParameters struct {
 
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
 
+	CredentialsSecretRef *v1.SecretKeySelector `json:"credentialsSecretRef,omitempty" tf:"-"`
+
 	// Specifies overrides to service endpoints used when making API requests to GCP.
 	CustomEndpoint []CustomEndpointInitParameters `json:"customEndpoint,omitempty" tf:"custom_endpoint,omitempty"`
 
@@ -25,6 +27,15 @@ type AuthBackendInitParameters struct {
 
 	// If set, opts out of mount migration on path updates.
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
+
+	// The audience claim value for plugin identity tokens.
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The key to use for signing identity tokens.
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
+	// The TTL of generated tokens.
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
 	// Specifies if the auth method is local only
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
@@ -37,6 +48,9 @@ type AuthBackendInitParameters struct {
 	PrivateKeyID *string `json:"privateKeyId,omitempty" tf:"private_key_id,omitempty"`
 
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Service Account to impersonate for plugin workload identity federation.
+	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
 
 	Tune []TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 }
@@ -60,6 +74,15 @@ type AuthBackendObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The audience claim value for plugin identity tokens.
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The key to use for signing identity tokens.
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
+	// The TTL of generated tokens.
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
+
 	// Specifies if the auth method is local only
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
@@ -71,6 +94,9 @@ type AuthBackendObservation struct {
 	PrivateKeyID *string `json:"privateKeyId,omitempty" tf:"private_key_id,omitempty"`
 
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Service Account to impersonate for plugin workload identity federation.
+	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
 
 	Tune []TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
 }
@@ -97,6 +123,18 @@ type AuthBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
+	// The audience claim value for plugin identity tokens.
+	// +kubebuilder:validation:Optional
+	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
+
+	// The key to use for signing identity tokens.
+	// +kubebuilder:validation:Optional
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
+	// The TTL of generated tokens.
+	// +kubebuilder:validation:Optional
+	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
+
 	// Specifies if the auth method is local only
 	// +kubebuilder:validation:Optional
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
@@ -113,6 +151,10 @@ type AuthBackendParameters struct {
 
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Service Account to impersonate for plugin workload identity federation.
+	// +kubebuilder:validation:Optional
+	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Tune []TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`
@@ -234,9 +276,8 @@ type TuneParameters struct {
 type AuthBackendSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -255,13 +296,14 @@ type AuthBackendStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // AuthBackend is the Schema for the AuthBackends API. <no value>
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type AuthBackend struct {
 	metav1.TypeMeta   `json:",inline"`

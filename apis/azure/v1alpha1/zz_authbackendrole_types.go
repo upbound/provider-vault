@@ -16,7 +16,17 @@ import (
 type AuthBackendRoleInitParameters struct {
 
 	// Unique name of the auth backend to configure.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// If set, defines a constraint on the groups
 	// that can perform the login operation that they should be using the group
@@ -69,6 +79,7 @@ type AuthBackendRoleInitParameters struct {
 	// addresses which can authenticate successfully, and ties the resulting token to these blocks
 	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// If set, will encode an
@@ -103,6 +114,7 @@ type AuthBackendRoleInitParameters struct {
 	// List of policies to encode onto generated tokens. Depending
 	// on the auth method, this list may be supplemented by user/group/other values.
 	// Generated Token's Policies
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The incremental lifetime for generated tokens in number of seconds.
@@ -177,6 +189,7 @@ type AuthBackendRoleObservation struct {
 	// addresses which can authenticate successfully, and ties the resulting token to these blocks
 	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// If set, will encode an
@@ -211,6 +224,7 @@ type AuthBackendRoleObservation struct {
 	// List of policies to encode onto generated tokens. Depending
 	// on the auth method, this list may be supplemented by user/group/other values.
 	// Generated Token's Policies
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The incremental lifetime for generated tokens in number of seconds.
@@ -230,8 +244,18 @@ type AuthBackendRoleObservation struct {
 type AuthBackendRoleParameters struct {
 
 	// Unique name of the auth backend to configure.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// If set, defines a constraint on the groups
 	// that can perform the login operation that they should be using the group
@@ -293,6 +317,7 @@ type AuthBackendRoleParameters struct {
 	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// If set, will encode an
@@ -333,6 +358,7 @@ type AuthBackendRoleParameters struct {
 	// on the auth method, this list may be supplemented by user/group/other values.
 	// Generated Token's Policies
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The incremental lifetime for generated tokens in number of seconds.
@@ -355,9 +381,8 @@ type AuthBackendRoleParameters struct {
 type AuthBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendRoleParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -376,18 +401,19 @@ type AuthBackendRoleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // AuthBackendRole is the Schema for the AuthBackendRoles API. Manages Azure auth backend roles in Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type AuthBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.role) || has(self.initProvider.role)",message="role is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.role) || (has(self.initProvider) && has(self.initProvider.role))",message="spec.forProvider.role is a required parameter"
 	Spec   AuthBackendRoleSpec   `json:"spec"`
 	Status AuthBackendRoleStatus `json:"status,omitempty"`
 }

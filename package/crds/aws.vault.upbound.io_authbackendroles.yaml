@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.12.1
+    controller-gen.kubebuilder.io/version: v0.14.0
   name: authbackendroles.aws.vault.upbound.io
 spec:
   group: aws.vault.upbound.io
@@ -19,11 +19,11 @@ spec:
   scope: Cluster
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .status.conditions[?(@.type=='Ready')].status
-      name: READY
-      type: string
     - jsonPath: .status.conditions[?(@.type=='Synced')].status
       name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
       type: string
     - jsonPath: .metadata.annotations.crossplane\.io/external-name
       name: EXTERNAL-NAME
@@ -38,14 +38,19 @@ spec:
           AWS auth backend roles in Vault.
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
@@ -54,13 +59,14 @@ spec:
             properties:
               deletionPolicy:
                 default: Delete
-                description: 'DeletionPolicy specifies what will happen to the underlying
-                  external when this managed resource is deleted - either "Delete"
-                  or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicies field in a future release. Currently,
-                  both could be set independently and non-default values would be
-                  honored if the feature flag is enabled. See the design doc for more
-                  information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
+                description: |-
+                  DeletionPolicy specifies what will happen to the underlying external
+                  when this managed resource is deleted - either "Delete" or "Orphan" the
+                  external resource.
+                  This field is planned to be deprecated in favor of the ManagementPolicies
+                  field in a future release. Currently, both could be set independently and
+                  non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
                 enum:
                 - Orphan
                 - Delete
@@ -68,463 +74,672 @@ spec:
               forProvider:
                 properties:
                   allowInstanceMigration:
-                    description: If set to true, allows migration of the underlying
-                      instance where the client resides. When true, allows migration
-                      of the underlying instance where the client resides. Use with
-                      caution.
+                    description: |-
+                      If set to true, allows migration of
+                      the underlying instance where the client resides.
+                      When true, allows migration of the underlying instance where the client resides. Use with caution.
                     type: boolean
                   authType:
-                    description: The auth type permitted for this role. Valid choices
-                      are ec2 and iam. Defaults to iam. The auth type permitted for
-                      this role.
+                    description: |-
+                      The auth type permitted for this role. Valid choices
+                      are ec2 and iam. Defaults to iam.
+                      The auth type permitted for this role.
                     type: string
                   backend:
-                    description: Path to the mounted aws auth backend. Unique name
-                      of the auth backend to configure.
+                    description: |-
+                      Path to the mounted aws auth backend.
+                      Unique name of the auth backend to configure.
                     type: string
+                  backendRef:
+                    description: Reference to a Backend in auth to populate backend.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  backendSelector:
+                    description: Selector for a Backend in auth to populate backend.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
                   boundAccountIds:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they should be using
-                      the account ID specified by this field. auth_type must be set
-                      to ec2 or inferred_entity_type must be set to ec2_instance to
-                      use this constraint. Only EC2 instances with this account ID
-                      in their identity document will be permitted to log in.
+                    description: |-
+                      If set, defines a constraint on the EC2
+                      instances that can perform the login operation that they should be using the
+                      account ID specified by this field. auth_type must be set to ec2 or
+                      inferred_entity_type must be set to ec2_instance to use this constraint.
+                      Only EC2 instances with this account ID in their identity document will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundAmiIds:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they should be using
-                      the AMI ID specified by this field. auth_type must be set to
-                      ec2 or inferred_entity_type must be set to ec2_instance to use
-                      this constraint. Only EC2 instances using this AMI ID will be
-                      permitted to log in.
+                    description: |-
+                      If set, defines a constraint on the EC2 instances
+                      that can perform the login operation that they should be using the AMI ID
+                      specified by this field. auth_type must be set to ec2 or
+                      inferred_entity_type must be set to ec2_instance to use this constraint.
+                      Only EC2 instances using this AMI ID will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundEc2InstanceIds:
                     description: Only EC2 instances that match this instance ID will
                       be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundIamInstanceProfileArns:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they must be associated
-                      with an IAM instance profile ARN which has a prefix that matches
-                      the value specified by this field. The value is prefix-matched
-                      as though it were a glob ending in *. auth_type must be set
-                      to ec2 or inferred_entity_type must be set to ec2_instance to
-                      use this constraint. Only EC2 instances associated with an IAM
-                      instance profile ARN that matches this value will be permitted
-                      to log in.
+                    description: |-
+                      If set, defines a constraint on
+                      the EC2 instances that can perform the login operation that they must be
+                      associated with an IAM instance profile ARN which has a prefix that matches
+                      the value specified by this field. The value is prefix-matched as though it
+                      were a glob ending in *. auth_type must be set to ec2 or
+                      inferred_entity_type must be set to ec2_instance to use this constraint.
+                      Only EC2 instances associated with an IAM instance profile ARN that matches this value will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundIamPrincipalArns:
-                    description: If set, defines the IAM principal that must be authenticated
-                      when auth_type is set to iam. Wildcards are supported at the
-                      end of the ARN. The IAM principal that must be authenticated
-                      using the iam auth method.
+                    description: |-
+                      If set, defines the IAM principal that
+                      must be authenticated when auth_type is set to iam. Wildcards are
+                      supported at the end of the ARN.
+                      The IAM principal that must be authenticated using the iam auth method.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundIamRoleArns:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they must match the
-                      IAM role ARN specified by this field. auth_type must be set
-                      to ec2 or inferred_entity_type must be set to ec2_instance to
-                      use this constraint. Only EC2 instances that match this IAM
-                      role ARN will be permitted to log in.
+                    description: |-
+                      If set, defines a constraint on the EC2
+                      instances that can perform the login operation that they must match the IAM
+                      role ARN specified by this field. auth_type must be set to ec2 or
+                      inferred_entity_type must be set to ec2_instance to use this constraint.
+                      Only EC2 instances that match this IAM role ARN will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundRegions:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that the region in their
-                      identity document must match the one specified by this field.
-                      auth_type must be set to ec2 or inferred_entity_type must be
-                      set to ec2_instance to use this constraint. Only EC2 instances
-                      in this region will be permitted to log in.
+                    description: |-
+                      If set, defines a constraint on the EC2 instances
+                      that can perform the login operation that the region in their identity
+                      document must match the one specified by this field. auth_type must be set
+                      to ec2 or inferred_entity_type must be set to ec2_instance to use this
+                      constraint.
+                      Only EC2 instances in this region will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundSubnetIds:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they be associated
-                      with the subnet ID that matches the value specified by this
-                      field. auth_type must be set to ec2 or inferred_entity_type
-                      must be set to ec2_instance to use this constraint. Only EC2
-                      instances associated with this subnet ID will be permitted to
-                      log in.
+                    description: |-
+                      If set, defines a constraint on the EC2
+                      instances that can perform the login operation that they be associated with
+                      the subnet ID that matches the value specified by this field. auth_type
+                      must be set to ec2 or inferred_entity_type must be set to ec2_instance
+                      to use this constraint.
+                      Only EC2 instances associated with this subnet ID will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundVpcIds:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they be associated
-                      with the VPC ID that matches the value specified by this field.
-                      auth_type must be set to ec2 or inferred_entity_type must be
-                      set to ec2_instance to use this constraint. Only EC2 instances
-                      associated with this VPC ID will be permitted to log in.
+                    description: |-
+                      If set, defines a constraint on the EC2 instances
+                      that can perform the login operation that they be associated with the VPC ID
+                      that matches the value specified by this field. auth_type must be set to
+                      ec2 or inferred_entity_type must be set to ec2_instance to use this
+                      constraint.
+                      Only EC2 instances associated with this VPC ID will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   disallowReauthentication:
-                    description: IF set to true, only allows a single token to be
-                      granted per instance ID. This can only be set when auth_type
-                      is set to ec2. When true, only allows a single token to be granted
-                      per instance ID.
+                    description: |-
+                      IF set to true, only allows a
+                      single token to be granted per instance ID. This can only be set when
+                      auth_type is set to ec2.
+                      When true, only allows a single token to be granted per instance ID.
                     type: boolean
                   inferredAwsRegion:
-                    description: When inferred_entity_type is set, this is the region
-                      to search for the inferred entities. Required if inferred_entity_type
-                      is set. This only applies when auth_type is set to iam. The
-                      region to search for the inferred entities in.
+                    description: |-
+                      When inferred_entity_type is set, this
+                      is the region to search for the inferred entities. Required if
+                      inferred_entity_type is set. This only applies when auth_type is set to
+                      iam.
+                      The region to search for the inferred entities in.
                     type: string
                   inferredEntityType:
-                    description: If set, instructs Vault to turn on inferencing. The
-                      only valid value is ec2_instance, which instructs Vault to infer
-                      that the role comes from an EC2 instance in an IAM instance
-                      profile. This only applies when auth_type is set to iam. The
-                      type of inferencing Vault should do.
+                    description: |-
+                      If set, instructs Vault to turn on
+                      inferencing. The only valid value is ec2_instance, which instructs Vault to
+                      infer that the role comes from an EC2 instance in an IAM instance profile.
+                      This only applies when auth_type is set to iam.
+                      The type of inferencing Vault should do.
                     type: string
                   namespace:
-                    description: The namespace to provision the resource in. The value
-                      should not contain leading or trailing forward slashes. The
-                      namespace is always relative to the provider's configured namespace.
-                      Available only for Vault Enterprise. Target namespace. (requires
-                      Enterprise)
+                    description: |-
+                      The namespace to provision the resource in.
+                      The value should not contain leading or trailing forward slashes.
+                      The namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise.
+                      Target namespace. (requires Enterprise)
                     type: string
                   resolveAwsUniqueIds:
-                    description: Only valid when auth_type is iam. If set to true,
-                      the bound_iam_principal_arns are resolved to AWS Unique IDs
-                      for the bound principal ARN. This field is ignored when a bound_iam_principal_arn
-                      ends in a wildcard. Resolving to unique IDs more closely mimics
-                      the behavior of AWS services in that if an IAM user or role
-                      is deleted and a new one is recreated with the same name, those
-                      new users or roles won't get access to roles in Vault that were
-                      permissioned to the prior principals of the same name. Defaults
-                      to true. Once set to true, this cannot be changed to false without
-                      recreating the role. Whether or not Vault should resolve the
-                      bound_iam_principal_arn to an AWS Unique ID. When true, deleting
-                      a principal and recreating it with the same name won't automatically
-                      grant the new principal the same roles in Vault that the old
-                      principal had.
+                    description: |-
+                      Only valid when
+                      auth_type is iam. If set to true, the bound_iam_principal_arns are
+                      resolved to AWS Unique
+                      IDs
+                      for the bound principal ARN. This field is ignored when a
+                      bound_iam_principal_arn ends in a wildcard. Resolving to unique IDs more
+                      closely mimics the behavior of AWS services in that if an IAM user or role is
+                      deleted and a new one is recreated with the same name, those new users or
+                      roles won't get access to roles in Vault that were permissioned to the prior
+                      principals of the same name. Defaults to true.
+                      Once set to true, this cannot be changed to false without recreating the role.
+                      Whether or not Vault should resolve the bound_iam_principal_arn to an AWS Unique ID. When true, deleting a principal and recreating it with the same name won't automatically grant the new principal the same roles in Vault that the old principal had.
                     type: boolean
                   role:
-                    description: The name of the role. Name of the role.
+                    description: |-
+                      The name of the role.
+                      Name of the role.
                     type: string
                   roleTag:
-                    description: If set, enable role tags for this role. The value
-                      set for this field should be the key of the tag on the EC2 instance.
-                      auth_type must be set to ec2 or inferred_entity_type must be
-                      set to ec2_instance to use this constraint. The key of the tag
-                      on EC2 instance to use for role tags.
+                    description: |-
+                      If set, enable role tags for this role. The value set
+                      for this field should be the key of the tag on the EC2 instance. auth_type
+                      must be set to ec2 or inferred_entity_type must be set to ec2_instance
+                      to use this constraint.
+                      The key of the tag on EC2 instance to use for role tags.
                     type: string
                   tokenBoundCidrs:
-                    description: List of CIDR blocks; if set, specifies blocks of
-                      IP addresses which can authenticate successfully, and ties the
-                      resulting token to these blocks as well. Specifies the blocks
-                      of IP addresses which are allowed to use the generated token
+                    description: |-
+                      List of CIDR blocks; if set, specifies blocks of IP
+                      addresses which can authenticate successfully, and ties the resulting token to these blocks
+                      as well.
+                      Specifies the blocks of IP addresses which are allowed to use the generated token
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   tokenExplicitMaxTtl:
-                    description: If set, will encode an explicit max TTL onto the
-                      token in number of seconds. This is a hard cap even if token_ttl
-                      and token_max_ttl would otherwise allow a renewal. Generated
-                      Token's Explicit Maximum TTL in seconds
+                    description: |-
+                      If set, will encode an
+                      explicit max TTL
+                      onto the token in number of seconds. This is a hard cap even if token_ttl and
+                      token_max_ttl would otherwise allow a renewal.
+                      Generated Token's Explicit Maximum TTL in seconds
                     type: number
                   tokenMaxTtl:
-                    description: The maximum lifetime for generated tokens in number
-                      of seconds. Its current value will be referenced at renewal
-                      time. The maximum lifetime of the generated token
+                    description: |-
+                      The maximum lifetime for generated tokens in number of seconds.
+                      Its current value will be referenced at renewal time.
+                      The maximum lifetime of the generated token
                     type: number
                   tokenNoDefaultPolicy:
-                    description: If set, the default policy will not be set on generated
-                      tokens; otherwise it will be added to the policies set in token_policies.
-                      If true, the 'default' policy will not automatically be added
-                      to generated tokens
+                    description: |-
+                      If set, the default policy will not be set on
+                      generated tokens; otherwise it will be added to the policies set in token_policies.
+                      If true, the 'default' policy will not automatically be added to generated tokens
                     type: boolean
                   tokenNumUses:
-                    description: The maximum number of times a generated token may
-                      be used (within its lifetime); 0 means unlimited. The maximum
-                      number of times a token may be used, a value of zero means unlimited
+                    description: |-
+                      The maximum number
+                      of times a generated token may be used (within its lifetime); 0 means unlimited.
+                      The maximum number of times a token may be used, a value of zero means unlimited
                     type: number
                   tokenPeriod:
-                    description: If set, indicates that the token generated using
-                      this role should never expire. The token should be renewed within
-                      the duration specified by this value. At each renewal, the token's
-                      TTL will be set to the value of this field. Specified in seconds.
+                    description: |-
+                      If set, indicates that the
+                      token generated using this role should never expire. The token should be renewed within the
+                      duration specified by this value. At each renewal, the token's TTL will be set to the
+                      value of this field. Specified in seconds.
                       Generated Token's Period
                     type: number
                   tokenPolicies:
-                    description: List of policies to encode onto generated tokens.
-                      Depending on the auth method, this list may be supplemented
-                      by user/group/other values. Generated Token's Policies
+                    description: |-
+                      List of policies to encode onto generated tokens. Depending
+                      on the auth method, this list may be supplemented by user/group/other values.
+                      Generated Token's Policies
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   tokenTtl:
-                    description: The incremental lifetime for generated tokens in
-                      number of seconds. Its current value will be referenced at renewal
-                      time. The initial ttl of the token to generate in seconds
+                    description: |-
+                      The incremental lifetime for generated tokens in number of seconds.
+                      Its current value will be referenced at renewal time.
+                      The initial ttl of the token to generate in seconds
                     type: number
                   tokenType:
-                    description: 'The type of token that should be generated. Can
-                      be service, batch, or default to use the mount''s tuned default
-                      (which unless changed will be service tokens). For token store
-                      roles, there are two additional possibilities: default-service
-                      and default-batch which specify the type to return unless the
-                      client requests a different type at generation time. The type
-                      of token to generate, service or batch'
+                    description: |-
+                      The type of token that should be generated. Can be service,
+                      batch, or default to use the mount's tuned default (which unless changed will be
+                      service tokens). For token store roles, there are two additional possibilities:
+                      default-service and default-batch which specify the type to return unless the client
+                      requests a different type at generation time.
+                      The type of token to generate, service or batch
                     type: string
                 type: object
               initProvider:
-                description: THIS IS AN ALPHA FIELD. Do not use it in production.
-                  It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. InitProvider
-                  holds the same fields as ForProvider, with the exception of Identifier
-                  and other resource reference fields. The fields that are in InitProvider
-                  are merged into ForProvider when the resource is created. The same
-                  fields are also added to the terraform ignore_changes hook, to avoid
-                  updating them after creation. This is useful for fields that are
-                  required on creation, but we do not desire to update them after
-                  creation, for example because of an external controller is managing
-                  them, like an autoscaler.
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
                 properties:
                   allowInstanceMigration:
-                    description: If set to true, allows migration of the underlying
-                      instance where the client resides. When true, allows migration
-                      of the underlying instance where the client resides. Use with
-                      caution.
+                    description: |-
+                      If set to true, allows migration of
+                      the underlying instance where the client resides.
+                      When true, allows migration of the underlying instance where the client resides. Use with caution.
                     type: boolean
                   authType:
-                    description: The auth type permitted for this role. Valid choices
-                      are ec2 and iam. Defaults to iam. The auth type permitted for
-                      this role.
+                    description: |-
+                      The auth type permitted for this role. Valid choices
+                      are ec2 and iam. Defaults to iam.
+                      The auth type permitted for this role.
                     type: string
                   backend:
-                    description: Path to the mounted aws auth backend. Unique name
-                      of the auth backend to configure.
+                    description: |-
+                      Path to the mounted aws auth backend.
+                      Unique name of the auth backend to configure.
                     type: string
+                  backendRef:
+                    description: Reference to a Backend in auth to populate backend.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  backendSelector:
+                    description: Selector for a Backend in auth to populate backend.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
                   boundAccountIds:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they should be using
-                      the account ID specified by this field. auth_type must be set
-                      to ec2 or inferred_entity_type must be set to ec2_instance to
-                      use this constraint. Only EC2 instances with this account ID
-                      in their identity document will be permitted to log in.
+                    description: |-
+                      If set, defines a constraint on the EC2
+                      instances that can perform the login operation that they should be using the
+                      account ID specified by this field. auth_type must be set to ec2 or
+                      inferred_entity_type must be set to ec2_instance to use this constraint.
+                      Only EC2 instances with this account ID in their identity document will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundAmiIds:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they should be using
-                      the AMI ID specified by this field. auth_type must be set to
-                      ec2 or inferred_entity_type must be set to ec2_instance to use
-                      this constraint. Only EC2 instances using this AMI ID will be
-                      permitted to log in.
+                    description: |-
+                      If set, defines a constraint on the EC2 instances
+                      that can perform the login operation that they should be using the AMI ID
+                      specified by this field. auth_type must be set to ec2 or
+                      inferred_entity_type must be set to ec2_instance to use this constraint.
+                      Only EC2 instances using this AMI ID will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundEc2InstanceIds:
                     description: Only EC2 instances that match this instance ID will
                       be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundIamInstanceProfileArns:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they must be associated
-                      with an IAM instance profile ARN which has a prefix that matches
-                      the value specified by this field. The value is prefix-matched
-                      as though it were a glob ending in *. auth_type must be set
-                      to ec2 or inferred_entity_type must be set to ec2_instance to
-                      use this constraint. Only EC2 instances associated with an IAM
-                      instance profile ARN that matches this value will be permitted
-                      to log in.
+                    description: |-
+                      If set, defines a constraint on
+                      the EC2 instances that can perform the login operation that they must be
+                      associated with an IAM instance profile ARN which has a prefix that matches
+                      the value specified by this field. The value is prefix-matched as though it
+                      were a glob ending in *. auth_type must be set to ec2 or
+                      inferred_entity_type must be set to ec2_instance to use this constraint.
+                      Only EC2 instances associated with an IAM instance profile ARN that matches this value will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundIamPrincipalArns:
-                    description: If set, defines the IAM principal that must be authenticated
-                      when auth_type is set to iam. Wildcards are supported at the
-                      end of the ARN. The IAM principal that must be authenticated
-                      using the iam auth method.
+                    description: |-
+                      If set, defines the IAM principal that
+                      must be authenticated when auth_type is set to iam. Wildcards are
+                      supported at the end of the ARN.
+                      The IAM principal that must be authenticated using the iam auth method.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundIamRoleArns:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they must match the
-                      IAM role ARN specified by this field. auth_type must be set
-                      to ec2 or inferred_entity_type must be set to ec2_instance to
-                      use this constraint. Only EC2 instances that match this IAM
-                      role ARN will be permitted to log in.
+                    description: |-
+                      If set, defines a constraint on the EC2
+                      instances that can perform the login operation that they must match the IAM
+                      role ARN specified by this field. auth_type must be set to ec2 or
+                      inferred_entity_type must be set to ec2_instance to use this constraint.
+                      Only EC2 instances that match this IAM role ARN will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundRegions:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that the region in their
-                      identity document must match the one specified by this field.
-                      auth_type must be set to ec2 or inferred_entity_type must be
-                      set to ec2_instance to use this constraint. Only EC2 instances
-                      in this region will be permitted to log in.
+                    description: |-
+                      If set, defines a constraint on the EC2 instances
+                      that can perform the login operation that the region in their identity
+                      document must match the one specified by this field. auth_type must be set
+                      to ec2 or inferred_entity_type must be set to ec2_instance to use this
+                      constraint.
+                      Only EC2 instances in this region will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundSubnetIds:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they be associated
-                      with the subnet ID that matches the value specified by this
-                      field. auth_type must be set to ec2 or inferred_entity_type
-                      must be set to ec2_instance to use this constraint. Only EC2
-                      instances associated with this subnet ID will be permitted to
-                      log in.
+                    description: |-
+                      If set, defines a constraint on the EC2
+                      instances that can perform the login operation that they be associated with
+                      the subnet ID that matches the value specified by this field. auth_type
+                      must be set to ec2 or inferred_entity_type must be set to ec2_instance
+                      to use this constraint.
+                      Only EC2 instances associated with this subnet ID will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundVpcIds:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they be associated
-                      with the VPC ID that matches the value specified by this field.
-                      auth_type must be set to ec2 or inferred_entity_type must be
-                      set to ec2_instance to use this constraint. Only EC2 instances
-                      associated with this VPC ID will be permitted to log in.
+                    description: |-
+                      If set, defines a constraint on the EC2 instances
+                      that can perform the login operation that they be associated with the VPC ID
+                      that matches the value specified by this field. auth_type must be set to
+                      ec2 or inferred_entity_type must be set to ec2_instance to use this
+                      constraint.
+                      Only EC2 instances associated with this VPC ID will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   disallowReauthentication:
-                    description: IF set to true, only allows a single token to be
-                      granted per instance ID. This can only be set when auth_type
-                      is set to ec2. When true, only allows a single token to be granted
-                      per instance ID.
+                    description: |-
+                      IF set to true, only allows a
+                      single token to be granted per instance ID. This can only be set when
+                      auth_type is set to ec2.
+                      When true, only allows a single token to be granted per instance ID.
                     type: boolean
                   inferredAwsRegion:
-                    description: When inferred_entity_type is set, this is the region
-                      to search for the inferred entities. Required if inferred_entity_type
-                      is set. This only applies when auth_type is set to iam. The
-                      region to search for the inferred entities in.
+                    description: |-
+                      When inferred_entity_type is set, this
+                      is the region to search for the inferred entities. Required if
+                      inferred_entity_type is set. This only applies when auth_type is set to
+                      iam.
+                      The region to search for the inferred entities in.
                     type: string
                   inferredEntityType:
-                    description: If set, instructs Vault to turn on inferencing. The
-                      only valid value is ec2_instance, which instructs Vault to infer
-                      that the role comes from an EC2 instance in an IAM instance
-                      profile. This only applies when auth_type is set to iam. The
-                      type of inferencing Vault should do.
+                    description: |-
+                      If set, instructs Vault to turn on
+                      inferencing. The only valid value is ec2_instance, which instructs Vault to
+                      infer that the role comes from an EC2 instance in an IAM instance profile.
+                      This only applies when auth_type is set to iam.
+                      The type of inferencing Vault should do.
                     type: string
                   namespace:
-                    description: The namespace to provision the resource in. The value
-                      should not contain leading or trailing forward slashes. The
-                      namespace is always relative to the provider's configured namespace.
-                      Available only for Vault Enterprise. Target namespace. (requires
-                      Enterprise)
+                    description: |-
+                      The namespace to provision the resource in.
+                      The value should not contain leading or trailing forward slashes.
+                      The namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise.
+                      Target namespace. (requires Enterprise)
                     type: string
                   resolveAwsUniqueIds:
-                    description: Only valid when auth_type is iam. If set to true,
-                      the bound_iam_principal_arns are resolved to AWS Unique IDs
-                      for the bound principal ARN. This field is ignored when a bound_iam_principal_arn
-                      ends in a wildcard. Resolving to unique IDs more closely mimics
-                      the behavior of AWS services in that if an IAM user or role
-                      is deleted and a new one is recreated with the same name, those
-                      new users or roles won't get access to roles in Vault that were
-                      permissioned to the prior principals of the same name. Defaults
-                      to true. Once set to true, this cannot be changed to false without
-                      recreating the role. Whether or not Vault should resolve the
-                      bound_iam_principal_arn to an AWS Unique ID. When true, deleting
-                      a principal and recreating it with the same name won't automatically
-                      grant the new principal the same roles in Vault that the old
-                      principal had.
+                    description: |-
+                      Only valid when
+                      auth_type is iam. If set to true, the bound_iam_principal_arns are
+                      resolved to AWS Unique
+                      IDs
+                      for the bound principal ARN. This field is ignored when a
+                      bound_iam_principal_arn ends in a wildcard. Resolving to unique IDs more
+                      closely mimics the behavior of AWS services in that if an IAM user or role is
+                      deleted and a new one is recreated with the same name, those new users or
+                      roles won't get access to roles in Vault that were permissioned to the prior
+                      principals of the same name. Defaults to true.
+                      Once set to true, this cannot be changed to false without recreating the role.
+                      Whether or not Vault should resolve the bound_iam_principal_arn to an AWS Unique ID. When true, deleting a principal and recreating it with the same name won't automatically grant the new principal the same roles in Vault that the old principal had.
                     type: boolean
                   role:
-                    description: The name of the role. Name of the role.
+                    description: |-
+                      The name of the role.
+                      Name of the role.
                     type: string
                   roleTag:
-                    description: If set, enable role tags for this role. The value
-                      set for this field should be the key of the tag on the EC2 instance.
-                      auth_type must be set to ec2 or inferred_entity_type must be
-                      set to ec2_instance to use this constraint. The key of the tag
-                      on EC2 instance to use for role tags.
+                    description: |-
+                      If set, enable role tags for this role. The value set
+                      for this field should be the key of the tag on the EC2 instance. auth_type
+                      must be set to ec2 or inferred_entity_type must be set to ec2_instance
+                      to use this constraint.
+                      The key of the tag on EC2 instance to use for role tags.
                     type: string
                   tokenBoundCidrs:
-                    description: List of CIDR blocks; if set, specifies blocks of
-                      IP addresses which can authenticate successfully, and ties the
-                      resulting token to these blocks as well. Specifies the blocks
-                      of IP addresses which are allowed to use the generated token
+                    description: |-
+                      List of CIDR blocks; if set, specifies blocks of IP
+                      addresses which can authenticate successfully, and ties the resulting token to these blocks
+                      as well.
+                      Specifies the blocks of IP addresses which are allowed to use the generated token
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   tokenExplicitMaxTtl:
-                    description: If set, will encode an explicit max TTL onto the
-                      token in number of seconds. This is a hard cap even if token_ttl
-                      and token_max_ttl would otherwise allow a renewal. Generated
-                      Token's Explicit Maximum TTL in seconds
+                    description: |-
+                      If set, will encode an
+                      explicit max TTL
+                      onto the token in number of seconds. This is a hard cap even if token_ttl and
+                      token_max_ttl would otherwise allow a renewal.
+                      Generated Token's Explicit Maximum TTL in seconds
                     type: number
                   tokenMaxTtl:
-                    description: The maximum lifetime for generated tokens in number
-                      of seconds. Its current value will be referenced at renewal
-                      time. The maximum lifetime of the generated token
+                    description: |-
+                      The maximum lifetime for generated tokens in number of seconds.
+                      Its current value will be referenced at renewal time.
+                      The maximum lifetime of the generated token
                     type: number
                   tokenNoDefaultPolicy:
-                    description: If set, the default policy will not be set on generated
-                      tokens; otherwise it will be added to the policies set in token_policies.
-                      If true, the 'default' policy will not automatically be added
-                      to generated tokens
+                    description: |-
+                      If set, the default policy will not be set on
+                      generated tokens; otherwise it will be added to the policies set in token_policies.
+                      If true, the 'default' policy will not automatically be added to generated tokens
                     type: boolean
                   tokenNumUses:
-                    description: The maximum number of times a generated token may
-                      be used (within its lifetime); 0 means unlimited. The maximum
-                      number of times a token may be used, a value of zero means unlimited
+                    description: |-
+                      The maximum number
+                      of times a generated token may be used (within its lifetime); 0 means unlimited.
+                      The maximum number of times a token may be used, a value of zero means unlimited
                     type: number
                   tokenPeriod:
-                    description: If set, indicates that the token generated using
-                      this role should never expire. The token should be renewed within
-                      the duration specified by this value. At each renewal, the token's
-                      TTL will be set to the value of this field. Specified in seconds.
+                    description: |-
+                      If set, indicates that the
+                      token generated using this role should never expire. The token should be renewed within the
+                      duration specified by this value. At each renewal, the token's TTL will be set to the
+                      value of this field. Specified in seconds.
                       Generated Token's Period
                     type: number
                   tokenPolicies:
-                    description: List of policies to encode onto generated tokens.
-                      Depending on the auth method, this list may be supplemented
-                      by user/group/other values. Generated Token's Policies
+                    description: |-
+                      List of policies to encode onto generated tokens. Depending
+                      on the auth method, this list may be supplemented by user/group/other values.
+                      Generated Token's Policies
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   tokenTtl:
-                    description: The incremental lifetime for generated tokens in
-                      number of seconds. Its current value will be referenced at renewal
-                      time. The initial ttl of the token to generate in seconds
+                    description: |-
+                      The incremental lifetime for generated tokens in number of seconds.
+                      Its current value will be referenced at renewal time.
+                      The initial ttl of the token to generate in seconds
                     type: number
                   tokenType:
-                    description: 'The type of token that should be generated. Can
-                      be service, batch, or default to use the mount''s tuned default
-                      (which unless changed will be service tokens). For token store
-                      roles, there are two additional possibilities: default-service
-                      and default-batch which specify the type to return unless the
-                      client requests a different type at generation time. The type
-                      of token to generate, service or batch'
+                    description: |-
+                      The type of token that should be generated. Can be service,
+                      batch, or default to use the mount's tuned default (which unless changed will be
+                      service tokens). For token store roles, there are two additional possibilities:
+                      default-service and default-batch which specify the type to return unless the client
+                      requests a different type at generation time.
+                      The type of token to generate, service or batch
                     type: string
                 type: object
               managementPolicies:
                 default:
                 - '*'
-                description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
-                  It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicies
-                  specify the array of actions Crossplane is allowed to take on the
-                  managed and external resources. This field is planned to replace
-                  the DeletionPolicy field in a future release. Currently, both could
-                  be set independently and non-default values would be honored if
-                  the feature flag is enabled. If both are custom, the DeletionPolicy
-                  field will be ignored. See the design doc for more information:
-                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
-                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  This field is planned to replace the DeletionPolicy field in a future
+                  release. Currently, both could be set independently and non-default
+                  values would be honored if the feature flag is enabled. If both are
+                  custom, the DeletionPolicy field will be ignored.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
                 items:
-                  description: A ManagementAction represents an action that the Crossplane
-                    controllers can take on an external resource.
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
                   enum:
                   - Observe
                   - Create
@@ -537,9 +752,10 @@ spec:
               providerConfigRef:
                 default:
                   name: default
-                description: ProviderConfigReference specifies how the provider that
-                  will be used to create, observe, update, and delete this managed
-                  resource should be configured.
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
                 properties:
                   name:
                     description: Name of the referenced object.
@@ -549,57 +765,21 @@ spec:
                     properties:
                       resolution:
                         default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
+                        description: |-
+                          Resolution specifies whether resolution of this reference is required.
+                          The default is 'Required', which means the reconcile will fail if the
+                          reference cannot be resolved. 'Optional' means this reference will be
+                          a no-op if it cannot be resolved.
                         enum:
                         - Required
                         - Optional
                         type: string
                       resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              providerRef:
-                description: 'ProviderReference specifies the provider that will be
-                  used to create, observe, update, and delete this managed resource.
-                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
-                properties:
-                  name:
-                    description: Name of the referenced object.
-                    type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
+                        description: |-
+                          Resolve specifies when this reference should be resolved. The default
+                          is 'IfNotPresent', which will attempt to resolve the reference only when
+                          the corresponding field is not present. Use 'Always' to resolve the
+                          reference on every reconcile.
                         enum:
                         - Always
                         - IfNotPresent
@@ -609,17 +789,19 @@ spec:
                 - name
                 type: object
               publishConnectionDetailsTo:
-                description: PublishConnectionDetailsTo specifies the connection secret
-                  config which contains a name, metadata and a reference to secret
-                  store config to which any connection details for this managed resource
-                  should be written. Connection details frequently include the endpoint,
-                  username, and password required to connect to the managed resource.
+                description: |-
+                  PublishConnectionDetailsTo specifies the connection secret config which
+                  contains a name, metadata and a reference to secret store config to
+                  which any connection details for this managed resource should be written.
+                  Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
                 properties:
                   configRef:
                     default:
                       name: default
-                    description: SecretStoreConfigRef specifies which secret store
-                      config should be used for this ConnectionSecret.
+                    description: |-
+                      SecretStoreConfigRef specifies which secret store config should be used
+                      for this ConnectionSecret.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -629,21 +811,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -658,21 +840,22 @@ spec:
                       annotations:
                         additionalProperties:
                           type: string
-                        description: Annotations are the annotations to be added to
-                          connection secret. - For Kubernetes secrets, this will be
-                          used as "metadata.annotations". - It is up to Secret Store
-                          implementation for others store types.
+                        description: |-
+                          Annotations are the annotations to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.annotations".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       labels:
                         additionalProperties:
                           type: string
-                        description: Labels are the labels/tags to be added to connection
-                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
-                          - It is up to Secret Store implementation for others store
-                          types.
+                        description: |-
+                          Labels are the labels/tags to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       type:
-                        description: Type is the SecretType for the connection secret.
+                        description: |-
+                          Type is the SecretType for the connection secret.
                           - Only valid for Kubernetes Secret Stores.
                         type: string
                     type: object
@@ -683,14 +866,15 @@ spec:
                 - name
                 type: object
               writeConnectionSecretToRef:
-                description: WriteConnectionSecretToReference specifies the namespace
-                  and name of a Secret to which any connection details for this managed
-                  resource should be written. Connection details frequently include
-                  the endpoint, username, and password required to connect to the
-                  managed resource. This field is planned to be replaced in a future
-                  release in favor of PublishConnectionDetailsTo. Currently, both
-                  could be set independently and connection details would be published
-                  to both without affecting each other.
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                  This field is planned to be replaced in a future release in favor of
+                  PublishConnectionDetailsTo. Currently, both could be set independently
+                  and connection details would be published to both without affecting
+                  each other.
                 properties:
                   name:
                     description: Name of the secret.
@@ -706,233 +890,264 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: role is a required parameter
+            - message: spec.forProvider.role is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.role)
-                || has(self.initProvider.role)'
+                || (has(self.initProvider) && has(self.initProvider.role))'
           status:
             description: AuthBackendRoleStatus defines the observed state of AuthBackendRole.
             properties:
               atProvider:
                 properties:
                   allowInstanceMigration:
-                    description: If set to true, allows migration of the underlying
-                      instance where the client resides. When true, allows migration
-                      of the underlying instance where the client resides. Use with
-                      caution.
+                    description: |-
+                      If set to true, allows migration of
+                      the underlying instance where the client resides.
+                      When true, allows migration of the underlying instance where the client resides. Use with caution.
                     type: boolean
                   authType:
-                    description: The auth type permitted for this role. Valid choices
-                      are ec2 and iam. Defaults to iam. The auth type permitted for
-                      this role.
+                    description: |-
+                      The auth type permitted for this role. Valid choices
+                      are ec2 and iam. Defaults to iam.
+                      The auth type permitted for this role.
                     type: string
                   backend:
-                    description: Path to the mounted aws auth backend. Unique name
-                      of the auth backend to configure.
+                    description: |-
+                      Path to the mounted aws auth backend.
+                      Unique name of the auth backend to configure.
                     type: string
                   boundAccountIds:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they should be using
-                      the account ID specified by this field. auth_type must be set
-                      to ec2 or inferred_entity_type must be set to ec2_instance to
-                      use this constraint. Only EC2 instances with this account ID
-                      in their identity document will be permitted to log in.
+                    description: |-
+                      If set, defines a constraint on the EC2
+                      instances that can perform the login operation that they should be using the
+                      account ID specified by this field. auth_type must be set to ec2 or
+                      inferred_entity_type must be set to ec2_instance to use this constraint.
+                      Only EC2 instances with this account ID in their identity document will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundAmiIds:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they should be using
-                      the AMI ID specified by this field. auth_type must be set to
-                      ec2 or inferred_entity_type must be set to ec2_instance to use
-                      this constraint. Only EC2 instances using this AMI ID will be
-                      permitted to log in.
+                    description: |-
+                      If set, defines a constraint on the EC2 instances
+                      that can perform the login operation that they should be using the AMI ID
+                      specified by this field. auth_type must be set to ec2 or
+                      inferred_entity_type must be set to ec2_instance to use this constraint.
+                      Only EC2 instances using this AMI ID will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundEc2InstanceIds:
                     description: Only EC2 instances that match this instance ID will
                       be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundIamInstanceProfileArns:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they must be associated
-                      with an IAM instance profile ARN which has a prefix that matches
-                      the value specified by this field. The value is prefix-matched
-                      as though it were a glob ending in *. auth_type must be set
-                      to ec2 or inferred_entity_type must be set to ec2_instance to
-                      use this constraint. Only EC2 instances associated with an IAM
-                      instance profile ARN that matches this value will be permitted
-                      to log in.
+                    description: |-
+                      If set, defines a constraint on
+                      the EC2 instances that can perform the login operation that they must be
+                      associated with an IAM instance profile ARN which has a prefix that matches
+                      the value specified by this field. The value is prefix-matched as though it
+                      were a glob ending in *. auth_type must be set to ec2 or
+                      inferred_entity_type must be set to ec2_instance to use this constraint.
+                      Only EC2 instances associated with an IAM instance profile ARN that matches this value will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundIamPrincipalArns:
-                    description: If set, defines the IAM principal that must be authenticated
-                      when auth_type is set to iam. Wildcards are supported at the
-                      end of the ARN. The IAM principal that must be authenticated
-                      using the iam auth method.
+                    description: |-
+                      If set, defines the IAM principal that
+                      must be authenticated when auth_type is set to iam. Wildcards are
+                      supported at the end of the ARN.
+                      The IAM principal that must be authenticated using the iam auth method.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundIamRoleArns:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they must match the
-                      IAM role ARN specified by this field. auth_type must be set
-                      to ec2 or inferred_entity_type must be set to ec2_instance to
-                      use this constraint. Only EC2 instances that match this IAM
-                      role ARN will be permitted to log in.
+                    description: |-
+                      If set, defines a constraint on the EC2
+                      instances that can perform the login operation that they must match the IAM
+                      role ARN specified by this field. auth_type must be set to ec2 or
+                      inferred_entity_type must be set to ec2_instance to use this constraint.
+                      Only EC2 instances that match this IAM role ARN will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundRegions:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that the region in their
-                      identity document must match the one specified by this field.
-                      auth_type must be set to ec2 or inferred_entity_type must be
-                      set to ec2_instance to use this constraint. Only EC2 instances
-                      in this region will be permitted to log in.
+                    description: |-
+                      If set, defines a constraint on the EC2 instances
+                      that can perform the login operation that the region in their identity
+                      document must match the one specified by this field. auth_type must be set
+                      to ec2 or inferred_entity_type must be set to ec2_instance to use this
+                      constraint.
+                      Only EC2 instances in this region will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundSubnetIds:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they be associated
-                      with the subnet ID that matches the value specified by this
-                      field. auth_type must be set to ec2 or inferred_entity_type
-                      must be set to ec2_instance to use this constraint. Only EC2
-                      instances associated with this subnet ID will be permitted to
-                      log in.
+                    description: |-
+                      If set, defines a constraint on the EC2
+                      instances that can perform the login operation that they be associated with
+                      the subnet ID that matches the value specified by this field. auth_type
+                      must be set to ec2 or inferred_entity_type must be set to ec2_instance
+                      to use this constraint.
+                      Only EC2 instances associated with this subnet ID will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   boundVpcIds:
-                    description: If set, defines a constraint on the EC2 instances
-                      that can perform the login operation that they be associated
-                      with the VPC ID that matches the value specified by this field.
-                      auth_type must be set to ec2 or inferred_entity_type must be
-                      set to ec2_instance to use this constraint. Only EC2 instances
-                      associated with this VPC ID will be permitted to log in.
+                    description: |-
+                      If set, defines a constraint on the EC2 instances
+                      that can perform the login operation that they be associated with the VPC ID
+                      that matches the value specified by this field. auth_type must be set to
+                      ec2 or inferred_entity_type must be set to ec2_instance to use this
+                      constraint.
+                      Only EC2 instances associated with this VPC ID will be permitted to log in.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   disallowReauthentication:
-                    description: IF set to true, only allows a single token to be
-                      granted per instance ID. This can only be set when auth_type
-                      is set to ec2. When true, only allows a single token to be granted
-                      per instance ID.
+                    description: |-
+                      IF set to true, only allows a
+                      single token to be granted per instance ID. This can only be set when
+                      auth_type is set to ec2.
+                      When true, only allows a single token to be granted per instance ID.
                     type: boolean
                   id:
                     type: string
                   inferredAwsRegion:
-                    description: When inferred_entity_type is set, this is the region
-                      to search for the inferred entities. Required if inferred_entity_type
-                      is set. This only applies when auth_type is set to iam. The
-                      region to search for the inferred entities in.
+                    description: |-
+                      When inferred_entity_type is set, this
+                      is the region to search for the inferred entities. Required if
+                      inferred_entity_type is set. This only applies when auth_type is set to
+                      iam.
+                      The region to search for the inferred entities in.
                     type: string
                   inferredEntityType:
-                    description: If set, instructs Vault to turn on inferencing. The
-                      only valid value is ec2_instance, which instructs Vault to infer
-                      that the role comes from an EC2 instance in an IAM instance
-                      profile. This only applies when auth_type is set to iam. The
-                      type of inferencing Vault should do.
+                    description: |-
+                      If set, instructs Vault to turn on
+                      inferencing. The only valid value is ec2_instance, which instructs Vault to
+                      infer that the role comes from an EC2 instance in an IAM instance profile.
+                      This only applies when auth_type is set to iam.
+                      The type of inferencing Vault should do.
                     type: string
                   namespace:
-                    description: The namespace to provision the resource in. The value
-                      should not contain leading or trailing forward slashes. The
-                      namespace is always relative to the provider's configured namespace.
-                      Available only for Vault Enterprise. Target namespace. (requires
-                      Enterprise)
+                    description: |-
+                      The namespace to provision the resource in.
+                      The value should not contain leading or trailing forward slashes.
+                      The namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise.
+                      Target namespace. (requires Enterprise)
                     type: string
                   resolveAwsUniqueIds:
-                    description: Only valid when auth_type is iam. If set to true,
-                      the bound_iam_principal_arns are resolved to AWS Unique IDs
-                      for the bound principal ARN. This field is ignored when a bound_iam_principal_arn
-                      ends in a wildcard. Resolving to unique IDs more closely mimics
-                      the behavior of AWS services in that if an IAM user or role
-                      is deleted and a new one is recreated with the same name, those
-                      new users or roles won't get access to roles in Vault that were
-                      permissioned to the prior principals of the same name. Defaults
-                      to true. Once set to true, this cannot be changed to false without
-                      recreating the role. Whether or not Vault should resolve the
-                      bound_iam_principal_arn to an AWS Unique ID. When true, deleting
-                      a principal and recreating it with the same name won't automatically
-                      grant the new principal the same roles in Vault that the old
-                      principal had.
+                    description: |-
+                      Only valid when
+                      auth_type is iam. If set to true, the bound_iam_principal_arns are
+                      resolved to AWS Unique
+                      IDs
+                      for the bound principal ARN. This field is ignored when a
+                      bound_iam_principal_arn ends in a wildcard. Resolving to unique IDs more
+                      closely mimics the behavior of AWS services in that if an IAM user or role is
+                      deleted and a new one is recreated with the same name, those new users or
+                      roles won't get access to roles in Vault that were permissioned to the prior
+                      principals of the same name. Defaults to true.
+                      Once set to true, this cannot be changed to false without recreating the role.
+                      Whether or not Vault should resolve the bound_iam_principal_arn to an AWS Unique ID. When true, deleting a principal and recreating it with the same name won't automatically grant the new principal the same roles in Vault that the old principal had.
                     type: boolean
                   role:
-                    description: The name of the role. Name of the role.
+                    description: |-
+                      The name of the role.
+                      Name of the role.
                     type: string
                   roleId:
-                    description: The Vault generated role ID. The Vault generated
-                      role ID.
+                    description: |-
+                      The Vault generated role ID.
+                      The Vault generated role ID.
                     type: string
                   roleTag:
-                    description: If set, enable role tags for this role. The value
-                      set for this field should be the key of the tag on the EC2 instance.
-                      auth_type must be set to ec2 or inferred_entity_type must be
-                      set to ec2_instance to use this constraint. The key of the tag
-                      on EC2 instance to use for role tags.
+                    description: |-
+                      If set, enable role tags for this role. The value set
+                      for this field should be the key of the tag on the EC2 instance. auth_type
+                      must be set to ec2 or inferred_entity_type must be set to ec2_instance
+                      to use this constraint.
+                      The key of the tag on EC2 instance to use for role tags.
                     type: string
                   tokenBoundCidrs:
-                    description: List of CIDR blocks; if set, specifies blocks of
-                      IP addresses which can authenticate successfully, and ties the
-                      resulting token to these blocks as well. Specifies the blocks
-                      of IP addresses which are allowed to use the generated token
+                    description: |-
+                      List of CIDR blocks; if set, specifies blocks of IP
+                      addresses which can authenticate successfully, and ties the resulting token to these blocks
+                      as well.
+                      Specifies the blocks of IP addresses which are allowed to use the generated token
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   tokenExplicitMaxTtl:
-                    description: If set, will encode an explicit max TTL onto the
-                      token in number of seconds. This is a hard cap even if token_ttl
-                      and token_max_ttl would otherwise allow a renewal. Generated
-                      Token's Explicit Maximum TTL in seconds
+                    description: |-
+                      If set, will encode an
+                      explicit max TTL
+                      onto the token in number of seconds. This is a hard cap even if token_ttl and
+                      token_max_ttl would otherwise allow a renewal.
+                      Generated Token's Explicit Maximum TTL in seconds
                     type: number
                   tokenMaxTtl:
-                    description: The maximum lifetime for generated tokens in number
-                      of seconds. Its current value will be referenced at renewal
-                      time. The maximum lifetime of the generated token
+                    description: |-
+                      The maximum lifetime for generated tokens in number of seconds.
+                      Its current value will be referenced at renewal time.
+                      The maximum lifetime of the generated token
                     type: number
                   tokenNoDefaultPolicy:
-                    description: If set, the default policy will not be set on generated
-                      tokens; otherwise it will be added to the policies set in token_policies.
-                      If true, the 'default' policy will not automatically be added
-                      to generated tokens
+                    description: |-
+                      If set, the default policy will not be set on
+                      generated tokens; otherwise it will be added to the policies set in token_policies.
+                      If true, the 'default' policy will not automatically be added to generated tokens
                     type: boolean
                   tokenNumUses:
-                    description: The maximum number of times a generated token may
-                      be used (within its lifetime); 0 means unlimited. The maximum
-                      number of times a token may be used, a value of zero means unlimited
+                    description: |-
+                      The maximum number
+                      of times a generated token may be used (within its lifetime); 0 means unlimited.
+                      The maximum number of times a token may be used, a value of zero means unlimited
                     type: number
                   tokenPeriod:
-                    description: If set, indicates that the token generated using
-                      this role should never expire. The token should be renewed within
-                      the duration specified by this value. At each renewal, the token's
-                      TTL will be set to the value of this field. Specified in seconds.
+                    description: |-
+                      If set, indicates that the
+                      token generated using this role should never expire. The token should be renewed within the
+                      duration specified by this value. At each renewal, the token's TTL will be set to the
+                      value of this field. Specified in seconds.
                       Generated Token's Period
                     type: number
                   tokenPolicies:
-                    description: List of policies to encode onto generated tokens.
-                      Depending on the auth method, this list may be supplemented
-                      by user/group/other values. Generated Token's Policies
+                    description: |-
+                      List of policies to encode onto generated tokens. Depending
+                      on the auth method, this list may be supplemented by user/group/other values.
+                      Generated Token's Policies
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   tokenTtl:
-                    description: The incremental lifetime for generated tokens in
-                      number of seconds. Its current value will be referenced at renewal
-                      time. The initial ttl of the token to generate in seconds
+                    description: |-
+                      The incremental lifetime for generated tokens in number of seconds.
+                      Its current value will be referenced at renewal time.
+                      The initial ttl of the token to generate in seconds
                     type: number
                   tokenType:
-                    description: 'The type of token that should be generated. Can
-                      be service, batch, or default to use the mount''s tuned default
-                      (which unless changed will be service tokens). For token store
-                      roles, there are two additional possibilities: default-service
-                      and default-batch which specify the type to return unless the
-                      client requests a different type at generation time. The type
-                      of token to generate, service or batch'
+                    description: |-
+                      The type of token that should be generated. Can be service,
+                      batch, or default to use the mount's tuned default (which unless changed will be
+                      service tokens). For token store roles, there are two additional possibilities:
+                      default-service and default-batch which specify the type to return unless the client
+                      requests a different type at generation time.
+                      The type of token to generate, service or batch
                     type: string
                 type: object
               conditions:
@@ -941,14 +1156,23 @@ spec:
                   description: A Condition that may apply to a resource.
                   properties:
                     lastTransitionTime:
-                      description: LastTransitionTime is the last time this condition
-                        transitioned from one status to another.
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
                       format: date-time
                       type: string
                     message:
-                      description: A Message containing details about this condition's
-                        last transition from one status to another, if any.
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
                       type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
                     reason:
                       description: A Reason for this condition's last transition from
                         one status to another.
@@ -958,8 +1182,9 @@ spec:
                         False, or Unknown?
                       type: string
                     type:
-                      description: Type of this condition. At most one of each condition
-                        type may apply to a resource at any point in time.
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
                       type: string
                   required:
                   - lastTransitionTime
@@ -968,6 +1193,16 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
             type: object
         required:
         - spec

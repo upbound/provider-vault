@@ -16,7 +16,17 @@ import (
 type AuthBackendConfigIdentityInitParameters struct {
 
 	// Unique name of the auth backend to configure.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// How to generate the identity alias when using the ec2 auth method. Valid choices are
 	// role_id, instance_id, and image_id. Defaults to role_id
@@ -26,6 +36,7 @@ type AuthBackendConfigIdentityInitParameters struct {
 	// The metadata to include on the token returned by the login endpoint. This metadata will be
 	// added to both audit logs, and on the ec2_alias
 	// The metadata to include on the token returned by the login endpoint.
+	// +listType=set
 	EC2Metadata []*string `json:"ec2Metadata,omitempty" tf:"ec2_metadata,omitempty"`
 
 	// How to generate the identity alias when using the iam auth method. Valid choices are
@@ -36,6 +47,7 @@ type AuthBackendConfigIdentityInitParameters struct {
 	// The metadata to include on the token returned by the login endpoint. This metadata will be
 	// added to both audit logs, and on the iam_alias
 	// The metadata to include on the token returned by the login endpoint.
+	// +listType=set
 	IAMMetadata []*string `json:"iamMetadata,omitempty" tf:"iam_metadata,omitempty"`
 
 	// The namespace to provision the resource in.
@@ -59,6 +71,7 @@ type AuthBackendConfigIdentityObservation struct {
 	// The metadata to include on the token returned by the login endpoint. This metadata will be
 	// added to both audit logs, and on the ec2_alias
 	// The metadata to include on the token returned by the login endpoint.
+	// +listType=set
 	EC2Metadata []*string `json:"ec2Metadata,omitempty" tf:"ec2_metadata,omitempty"`
 
 	// How to generate the identity alias when using the iam auth method. Valid choices are
@@ -69,6 +82,7 @@ type AuthBackendConfigIdentityObservation struct {
 	// The metadata to include on the token returned by the login endpoint. This metadata will be
 	// added to both audit logs, and on the iam_alias
 	// The metadata to include on the token returned by the login endpoint.
+	// +listType=set
 	IAMMetadata []*string `json:"iamMetadata,omitempty" tf:"iam_metadata,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -84,8 +98,18 @@ type AuthBackendConfigIdentityObservation struct {
 type AuthBackendConfigIdentityParameters struct {
 
 	// Unique name of the auth backend to configure.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Backend in auth to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// How to generate the identity alias when using the ec2 auth method. Valid choices are
 	// role_id, instance_id, and image_id. Defaults to role_id
@@ -97,6 +121,7 @@ type AuthBackendConfigIdentityParameters struct {
 	// added to both audit logs, and on the ec2_alias
 	// The metadata to include on the token returned by the login endpoint.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	EC2Metadata []*string `json:"ec2Metadata,omitempty" tf:"ec2_metadata,omitempty"`
 
 	// How to generate the identity alias when using the iam auth method. Valid choices are
@@ -109,6 +134,7 @@ type AuthBackendConfigIdentityParameters struct {
 	// added to both audit logs, and on the iam_alias
 	// The metadata to include on the token returned by the login endpoint.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	IAMMetadata []*string `json:"iamMetadata,omitempty" tf:"iam_metadata,omitempty"`
 
 	// The namespace to provision the resource in.
@@ -124,9 +150,8 @@ type AuthBackendConfigIdentityParameters struct {
 type AuthBackendConfigIdentitySpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendConfigIdentityParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -145,13 +170,14 @@ type AuthBackendConfigIdentityStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // AuthBackendConfigIdentity is the Schema for the AuthBackendConfigIdentitys API. Manages AWS auth backend identity configuration in Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type AuthBackendConfigIdentity struct {
 	metav1.TypeMeta   `json:",inline"`

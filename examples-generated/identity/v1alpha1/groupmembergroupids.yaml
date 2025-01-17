@@ -1,0 +1,50 @@
+apiVersion: identity.vault.upbound.io/v1alpha1
+kind: GroupMemberGroupIds
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/groupmembergroupids
+  labels:
+    testing.upbound.io/example-name: members
+  name: members
+spec:
+  forProvider:
+    exclusive: true
+    groupIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: internal
+    memberGroupIds:
+    - ${vault_identity_group.users.id}
+
+---
+
+apiVersion: identity.vault.upbound.io/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/groupmembergroupids
+  labels:
+    testing.upbound.io/example-name: internal
+  name: internal
+spec:
+  forProvider:
+    externalMemberGroupIds: true
+    metadata:
+      version: "2"
+    name: internal
+    type: internal
+
+---
+
+apiVersion: identity.vault.upbound.io/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/groupmembergroupids
+  labels:
+    testing.upbound.io/example-name: users
+  name: users
+spec:
+  forProvider:
+    metadata:
+      version: "2"
+    name: users

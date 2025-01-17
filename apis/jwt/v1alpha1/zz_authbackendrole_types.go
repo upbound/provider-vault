@@ -18,23 +18,36 @@ type AuthBackendRoleInitParameters struct {
 	// The list of allowed values for redirect_uri during OIDC logins.
 	// Required for OIDC roles
 	// The list of allowed values for redirect_uri during OIDC logins.
+	// +listType=set
 	AllowedRedirectUris []*string `json:"allowedRedirectUris,omitempty" tf:"allowed_redirect_uris,omitempty"`
 
 	// The unique name of the auth backend to configure.
 	// Defaults to jwt.
 	// Unique name of the auth backend to configure.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/jwt/v1alpha1.AuthBackend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a AuthBackend in jwt to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a AuthBackend in jwt to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// (For "jwt" roles, at least one of bound_audiences, bound_subject, bound_claims
 	// or token_bound_cidrs is required. Optional for "oidc" roles.) List of aud claims to match against.
 	// Any match is sufficient.
 	// List of aud claims to match against. Any match is sufficient.
+	// +listType=set
 	BoundAudiences []*string `json:"boundAudiences,omitempty" tf:"bound_audiences,omitempty"`
 
 	// If set, a map of claims to values to match against.
 	// A claim's value must be a string, which may contain one value or multiple
 	// comma-separated values, e.g. "red" or "red,green,blue".
 	// Map of claims/values to match against. The expected value may be a single string or a comma-separated string list.
+	// +mapType=granular
 	BoundClaims map[string]*string `json:"boundClaims,omitempty" tf:"bound_claims,omitempty"`
 
 	// How to interpret values in the claims/values
@@ -51,6 +64,7 @@ type AuthBackendRoleInitParameters struct {
 	// If set, a map of claims (keys) to be copied
 	// to specified metadata fields (values).
 	// Map of claims (keys) to be copied to specified metadata fields (values).
+	// +mapType=granular
 	ClaimMappings map[string]*string `json:"claimMappings,omitempty" tf:"claim_mappings,omitempty"`
 
 	// The amount of leeway to add to all claims to account for clock skew, in
@@ -65,7 +79,7 @@ type AuthBackendRoleInitParameters struct {
 	// The amount of leeway to add to expiration (exp) claims to account for
 	// clock skew, in seconds. Defaults to 60 seconds if set to 0 and can be disabled if set to -1.
 	// Only applicable with "jwt" roles.
-	// The amount of leeway to add to expiration (exp) claims to account for clock skew, in seconds. Defaults to 60 seconds if set to 0 and can be disabled if set to -1. Only applicable with 'jwt' roles.
+	// The amount of leeway to add to expiration (exp) claims to account for clock skew, in seconds. Defaults to 150 seconds if set to 0 and can be disabled if set to -1. Only applicable with 'jwt' roles.
 	ExpirationLeeway *float64 `json:"expirationLeeway,omitempty" tf:"expiration_leeway,omitempty"`
 
 	// The claim to use to uniquely identify
@@ -96,6 +110,7 @@ type AuthBackendRoleInitParameters struct {
 	// If set, a list of OIDC scopes to be used with an OIDC role.
 	// The standard scope "openid" is automatically included and need not be specified.
 	// List of OIDC scopes to be used with an OIDC role. The standard scope "openid" is automatically included and need not be specified.
+	// +listType=set
 	OidcScopes []*string `json:"oidcScopes,omitempty" tf:"oidc_scopes,omitempty"`
 
 	// The name of the role.
@@ -110,6 +125,7 @@ type AuthBackendRoleInitParameters struct {
 	// addresses which can authenticate successfully, and ties the resulting token to these blocks
 	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// If set, will encode an
@@ -144,6 +160,7 @@ type AuthBackendRoleInitParameters struct {
 	// List of policies to encode onto generated tokens. Depending
 	// on the auth method, this list may be supplemented by user/group/other values.
 	// Generated Token's Policies
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The incremental lifetime for generated tokens in number of seconds.
@@ -184,6 +201,7 @@ type AuthBackendRoleObservation struct {
 	// The list of allowed values for redirect_uri during OIDC logins.
 	// Required for OIDC roles
 	// The list of allowed values for redirect_uri during OIDC logins.
+	// +listType=set
 	AllowedRedirectUris []*string `json:"allowedRedirectUris,omitempty" tf:"allowed_redirect_uris,omitempty"`
 
 	// The unique name of the auth backend to configure.
@@ -195,12 +213,14 @@ type AuthBackendRoleObservation struct {
 	// or token_bound_cidrs is required. Optional for "oidc" roles.) List of aud claims to match against.
 	// Any match is sufficient.
 	// List of aud claims to match against. Any match is sufficient.
+	// +listType=set
 	BoundAudiences []*string `json:"boundAudiences,omitempty" tf:"bound_audiences,omitempty"`
 
 	// If set, a map of claims to values to match against.
 	// A claim's value must be a string, which may contain one value or multiple
 	// comma-separated values, e.g. "red" or "red,green,blue".
 	// Map of claims/values to match against. The expected value may be a single string or a comma-separated string list.
+	// +mapType=granular
 	BoundClaims map[string]*string `json:"boundClaims,omitempty" tf:"bound_claims,omitempty"`
 
 	// How to interpret values in the claims/values
@@ -217,6 +237,7 @@ type AuthBackendRoleObservation struct {
 	// If set, a map of claims (keys) to be copied
 	// to specified metadata fields (values).
 	// Map of claims (keys) to be copied to specified metadata fields (values).
+	// +mapType=granular
 	ClaimMappings map[string]*string `json:"claimMappings,omitempty" tf:"claim_mappings,omitempty"`
 
 	// The amount of leeway to add to all claims to account for clock skew, in
@@ -231,7 +252,7 @@ type AuthBackendRoleObservation struct {
 	// The amount of leeway to add to expiration (exp) claims to account for
 	// clock skew, in seconds. Defaults to 60 seconds if set to 0 and can be disabled if set to -1.
 	// Only applicable with "jwt" roles.
-	// The amount of leeway to add to expiration (exp) claims to account for clock skew, in seconds. Defaults to 60 seconds if set to 0 and can be disabled if set to -1. Only applicable with 'jwt' roles.
+	// The amount of leeway to add to expiration (exp) claims to account for clock skew, in seconds. Defaults to 150 seconds if set to 0 and can be disabled if set to -1. Only applicable with 'jwt' roles.
 	ExpirationLeeway *float64 `json:"expirationLeeway,omitempty" tf:"expiration_leeway,omitempty"`
 
 	// The claim to use to uniquely identify
@@ -264,6 +285,7 @@ type AuthBackendRoleObservation struct {
 	// If set, a list of OIDC scopes to be used with an OIDC role.
 	// The standard scope "openid" is automatically included and need not be specified.
 	// List of OIDC scopes to be used with an OIDC role. The standard scope "openid" is automatically included and need not be specified.
+	// +listType=set
 	OidcScopes []*string `json:"oidcScopes,omitempty" tf:"oidc_scopes,omitempty"`
 
 	// The name of the role.
@@ -278,6 +300,7 @@ type AuthBackendRoleObservation struct {
 	// addresses which can authenticate successfully, and ties the resulting token to these blocks
 	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// If set, will encode an
@@ -312,6 +335,7 @@ type AuthBackendRoleObservation struct {
 	// List of policies to encode onto generated tokens. Depending
 	// on the auth method, this list may be supplemented by user/group/other values.
 	// Generated Token's Policies
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The incremental lifetime for generated tokens in number of seconds.
@@ -353,19 +377,31 @@ type AuthBackendRoleParameters struct {
 	// Required for OIDC roles
 	// The list of allowed values for redirect_uri during OIDC logins.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedRedirectUris []*string `json:"allowedRedirectUris,omitempty" tf:"allowed_redirect_uris,omitempty"`
 
 	// The unique name of the auth backend to configure.
 	// Defaults to jwt.
 	// Unique name of the auth backend to configure.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/jwt/v1alpha1.AuthBackend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a AuthBackend in jwt to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a AuthBackend in jwt to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// (For "jwt" roles, at least one of bound_audiences, bound_subject, bound_claims
 	// or token_bound_cidrs is required. Optional for "oidc" roles.) List of aud claims to match against.
 	// Any match is sufficient.
 	// List of aud claims to match against. Any match is sufficient.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	BoundAudiences []*string `json:"boundAudiences,omitempty" tf:"bound_audiences,omitempty"`
 
 	// If set, a map of claims to values to match against.
@@ -373,6 +409,7 @@ type AuthBackendRoleParameters struct {
 	// comma-separated values, e.g. "red" or "red,green,blue".
 	// Map of claims/values to match against. The expected value may be a single string or a comma-separated string list.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	BoundClaims map[string]*string `json:"boundClaims,omitempty" tf:"bound_claims,omitempty"`
 
 	// How to interpret values in the claims/values
@@ -392,6 +429,7 @@ type AuthBackendRoleParameters struct {
 	// to specified metadata fields (values).
 	// Map of claims (keys) to be copied to specified metadata fields (values).
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	ClaimMappings map[string]*string `json:"claimMappings,omitempty" tf:"claim_mappings,omitempty"`
 
 	// The amount of leeway to add to all claims to account for clock skew, in
@@ -408,7 +446,7 @@ type AuthBackendRoleParameters struct {
 	// The amount of leeway to add to expiration (exp) claims to account for
 	// clock skew, in seconds. Defaults to 60 seconds if set to 0 and can be disabled if set to -1.
 	// Only applicable with "jwt" roles.
-	// The amount of leeway to add to expiration (exp) claims to account for clock skew, in seconds. Defaults to 60 seconds if set to 0 and can be disabled if set to -1. Only applicable with 'jwt' roles.
+	// The amount of leeway to add to expiration (exp) claims to account for clock skew, in seconds. Defaults to 150 seconds if set to 0 and can be disabled if set to -1. Only applicable with 'jwt' roles.
 	// +kubebuilder:validation:Optional
 	ExpirationLeeway *float64 `json:"expirationLeeway,omitempty" tf:"expiration_leeway,omitempty"`
 
@@ -445,6 +483,7 @@ type AuthBackendRoleParameters struct {
 	// The standard scope "openid" is automatically included and need not be specified.
 	// List of OIDC scopes to be used with an OIDC role. The standard scope "openid" is automatically included and need not be specified.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	OidcScopes []*string `json:"oidcScopes,omitempty" tf:"oidc_scopes,omitempty"`
 
 	// The name of the role.
@@ -462,6 +501,7 @@ type AuthBackendRoleParameters struct {
 	// as well.
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TokenBoundCidrs []*string `json:"tokenBoundCidrs,omitempty" tf:"token_bound_cidrs,omitempty"`
 
 	// If set, will encode an
@@ -502,6 +542,7 @@ type AuthBackendRoleParameters struct {
 	// on the auth method, this list may be supplemented by user/group/other values.
 	// Generated Token's Policies
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
 	// The incremental lifetime for generated tokens in number of seconds.
@@ -546,9 +587,8 @@ type AuthBackendRoleParameters struct {
 type AuthBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthBackendRoleParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -567,19 +607,20 @@ type AuthBackendRoleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // AuthBackendRole is the Schema for the AuthBackendRoles API. Manages JWT/OIDC auth backend roles in Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type AuthBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.roleName) || has(self.initProvider.roleName)",message="roleName is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.userClaim) || has(self.initProvider.userClaim)",message="userClaim is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.roleName) || (has(self.initProvider) && has(self.initProvider.roleName))",message="spec.forProvider.roleName is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.userClaim) || (has(self.initProvider) && has(self.initProvider.userClaim))",message="spec.forProvider.userClaim is a required parameter"
 	Spec   AuthBackendRoleSpec   `json:"spec"`
 	Status AuthBackendRoleStatus `json:"status,omitempty"`
 }

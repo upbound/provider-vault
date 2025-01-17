@@ -145,7 +145,7 @@ type AwsParameters struct {
 	// The AWS access key to use.
 	// The AWS access key to use
 	// +kubebuilder:validation:Optional
-	AccessKey *string `json:"accessKey,omitempty" tf:"access_key,omitempty"`
+	AccessKey *string `json:"accessKey" tf:"access_key,omitempty"`
 
 	// If no existing key can be found in
 	// the referenced backend, instructs Vault to generate a key within the backend.
@@ -187,22 +187,22 @@ type AwsParameters struct {
 	// An identifier for the key.
 	// An identifier for the key
 	// +kubebuilder:validation:Optional
-	KMSKey *string `json:"kmsKey,omitempty" tf:"kms_key,omitempty"`
+	KMSKey *string `json:"kmsKey" tf:"kms_key,omitempty"`
 
 	// The size in bits for an RSA key.
 	// The size in bits for an RSA key. This field is required when 'key_type' is 'RSA'
 	// +kubebuilder:validation:Optional
-	KeyBits *string `json:"keyBits,omitempty" tf:"key_bits,omitempty"`
+	KeyBits *string `json:"keyBits" tf:"key_bits,omitempty"`
 
 	// The type of key to use.
 	// The type of key to use
 	// +kubebuilder:validation:Optional
-	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
+	KeyType *string `json:"keyType" tf:"key_type,omitempty"`
 
 	// A unique lowercase name that serves as identifying the key.
 	// A unique lowercase name that serves as identifying the key
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The AWS region where the keys are stored (or will be stored).
 	// The AWS region where the keys are stored (or will be stored)
@@ -212,7 +212,7 @@ type AwsParameters struct {
 	// The AWS access key to use.
 	// The AWS secret key to use
 	// +kubebuilder:validation:Optional
-	SecretKey *string `json:"secretKey,omitempty" tf:"secret_key,omitempty"`
+	SecretKey *string `json:"secretKey" tf:"secret_key,omitempty"`
 }
 
 type AzureInitParameters struct {
@@ -379,12 +379,12 @@ type AzureParameters struct {
 	// The client id for credentials to query the Azure APIs.
 	// The client id for credentials to query the Azure APIs
 	// +kubebuilder:validation:Optional
-	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
+	ClientID *string `json:"clientId" tf:"client_id,omitempty"`
 
 	// The client secret for credentials to query the Azure APIs.
 	// The client secret for credentials to query the Azure APIs
 	// +kubebuilder:validation:Optional
-	ClientSecret *string `json:"clientSecret,omitempty" tf:"client_secret,omitempty"`
+	ClientSecret *string `json:"clientSecret" tf:"client_secret,omitempty"`
 
 	// The Azure Cloud environment API endpoints to use.
 	// The Azure Cloud environment API endpoints to use
@@ -399,17 +399,17 @@ type AzureParameters struct {
 	// The Key Vault key to use for encryption and decryption.
 	// The Key Vault key to use for encryption and decryption
 	// +kubebuilder:validation:Optional
-	KeyName *string `json:"keyName,omitempty" tf:"key_name,omitempty"`
+	KeyName *string `json:"keyName" tf:"key_name,omitempty"`
 
 	// The type of key to use.
 	// The type of key to use
 	// +kubebuilder:validation:Optional
-	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
+	KeyType *string `json:"keyType" tf:"key_type,omitempty"`
 
 	// A unique lowercase name that serves as identifying the key.
 	// A unique lowercase name that serves as identifying the key
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The Azure Key Vault resource's DNS Suffix to connect to.
 	// The Azure Key Vault resource's DNS Suffix to connect to
@@ -419,12 +419,12 @@ type AzureParameters struct {
 	// The tenant id for the Azure Active Directory organization.
 	// The tenant id for the Azure Active Directory organization
 	// +kubebuilder:validation:Optional
-	TenantID *string `json:"tenantId,omitempty" tf:"tenant_id,omitempty"`
+	TenantID *string `json:"tenantId" tf:"tenant_id,omitempty"`
 
 	// The Key Vault vault to use for encryption and decryption.
 	// The Key Vault vault to use the encryption keys for encryption and decryption
 	// +kubebuilder:validation:Optional
-	VaultName *string `json:"vaultName,omitempty" tf:"vault_name,omitempty"`
+	VaultName *string `json:"vaultName" tf:"vault_name,omitempty"`
 }
 
 type KeysInitParameters struct {
@@ -689,34 +689,34 @@ type PkcsParameters struct {
 	// The id of a PKCS#11 key to use.
 	// The id of a PKCS#11 key to use
 	// +kubebuilder:validation:Optional
-	KeyID *string `json:"keyId,omitempty" tf:"key_id,omitempty"`
+	KeyID *string `json:"keyId" tf:"key_id,omitempty"`
 
 	// The label of the key to use.
 	// The label of the key to use
 	// +kubebuilder:validation:Optional
-	KeyLabel *string `json:"keyLabel,omitempty" tf:"key_label,omitempty"`
+	KeyLabel *string `json:"keyLabel" tf:"key_label,omitempty"`
 
 	// The name of the kms_library stanza to use from Vault's config
 	// to lookup the local library path.
 	// The name of the kms_library stanza to use from Vault's config to lookup the local library path
 	// +kubebuilder:validation:Optional
-	Library *string `json:"library,omitempty" tf:"library,omitempty"`
+	Library *string `json:"library" tf:"library,omitempty"`
 
 	// The encryption/decryption mechanism to use, specified as a
 	// hexadecimal (prefixed by 0x) string.
 	// The encryption/decryption mechanism to use, specified as a hexadecimal (prefixed by 0x) string.
 	// +kubebuilder:validation:Optional
-	Mechanism *string `json:"mechanism,omitempty" tf:"mechanism,omitempty"`
+	Mechanism *string `json:"mechanism" tf:"mechanism,omitempty"`
 
 	// A unique lowercase name that serves as identifying the key.
 	// A unique lowercase name that serves as identifying the key
 	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The PIN for login.
 	// The PIN for login
 	// +kubebuilder:validation:Optional
-	Pin *string `json:"pin,omitempty" tf:"pin,omitempty"`
+	Pin *string `json:"pin" tf:"pin,omitempty"`
 
 	// The slot number to use, specified as a string in a decimal format
 	// (e.g. 2305843009213693953).
@@ -734,9 +734,8 @@ type PkcsParameters struct {
 type KeysSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     KeysParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -755,13 +754,14 @@ type KeysStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Keys is the Schema for the Keyss API. Configures Managed Keys in Vault
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type Keys struct {
 	metav1.TypeMeta   `json:",inline"`

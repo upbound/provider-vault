@@ -25,7 +25,17 @@ type SecretBackendCertInitParameters struct {
 
 	// The PKI secret backend the resource belongs to.
 	// The PKI secret backend the resource belongs to.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// CN of certificate to create
 	// CN of the certificate to create.
@@ -52,7 +62,17 @@ type SecretBackendCertInitParameters struct {
 
 	// Name of the role to create the certificate against
 	// Name of the role to create the certificate against.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/pki/v1alpha1.SecretBackendRole
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Reference to a SecretBackendRole in pki to populate name.
+	// +kubebuilder:validation:Optional
+	NameRef *v1.Reference `json:"nameRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackendRole in pki to populate name.
+	// +kubebuilder:validation:Optional
+	NameSelector *v1.Selector `json:"nameSelector,omitempty" tf:"-"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -203,8 +223,18 @@ type SecretBackendCertParameters struct {
 
 	// The PKI secret backend the resource belongs to.
 	// The PKI secret backend the resource belongs to.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a Mount in vault to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// CN of certificate to create
 	// CN of the certificate to create.
@@ -237,8 +267,18 @@ type SecretBackendCertParameters struct {
 
 	// Name of the role to create the certificate against
 	// Name of the role to create the certificate against.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/pki/v1alpha1.SecretBackendRole
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Reference to a SecretBackendRole in pki to populate name.
+	// +kubebuilder:validation:Optional
+	NameRef *v1.Reference `json:"nameRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackendRole in pki to populate name.
+	// +kubebuilder:validation:Optional
+	NameSelector *v1.Selector `json:"nameSelector,omitempty" tf:"-"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -283,9 +323,8 @@ type SecretBackendCertParameters struct {
 type SecretBackendCertSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendCertParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -304,20 +343,19 @@ type SecretBackendCertStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretBackendCert is the Schema for the SecretBackendCerts API. Generate an PKI certificate.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretBackendCert struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || has(self.initProvider.backend)",message="backend is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.commonName) || has(self.initProvider.commonName)",message="commonName is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.commonName) || (has(self.initProvider) && has(self.initProvider.commonName))",message="spec.forProvider.commonName is a required parameter"
 	Spec   SecretBackendCertSpec   `json:"spec"`
 	Status SecretBackendCertStatus `json:"status,omitempty"`
 }

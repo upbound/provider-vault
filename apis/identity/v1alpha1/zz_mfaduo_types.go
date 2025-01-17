@@ -19,6 +19,10 @@ type MfaDuoInitParameters struct {
 	// API hostname for Duo
 	APIHostname *string `json:"apiHostname,omitempty" tf:"api_hostname,omitempty"`
 
+	// Integration key for Duo
+	// Integration key for Duo
+	IntegrationKeySecretRef v1.SecretKeySelector `json:"integrationKeySecretRef" tf:"-"`
+
 	// Target namespace. (requires Enterprise)
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
@@ -26,6 +30,10 @@ type MfaDuoInitParameters struct {
 	// Push information for Duo.
 	// Push information for Duo.
 	PushInfo *string `json:"pushInfo,omitempty" tf:"push_info,omitempty"`
+
+	// Secret key for Duo
+	// Secret key for Duo
+	SecretKeySecretRef v1.SecretKeySelector `json:"secretKeySecretRef" tf:"-"`
 
 	// Require passcode upon MFA validation.
 	// Require passcode upon MFA validation.
@@ -130,9 +138,8 @@ type MfaDuoParameters struct {
 type MfaDuoSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     MfaDuoParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -151,20 +158,21 @@ type MfaDuoStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // MfaDuo is the Schema for the MfaDuos API. Resource for configuring the duo MFA method.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type MfaDuo struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.apiHostname) || has(self.initProvider.apiHostname)",message="apiHostname is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.integrationKeySecretRef)",message="integrationKeySecretRef is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.secretKeySecretRef)",message="secretKeySecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.apiHostname) || (has(self.initProvider) && has(self.initProvider.apiHostname))",message="spec.forProvider.apiHostname is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.integrationKeySecretRef)",message="spec.forProvider.integrationKeySecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.secretKeySecretRef)",message="spec.forProvider.secretKeySecretRef is a required parameter"
 	Spec   MfaDuoSpec   `json:"spec"`
 	Status MfaDuoStatus `json:"status,omitempty"`
 }

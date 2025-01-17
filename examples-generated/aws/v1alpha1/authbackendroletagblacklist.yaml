@@ -1,0 +1,28 @@
+apiVersion: aws.vault.upbound.io/v1alpha1
+kind: AuthBackendRoletagBlacklist
+metadata:
+  annotations:
+    meta.upbound.io/example-id: aws/v1alpha1/authbackendroletagblacklist
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    safetyBuffer: 360
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: aws/v1alpha1/authbackendroletagblacklist
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    type: aws

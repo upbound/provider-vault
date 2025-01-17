@@ -27,14 +27,6 @@ func (mg *RequestHeader) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this RequestHeader.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *RequestHeader) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this RequestHeader.
 func (mg *RequestHeader) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -63,14 +55,6 @@ func (mg *RequestHeader) SetManagementPolicies(r xpv1.ManagementPolicies) {
 // SetProviderConfigReference of this RequestHeader.
 func (mg *RequestHeader) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this RequestHeader.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *RequestHeader) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this RequestHeader.

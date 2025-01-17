@@ -26,7 +26,7 @@ type AzureGroupsObservation struct {
 type AzureGroupsParameters struct {
 
 	// +kubebuilder:validation:Optional
-	GroupName *string `json:"groupName,omitempty" tf:"group_name,omitempty"`
+	GroupName *string `json:"groupName" tf:"group_name,omitempty"`
 }
 
 type AzureRolesInitParameters struct {
@@ -54,7 +54,7 @@ type AzureRolesParameters struct {
 	RoleName *string `json:"roleName,omitempty" tf:"role_name,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	Scope *string `json:"scope,omitempty" tf:"scope,omitempty"`
+	Scope *string `json:"scope" tf:"scope,omitempty"`
 }
 
 type SecretBackendRoleInitParameters struct {
@@ -72,7 +72,17 @@ type SecretBackendRoleInitParameters struct {
 
 	// Path to the mounted Azure auth backend
 	// Unique name of the auth backend to configure.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/azure/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a SecretBackend in azure to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackend in azure to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// Human-friendly description of the mount for the backend.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -189,8 +199,18 @@ type SecretBackendRoleParameters struct {
 
 	// Path to the mounted Azure auth backend
 	// Unique name of the auth backend to configure.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/azure/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Reference to a SecretBackend in azure to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendRef *v1.Reference `json:"backendRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackend in azure to populate backend.
+	// +kubebuilder:validation:Optional
+	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// Human-friendly description of the mount for the backend.
 	// +kubebuilder:validation:Optional
@@ -243,9 +263,8 @@ type SecretBackendRoleParameters struct {
 type SecretBackendRoleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SecretBackendRoleParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -264,18 +283,19 @@ type SecretBackendRoleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // SecretBackendRole is the Schema for the SecretBackendRoles API. Creates an azure secret backend role for Vault.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,vault}
 type SecretBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.role) || has(self.initProvider.role)",message="role is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.role) || (has(self.initProvider) && has(self.initProvider.role))",message="spec.forProvider.role is a required parameter"
 	Spec   SecretBackendRoleSpec   `json:"spec"`
 	Status SecretBackendRoleStatus `json:"status,omitempty"`
 }
