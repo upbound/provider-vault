@@ -1,0 +1,16 @@
+apiVersion: raft.vault.upbound.io/v1beta1
+kind: SnapshotAgentConfig
+metadata:
+  annotations:
+    meta.upbound.io/example-id: raft/v1beta1/snapshotagentconfig
+  labels:
+    testing.upbound.io/example-name: local_backups
+  name: local-backups
+spec:
+  forProvider:
+    intervalSeconds: 86400
+    localMaxSpace: 10000000
+    name: local
+    pathPrefix: /opt/vault/snapshots/
+    retain: 7
+    storageType: local
