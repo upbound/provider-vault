@@ -1,0 +1,11 @@
+apiVersion: identity.vault.upbound.io/v1beta1
+kind: MfaPingid
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/mfapingid
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    settingsFileBase64: CnVzZV9iYXNlNjR[...]HBtCg==

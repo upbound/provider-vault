@@ -1,0 +1,13 @@
+apiVersion: vault.vault.upbound.io/v1beta1
+kind: Mount
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vault/v1beta1/mount
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    description: This is an example mount
+    path: dummy
+    type: generic
