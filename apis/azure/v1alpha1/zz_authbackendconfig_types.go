@@ -46,14 +46,9 @@ type AuthBackendConfigInitParameters struct {
 	// The Azure cloud environment. Valid values: AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud, AzureGermanCloud.
 	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
 
-	// The audience claim value for plugin identity tokens. Requires Vault 1.17+.
-	// Available only for Vault Enterprise
 	// The audience claim value.
 	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
 
-	// The TTL of generated identity tokens in seconds.
-	// Defaults to 1 hour. Uses duration format strings.
-	// Requires Vault 1.17+. Available only for Vault Enterprise
 	// The TTL of generated identity tokens in seconds.
 	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
@@ -90,14 +85,9 @@ type AuthBackendConfigObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The audience claim value for plugin identity tokens. Requires Vault 1.17+.
-	// Available only for Vault Enterprise
 	// The audience claim value.
 	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
 
-	// The TTL of generated identity tokens in seconds.
-	// Defaults to 1 hour. Uses duration format strings.
-	// Requires Vault 1.17+. Available only for Vault Enterprise
 	// The TTL of generated identity tokens in seconds.
 	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
@@ -151,15 +141,10 @@ type AuthBackendConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
 
-	// The audience claim value for plugin identity tokens. Requires Vault 1.17+.
-	// Available only for Vault Enterprise
 	// The audience claim value.
 	// +kubebuilder:validation:Optional
 	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
 
-	// The TTL of generated identity tokens in seconds.
-	// Defaults to 1 hour. Uses duration format strings.
-	// Requires Vault 1.17+. Available only for Vault Enterprise
 	// The TTL of generated identity tokens in seconds.
 	// +kubebuilder:validation:Optional
 	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`

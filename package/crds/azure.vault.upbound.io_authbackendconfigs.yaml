@@ -201,17 +201,10 @@ spec:
                       The Azure cloud environment. Valid values: AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud, AzureGermanCloud.
                     type: string
                   identityTokenAudience:
-                    description: |-
-                      The audience claim value for plugin identity tokens. Requires Vault 1.17+.
-                      Available only for Vault Enterprise
-                      The audience claim value.
+                    description: The audience claim value.
                     type: string
                   identityTokenTtl:
-                    description: |-
-                      The TTL of generated identity tokens in seconds.
-                      Defaults to 1 hour. Uses duration format strings.
-                      Requires Vault 1.17+. Available only for Vault Enterprise
-                      The TTL of generated identity tokens in seconds.
+                    description: The TTL of generated identity tokens in seconds.
                     type: number
                   namespace:
                     description: |-
@@ -389,17 +382,10 @@ spec:
                       The Azure cloud environment. Valid values: AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud, AzureGermanCloud.
                     type: string
                   identityTokenAudience:
-                    description: |-
-                      The audience claim value for plugin identity tokens. Requires Vault 1.17+.
-                      Available only for Vault Enterprise
-                      The audience claim value.
+                    description: The audience claim value.
                     type: string
                   identityTokenTtl:
-                    description: |-
-                      The TTL of generated identity tokens in seconds.
-                      Defaults to 1 hour. Uses duration format strings.
-                      Requires Vault 1.17+. Available only for Vault Enterprise
-                      The TTL of generated identity tokens in seconds.
+                    description: The TTL of generated identity tokens in seconds.
                     type: number
                   namespace:
                     description: |-
@@ -634,17 +620,10 @@ spec:
                   id:
                     type: string
                   identityTokenAudience:
-                    description: |-
-                      The audience claim value for plugin identity tokens. Requires Vault 1.17+.
-                      Available only for Vault Enterprise
-                      The audience claim value.
+                    description: The audience claim value.
                     type: string
                   identityTokenTtl:
-                    description: |-
-                      The TTL of generated identity tokens in seconds.
-                      Defaults to 1 hour. Uses duration format strings.
-                      Requires Vault 1.17+. Available only for Vault Enterprise
-                      The TTL of generated identity tokens in seconds.
+                    description: The TTL of generated identity tokens in seconds.
                     type: number
                   namespace:
                     description: |-

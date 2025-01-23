@@ -14,48 +14,6 @@ import (
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ResolveReferences of this SecretBackend.
-func (mg *SecretBackend) ResolveReferences(ctx context.Context, c client.Reader) error {
-	r := reference.NewAPIResolver(c, mg)
-
-	var rsp reference.ResolutionResponse
-	var err error
-
-	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Mount),
-		Extract:      resource.ExtractParamPath("path", false),
-		Reference:    mg.Spec.ForProvider.MountRef,
-		Selector:     mg.Spec.ForProvider.MountSelector,
-		To: reference.To{
-			List:    &v1alpha1.MountList{},
-			Managed: &v1alpha1.Mount{},
-		},
-	})
-	if err != nil {
-		return errors.Wrap(err, "mg.Spec.ForProvider.Mount")
-	}
-	mg.Spec.ForProvider.Mount = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.MountRef = rsp.ResolvedReference
-
-	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Mount),
-		Extract:      resource.ExtractParamPath("path", false),
-		Reference:    mg.Spec.InitProvider.MountRef,
-		Selector:     mg.Spec.InitProvider.MountSelector,
-		To: reference.To{
-			List:    &v1alpha1.MountList{},
-			Managed: &v1alpha1.Mount{},
-		},
-	})
-	if err != nil {
-		return errors.Wrap(err, "mg.Spec.InitProvider.Mount")
-	}
-	mg.Spec.InitProvider.Mount = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.InitProvider.MountRef = rsp.ResolvedReference
-
-	return nil
-}
-
 // ResolveReferences of this SecretRole.
 func (mg *SecretRole) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)

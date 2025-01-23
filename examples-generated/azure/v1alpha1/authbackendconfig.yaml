@@ -15,8 +15,11 @@ spec:
       key: example-key
       name: example-secret
       namespace: upbound-system
-    identityTokenAudience: <TOKEN_AUDIENCE>
-    identityTokenTtl: <TOKEN_TTL>
+    clientSecretSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    resource: https://vault.hashicorp.com
     tenantIdSecretRef:
       key: example-key
       name: example-secret
@@ -34,5 +37,4 @@ metadata:
   name: example
 spec:
   forProvider:
-    identityTokenKey: example-key
     type: azure

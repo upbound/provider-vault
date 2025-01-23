@@ -82,10 +82,8 @@ spec:
                     type: array
                     x-kubernetes-list-type: set
                   allowedResponseHeaders:
-                    description: |-
-                      List of headers to allow, allowing a plugin to include
-                      them in the response.
-                      List of headers to allow and pass from the request to the plugin
+                    description: List of headers to allow and pass from the request
+                      to the plugin
                     items:
                       type: string
                     type: array
@@ -109,10 +107,8 @@ spec:
                       Default lease duration for tokens and secrets in seconds
                     type: number
                   delegatedAuthAccessors:
-                    description: |-
-                      List of allowed authentication mount accessors the
-                      backend can request delegated authentication for.
-                      List of headers to allow and pass from the request to the plugin
+                    description: List of headers to allow and pass from the request
+                      to the plugin
                     items:
                       type: string
                     type: array
@@ -127,16 +123,12 @@ spec:
                       Enable the secrets engine to access Vault's external entropy source
                     type: boolean
                   identityTokenKey:
-                    description: |-
-                      The key to use for signing plugin workload identity tokens. If
-                      not provided, this will default to Vault's OIDC default key.
-                      The key to use for signing plugin workload identity tokens
+                    description: The key to use for signing plugin workload identity
+                      tokens
                     type: string
                   listingVisibility:
-                    description: |-
-                      Specifies whether to show this mount in the UI-specific
-                      listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
-                      Specifies whether to show this mount in the UI-specific listing endpoint
+                    description: Specifies whether to show this mount in the UI-specific
+                      listing endpoint
                     type: string
                   local:
                     description: |-
@@ -165,10 +157,8 @@ spec:
                     type: object
                     x-kubernetes-map-type: granular
                   passthroughRequestHeaders:
-                    description: |-
-                      List of headers to allow and pass from the request to
-                      the plugin.
-                      List of headers to allow and pass from the request to the plugin
+                    description: List of headers to allow and pass from the request
+                      to the plugin
                     items:
                       type: string
                     type: array
@@ -178,11 +168,8 @@ spec:
                       Where the secret backend will be mounted
                     type: string
                   pluginVersion:
-                    description: |-
-                      Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
-                      If unspecified, the server will select any matching unversioned plugin that may have been
-                      registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
-                      Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
+                    description: Specifies the semantic version of the plugin to use,
+                      e.g. 'v1.0.0'
                     type: string
                   sealWrap:
                     description: |-
@@ -217,10 +204,8 @@ spec:
                     type: array
                     x-kubernetes-list-type: set
                   allowedResponseHeaders:
-                    description: |-
-                      List of headers to allow, allowing a plugin to include
-                      them in the response.
-                      List of headers to allow and pass from the request to the plugin
+                    description: List of headers to allow and pass from the request
+                      to the plugin
                     items:
                       type: string
                     type: array
@@ -244,10 +229,8 @@ spec:
                       Default lease duration for tokens and secrets in seconds
                     type: number
                   delegatedAuthAccessors:
-                    description: |-
-                      List of allowed authentication mount accessors the
-                      backend can request delegated authentication for.
-                      List of headers to allow and pass from the request to the plugin
+                    description: List of headers to allow and pass from the request
+                      to the plugin
                     items:
                       type: string
                     type: array
@@ -262,16 +245,12 @@ spec:
                       Enable the secrets engine to access Vault's external entropy source
                     type: boolean
                   identityTokenKey:
-                    description: |-
-                      The key to use for signing plugin workload identity tokens. If
-                      not provided, this will default to Vault's OIDC default key.
-                      The key to use for signing plugin workload identity tokens
+                    description: The key to use for signing plugin workload identity
+                      tokens
                     type: string
                   listingVisibility:
-                    description: |-
-                      Specifies whether to show this mount in the UI-specific
-                      listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
-                      Specifies whether to show this mount in the UI-specific listing endpoint
+                    description: Specifies whether to show this mount in the UI-specific
+                      listing endpoint
                     type: string
                   local:
                     description: |-
@@ -300,10 +279,8 @@ spec:
                     type: object
                     x-kubernetes-map-type: granular
                   passthroughRequestHeaders:
-                    description: |-
-                      List of headers to allow and pass from the request to
-                      the plugin.
-                      List of headers to allow and pass from the request to the plugin
+                    description: List of headers to allow and pass from the request
+                      to the plugin
                     items:
                       type: string
                     type: array
@@ -313,11 +290,8 @@ spec:
                       Where the secret backend will be mounted
                     type: string
                   pluginVersion:
-                    description: |-
-                      Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
-                      If unspecified, the server will select any matching unversioned plugin that may have been
-                      registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
-                      Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
+                    description: Specifies the semantic version of the plugin to use,
+                      e.g. 'v1.0.0'
                     type: string
                   sealWrap:
                     description: |-
@@ -525,10 +499,8 @@ spec:
                     type: array
                     x-kubernetes-list-type: set
                   allowedResponseHeaders:
-                    description: |-
-                      List of headers to allow, allowing a plugin to include
-                      them in the response.
-                      List of headers to allow and pass from the request to the plugin
+                    description: List of headers to allow and pass from the request
+                      to the plugin
                     items:
                       type: string
                     type: array
@@ -552,10 +524,8 @@ spec:
                       Default lease duration for tokens and secrets in seconds
                     type: number
                   delegatedAuthAccessors:
-                    description: |-
-                      List of allowed authentication mount accessors the
-                      backend can request delegated authentication for.
-                      List of headers to allow and pass from the request to the plugin
+                    description: List of headers to allow and pass from the request
+                      to the plugin
                     items:
                       type: string
                     type: array
@@ -572,16 +542,12 @@ spec:
                   id:
                     type: string
                   identityTokenKey:
-                    description: |-
-                      The key to use for signing plugin workload identity tokens. If
-                      not provided, this will default to Vault's OIDC default key.
-                      The key to use for signing plugin workload identity tokens
+                    description: The key to use for signing plugin workload identity
+                      tokens
                     type: string
                   listingVisibility:
-                    description: |-
-                      Specifies whether to show this mount in the UI-specific
-                      listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
-                      Specifies whether to show this mount in the UI-specific listing endpoint
+                    description: Specifies whether to show this mount in the UI-specific
+                      listing endpoint
                     type: string
                   local:
                     description: |-
@@ -610,10 +576,8 @@ spec:
                     type: object
                     x-kubernetes-map-type: granular
                   passthroughRequestHeaders:
-                    description: |-
-                      List of headers to allow and pass from the request to
-                      the plugin.
-                      List of headers to allow and pass from the request to the plugin
+                    description: List of headers to allow and pass from the request
+                      to the plugin
                     items:
                       type: string
                     type: array
@@ -623,11 +587,8 @@ spec:
                       Where the secret backend will be mounted
                     type: string
                   pluginVersion:
-                    description: |-
-                      Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
-                      If unspecified, the server will select any matching unversioned plugin that may have been
-                      registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
-                      Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
+                    description: Specifies the semantic version of the plugin to use,
+                      e.g. 'v1.0.0'
                     type: string
                   sealWrap:
                     description: |-

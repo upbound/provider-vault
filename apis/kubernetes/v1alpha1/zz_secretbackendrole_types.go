@@ -15,16 +15,11 @@ import (
 
 type SecretBackendRoleInitParameters struct {
 
-	// A label selector for Kubernetes namespaces
-	// in which credentials can be generated. Accepts either a JSON or YAML object. The value should be
-	// of type LabelSelector.
-	// If set with allowed_kubernetes_namespace, the conditions are ORed.
 	// A label selector for Kubernetes namespaces in which credentials can begenerated. Accepts either a JSON or YAML object. The value should be of typeLabelSelector. If set with `allowed_kubernetes_namespace`, the conditions are `OR`ed.
 	AllowedKubernetesNamespaceSelector *string `json:"allowedKubernetesNamespaceSelector,omitempty" tf:"allowed_kubernetes_namespace_selector,omitempty"`
 
 	// The list of Kubernetes namespaces this role
-	// can generate credentials for. If set to * all namespaces are allowed. If set with
-	// allowed_kubernetes_namespace_selector, the conditions are ORed.
+	// can generate credentials for. If set to * all namespaces are allowed.
 	// The list of Kubernetes namespaces this role can generate credentials for. If set to '*' all namespaces are allowed. If set with`allowed_kubernetes_namespace_selector`, the conditions are `OR`ed.
 	AllowedKubernetesNamespaces []*string `json:"allowedKubernetesNamespaces,omitempty" tf:"allowed_kubernetes_namespaces,omitempty"`
 
@@ -107,16 +102,11 @@ type SecretBackendRoleInitParameters struct {
 
 type SecretBackendRoleObservation struct {
 
-	// A label selector for Kubernetes namespaces
-	// in which credentials can be generated. Accepts either a JSON or YAML object. The value should be
-	// of type LabelSelector.
-	// If set with allowed_kubernetes_namespace, the conditions are ORed.
 	// A label selector for Kubernetes namespaces in which credentials can begenerated. Accepts either a JSON or YAML object. The value should be of typeLabelSelector. If set with `allowed_kubernetes_namespace`, the conditions are `OR`ed.
 	AllowedKubernetesNamespaceSelector *string `json:"allowedKubernetesNamespaceSelector,omitempty" tf:"allowed_kubernetes_namespace_selector,omitempty"`
 
 	// The list of Kubernetes namespaces this role
-	// can generate credentials for. If set to * all namespaces are allowed. If set with
-	// allowed_kubernetes_namespace_selector, the conditions are ORed.
+	// can generate credentials for. If set to * all namespaces are allowed.
 	// The list of Kubernetes namespaces this role can generate credentials for. If set to '*' all namespaces are allowed. If set with`allowed_kubernetes_namespace_selector`, the conditions are `OR`ed.
 	AllowedKubernetesNamespaces []*string `json:"allowedKubernetesNamespaces,omitempty" tf:"allowed_kubernetes_namespaces,omitempty"`
 
@@ -191,17 +181,12 @@ type SecretBackendRoleObservation struct {
 
 type SecretBackendRoleParameters struct {
 
-	// A label selector for Kubernetes namespaces
-	// in which credentials can be generated. Accepts either a JSON or YAML object. The value should be
-	// of type LabelSelector.
-	// If set with allowed_kubernetes_namespace, the conditions are ORed.
 	// A label selector for Kubernetes namespaces in which credentials can begenerated. Accepts either a JSON or YAML object. The value should be of typeLabelSelector. If set with `allowed_kubernetes_namespace`, the conditions are `OR`ed.
 	// +kubebuilder:validation:Optional
 	AllowedKubernetesNamespaceSelector *string `json:"allowedKubernetesNamespaceSelector,omitempty" tf:"allowed_kubernetes_namespace_selector,omitempty"`
 
 	// The list of Kubernetes namespaces this role
-	// can generate credentials for. If set to * all namespaces are allowed. If set with
-	// allowed_kubernetes_namespace_selector, the conditions are ORed.
+	// can generate credentials for. If set to * all namespaces are allowed.
 	// The list of Kubernetes namespaces this role can generate credentials for. If set to '*' all namespaces are allowed. If set with`allowed_kubernetes_namespace_selector`, the conditions are `OR`ed.
 	// +kubebuilder:validation:Optional
 	AllowedKubernetesNamespaces []*string `json:"allowedKubernetesNamespaces,omitempty" tf:"allowed_kubernetes_namespaces,omitempty"`

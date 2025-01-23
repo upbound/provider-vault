@@ -80,9 +80,11 @@ spec:
                       If set, when a client reaches a rate limit threshold, the client will be prohibited from any further requests until after the 'block_interval' in seconds has elapsed.
                     type: number
                   inheritable:
-                    description: |-
-                      If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default. Requires Vault 1.15+.
-                      If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default.
+                    description: If set to true on a quota where path is set to a
+                      namespace, the same quota will be cumulatively applied to all
+                      child namespace. The inheritable parameter cannot be set to
+                      true if the path does not specify a namespace. Only the quotas
+                      associated with the root namespace are inheritable by default.
                     type: boolean
                   interval:
                     description: |-
@@ -144,9 +146,11 @@ spec:
                       If set, when a client reaches a rate limit threshold, the client will be prohibited from any further requests until after the 'block_interval' in seconds has elapsed.
                     type: number
                   inheritable:
-                    description: |-
-                      If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default. Requires Vault 1.15+.
-                      If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default.
+                    description: If set to true on a quota where path is set to a
+                      namespace, the same quota will be cumulatively applied to all
+                      child namespace. The inheritable parameter cannot be set to
+                      true if the path does not specify a namespace. Only the quotas
+                      associated with the root namespace are inheritable by default.
                     type: boolean
                   interval:
                     description: |-
@@ -378,9 +382,11 @@ spec:
                   id:
                     type: string
                   inheritable:
-                    description: |-
-                      If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default. Requires Vault 1.15+.
-                      If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default.
+                    description: If set to true on a quota where path is set to a
+                      namespace, the same quota will be cumulatively applied to all
+                      child namespace. The inheritable parameter cannot be set to
+                      true if the path does not specify a namespace. Only the quotas
+                      associated with the root namespace are inheritable by default.
                     type: boolean
                   interval:
                     description: |-
