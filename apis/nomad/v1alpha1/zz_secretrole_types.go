@@ -17,7 +17,7 @@ type SecretRoleInitParameters struct {
 
 	// The unique path this backend should be mounted at.
 	// The mount path for the Nomad backend.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/nomad/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/nomad/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("backend",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -97,7 +97,7 @@ type SecretRoleParameters struct {
 
 	// The unique path this backend should be mounted at.
 	// The mount path for the Nomad backend.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/nomad/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/nomad/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("backend",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
