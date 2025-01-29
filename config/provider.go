@@ -22,12 +22,12 @@ import (
 	tfjson "github.com/hashicorp/terraform-json"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
-	"github.com/upbound/provider-vault/config/vault"
+	"github.com/upbound/provider-vault/v2/config/vault"
 )
 
 const (
 	resourcePrefix = "vault"
-	modulePath     = "github.com/upbound/provider-vault"
+	modulePath     = "github.com/upbound/provider-vault/v2"
 )
 
 //go:embed schema.json

@@ -30,13 +30,13 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/metrics"
 
-	"github.com/upbound/provider-vault/apis"
-	"github.com/upbound/provider-vault/apis/v1alpha1"
-	"github.com/upbound/provider-vault/config"
-	"github.com/upbound/provider-vault/internal/clients"
+	"github.com/upbound/provider-vault/v2/apis"
+	"github.com/upbound/provider-vault/v2/apis/v1alpha1"
+	"github.com/upbound/provider-vault/v2/config"
+	"github.com/upbound/provider-vault/v2/internal/clients"
 
-	"github.com/upbound/provider-vault/internal/controller"
-	"github.com/upbound/provider-vault/internal/features"
+	"github.com/upbound/provider-vault/v2/internal/controller"
+	"github.com/upbound/provider-vault/v2/internal/features"
 )
 
 func deprecationAction(flagName string) kingpin.Action {
