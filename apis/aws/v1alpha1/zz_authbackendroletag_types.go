@@ -22,7 +22,7 @@ type AuthBackendRoleTagInitParameters struct {
 	// The path to the AWS auth backend to
 	// read role tags from, with no leading or trailing /s. Defaults to "aws".
 	// AWS auth backend to read tags from.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -61,7 +61,7 @@ type AuthBackendRoleTagInitParameters struct {
 	// The name of the AWS auth backend role to read
 	// role tags from, with no leading or trailing /s.
 	// Name of the role.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/aws/v1alpha1.AuthBackendRole
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/aws/v1alpha1.AuthBackendRole
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("role",false)
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
@@ -133,7 +133,7 @@ type AuthBackendRoleTagParameters struct {
 	// The path to the AWS auth backend to
 	// read role tags from, with no leading or trailing /s. Defaults to "aws".
 	// AWS auth backend to read tags from.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -178,7 +178,7 @@ type AuthBackendRoleTagParameters struct {
 	// The name of the AWS auth backend role to read
 	// role tags from, with no leading or trailing /s.
 	// Name of the role.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/aws/v1alpha1.AuthBackendRole
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/aws/v1alpha1.AuthBackendRole
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("role",false)
 	// +kubebuilder:validation:Optional
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`

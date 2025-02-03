@@ -17,7 +17,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	tfsdk "github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
-	"github.com/upbound/provider-vault/apis/v1beta1"
+	"github.com/upbound/provider-vault/v2/apis/v1beta1"
 )
 
 const (

@@ -21,7 +21,7 @@ type GroupPoliciesInitParameters struct {
 
 	// Group ID to assign policies to.
 	// ID of the group.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.Group
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/identity/v1alpha1.Group
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
 	GroupID *string `json:"groupId,omitempty" tf:"group_id,omitempty"`
 
@@ -84,7 +84,7 @@ type GroupPoliciesParameters struct {
 
 	// Group ID to assign policies to.
 	// ID of the group.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.Group
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/identity/v1alpha1.Group
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	GroupID *string `json:"groupId,omitempty" tf:"group_id,omitempty"`
