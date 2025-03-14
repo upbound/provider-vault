@@ -48,16 +48,6 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 		*out = new(string)
 		**out = **in
 	}
-	if in.MountRef != nil {
-		in, out := &in.MountRef, &out.MountRef
-		*out = new(v1.Reference)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.MountSelector != nil {
-		in, out := &in.MountSelector, &out.MountSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -169,16 +159,6 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 		in, out := &in.Mount, &out.Mount
 		*out = new(string)
 		**out = **in
-	}
-	if in.MountRef != nil {
-		in, out := &in.MountRef, &out.MountRef
-		*out = new(v1.Reference)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.MountSelector != nil {
-		in, out := &in.MountSelector, &out.MountSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
 	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace

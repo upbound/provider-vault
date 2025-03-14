@@ -8,9 +8,17 @@ metadata:
   name: example
 spec:
   forProvider:
-    identityTokenAudience: <TOKEN_AUDIENCE>
-    identityTokenTtl: <TOKEN_TTL>
-    roleArn: <AWS_ROLE_ARN>
+    accessKeySecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    secretKeySecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
 
 ---
 

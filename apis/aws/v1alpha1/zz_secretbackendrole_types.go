@@ -45,8 +45,6 @@ type SecretBackendRoleInitParameters struct {
 	DefaultStsTTL *float64 `json:"defaultStsTtl,omitempty" tf:"default_sts_ttl,omitempty"`
 
 	// External ID to set for assume role creds.
-	// Valid only when credential_type is set to assumed_role.
-	// External ID to set for assume role creds.
 	ExternalID *string `json:"externalId,omitempty" tf:"external_id,omitempty"`
 
 	// A list of IAM group names. IAM users generated
@@ -59,8 +57,6 @@ type SecretBackendRoleInitParameters struct {
 	// +listType=set
 	IAMGroups []*string `json:"iamGroups,omitempty" tf:"iam_groups,omitempty"`
 
-	// A map of strings representing key/value pairs
-	// to be used as tags for any IAM user that is created by this role.
 	// A map of strings representing key/value pairs used as tags for any IAM user created by this role.
 	// +mapType=granular
 	IAMTags map[string]*string `json:"iamTags,omitempty" tf:"iam_tags,omitempty"`
@@ -116,9 +112,6 @@ type SecretBackendRoleInitParameters struct {
 	// +listType=set
 	RoleArns []*string `json:"roleArns,omitempty" tf:"role_arns,omitempty"`
 
-	// A map of strings representing key/value pairs to be set
-	// during assume role creds creation. Valid only when credential_type is set to
-	// assumed_role.
 	// Session tags to be set for assume role creds created.
 	// +mapType=granular
 	SessionTags map[string]*string `json:"sessionTags,omitempty" tf:"session_tags,omitempty"`
@@ -151,8 +144,6 @@ type SecretBackendRoleObservation struct {
 	DefaultStsTTL *float64 `json:"defaultStsTtl,omitempty" tf:"default_sts_ttl,omitempty"`
 
 	// External ID to set for assume role creds.
-	// Valid only when credential_type is set to assumed_role.
-	// External ID to set for assume role creds.
 	ExternalID *string `json:"externalId,omitempty" tf:"external_id,omitempty"`
 
 	// A list of IAM group names. IAM users generated
@@ -165,8 +156,6 @@ type SecretBackendRoleObservation struct {
 	// +listType=set
 	IAMGroups []*string `json:"iamGroups,omitempty" tf:"iam_groups,omitempty"`
 
-	// A map of strings representing key/value pairs
-	// to be used as tags for any IAM user that is created by this role.
 	// A map of strings representing key/value pairs used as tags for any IAM user created by this role.
 	// +mapType=granular
 	IAMTags map[string]*string `json:"iamTags,omitempty" tf:"iam_tags,omitempty"`
@@ -224,9 +213,6 @@ type SecretBackendRoleObservation struct {
 	// +listType=set
 	RoleArns []*string `json:"roleArns,omitempty" tf:"role_arns,omitempty"`
 
-	// A map of strings representing key/value pairs to be set
-	// during assume role creds creation. Valid only when credential_type is set to
-	// assumed_role.
 	// Session tags to be set for assume role creds created.
 	// +mapType=granular
 	SessionTags map[string]*string `json:"sessionTags,omitempty" tf:"session_tags,omitempty"`
@@ -272,8 +258,6 @@ type SecretBackendRoleParameters struct {
 	DefaultStsTTL *float64 `json:"defaultStsTtl,omitempty" tf:"default_sts_ttl,omitempty"`
 
 	// External ID to set for assume role creds.
-	// Valid only when credential_type is set to assumed_role.
-	// External ID to set for assume role creds.
 	// +kubebuilder:validation:Optional
 	ExternalID *string `json:"externalId,omitempty" tf:"external_id,omitempty"`
 
@@ -288,8 +272,6 @@ type SecretBackendRoleParameters struct {
 	// +listType=set
 	IAMGroups []*string `json:"iamGroups,omitempty" tf:"iam_groups,omitempty"`
 
-	// A map of strings representing key/value pairs
-	// to be used as tags for any IAM user that is created by this role.
 	// A map of strings representing key/value pairs used as tags for any IAM user created by this role.
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
@@ -353,9 +335,6 @@ type SecretBackendRoleParameters struct {
 	// +listType=set
 	RoleArns []*string `json:"roleArns,omitempty" tf:"role_arns,omitempty"`
 
-	// A map of strings representing key/value pairs to be set
-	// during assume role creds creation. Valid only when credential_type is set to
-	// assumed_role.
 	// Session tags to be set for assume role creds created.
 	// +kubebuilder:validation:Optional
 	// +mapType=granular

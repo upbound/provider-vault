@@ -20,8 +20,6 @@ type MountInitParameters struct {
 	// +listType=set
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
 
-	// List of headers to allow, allowing a plugin to include
-	// them in the response.
 	// List of headers to allow and pass from the request to the plugin
 	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
 
@@ -37,8 +35,6 @@ type MountInitParameters struct {
 	// Default lease duration for tokens and secrets in seconds
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
 
-	// List of allowed authentication mount accessors the
-	// backend can request delegated authentication for.
 	// List of headers to allow and pass from the request to the plugin
 	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
 
@@ -50,13 +46,9 @@ type MountInitParameters struct {
 	// Enable the secrets engine to access Vault's external entropy source
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
 
-	// The key to use for signing plugin workload identity tokens. If
-	// not provided, this will default to Vault's OIDC default key.
 	// The key to use for signing plugin workload identity tokens
 	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
 
-	// Specifies whether to show this mount in the UI-specific
-	// listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
 	// Specifies whether to show this mount in the UI-specific listing endpoint
 	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
 
@@ -80,8 +72,6 @@ type MountInitParameters struct {
 	// +mapType=granular
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 
-	// List of headers to allow and pass from the request to
-	// the plugin.
 	// List of headers to allow and pass from the request to the plugin
 	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
 
@@ -89,9 +79,6 @@ type MountInitParameters struct {
 	// Where the secret backend will be mounted
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
-	// Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
-	// If unspecified, the server will select any matching unversioned plugin that may have been
-	// registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
 	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
 	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
@@ -115,8 +102,6 @@ type MountObservation struct {
 	// +listType=set
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
 
-	// List of headers to allow, allowing a plugin to include
-	// them in the response.
 	// List of headers to allow and pass from the request to the plugin
 	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
 
@@ -132,8 +117,6 @@ type MountObservation struct {
 	// Default lease duration for tokens and secrets in seconds
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
 
-	// List of allowed authentication mount accessors the
-	// backend can request delegated authentication for.
 	// List of headers to allow and pass from the request to the plugin
 	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
 
@@ -147,13 +130,9 @@ type MountObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The key to use for signing plugin workload identity tokens. If
-	// not provided, this will default to Vault's OIDC default key.
 	// The key to use for signing plugin workload identity tokens
 	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
 
-	// Specifies whether to show this mount in the UI-specific
-	// listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
 	// Specifies whether to show this mount in the UI-specific listing endpoint
 	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
 
@@ -177,8 +156,6 @@ type MountObservation struct {
 	// +mapType=granular
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 
-	// List of headers to allow and pass from the request to
-	// the plugin.
 	// List of headers to allow and pass from the request to the plugin
 	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
 
@@ -186,9 +163,6 @@ type MountObservation struct {
 	// Where the secret backend will be mounted
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
-	// Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
-	// If unspecified, the server will select any matching unversioned plugin that may have been
-	// registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
 	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
 	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
@@ -209,8 +183,6 @@ type MountParameters struct {
 	// +listType=set
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
 
-	// List of headers to allow, allowing a plugin to include
-	// them in the response.
 	// List of headers to allow and pass from the request to the plugin
 	// +kubebuilder:validation:Optional
 	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
@@ -230,8 +202,6 @@ type MountParameters struct {
 	// +kubebuilder:validation:Optional
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
 
-	// List of allowed authentication mount accessors the
-	// backend can request delegated authentication for.
 	// List of headers to allow and pass from the request to the plugin
 	// +kubebuilder:validation:Optional
 	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
@@ -246,14 +216,10 @@ type MountParameters struct {
 	// +kubebuilder:validation:Optional
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
 
-	// The key to use for signing plugin workload identity tokens. If
-	// not provided, this will default to Vault's OIDC default key.
 	// The key to use for signing plugin workload identity tokens
 	// +kubebuilder:validation:Optional
 	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
 
-	// Specifies whether to show this mount in the UI-specific
-	// listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
 	// Specifies whether to show this mount in the UI-specific listing endpoint
 	// +kubebuilder:validation:Optional
 	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
@@ -282,8 +248,6 @@ type MountParameters struct {
 	// +mapType=granular
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 
-	// List of headers to allow and pass from the request to
-	// the plugin.
 	// List of headers to allow and pass from the request to the plugin
 	// +kubebuilder:validation:Optional
 	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
@@ -293,9 +257,6 @@ type MountParameters struct {
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
-	// Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
-	// If unspecified, the server will select any matching unversioned plugin that may have been
-	// registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
 	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
 	// +kubebuilder:validation:Optional
 	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`

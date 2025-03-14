@@ -17,17 +17,7 @@ type SecretBackendInitParameters struct {
 
 	// Path where the MongoDB Atlas Secrets Engine is mounted.
 	// Path where MongoDB Atlas secret backend is mounted
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`
-
-	// Reference to a Mount in vault to populate mount.
-	// +kubebuilder:validation:Optional
-	MountRef *v1.Reference `json:"mountRef,omitempty" tf:"-"`
-
-	// Selector for a Mount in vault to populate mount.
-	// +kubebuilder:validation:Optional
-	MountSelector *v1.Selector `json:"mountSelector,omitempty" tf:"-"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -75,18 +65,8 @@ type SecretBackendParameters struct {
 
 	// Path where the MongoDB Atlas Secrets Engine is mounted.
 	// Path where MongoDB Atlas secret backend is mounted
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`
-
-	// Reference to a Mount in vault to populate mount.
-	// +kubebuilder:validation:Optional
-	MountRef *v1.Reference `json:"mountRef,omitempty" tf:"-"`
-
-	// Selector for a Mount in vault to populate mount.
-	// +kubebuilder:validation:Optional
-	MountSelector *v1.Selector `json:"mountSelector,omitempty" tf:"-"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -143,6 +123,7 @@ type SecretBackendStatus struct {
 type SecretBackend struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mount) || (has(self.initProvider) && has(self.initProvider.mount))",message="spec.forProvider.mount is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.privateKey) || (has(self.initProvider) && has(self.initProvider.privateKey))",message="spec.forProvider.privateKey is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.publicKey) || (has(self.initProvider) && has(self.initProvider.publicKey))",message="spec.forProvider.publicKey is a required parameter"
 	Spec   SecretBackendSpec   `json:"spec"`

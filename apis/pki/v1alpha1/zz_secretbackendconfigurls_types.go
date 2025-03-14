@@ -34,7 +34,6 @@ type SecretBackendConfigUrlsInitParameters struct {
 	CrlDistributionPoints []*string `json:"crlDistributionPoints,omitempty" tf:"crl_distribution_points,omitempty"`
 
 	// Specifies that templating of AIA fields is allowed.
-	// Specifies that templating of AIA fields is allowed.
 	EnableTemplating *bool `json:"enableTemplating,omitempty" tf:"enable_templating,omitempty"`
 
 	// Specifies the URL values for the Issuing Certificate field.
@@ -63,7 +62,6 @@ type SecretBackendConfigUrlsObservation struct {
 	// Specifies the URL values for the CRL Distribution Points field.
 	CrlDistributionPoints []*string `json:"crlDistributionPoints,omitempty" tf:"crl_distribution_points,omitempty"`
 
-	// Specifies that templating of AIA fields is allowed.
 	// Specifies that templating of AIA fields is allowed.
 	EnableTemplating *bool `json:"enableTemplating,omitempty" tf:"enable_templating,omitempty"`
 
@@ -107,7 +105,6 @@ type SecretBackendConfigUrlsParameters struct {
 	// +kubebuilder:validation:Optional
 	CrlDistributionPoints []*string `json:"crlDistributionPoints,omitempty" tf:"crl_distribution_points,omitempty"`
 
-	// Specifies that templating of AIA fields is allowed.
 	// Specifies that templating of AIA fields is allowed.
 	// +kubebuilder:validation:Optional
 	EnableTemplating *bool `json:"enableTemplating,omitempty" tf:"enable_templating,omitempty"`

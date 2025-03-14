@@ -117,7 +117,7 @@ type SecretBackendInitParameters struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// Name of the password policy to use to generate passwords.
+	// 1.11+
 	// Name of the password policy to use to generate passwords.
 	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
 
@@ -270,7 +270,7 @@ type SecretBackendObservation struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// Name of the password policy to use to generate passwords.
+	// 1.11+
 	// Name of the password policy to use to generate passwords.
 	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
 
@@ -455,7 +455,7 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// Name of the password policy to use to generate passwords.
+	// 1.11+
 	// Name of the password policy to use to generate passwords.
 	// +kubebuilder:validation:Optional
 	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`

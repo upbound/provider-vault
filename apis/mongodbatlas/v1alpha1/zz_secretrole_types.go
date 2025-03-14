@@ -62,11 +62,11 @@ type SecretRoleInitParameters struct {
 	// ID for the project to which the target API Key belongs
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Roles assigned when an org API key is assigned to a project API key. Possible values are GROUP_CLUSTER_MANAGER, GROUP_DATA_ACCESS_ADMIN, GROUP_DATA_ACCESS_READ_ONLY, GROUP_DATA_ACCESS_READ_WRITE, GROUP_OWNER and GROUP_READ_ONLY.
+	// Roles assigned when an org API key is assigned to a project API key.
 	// Roles assigned when an org API key is assigned to a project API key
 	ProjectRoles []*string `json:"projectRoles,omitempty" tf:"project_roles,omitempty"`
 
-	// List of roles that the API Key needs to have. Possible values are ORG_OWNER, ORG_MEMBER, ORG_GROUP_CREATOR, ORG_BILLING_ADMIN and ORG_READ_ONLY.
+	// List of roles that the API Key needs to have.
 	// List of roles that the API Key needs to have
 	Roles []*string `json:"roles,omitempty" tf:"roles,omitempty"`
 
@@ -116,11 +116,11 @@ type SecretRoleObservation struct {
 	// ID for the project to which the target API Key belongs
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Roles assigned when an org API key is assigned to a project API key. Possible values are GROUP_CLUSTER_MANAGER, GROUP_DATA_ACCESS_ADMIN, GROUP_DATA_ACCESS_READ_ONLY, GROUP_DATA_ACCESS_READ_WRITE, GROUP_OWNER and GROUP_READ_ONLY.
+	// Roles assigned when an org API key is assigned to a project API key.
 	// Roles assigned when an org API key is assigned to a project API key
 	ProjectRoles []*string `json:"projectRoles,omitempty" tf:"project_roles,omitempty"`
 
-	// List of roles that the API Key needs to have. Possible values are ORG_OWNER, ORG_MEMBER, ORG_GROUP_CREATOR, ORG_BILLING_ADMIN and ORG_READ_ONLY.
+	// List of roles that the API Key needs to have.
 	// List of roles that the API Key needs to have
 	Roles []*string `json:"roles,omitempty" tf:"roles,omitempty"`
 
@@ -186,12 +186,12 @@ type SecretRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
 
-	// Roles assigned when an org API key is assigned to a project API key. Possible values are GROUP_CLUSTER_MANAGER, GROUP_DATA_ACCESS_ADMIN, GROUP_DATA_ACCESS_READ_ONLY, GROUP_DATA_ACCESS_READ_WRITE, GROUP_OWNER and GROUP_READ_ONLY.
+	// Roles assigned when an org API key is assigned to a project API key.
 	// Roles assigned when an org API key is assigned to a project API key
 	// +kubebuilder:validation:Optional
 	ProjectRoles []*string `json:"projectRoles,omitempty" tf:"project_roles,omitempty"`
 
-	// List of roles that the API Key needs to have. Possible values are ORG_OWNER, ORG_MEMBER, ORG_GROUP_CREATOR, ORG_BILLING_ADMIN and ORG_READ_ONLY.
+	// List of roles that the API Key needs to have.
 	// List of roles that the API Key needs to have
 	// +kubebuilder:validation:Optional
 	Roles []*string `json:"roles,omitempty" tf:"roles,omitempty"`
