@@ -389,7 +389,9 @@ spec:
                     type: array
                     x-kubernetes-list-type: set
                   clientId:
-                    description: The Client ID from Vault.
+                    description: |-
+                      The Client ID returned by Vault.
+                      The Client ID from Vault.
                     type: string
                   clientType:
                     description: |-

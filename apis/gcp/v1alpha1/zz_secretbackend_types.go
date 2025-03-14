@@ -33,12 +33,20 @@ type SecretBackendInitParameters struct {
 	// If set, opts out of mount migration on path updates.
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
+	// The audience claim value for plugin identity
+	// tokens. Must match an allowed audience configured for the target Workload Identity Pool.
+	// Mutually exclusive with credentials.  Requires Vault 1.17+. Available only for Vault Enterprise.
 	// The audience claim value for plugin identity tokens.
 	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
 
+	// The key to use for signing plugin identity
+	// tokens. Requires Vault 1.17+. Available only for Vault Enterprise.
 	// The key to use for signing identity tokens.
 	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
 
+	// The TTL of generated tokens. Defaults to
+	// 1 hour. Uses duration format strings.
+	// Requires Vault 1.17+. Available only for Vault Enterprise.
 	// The TTL of generated tokens.
 	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
@@ -63,12 +71,15 @@ type SecretBackendInitParameters struct {
 	// Path to mount the backend at.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// –  Service Account to impersonate for plugin workload identity federation.
+	// Required with identity_token_audience. Requires Vault 1.17+. Available only for Vault Enterprise.
 	// Service Account to impersonate for plugin workload identity federation.
 	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
 }
 
 type SecretBackendObservation struct {
 
+	// The accessor of the created GCP mount.
 	// Accessor of the created GCP mount.
 	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
 
@@ -88,12 +99,20 @@ type SecretBackendObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The audience claim value for plugin identity
+	// tokens. Must match an allowed audience configured for the target Workload Identity Pool.
+	// Mutually exclusive with credentials.  Requires Vault 1.17+. Available only for Vault Enterprise.
 	// The audience claim value for plugin identity tokens.
 	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
 
+	// The key to use for signing plugin identity
+	// tokens. Requires Vault 1.17+. Available only for Vault Enterprise.
 	// The key to use for signing identity tokens.
 	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
 
+	// The TTL of generated tokens. Defaults to
+	// 1 hour. Uses duration format strings.
+	// Requires Vault 1.17+. Available only for Vault Enterprise.
 	// The TTL of generated tokens.
 	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
@@ -118,6 +137,8 @@ type SecretBackendObservation struct {
 	// Path to mount the backend at.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// –  Service Account to impersonate for plugin workload identity federation.
+	// Required with identity_token_audience. Requires Vault 1.17+. Available only for Vault Enterprise.
 	// Service Account to impersonate for plugin workload identity federation.
 	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
 }
@@ -146,14 +167,22 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
+	// The audience claim value for plugin identity
+	// tokens. Must match an allowed audience configured for the target Workload Identity Pool.
+	// Mutually exclusive with credentials.  Requires Vault 1.17+. Available only for Vault Enterprise.
 	// The audience claim value for plugin identity tokens.
 	// +kubebuilder:validation:Optional
 	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
 
+	// The key to use for signing plugin identity
+	// tokens. Requires Vault 1.17+. Available only for Vault Enterprise.
 	// The key to use for signing identity tokens.
 	// +kubebuilder:validation:Optional
 	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
 
+	// The TTL of generated tokens. Defaults to
+	// 1 hour. Uses duration format strings.
+	// Requires Vault 1.17+. Available only for Vault Enterprise.
 	// The TTL of generated tokens.
 	// +kubebuilder:validation:Optional
 	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
@@ -183,6 +212,8 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// –  Service Account to impersonate for plugin workload identity federation.
+	// Required with identity_token_audience. Requires Vault 1.17+. Available only for Vault Enterprise.
 	// Service Account to impersonate for plugin workload identity federation.
 	// +kubebuilder:validation:Optional
 	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
