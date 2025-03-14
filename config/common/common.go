@@ -32,7 +32,7 @@ const (
 	CrtExtractor = SelfPackagePath + ".ExtractCrt()"
 )
 
-// ExtractCsr extracts the csr from the 
+// ExtractCsr extracts the csr from the
 func ExtractCsr() reference.ExtractValueFn {
 	return func(mg resource.Managed) string {
 		paved, err := fieldpath.PaveObject(mg)

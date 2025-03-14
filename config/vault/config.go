@@ -2,6 +2,7 @@ package vault
 
 import (
 	"github.com/crossplane/upjet/pkg/config"
+
 	"github.com/upbound/provider-vault/config/common"
 )
 
@@ -15,7 +16,7 @@ func Configure(p *config.Provider) {
 		r.Kind = "SecretBackendRootSignIntermediate"
 		r.ShortGroup = "pki"
 		r.References["csr"] = config.Reference{
-			Type: "SecretBackendIntermediateCertRequest",
+			Type:      "SecretBackendIntermediateCertRequest",
 			Extractor: common.CsrExtractor,
 		}
 	})
@@ -23,7 +24,7 @@ func Configure(p *config.Provider) {
 		r.Kind = "SecretBackendIntermediateSetSigned"
 		r.ShortGroup = "pki"
 		r.References["certificate"] = config.Reference{
-			Type: "SecretBackendRootSignIntermediate",
+			Type:      "SecretBackendRootSignIntermediate",
 			Extractor: common.CrtExtractor,
 		}
 	})
