@@ -17,7 +17,7 @@ type OidcKeyAllowedClientIDInitParameters struct {
 
 	// Client ID to allow usage with the OIDC named key
 	// Role Client ID allowed to use the key for signing.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.OidcRole
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/identity/v1alpha1.OidcRole
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("client_id",false)
 	AllowedClientID *string `json:"allowedClientId,omitempty" tf:"allowed_client_id,omitempty"`
 
@@ -31,7 +31,7 @@ type OidcKeyAllowedClientIDInitParameters struct {
 
 	// Name of the OIDC Key allow the Client ID.
 	// Name of the key.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.OidcKey
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/identity/v1alpha1.OidcKey
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	KeyName *string `json:"keyName,omitempty" tf:"key_name,omitempty"`
 
@@ -75,7 +75,7 @@ type OidcKeyAllowedClientIDParameters struct {
 
 	// Client ID to allow usage with the OIDC named key
 	// Role Client ID allowed to use the key for signing.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.OidcRole
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/identity/v1alpha1.OidcRole
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("client_id",false)
 	// +kubebuilder:validation:Optional
 	AllowedClientID *string `json:"allowedClientId,omitempty" tf:"allowed_client_id,omitempty"`
@@ -90,7 +90,7 @@ type OidcKeyAllowedClientIDParameters struct {
 
 	// Name of the OIDC Key allow the Client ID.
 	// Name of the key.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.OidcKey
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/identity/v1alpha1.OidcKey
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	KeyName *string `json:"keyName,omitempty" tf:"key_name,omitempty"`
