@@ -145,6 +145,7 @@ func ExternalNameConfigurations() config.ResourceOption {
 	return func(r *config.Resource) {
 		if e, ok := ExternalNameConfigs[r.Name]; ok {
 			r.ExternalName = e
+			r.Version = "v1beta1"
 		}
 	}
 }
