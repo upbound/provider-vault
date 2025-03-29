@@ -11,6 +11,7 @@ import (
 	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
 	v1alpha1 "github.com/upbound/provider-vault/apis/vault/v1alpha1"
+	common "github.com/upbound/provider-vault/config/common"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -281,7 +282,7 @@ func (mg *SecretBackendIntermediateSetSigned) ResolveReferences(ctx context.Cont
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Certificate),
-		Extract:      resource.ExtractParamPath("certificate", true),
+		Extract:      common.ExtractCrt(),
 		Reference:    mg.Spec.ForProvider.CertificateRef,
 		Selector:     mg.Spec.ForProvider.CertificateSelector,
 		To: reference.To{
@@ -313,7 +314,7 @@ func (mg *SecretBackendIntermediateSetSigned) ResolveReferences(ctx context.Cont
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Certificate),
-		Extract:      resource.ExtractParamPath("certificate", true),
+		Extract:      common.ExtractCrt(),
 		Reference:    mg.Spec.InitProvider.CertificateRef,
 		Selector:     mg.Spec.InitProvider.CertificateSelector,
 		To: reference.To{
@@ -410,6 +411,48 @@ func (mg *SecretBackendRootCert) ResolveReferences(ctx context.Context, c client
 	}
 	mg.Spec.InitProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BackendRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this SecretBackendRootSignIntermediate.
+func (mg *SecretBackendRootSignIntermediate) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Csr),
+		Extract:      common.ExtractCsr(),
+		Reference:    mg.Spec.ForProvider.CsrRef,
+		Selector:     mg.Spec.ForProvider.CsrSelector,
+		To: reference.To{
+			List:    &SecretBackendIntermediateCertRequestList{},
+			Managed: &SecretBackendIntermediateCertRequest{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Csr")
+	}
+	mg.Spec.ForProvider.Csr = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.CsrRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Csr),
+		Extract:      common.ExtractCsr(),
+		Reference:    mg.Spec.InitProvider.CsrRef,
+		Selector:     mg.Spec.InitProvider.CsrSelector,
+		To: reference.To{
+			List:    &SecretBackendIntermediateCertRequestList{},
+			Managed: &SecretBackendIntermediateCertRequest{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Csr")
+	}
+	mg.Spec.InitProvider.Csr = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.CsrRef = rsp.ResolvedReference
 
 	return nil
 }
