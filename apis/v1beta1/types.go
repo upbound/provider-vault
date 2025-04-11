@@ -90,6 +90,10 @@ type ProviderConfigSpec struct {
 	// +optional
 	Headers ProviderHeaders `json:"headers,omitempty"`
 
+	// Name of the role against which to login.
+	// +optional
+	Role *string `json:"role,omitempty"`
+
 	// Credentials required to authenticate to this provider.
 	// There are many options to authenticate. They include
 	// - token - (Optional) Vault token that will be used

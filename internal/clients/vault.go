@@ -7,6 +7,7 @@ package clients
 import (
 	"context"
 	"encoding/json"
+	"os"
 
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	"github.com/crossplane/upjet/pkg/terraform"
@@ -14,6 +15,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	tfsdk "github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
@@ -56,13 +58,19 @@ const (
 	keySkipGetVaultVersion  = "skip_get_vault_version"
 	keyVaultVersionOverride = "vault_version_override"
 	keyHeaders              = "headers"
+	keyRole                 = "role"
 
 	// error messages
-	errNoProviderConfig     = "no providerConfigRef provided"
-	errGetProviderConfig    = "cannot get referenced ProviderConfig"
-	errTrackUsage           = "cannot track ProviderConfig usage"
-	errExtractCredentials   = "cannot extract credentials"
-	errUnmarshalCredentials = "cannot unmarshal vault credentials as JSON"
+	errNoProviderConfig      = "no providerConfigRef provided"
+	errGetProviderConfig     = "cannot get referenced ProviderConfig"
+	errTrackUsage            = "cannot track ProviderConfig usage"
+	errExtractCredentials    = "cannot extract credentials"
+	errUnmarshalCredentials  = "cannot unmarshal vault credentials as JSON"
+	errNoServiceAccountToken = "no service account token found"
+	errNoRole                = "no role provided"
+
+	// Service account token path
+	serviceAccountTokenPath = "/var/run/secrets/kubernetes.io/serviceaccount/token"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -113,33 +121,14 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 			ps.Configuration[keyHeaders] = pc.Spec.Headers
 		}
 
-		data, err := resource.CommonCredentialExtractor(ctx, pc.Spec.Credentials.Source, client, pc.Spec.Credentials.CommonCredentialSelectors)
-		if err != nil {
-			return ps, errors.Wrap(err, errExtractCredentials)
-		}
-
-		creds := map[string]any{}
-		if err := json.Unmarshal(data, &creds); err != nil {
-			return ps, errors.Wrap(err, errUnmarshalCredentials)
-		}
-
-		// Set credentials in Terraform
-		// provider configuration
-		credsKeys := [...]string{keyToken, keyTokenName, keyCaCertFile, keyCaCertDir}
-		for _, key := range credsKeys {
-			if v, ok := creds[key]; ok {
-				ps.Configuration[key] = v
+		switch pc.Spec.Credentials.Source { //nolint:exhaustive
+		case xpv1.CredentialsSourceInjectedIdentity:
+			if err := injectedIdentityAuth(pc, &ps); err != nil {
+				return ps, err
 			}
-		}
-		// structured auth methods need to be wrapped in a single element array
-		// see: https://registry.terraform.io/providers/hashicorp/vault/latest/docs#vault-authentication-configuration-options
-		authKeys := [...]string{keyAuthLoginUserpass, keyAuthLoginAWS,
-			keyAuthLoginCert, keyAuthLoginGCP, keyAuthLoginKerberos,
-			keyAuthLoginRadius, keyAuthLoginOCI, keyAuthLoginOIDC,
-			keyAuthLoginJWT, keyAuthLoginAzure, keyAuthLogin, keyClientAuth}
-		for _, key := range authKeys {
-			if v, ok := creds[key]; ok {
-				ps.Configuration[key] = []interface{}{v}
+		default:
+			if err := commonCredentialsAuth(ctx, client, pc, &ps); err != nil {
+				return ps, err
 			}
 		}
 
@@ -148,6 +137,63 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 			"failed to configure the no-fork Vault client",
 		)
 	}
+}
+
+func commonCredentialsAuth(ctx context.Context, client client.Client, pc *v1beta1.ProviderConfig, ps *terraform.Setup) error {
+	data, err := resource.CommonCredentialExtractor(ctx, pc.Spec.Credentials.Source, client, pc.Spec.Credentials.CommonCredentialSelectors)
+	if err != nil {
+		return errors.Wrap(err, errExtractCredentials)
+	}
+
+	creds := map[string]any{}
+	if err := json.Unmarshal(data, &creds); err != nil {
+		return errors.Wrap(err, errUnmarshalCredentials)
+	}
+
+	// Set credentials in Terraform
+	// provider configuration
+	credsKeys := [...]string{keyToken, keyTokenName, keyCaCertFile, keyCaCertDir}
+	for _, key := range credsKeys {
+		if v, ok := creds[key]; ok {
+			ps.Configuration[key] = v
+		}
+	}
+	// structured auth methods need to be wrapped in a single element array
+	// see: https://registry.terraform.io/providers/hashicorp/vault/latest/docs#vault-authentication-configuration-options
+	authKeys := [...]string{
+		keyAuthLoginUserpass, keyAuthLoginAWS,
+		keyAuthLoginCert, keyAuthLoginGCP, keyAuthLoginKerberos,
+		keyAuthLoginRadius, keyAuthLoginOCI, keyAuthLoginOIDC,
+		keyAuthLoginJWT, keyAuthLoginAzure, keyAuthLogin, keyClientAuth,
+	}
+	for _, key := range authKeys {
+		if v, ok := creds[key]; ok {
+			ps.Configuration[key] = []interface{}{v}
+		}
+	}
+
+	return nil
+}
+
+func injectedIdentityAuth(pc *v1beta1.ProviderConfig, ps *terraform.Setup) error {
+	jwt, err := os.ReadFile(serviceAccountTokenPath)
+	if err != nil {
+		return errors.Wrap(err, errNoServiceAccountToken)
+	}
+
+	if pc.Spec.Role == nil {
+		return errors.New(errNoRole)
+	}
+
+	ps.Configuration[keyAuthLoginJWT] = []any{
+		map[string]string{
+			"jwt":   string(jwt),
+			"mount": "kubernetes",
+			"role":  *pc.Spec.Role,
+		},
+	}
+
+	return nil
 }
 
 func configureNoForkVaultClient(ctx context.Context, ps *terraform.Setup, p schema.Provider) error {

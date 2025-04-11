@@ -173,6 +173,9 @@ spec:
               namespace:
                 description: Set the namespace to use.
                 type: string
+              role:
+                description: Name of the role against which to login.
+                type: string
               skip_child_token:
                 description: |-
                   Set this to true to disable creation of an
