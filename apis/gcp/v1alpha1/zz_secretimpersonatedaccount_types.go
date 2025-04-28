@@ -17,7 +17,7 @@ type SecretImpersonatedAccountInitParameters struct {
 
 	// Path where the GCP Secrets Engine is mounted
 	// Path where the GCP secrets engine is mounted.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/gcp/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/gcp/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -79,7 +79,7 @@ type SecretImpersonatedAccountParameters struct {
 
 	// Path where the GCP Secrets Engine is mounted
 	// Path where the GCP secrets engine is mounted.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/gcp/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/gcp/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`

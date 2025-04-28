@@ -16,7 +16,7 @@ import (
 type AuthBackendConfigIdentityInitParameters struct {
 
 	// Unique name of the auth backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -98,7 +98,7 @@ type AuthBackendConfigIdentityObservation struct {
 type AuthBackendConfigIdentityParameters struct {
 
 	// Unique name of the auth backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`

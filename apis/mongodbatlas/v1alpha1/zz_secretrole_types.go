@@ -29,7 +29,7 @@ type SecretRoleInitParameters struct {
 
 	// Path where the MongoDB Atlas Secrets Engine is mounted.
 	// Path where MongoDB Atlas secret backend is mounted
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/vault/v1alpha1.Mount
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`
 
@@ -148,7 +148,7 @@ type SecretRoleParameters struct {
 
 	// Path where the MongoDB Atlas Secrets Engine is mounted.
 	// Path where MongoDB Atlas secret backend is mounted
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/vault/v1alpha1.Mount
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`

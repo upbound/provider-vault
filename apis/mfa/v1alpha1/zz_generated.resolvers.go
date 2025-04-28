@@ -10,7 +10,7 @@ import (
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
-	v1alpha1 "github.com/upbound/provider-vault/apis/auth/v1alpha1"
+	v1alpha1 "github.com/upbound/provider-vault/v2/apis/auth/v1alpha1"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
