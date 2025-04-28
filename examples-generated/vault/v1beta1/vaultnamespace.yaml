@@ -1,0 +1,11 @@
+apiVersion: vault.vault.upbound.io/v1beta1
+kind: VaultNamespace
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vault/v1beta1/vaultnamespace
+  labels:
+    testing.upbound.io/example-name: ns1
+  name: ns1
+spec:
+  forProvider:
+    path: ns1

@@ -1,0 +1,19 @@
+apiVersion: identity.vault.upbound.io/v1beta1
+kind: MfaDuo
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/mfaduo
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    apiHostname: api-xxxxxxxx.duosecurity.com
+    integrationKeySecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    secretKeySecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system

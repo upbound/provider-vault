@@ -1,0 +1,16 @@
+apiVersion: mfa.vault.upbound.io/v1beta1
+kind: Totp
+metadata:
+  annotations:
+    meta.upbound.io/example-id: mfa/v1beta1/totp
+  labels:
+    testing.upbound.io/example-name: my_totp
+  name: my-totp
+spec:
+  forProvider:
+    algorithm: SHA256
+    digits: 8
+    issuer: hashicorp
+    keySize: 20
+    name: my_totp
+    period: 60

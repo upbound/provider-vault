@@ -1,0 +1,11 @@
+apiVersion: github.vault.upbound.io/v1beta1
+kind: AuthBackend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: github/v1beta1/authbackend
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    organization: myorg

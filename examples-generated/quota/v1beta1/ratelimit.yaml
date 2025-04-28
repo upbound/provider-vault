@@ -1,0 +1,13 @@
+apiVersion: quota.vault.upbound.io/v1beta1
+kind: RateLimit
+metadata:
+  annotations:
+    meta.upbound.io/example-id: quota/v1beta1/ratelimit
+  labels:
+    testing.upbound.io/example-name: global
+  name: global
+spec:
+  forProvider:
+    name: global
+    path: ""
+    rate: 100

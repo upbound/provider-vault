@@ -1,0 +1,13 @@
+apiVersion: identity.vault.upbound.io/v1beta1
+kind: OidcScope
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/oidcscope
+  labels:
+    testing.upbound.io/example-name: groups
+  name: groups
+spec:
+  forProvider:
+    description: Vault OIDC Groups Scope
+    name: groups
+    template: '{"groups":{{identity.entity.groups.names}}}'

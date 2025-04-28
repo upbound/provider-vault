@@ -1,0 +1,17 @@
+apiVersion: identity.vault.upbound.io/v1beta1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/group
+  labels:
+    testing.upbound.io/example-name: internal
+  name: internal
+spec:
+  forProvider:
+    metadata:
+      version: "2"
+    name: internal
+    policies:
+    - dev
+    - test
+    type: internal

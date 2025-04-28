@@ -1,0 +1,15 @@
+apiVersion: identity.vault.upbound.io/v1beta1
+kind: Entity
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1beta1/entity
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    metadata:
+      foo: bar
+    name: tester1
+    policies:
+    - test

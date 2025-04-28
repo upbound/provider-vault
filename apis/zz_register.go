@@ -10,89 +10,89 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/upbound/provider-vault/apis/ad/v1alpha1"
-	v1alpha1alicloud "github.com/upbound/provider-vault/apis/alicloud/v1alpha1"
-	v1alpha1approle "github.com/upbound/provider-vault/apis/approle/v1alpha1"
-	v1alpha1audit "github.com/upbound/provider-vault/apis/audit/v1alpha1"
-	v1alpha1auth "github.com/upbound/provider-vault/apis/auth/v1alpha1"
-	v1alpha1aws "github.com/upbound/provider-vault/apis/aws/v1alpha1"
-	v1alpha1azure "github.com/upbound/provider-vault/apis/azure/v1alpha1"
-	v1alpha1cert "github.com/upbound/provider-vault/apis/cert/v1alpha1"
-	v1alpha1consul "github.com/upbound/provider-vault/apis/consul/v1alpha1"
-	v1alpha1database "github.com/upbound/provider-vault/apis/database/v1alpha1"
-	v1alpha1egp "github.com/upbound/provider-vault/apis/egp/v1alpha1"
-	v1alpha1gcp "github.com/upbound/provider-vault/apis/gcp/v1alpha1"
-	v1alpha1generic "github.com/upbound/provider-vault/apis/generic/v1alpha1"
-	v1alpha1github "github.com/upbound/provider-vault/apis/github/v1alpha1"
-	v1alpha1identity "github.com/upbound/provider-vault/apis/identity/v1alpha1"
-	v1alpha1jwt "github.com/upbound/provider-vault/apis/jwt/v1alpha1"
-	v1alpha1kmip "github.com/upbound/provider-vault/apis/kmip/v1alpha1"
-	v1alpha1kubernetes "github.com/upbound/provider-vault/apis/kubernetes/v1alpha1"
-	v1alpha1kv "github.com/upbound/provider-vault/apis/kv/v1alpha1"
-	v1alpha1ldap "github.com/upbound/provider-vault/apis/ldap/v1alpha1"
-	v1alpha1managed "github.com/upbound/provider-vault/apis/managed/v1alpha1"
-	v1alpha1mfa "github.com/upbound/provider-vault/apis/mfa/v1alpha1"
-	v1alpha1mongodbatlas "github.com/upbound/provider-vault/apis/mongodbatlas/v1alpha1"
-	v1alpha1nomad "github.com/upbound/provider-vault/apis/nomad/v1alpha1"
-	v1alpha1okta "github.com/upbound/provider-vault/apis/okta/v1alpha1"
-	v1alpha1password "github.com/upbound/provider-vault/apis/password/v1alpha1"
-	v1alpha1pki "github.com/upbound/provider-vault/apis/pki/v1alpha1"
-	v1alpha1quota "github.com/upbound/provider-vault/apis/quota/v1alpha1"
-	v1alpha1rabbitmq "github.com/upbound/provider-vault/apis/rabbitmq/v1alpha1"
-	v1alpha1raft "github.com/upbound/provider-vault/apis/raft/v1alpha1"
-	v1alpha1rgp "github.com/upbound/provider-vault/apis/rgp/v1alpha1"
-	v1alpha1ssh "github.com/upbound/provider-vault/apis/ssh/v1alpha1"
-	v1alpha1terraform "github.com/upbound/provider-vault/apis/terraform/v1alpha1"
-	v1alpha1token "github.com/upbound/provider-vault/apis/token/v1alpha1"
-	v1alpha1transform "github.com/upbound/provider-vault/apis/transform/v1alpha1"
-	v1alpha1transit "github.com/upbound/provider-vault/apis/transit/v1alpha1"
-	v1alpha1apis "github.com/upbound/provider-vault/apis/v1alpha1"
-	v1beta1 "github.com/upbound/provider-vault/apis/v1beta1"
-	v1alpha1vault "github.com/upbound/provider-vault/apis/vault/v1alpha1"
+	v1beta1 "github.com/upbound/provider-vault/apis/ad/v1beta1"
+	v1beta1alicloud "github.com/upbound/provider-vault/apis/alicloud/v1beta1"
+	v1beta1approle "github.com/upbound/provider-vault/apis/approle/v1beta1"
+	v1beta1audit "github.com/upbound/provider-vault/apis/audit/v1beta1"
+	v1beta1auth "github.com/upbound/provider-vault/apis/auth/v1beta1"
+	v1beta1aws "github.com/upbound/provider-vault/apis/aws/v1beta1"
+	v1beta1azure "github.com/upbound/provider-vault/apis/azure/v1beta1"
+	v1beta1cert "github.com/upbound/provider-vault/apis/cert/v1beta1"
+	v1beta1consul "github.com/upbound/provider-vault/apis/consul/v1beta1"
+	v1beta1database "github.com/upbound/provider-vault/apis/database/v1beta1"
+	v1beta1egp "github.com/upbound/provider-vault/apis/egp/v1beta1"
+	v1beta1gcp "github.com/upbound/provider-vault/apis/gcp/v1beta1"
+	v1beta1generic "github.com/upbound/provider-vault/apis/generic/v1beta1"
+	v1beta1github "github.com/upbound/provider-vault/apis/github/v1beta1"
+	v1beta1identity "github.com/upbound/provider-vault/apis/identity/v1beta1"
+	v1beta1jwt "github.com/upbound/provider-vault/apis/jwt/v1beta1"
+	v1beta1kmip "github.com/upbound/provider-vault/apis/kmip/v1beta1"
+	v1beta1kubernetes "github.com/upbound/provider-vault/apis/kubernetes/v1beta1"
+	v1beta1kv "github.com/upbound/provider-vault/apis/kv/v1beta1"
+	v1beta1ldap "github.com/upbound/provider-vault/apis/ldap/v1beta1"
+	v1beta1managed "github.com/upbound/provider-vault/apis/managed/v1beta1"
+	v1beta1mfa "github.com/upbound/provider-vault/apis/mfa/v1beta1"
+	v1beta1mongodbatlas "github.com/upbound/provider-vault/apis/mongodbatlas/v1beta1"
+	v1beta1nomad "github.com/upbound/provider-vault/apis/nomad/v1beta1"
+	v1beta1okta "github.com/upbound/provider-vault/apis/okta/v1beta1"
+	v1beta1password "github.com/upbound/provider-vault/apis/password/v1beta1"
+	v1beta1pki "github.com/upbound/provider-vault/apis/pki/v1beta1"
+	v1beta1quota "github.com/upbound/provider-vault/apis/quota/v1beta1"
+	v1beta1rabbitmq "github.com/upbound/provider-vault/apis/rabbitmq/v1beta1"
+	v1beta1raft "github.com/upbound/provider-vault/apis/raft/v1beta1"
+	v1beta1rgp "github.com/upbound/provider-vault/apis/rgp/v1beta1"
+	v1beta1ssh "github.com/upbound/provider-vault/apis/ssh/v1beta1"
+	v1beta1terraform "github.com/upbound/provider-vault/apis/terraform/v1beta1"
+	v1beta1token "github.com/upbound/provider-vault/apis/token/v1beta1"
+	v1beta1transform "github.com/upbound/provider-vault/apis/transform/v1beta1"
+	v1beta1transit "github.com/upbound/provider-vault/apis/transit/v1beta1"
+	v1alpha1 "github.com/upbound/provider-vault/apis/v1alpha1"
+	v1beta1apis "github.com/upbound/provider-vault/apis/v1beta1"
+	v1beta1vault "github.com/upbound/provider-vault/apis/vault/v1beta1"
 )
 
 func init() {
 	// Register the types with the Scheme so the components can map objects to GroupVersionKinds and back
 	AddToSchemes = append(AddToSchemes,
-		v1alpha1.SchemeBuilder.AddToScheme,
-		v1alpha1alicloud.SchemeBuilder.AddToScheme,
-		v1alpha1approle.SchemeBuilder.AddToScheme,
-		v1alpha1audit.SchemeBuilder.AddToScheme,
-		v1alpha1auth.SchemeBuilder.AddToScheme,
-		v1alpha1aws.SchemeBuilder.AddToScheme,
-		v1alpha1azure.SchemeBuilder.AddToScheme,
-		v1alpha1cert.SchemeBuilder.AddToScheme,
-		v1alpha1consul.SchemeBuilder.AddToScheme,
-		v1alpha1database.SchemeBuilder.AddToScheme,
-		v1alpha1egp.SchemeBuilder.AddToScheme,
-		v1alpha1gcp.SchemeBuilder.AddToScheme,
-		v1alpha1generic.SchemeBuilder.AddToScheme,
-		v1alpha1github.SchemeBuilder.AddToScheme,
-		v1alpha1identity.SchemeBuilder.AddToScheme,
-		v1alpha1jwt.SchemeBuilder.AddToScheme,
-		v1alpha1kmip.SchemeBuilder.AddToScheme,
-		v1alpha1kubernetes.SchemeBuilder.AddToScheme,
-		v1alpha1kv.SchemeBuilder.AddToScheme,
-		v1alpha1ldap.SchemeBuilder.AddToScheme,
-		v1alpha1managed.SchemeBuilder.AddToScheme,
-		v1alpha1mfa.SchemeBuilder.AddToScheme,
-		v1alpha1mongodbatlas.SchemeBuilder.AddToScheme,
-		v1alpha1nomad.SchemeBuilder.AddToScheme,
-		v1alpha1okta.SchemeBuilder.AddToScheme,
-		v1alpha1password.SchemeBuilder.AddToScheme,
-		v1alpha1pki.SchemeBuilder.AddToScheme,
-		v1alpha1quota.SchemeBuilder.AddToScheme,
-		v1alpha1rabbitmq.SchemeBuilder.AddToScheme,
-		v1alpha1raft.SchemeBuilder.AddToScheme,
-		v1alpha1rgp.SchemeBuilder.AddToScheme,
-		v1alpha1ssh.SchemeBuilder.AddToScheme,
-		v1alpha1terraform.SchemeBuilder.AddToScheme,
-		v1alpha1token.SchemeBuilder.AddToScheme,
-		v1alpha1transform.SchemeBuilder.AddToScheme,
-		v1alpha1transit.SchemeBuilder.AddToScheme,
-		v1alpha1apis.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
-		v1alpha1vault.SchemeBuilder.AddToScheme,
+		v1beta1alicloud.SchemeBuilder.AddToScheme,
+		v1beta1approle.SchemeBuilder.AddToScheme,
+		v1beta1audit.SchemeBuilder.AddToScheme,
+		v1beta1auth.SchemeBuilder.AddToScheme,
+		v1beta1aws.SchemeBuilder.AddToScheme,
+		v1beta1azure.SchemeBuilder.AddToScheme,
+		v1beta1cert.SchemeBuilder.AddToScheme,
+		v1beta1consul.SchemeBuilder.AddToScheme,
+		v1beta1database.SchemeBuilder.AddToScheme,
+		v1beta1egp.SchemeBuilder.AddToScheme,
+		v1beta1gcp.SchemeBuilder.AddToScheme,
+		v1beta1generic.SchemeBuilder.AddToScheme,
+		v1beta1github.SchemeBuilder.AddToScheme,
+		v1beta1identity.SchemeBuilder.AddToScheme,
+		v1beta1jwt.SchemeBuilder.AddToScheme,
+		v1beta1kmip.SchemeBuilder.AddToScheme,
+		v1beta1kubernetes.SchemeBuilder.AddToScheme,
+		v1beta1kv.SchemeBuilder.AddToScheme,
+		v1beta1ldap.SchemeBuilder.AddToScheme,
+		v1beta1managed.SchemeBuilder.AddToScheme,
+		v1beta1mfa.SchemeBuilder.AddToScheme,
+		v1beta1mongodbatlas.SchemeBuilder.AddToScheme,
+		v1beta1nomad.SchemeBuilder.AddToScheme,
+		v1beta1okta.SchemeBuilder.AddToScheme,
+		v1beta1password.SchemeBuilder.AddToScheme,
+		v1beta1pki.SchemeBuilder.AddToScheme,
+		v1beta1quota.SchemeBuilder.AddToScheme,
+		v1beta1rabbitmq.SchemeBuilder.AddToScheme,
+		v1beta1raft.SchemeBuilder.AddToScheme,
+		v1beta1rgp.SchemeBuilder.AddToScheme,
+		v1beta1ssh.SchemeBuilder.AddToScheme,
+		v1beta1terraform.SchemeBuilder.AddToScheme,
+		v1beta1token.SchemeBuilder.AddToScheme,
+		v1beta1transform.SchemeBuilder.AddToScheme,
+		v1beta1transit.SchemeBuilder.AddToScheme,
+		v1alpha1.SchemeBuilder.AddToScheme,
+		v1beta1apis.SchemeBuilder.AddToScheme,
+		v1beta1vault.SchemeBuilder.AddToScheme,
 	)
 }
 
