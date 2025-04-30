@@ -4315,6 +4315,16 @@ func (in *SecretBackendRootSignIntermediateInitParameters) DeepCopyInto(out *Sec
 		*out = new(string)
 		**out = **in
 	}
+	if in.CsrRef != nil {
+		in, out := &in.CsrRef, &out.CsrRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.CsrSelector != nil {
+		in, out := &in.CsrSelector, &out.CsrSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.ExcludeCnFromSans != nil {
 		in, out := &in.ExcludeCnFromSans, &out.ExcludeCnFromSans
 		*out = new(bool)
@@ -4702,6 +4712,16 @@ func (in *SecretBackendRootSignIntermediateParameters) DeepCopyInto(out *SecretB
 		in, out := &in.Csr, &out.Csr
 		*out = new(string)
 		**out = **in
+	}
+	if in.CsrRef != nil {
+		in, out := &in.CsrRef, &out.CsrRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.CsrSelector != nil {
+		in, out := &in.CsrSelector, &out.CsrSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ExcludeCnFromSans != nil {
 		in, out := &in.ExcludeCnFromSans, &out.ExcludeCnFromSans
