@@ -4711,47 +4711,6 @@ resources:
                 default-service and default-batch which specify the type to return unless the client
                 requests a different type at generation time.
         importStatements: []
-    vault_kubernetes_secret_backend:
-        subCategory: ""
-        description: Creates a Kubernetes Secrets Engine in Vault.
-        name: vault_kubernetes_secret_backend
-        title: vault_kubernetes_secret_backend resource
-        examples:
-            - name: config
-              manifest: |-
-                {
-                  "default_lease_ttl_seconds": 43200,
-                  "description": "kubernetes secrets engine description",
-                  "disable_local_ca_jwt": false,
-                  "kubernetes_ca_cert": "${file(\"/path/to/cert\")}",
-                  "kubernetes_host": "https://127.0.0.1:61233",
-                  "max_lease_ttl_seconds": 86400,
-                  "path": "kubernetes",
-                  "service_account_jwt": "${file(\"/path/to/token\")}"
-                }
-        argumentDocs:
-            disable_local_ca_jwt: |-
-                - (Optional) Disable defaulting to the local CA certificate and
-                service account JWT when Vault is running in a Kubernetes pod.
-            kubernetes_ca_cert: |-
-                - (Optional) A PEM-encoded CA certificate used by the
-                secrets engine to verify the Kubernetes API server certificate. Defaults to the local
-                pod’s CA if Vault is running in Kubernetes. Otherwise, defaults to the root CA set where
-                Vault is running.
-            kubernetes_host: |-
-                - (Optional) The Kubernetes API URL to connect to. Required if the
-                standard pod environment variables KUBERNETES_SERVICE_HOST or KUBERNETES_SERVICE_PORT
-                are not set on the host that Vault is running on.
-            namespace: |-
-                - (Optional) The namespace to provision the resource in.
-                The value should not contain leading or trailing forward slashes.
-                The namespace is always relative to the provider's configured namespace.
-                Available only for Vault Enterprise.
-            service_account_jwt: |-
-                - (Optional) The JSON web token of the service account used by the
-                secrets engine to manage Kubernetes credentials. Defaults to the local pod’s JWT if Vault
-                is running in Kubernetes.
-        importStatements: []
     vault_kubernetes_secret_backend_role:
         subCategory: ""
         description: Creates a role for the Kubernetes Secrets Engine in Vault.
