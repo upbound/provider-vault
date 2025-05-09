@@ -9,8 +9,8 @@ metadata:
 spec:
   forProvider:
     accessTokenTtl: 7200
-    assignments:
-    - ${vault_identity_oidc_assignment.test.name}
+    assignmentsRefs:
+    - name: test
     idTokenTtl: 2400
     name: my-app
     redirectUris:
@@ -30,8 +30,8 @@ metadata:
   name: test
 spec:
   forProvider:
-    entityIds:
-    - ascbascas-2231a-sdfaa
-    groupIds:
-    - sajkdsad-32414-sfsada
+    entityIdsRefs:
+    - name: example
+    groupIdsRefs:
+    - name: example
     name: my-assignment

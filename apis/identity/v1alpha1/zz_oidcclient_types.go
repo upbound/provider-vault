@@ -21,8 +21,18 @@ type OidcClientInitParameters struct {
 
 	// A list of assignment resources associated with the client.
 	// A list of assignment resources associated with the client.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.OidcAssignment
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	// +listType=set
 	Assignments []*string `json:"assignments,omitempty" tf:"assignments,omitempty"`
+
+	// References to OidcAssignment in identity to populate assignments.
+	// +kubebuilder:validation:Optional
+	AssignmentsRefs []v1.Reference `json:"assignmentsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of OidcAssignment in identity to populate assignments.
+	// +kubebuilder:validation:Optional
+	AssignmentsSelector *v1.Selector `json:"assignmentsSelector,omitempty" tf:"-"`
 
 	// The client type based on its ability to maintain confidentiality of credentials.
 	// The following client types are supported: confidential, public. Defaults to confidential.
@@ -120,9 +130,19 @@ type OidcClientParameters struct {
 
 	// A list of assignment resources associated with the client.
 	// A list of assignment resources associated with the client.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.OidcAssignment
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	Assignments []*string `json:"assignments,omitempty" tf:"assignments,omitempty"`
+
+	// References to OidcAssignment in identity to populate assignments.
+	// +kubebuilder:validation:Optional
+	AssignmentsRefs []v1.Reference `json:"assignmentsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of OidcAssignment in identity to populate assignments.
+	// +kubebuilder:validation:Optional
+	AssignmentsSelector *v1.Selector `json:"assignmentsSelector,omitempty" tf:"-"`
 
 	// The client type based on its ability to maintain confidentiality of credentials.
 	// The following client types are supported: confidential, public. Defaults to confidential.

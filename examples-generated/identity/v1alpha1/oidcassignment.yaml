@@ -8,10 +8,10 @@ metadata:
   name: default
 spec:
   forProvider:
-    entityIds:
-    - ${vault_identity_entity.test.id}
-    groupIds:
-    - ${vault_identity_group.internal.id}
+    entityIdsRefs:
+    - name: test
+    groupIdsRefs:
+    - name: internal
     name: assignment
 
 ---

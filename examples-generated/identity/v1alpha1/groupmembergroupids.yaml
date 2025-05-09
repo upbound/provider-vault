@@ -12,8 +12,8 @@ spec:
     groupIdSelector:
       matchLabels:
         testing.upbound.io/example-name: internal
-    memberGroupIds:
-    - ${vault_identity_group.users.id}
+    memberGroupIdsRefs:
+    - name: users
 
 ---
 
