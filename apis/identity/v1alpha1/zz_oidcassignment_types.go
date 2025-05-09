@@ -17,13 +17,33 @@ type OidcAssignmentInitParameters struct {
 
 	// A set of Vault entity IDs.
 	// A list of Vault entity IDs.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.Entity
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
 	// +listType=set
 	EntityIds []*string `json:"entityIds,omitempty" tf:"entity_ids,omitempty"`
 
+	// References to Entity in identity to populate entityIds.
+	// +kubebuilder:validation:Optional
+	EntityIdsRefs []v1.Reference `json:"entityIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Entity in identity to populate entityIds.
+	// +kubebuilder:validation:Optional
+	EntityIdsSelector *v1.Selector `json:"entityIdsSelector,omitempty" tf:"-"`
+
 	// A set of Vault group IDs.
 	// A list of Vault group IDs.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.Group
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
 	// +listType=set
 	GroupIds []*string `json:"groupIds,omitempty" tf:"group_ids,omitempty"`
+
+	// References to Group in identity to populate groupIds.
+	// +kubebuilder:validation:Optional
+	GroupIdsRefs []v1.Reference `json:"groupIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Group in identity to populate groupIds.
+	// +kubebuilder:validation:Optional
+	GroupIdsSelector *v1.Selector `json:"groupIdsSelector,omitempty" tf:"-"`
 
 	// The name of the assignment.
 	// The name of the assignment.
@@ -67,15 +87,35 @@ type OidcAssignmentParameters struct {
 
 	// A set of Vault entity IDs.
 	// A list of Vault entity IDs.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.Entity
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	EntityIds []*string `json:"entityIds,omitempty" tf:"entity_ids,omitempty"`
 
+	// References to Entity in identity to populate entityIds.
+	// +kubebuilder:validation:Optional
+	EntityIdsRefs []v1.Reference `json:"entityIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Entity in identity to populate entityIds.
+	// +kubebuilder:validation:Optional
+	EntityIdsSelector *v1.Selector `json:"entityIdsSelector,omitempty" tf:"-"`
+
 	// A set of Vault group IDs.
 	// A list of Vault group IDs.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.Group
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	GroupIds []*string `json:"groupIds,omitempty" tf:"group_ids,omitempty"`
+
+	// References to Group in identity to populate groupIds.
+	// +kubebuilder:validation:Optional
+	GroupIdsRefs []v1.Reference `json:"groupIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Group in identity to populate groupIds.
+	// +kubebuilder:validation:Optional
+	GroupIdsSelector *v1.Selector `json:"groupIdsSelector,omitempty" tf:"-"`
 
 	// The name of the assignment.
 	// The name of the assignment.

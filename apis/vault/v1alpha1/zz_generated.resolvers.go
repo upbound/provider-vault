@@ -10,6 +10,7 @@ import (
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
+	ptr "k8s.io/utils/ptr"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -21,7 +22,7 @@ func (mg *VaultNamespace) ResolveReferences(ctx context.Context, c client.Reader
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Namespace),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Namespace, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.NamespaceRef,
 		Selector:     mg.Spec.ForProvider.NamespaceSelector,
@@ -33,11 +34,11 @@ func (mg *VaultNamespace) ResolveReferences(ctx context.Context, c client.Reader
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Namespace")
 	}
-	mg.Spec.ForProvider.Namespace = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Namespace = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.NamespaceRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Namespace),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Namespace, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.NamespaceRef,
 		Selector:     mg.Spec.InitProvider.NamespaceSelector,
@@ -49,7 +50,7 @@ func (mg *VaultNamespace) ResolveReferences(ctx context.Context, c client.Reader
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Namespace")
 	}
-	mg.Spec.InitProvider.Namespace = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Namespace = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.NamespaceRef = rsp.ResolvedReference
 
 	return nil

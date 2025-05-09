@@ -11,6 +11,7 @@ import (
 	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
 	v1alpha1 "github.com/upbound/provider-vault/apis/vault/v1alpha1"
+	ptr "k8s.io/utils/ptr"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -22,7 +23,7 @@ func (mg *Alphabet) ResolveReferences(ctx context.Context, c client.Reader) erro
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Path),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Path, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.PathRef,
 		Selector:     mg.Spec.ForProvider.PathSelector,
@@ -34,11 +35,11 @@ func (mg *Alphabet) ResolveReferences(ctx context.Context, c client.Reader) erro
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Path")
 	}
-	mg.Spec.ForProvider.Path = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Path = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.PathRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Path),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Path, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.PathRef,
 		Selector:     mg.Spec.InitProvider.PathSelector,
@@ -50,7 +51,7 @@ func (mg *Alphabet) ResolveReferences(ctx context.Context, c client.Reader) erro
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Path")
 	}
-	mg.Spec.InitProvider.Path = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Path = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.PathRef = rsp.ResolvedReference
 
 	return nil
@@ -64,7 +65,7 @@ func (mg *Role) ResolveReferences(ctx context.Context, c client.Reader) error {
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Path),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Path, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.PathRef,
 		Selector:     mg.Spec.ForProvider.PathSelector,
@@ -76,11 +77,11 @@ func (mg *Role) ResolveReferences(ctx context.Context, c client.Reader) error {
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Path")
 	}
-	mg.Spec.ForProvider.Path = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Path = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.PathRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Path),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Path, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.PathRef,
 		Selector:     mg.Spec.InitProvider.PathSelector,
@@ -92,7 +93,7 @@ func (mg *Role) ResolveReferences(ctx context.Context, c client.Reader) error {
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Path")
 	}
-	mg.Spec.InitProvider.Path = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Path = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.PathRef = rsp.ResolvedReference
 
 	return nil
@@ -106,7 +107,7 @@ func (mg *Template) ResolveReferences(ctx context.Context, c client.Reader) erro
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Path),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Path, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.PathRef,
 		Selector:     mg.Spec.ForProvider.PathSelector,
@@ -118,11 +119,11 @@ func (mg *Template) ResolveReferences(ctx context.Context, c client.Reader) erro
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Path")
 	}
-	mg.Spec.ForProvider.Path = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Path = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.PathRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Path),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Path, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.PathRef,
 		Selector:     mg.Spec.InitProvider.PathSelector,
@@ -134,7 +135,7 @@ func (mg *Template) ResolveReferences(ctx context.Context, c client.Reader) erro
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Path")
 	}
-	mg.Spec.InitProvider.Path = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Path = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.PathRef = rsp.ResolvedReference
 
 	return nil
@@ -148,7 +149,7 @@ func (mg *Transformation) ResolveReferences(ctx context.Context, c client.Reader
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Path),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Path, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.PathRef,
 		Selector:     mg.Spec.ForProvider.PathSelector,
@@ -160,11 +161,11 @@ func (mg *Transformation) ResolveReferences(ctx context.Context, c client.Reader
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Path")
 	}
-	mg.Spec.ForProvider.Path = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Path = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.PathRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Path),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Path, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.PathRef,
 		Selector:     mg.Spec.InitProvider.PathSelector,
@@ -176,7 +177,7 @@ func (mg *Transformation) ResolveReferences(ctx context.Context, c client.Reader
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Path")
 	}
-	mg.Spec.InitProvider.Path = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Path = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.PathRef = rsp.ResolvedReference
 
 	return nil

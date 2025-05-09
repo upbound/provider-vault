@@ -11,6 +11,7 @@ import (
 	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
 	v1alpha1 "github.com/upbound/provider-vault/apis/vault/v1alpha1"
+	ptr "k8s.io/utils/ptr"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -22,7 +23,7 @@ func (mg *SecretBackendV2) ResolveReferences(ctx context.Context, c client.Reade
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Mount),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Mount, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.MountRef,
 		Selector:     mg.Spec.ForProvider.MountSelector,
@@ -34,11 +35,11 @@ func (mg *SecretBackendV2) ResolveReferences(ctx context.Context, c client.Reade
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Mount")
 	}
-	mg.Spec.ForProvider.Mount = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Mount = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.MountRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Mount),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Mount, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.MountRef,
 		Selector:     mg.Spec.InitProvider.MountSelector,
@@ -50,7 +51,7 @@ func (mg *SecretBackendV2) ResolveReferences(ctx context.Context, c client.Reade
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Mount")
 	}
-	mg.Spec.InitProvider.Mount = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Mount = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.MountRef = rsp.ResolvedReference
 
 	return nil
@@ -64,7 +65,7 @@ func (mg *SecretV2) ResolveReferences(ctx context.Context, c client.Reader) erro
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Mount),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Mount, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.MountRef,
 		Selector:     mg.Spec.ForProvider.MountSelector,
@@ -76,11 +77,11 @@ func (mg *SecretV2) ResolveReferences(ctx context.Context, c client.Reader) erro
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Mount")
 	}
-	mg.Spec.ForProvider.Mount = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Mount = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.MountRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Mount),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Mount, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.MountRef,
 		Selector:     mg.Spec.InitProvider.MountSelector,
@@ -92,7 +93,7 @@ func (mg *SecretV2) ResolveReferences(ctx context.Context, c client.Reader) erro
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Mount")
 	}
-	mg.Spec.InitProvider.Mount = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Mount = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.MountRef = rsp.ResolvedReference
 
 	return nil

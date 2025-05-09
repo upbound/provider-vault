@@ -18,8 +18,18 @@ type OidcProviderInitParameters struct {
 	// The client IDs that are permitted to use the provider.
 	// If empty, no clients are allowed. If *, all clients are allowed.
 	// The client IDs that are permitted to use the provider. If empty, no clients are allowed. If "*", all clients are allowed.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.OidcClient
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("client_id",true)
 	// +listType=set
 	AllowedClientIds []*string `json:"allowedClientIds,omitempty" tf:"allowed_client_ids,omitempty"`
+
+	// References to OidcClient in identity to populate allowedClientIds.
+	// +kubebuilder:validation:Optional
+	AllowedClientIdsRefs []v1.Reference `json:"allowedClientIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of OidcClient in identity to populate allowedClientIds.
+	// +kubebuilder:validation:Optional
+	AllowedClientIdsSelector *v1.Selector `json:"allowedClientIdsSelector,omitempty" tf:"-"`
 
 	// Set to true if the issuer endpoint uses HTTPS.
 	// Set to true if the issuer endpoint uses HTTPS.
@@ -42,8 +52,18 @@ type OidcProviderInitParameters struct {
 
 	// The scopes available for requesting on the provider.
 	// The scopes available for requesting on the provider.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.OidcScope
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	// +listType=set
 	ScopesSupported []*string `json:"scopesSupported,omitempty" tf:"scopes_supported,omitempty"`
+
+	// References to OidcScope in identity to populate scopesSupported.
+	// +kubebuilder:validation:Optional
+	ScopesSupportedRefs []v1.Reference `json:"scopesSupportedRefs,omitempty" tf:"-"`
+
+	// Selector for a list of OidcScope in identity to populate scopesSupported.
+	// +kubebuilder:validation:Optional
+	ScopesSupportedSelector *v1.Selector `json:"scopesSupportedSelector,omitempty" tf:"-"`
 }
 
 type OidcProviderObservation struct {
@@ -92,9 +112,19 @@ type OidcProviderParameters struct {
 	// The client IDs that are permitted to use the provider.
 	// If empty, no clients are allowed. If *, all clients are allowed.
 	// The client IDs that are permitted to use the provider. If empty, no clients are allowed. If "*", all clients are allowed.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.OidcClient
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("client_id",true)
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	AllowedClientIds []*string `json:"allowedClientIds,omitempty" tf:"allowed_client_ids,omitempty"`
+
+	// References to OidcClient in identity to populate allowedClientIds.
+	// +kubebuilder:validation:Optional
+	AllowedClientIdsRefs []v1.Reference `json:"allowedClientIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of OidcClient in identity to populate allowedClientIds.
+	// +kubebuilder:validation:Optional
+	AllowedClientIdsSelector *v1.Selector `json:"allowedClientIdsSelector,omitempty" tf:"-"`
 
 	// Set to true if the issuer endpoint uses HTTPS.
 	// Set to true if the issuer endpoint uses HTTPS.
@@ -121,9 +151,19 @@ type OidcProviderParameters struct {
 
 	// The scopes available for requesting on the provider.
 	// The scopes available for requesting on the provider.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.OidcScope
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	ScopesSupported []*string `json:"scopesSupported,omitempty" tf:"scopes_supported,omitempty"`
+
+	// References to OidcScope in identity to populate scopesSupported.
+	// +kubebuilder:validation:Optional
+	ScopesSupportedRefs []v1.Reference `json:"scopesSupportedRefs,omitempty" tf:"-"`
+
+	// Selector for a list of OidcScope in identity to populate scopesSupported.
+	// +kubebuilder:validation:Optional
+	ScopesSupportedSelector *v1.Selector `json:"scopesSupportedSelector,omitempty" tf:"-"`
 }
 
 // OidcProviderSpec defines the desired state of OidcProvider
