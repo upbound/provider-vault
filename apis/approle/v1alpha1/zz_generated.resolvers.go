@@ -11,6 +11,7 @@ import (
 	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
 	v1alpha1 "github.com/upbound/provider-vault/apis/auth/v1alpha1"
+	ptr "k8s.io/utils/ptr"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -22,7 +23,7 @@ func (mg *AuthBackendLogin) ResolveReferences(ctx context.Context, c client.Read
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
@@ -34,11 +35,11 @@ func (mg *AuthBackendLogin) ResolveReferences(ctx context.Context, c client.Read
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
 	}
-	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.RoleID),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.RoleID, ""),
 		Extract:      resource.ExtractParamPath("role_id", false),
 		Reference:    mg.Spec.ForProvider.RoleIDRef,
 		Selector:     mg.Spec.ForProvider.RoleIDSelector,
@@ -50,11 +51,11 @@ func (mg *AuthBackendLogin) ResolveReferences(ctx context.Context, c client.Read
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.RoleID")
 	}
-	mg.Spec.ForProvider.RoleID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.RoleID = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.RoleIDRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
@@ -66,11 +67,11 @@ func (mg *AuthBackendLogin) ResolveReferences(ctx context.Context, c client.Read
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Backend")
 	}
-	mg.Spec.InitProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.RoleID),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.RoleID, ""),
 		Extract:      resource.ExtractParamPath("role_id", false),
 		Reference:    mg.Spec.InitProvider.RoleIDRef,
 		Selector:     mg.Spec.InitProvider.RoleIDSelector,
@@ -82,7 +83,7 @@ func (mg *AuthBackendLogin) ResolveReferences(ctx context.Context, c client.Read
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.RoleID")
 	}
-	mg.Spec.InitProvider.RoleID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.RoleID = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.RoleIDRef = rsp.ResolvedReference
 
 	return nil
@@ -96,7 +97,7 @@ func (mg *AuthBackendRole) ResolveReferences(ctx context.Context, c client.Reade
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
@@ -108,11 +109,11 @@ func (mg *AuthBackendRole) ResolveReferences(ctx context.Context, c client.Reade
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
 	}
-	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
@@ -124,7 +125,7 @@ func (mg *AuthBackendRole) ResolveReferences(ctx context.Context, c client.Reade
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Backend")
 	}
-	mg.Spec.InitProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BackendRef = rsp.ResolvedReference
 
 	return nil
@@ -138,7 +139,7 @@ func (mg *AuthBackendRoleSecretID) ResolveReferences(ctx context.Context, c clie
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
@@ -150,11 +151,11 @@ func (mg *AuthBackendRoleSecretID) ResolveReferences(ctx context.Context, c clie
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
 	}
-	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.RoleName),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.RoleName, ""),
 		Extract:      resource.ExtractParamPath("role_name", false),
 		Reference:    mg.Spec.ForProvider.RoleNameRef,
 		Selector:     mg.Spec.ForProvider.RoleNameSelector,
@@ -166,11 +167,11 @@ func (mg *AuthBackendRoleSecretID) ResolveReferences(ctx context.Context, c clie
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.RoleName")
 	}
-	mg.Spec.ForProvider.RoleName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.RoleName = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.RoleNameRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
@@ -182,11 +183,11 @@ func (mg *AuthBackendRoleSecretID) ResolveReferences(ctx context.Context, c clie
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Backend")
 	}
-	mg.Spec.InitProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.RoleName),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.RoleName, ""),
 		Extract:      resource.ExtractParamPath("role_name", false),
 		Reference:    mg.Spec.InitProvider.RoleNameRef,
 		Selector:     mg.Spec.InitProvider.RoleNameSelector,
@@ -198,7 +199,7 @@ func (mg *AuthBackendRoleSecretID) ResolveReferences(ctx context.Context, c clie
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.RoleName")
 	}
-	mg.Spec.InitProvider.RoleName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.RoleName = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.RoleNameRef = rsp.ResolvedReference
 
 	return nil

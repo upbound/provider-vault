@@ -10,6 +10,7 @@ import (
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
+	ptr "k8s.io/utils/ptr"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -21,7 +22,7 @@ func (mg *CloudSecretCreds) ResolveReferences(ctx context.Context, c client.Read
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("backend", false),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
@@ -33,11 +34,11 @@ func (mg *CloudSecretCreds) ResolveReferences(ctx context.Context, c client.Read
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
 	}
-	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Role),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Role, ""),
 		Extract:      resource.ExtractParamPath("name", false),
 		Reference:    mg.Spec.ForProvider.RoleRef,
 		Selector:     mg.Spec.ForProvider.RoleSelector,
@@ -49,11 +50,11 @@ func (mg *CloudSecretCreds) ResolveReferences(ctx context.Context, c client.Read
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Role")
 	}
-	mg.Spec.ForProvider.Role = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Role = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.RoleRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("backend", false),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
@@ -65,11 +66,11 @@ func (mg *CloudSecretCreds) ResolveReferences(ctx context.Context, c client.Read
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Backend")
 	}
-	mg.Spec.InitProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Role),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Role, ""),
 		Extract:      resource.ExtractParamPath("name", false),
 		Reference:    mg.Spec.InitProvider.RoleRef,
 		Selector:     mg.Spec.InitProvider.RoleSelector,
@@ -81,7 +82,7 @@ func (mg *CloudSecretCreds) ResolveReferences(ctx context.Context, c client.Read
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Role")
 	}
-	mg.Spec.InitProvider.Role = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Role = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.RoleRef = rsp.ResolvedReference
 
 	return nil
@@ -95,7 +96,7 @@ func (mg *CloudSecretRole) ResolveReferences(ctx context.Context, c client.Reade
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("backend", false),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
@@ -107,11 +108,11 @@ func (mg *CloudSecretRole) ResolveReferences(ctx context.Context, c client.Reade
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
 	}
-	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("backend", false),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
@@ -123,7 +124,7 @@ func (mg *CloudSecretRole) ResolveReferences(ctx context.Context, c client.Reade
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Backend")
 	}
-	mg.Spec.InitProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BackendRef = rsp.ResolvedReference
 
 	return nil

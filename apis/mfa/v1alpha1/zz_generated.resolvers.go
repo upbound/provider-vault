@@ -11,6 +11,7 @@ import (
 	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
 	v1alpha1 "github.com/upbound/provider-vault/apis/auth/v1alpha1"
+	ptr "k8s.io/utils/ptr"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -22,7 +23,7 @@ func (mg *Duo) ResolveReferences(ctx context.Context, c client.Reader) error {
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.MountAccessor),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.MountAccessor, ""),
 		Extract:      resource.ExtractParamPath("accessor", true),
 		Reference:    mg.Spec.ForProvider.MountAccessorRef,
 		Selector:     mg.Spec.ForProvider.MountAccessorSelector,
@@ -34,11 +35,11 @@ func (mg *Duo) ResolveReferences(ctx context.Context, c client.Reader) error {
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.MountAccessor")
 	}
-	mg.Spec.ForProvider.MountAccessor = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.MountAccessor = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.MountAccessorRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.MountAccessor),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.MountAccessor, ""),
 		Extract:      resource.ExtractParamPath("accessor", true),
 		Reference:    mg.Spec.InitProvider.MountAccessorRef,
 		Selector:     mg.Spec.InitProvider.MountAccessorSelector,
@@ -50,7 +51,7 @@ func (mg *Duo) ResolveReferences(ctx context.Context, c client.Reader) error {
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.MountAccessor")
 	}
-	mg.Spec.InitProvider.MountAccessor = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.MountAccessor = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.MountAccessorRef = rsp.ResolvedReference
 
 	return nil
@@ -64,7 +65,7 @@ func (mg *Okta) ResolveReferences(ctx context.Context, c client.Reader) error {
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.MountAccessor),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.MountAccessor, ""),
 		Extract:      resource.ExtractParamPath("accessor", true),
 		Reference:    mg.Spec.ForProvider.MountAccessorRef,
 		Selector:     mg.Spec.ForProvider.MountAccessorSelector,
@@ -76,11 +77,11 @@ func (mg *Okta) ResolveReferences(ctx context.Context, c client.Reader) error {
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.MountAccessor")
 	}
-	mg.Spec.ForProvider.MountAccessor = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.MountAccessor = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.MountAccessorRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.MountAccessor),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.MountAccessor, ""),
 		Extract:      resource.ExtractParamPath("accessor", true),
 		Reference:    mg.Spec.InitProvider.MountAccessorRef,
 		Selector:     mg.Spec.InitProvider.MountAccessorSelector,
@@ -92,7 +93,7 @@ func (mg *Okta) ResolveReferences(ctx context.Context, c client.Reader) error {
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.MountAccessor")
 	}
-	mg.Spec.InitProvider.MountAccessor = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.MountAccessor = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.MountAccessorRef = rsp.ResolvedReference
 
 	return nil
@@ -106,7 +107,7 @@ func (mg *Pingid) ResolveReferences(ctx context.Context, c client.Reader) error 
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.MountAccessor),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.MountAccessor, ""),
 		Extract:      resource.ExtractParamPath("accessor", true),
 		Reference:    mg.Spec.ForProvider.MountAccessorRef,
 		Selector:     mg.Spec.ForProvider.MountAccessorSelector,
@@ -118,11 +119,11 @@ func (mg *Pingid) ResolveReferences(ctx context.Context, c client.Reader) error 
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.MountAccessor")
 	}
-	mg.Spec.ForProvider.MountAccessor = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.MountAccessor = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.MountAccessorRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.MountAccessor),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.MountAccessor, ""),
 		Extract:      resource.ExtractParamPath("accessor", true),
 		Reference:    mg.Spec.InitProvider.MountAccessorRef,
 		Selector:     mg.Spec.InitProvider.MountAccessorSelector,
@@ -134,7 +135,7 @@ func (mg *Pingid) ResolveReferences(ctx context.Context, c client.Reader) error 
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.MountAccessor")
 	}
-	mg.Spec.InitProvider.MountAccessor = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.MountAccessor = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.MountAccessorRef = rsp.ResolvedReference
 
 	return nil

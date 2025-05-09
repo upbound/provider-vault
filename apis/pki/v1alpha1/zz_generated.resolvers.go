@@ -11,6 +11,7 @@ import (
 	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
 	v1alpha1 "github.com/upbound/provider-vault/apis/vault/v1alpha1"
+	ptr "k8s.io/utils/ptr"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -22,7 +23,7 @@ func (mg *SecretBackendCert) ResolveReferences(ctx context.Context, c client.Rea
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
@@ -34,11 +35,11 @@ func (mg *SecretBackendCert) ResolveReferences(ctx context.Context, c client.Rea
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
 	}
-	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Name),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Name, ""),
 		Extract:      resource.ExtractParamPath("name", false),
 		Reference:    mg.Spec.ForProvider.NameRef,
 		Selector:     mg.Spec.ForProvider.NameSelector,
@@ -50,11 +51,11 @@ func (mg *SecretBackendCert) ResolveReferences(ctx context.Context, c client.Rea
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Name")
 	}
-	mg.Spec.ForProvider.Name = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Name = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.NameRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
@@ -66,11 +67,11 @@ func (mg *SecretBackendCert) ResolveReferences(ctx context.Context, c client.Rea
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Backend")
 	}
-	mg.Spec.InitProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Name),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Name, ""),
 		Extract:      resource.ExtractParamPath("name", false),
 		Reference:    mg.Spec.InitProvider.NameRef,
 		Selector:     mg.Spec.InitProvider.NameSelector,
@@ -82,7 +83,7 @@ func (mg *SecretBackendCert) ResolveReferences(ctx context.Context, c client.Rea
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Name")
 	}
-	mg.Spec.InitProvider.Name = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Name = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.NameRef = rsp.ResolvedReference
 
 	return nil
@@ -96,7 +97,7 @@ func (mg *SecretBackendConfigCA) ResolveReferences(ctx context.Context, c client
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
@@ -108,11 +109,11 @@ func (mg *SecretBackendConfigCA) ResolveReferences(ctx context.Context, c client
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
 	}
-	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
@@ -124,7 +125,7 @@ func (mg *SecretBackendConfigCA) ResolveReferences(ctx context.Context, c client
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Backend")
 	}
-	mg.Spec.InitProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BackendRef = rsp.ResolvedReference
 
 	return nil
@@ -138,7 +139,7 @@ func (mg *SecretBackendConfigUrls) ResolveReferences(ctx context.Context, c clie
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
@@ -150,11 +151,11 @@ func (mg *SecretBackendConfigUrls) ResolveReferences(ctx context.Context, c clie
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
 	}
-	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
@@ -166,7 +167,7 @@ func (mg *SecretBackendConfigUrls) ResolveReferences(ctx context.Context, c clie
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Backend")
 	}
-	mg.Spec.InitProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BackendRef = rsp.ResolvedReference
 
 	return nil
@@ -180,7 +181,7 @@ func (mg *SecretBackendCrlConfig) ResolveReferences(ctx context.Context, c clien
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
@@ -192,11 +193,11 @@ func (mg *SecretBackendCrlConfig) ResolveReferences(ctx context.Context, c clien
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
 	}
-	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
@@ -208,7 +209,7 @@ func (mg *SecretBackendCrlConfig) ResolveReferences(ctx context.Context, c clien
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Backend")
 	}
-	mg.Spec.InitProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BackendRef = rsp.ResolvedReference
 
 	return nil
@@ -222,7 +223,7 @@ func (mg *SecretBackendIntermediateCertRequest) ResolveReferences(ctx context.Co
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
@@ -234,11 +235,11 @@ func (mg *SecretBackendIntermediateCertRequest) ResolveReferences(ctx context.Co
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
 	}
-	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
@@ -250,7 +251,7 @@ func (mg *SecretBackendIntermediateCertRequest) ResolveReferences(ctx context.Co
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Backend")
 	}
-	mg.Spec.InitProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BackendRef = rsp.ResolvedReference
 
 	return nil
@@ -264,7 +265,7 @@ func (mg *SecretBackendIntermediateSetSigned) ResolveReferences(ctx context.Cont
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
@@ -276,11 +277,11 @@ func (mg *SecretBackendIntermediateSetSigned) ResolveReferences(ctx context.Cont
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
 	}
-	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Certificate),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Certificate, ""),
 		Extract:      resource.ExtractParamPath("certificate", true),
 		Reference:    mg.Spec.ForProvider.CertificateRef,
 		Selector:     mg.Spec.ForProvider.CertificateSelector,
@@ -292,11 +293,11 @@ func (mg *SecretBackendIntermediateSetSigned) ResolveReferences(ctx context.Cont
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Certificate")
 	}
-	mg.Spec.ForProvider.Certificate = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Certificate = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.CertificateRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
@@ -308,11 +309,11 @@ func (mg *SecretBackendIntermediateSetSigned) ResolveReferences(ctx context.Cont
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Backend")
 	}
-	mg.Spec.InitProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Certificate),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Certificate, ""),
 		Extract:      resource.ExtractParamPath("certificate", true),
 		Reference:    mg.Spec.InitProvider.CertificateRef,
 		Selector:     mg.Spec.InitProvider.CertificateSelector,
@@ -324,7 +325,7 @@ func (mg *SecretBackendIntermediateSetSigned) ResolveReferences(ctx context.Cont
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Certificate")
 	}
-	mg.Spec.InitProvider.Certificate = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Certificate = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.CertificateRef = rsp.ResolvedReference
 
 	return nil
@@ -338,7 +339,7 @@ func (mg *SecretBackendRole) ResolveReferences(ctx context.Context, c client.Rea
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
@@ -350,11 +351,11 @@ func (mg *SecretBackendRole) ResolveReferences(ctx context.Context, c client.Rea
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
 	}
-	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
@@ -366,7 +367,7 @@ func (mg *SecretBackendRole) ResolveReferences(ctx context.Context, c client.Rea
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Backend")
 	}
-	mg.Spec.InitProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BackendRef = rsp.ResolvedReference
 
 	return nil
@@ -380,7 +381,7 @@ func (mg *SecretBackendRootCert) ResolveReferences(ctx context.Context, c client
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
@@ -392,11 +393,11 @@ func (mg *SecretBackendRootCert) ResolveReferences(ctx context.Context, c client
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
 	}
-	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
@@ -408,7 +409,7 @@ func (mg *SecretBackendRootCert) ResolveReferences(ctx context.Context, c client
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Backend")
 	}
-	mg.Spec.InitProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BackendRef = rsp.ResolvedReference
 
 	return nil
@@ -422,7 +423,7 @@ func (mg *SecretBackendSign) ResolveReferences(ctx context.Context, c client.Rea
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
@@ -434,11 +435,11 @@ func (mg *SecretBackendSign) ResolveReferences(ctx context.Context, c client.Rea
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
 	}
-	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Name),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.Name, ""),
 		Extract:      resource.ExtractParamPath("name", false),
 		Reference:    mg.Spec.ForProvider.NameRef,
 		Selector:     mg.Spec.ForProvider.NameSelector,
@@ -450,11 +451,11 @@ func (mg *SecretBackendSign) ResolveReferences(ctx context.Context, c client.Rea
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.Name")
 	}
-	mg.Spec.ForProvider.Name = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.Name = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.NameRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Backend, ""),
 		Extract:      resource.ExtractParamPath("path", false),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
@@ -466,11 +467,11 @@ func (mg *SecretBackendSign) ResolveReferences(ctx context.Context, c client.Rea
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Backend")
 	}
-	mg.Spec.InitProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Backend = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BackendRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Name),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.Name, ""),
 		Extract:      resource.ExtractParamPath("name", false),
 		Reference:    mg.Spec.InitProvider.NameRef,
 		Selector:     mg.Spec.InitProvider.NameSelector,
@@ -482,7 +483,7 @@ func (mg *SecretBackendSign) ResolveReferences(ctx context.Context, c client.Rea
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.Name")
 	}
-	mg.Spec.InitProvider.Name = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.Name = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.NameRef = rsp.ResolvedReference
 
 	return nil
