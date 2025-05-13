@@ -8,13 +8,13 @@ metadata:
   name: test
 spec:
   forProvider:
-    allowedClientIds:
-    - ${vault_identity_oidc_client.test.client_id}
+    allowedClientIdsRefs:
+    - name: test
     httpsEnabled: false
     issuerHost: 127.0.0.1:8200
     name: my-provider
-    scopesSupported:
-    - ${vault_identity_oidc_scope.test.name}
+    scopesSupportedRefs:
+    - name: test
 
 ---
 
@@ -28,10 +28,10 @@ metadata:
   name: test
 spec:
   forProvider:
-    entityIds:
-    - fake-ascbascas-2231a-sdfaa
-    groupIds:
-    - fake-sajkdsad-32414-sfsada
+    entityIdsRefs:
+    - name: example
+    groupIdsRefs:
+    - name: example
     name: my-assignment
 
 ---
@@ -47,8 +47,8 @@ metadata:
 spec:
   forProvider:
     accessTokenTtl: 7200
-    assignments:
-    - ${vault_identity_oidc_assignment.test.name}
+    assignmentsRefs:
+    - name: test
     idTokenTtl: 2400
     key: my-key
     name: application

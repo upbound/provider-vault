@@ -37,8 +37,18 @@ type MfaLoginEnforcementInitParameters struct {
 
 	// Set of MFA method UUIDs.
 	// Set of MFA method UUIDs.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.MfaDuo
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("method_id",true)
 	// +listType=set
 	MfaMethodIds []*string `json:"mfaMethodIds,omitempty" tf:"mfa_method_ids,omitempty"`
+
+	// References to MfaDuo in identity to populate mfaMethodIds.
+	// +kubebuilder:validation:Optional
+	MfaMethodIdsRefs []v1.Reference `json:"mfaMethodIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of MfaDuo in identity to populate mfaMethodIds.
+	// +kubebuilder:validation:Optional
+	MfaMethodIdsSelector *v1.Selector `json:"mfaMethodIdsSelector,omitempty" tf:"-"`
 
 	// Login enforcement name.
 	// Login enforcement name.
@@ -127,9 +137,19 @@ type MfaLoginEnforcementParameters struct {
 
 	// Set of MFA method UUIDs.
 	// Set of MFA method UUIDs.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.MfaDuo
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("method_id",true)
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	MfaMethodIds []*string `json:"mfaMethodIds,omitempty" tf:"mfa_method_ids,omitempty"`
+
+	// References to MfaDuo in identity to populate mfaMethodIds.
+	// +kubebuilder:validation:Optional
+	MfaMethodIdsRefs []v1.Reference `json:"mfaMethodIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of MfaDuo in identity to populate mfaMethodIds.
+	// +kubebuilder:validation:Optional
+	MfaMethodIdsSelector *v1.Selector `json:"mfaMethodIdsSelector,omitempty" tf:"-"`
 
 	// Login enforcement name.
 	// Login enforcement name.
@@ -178,7 +198,6 @@ type MfaLoginEnforcementStatus struct {
 type MfaLoginEnforcement struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mfaMethodIds) || (has(self.initProvider) && has(self.initProvider.mfaMethodIds))",message="spec.forProvider.mfaMethodIds is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   MfaLoginEnforcementSpec   `json:"spec"`
 	Status MfaLoginEnforcementStatus `json:"status,omitempty"`

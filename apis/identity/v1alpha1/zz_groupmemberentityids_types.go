@@ -36,8 +36,18 @@ type GroupMemberEntityIdsInitParameters struct {
 
 	// List of member entities that belong to the group
 	// Entity IDs to be assigned as group members.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.Entity
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
 	// +listType=set
 	MemberEntityIds []*string `json:"memberEntityIds,omitempty" tf:"member_entity_ids,omitempty"`
+
+	// References to Entity in identity to populate memberEntityIds.
+	// +kubebuilder:validation:Optional
+	MemberEntityIdsRefs []v1.Reference `json:"memberEntityIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Entity in identity to populate memberEntityIds.
+	// +kubebuilder:validation:Optional
+	MemberEntityIdsSelector *v1.Selector `json:"memberEntityIdsSelector,omitempty" tf:"-"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -98,9 +108,19 @@ type GroupMemberEntityIdsParameters struct {
 
 	// List of member entities that belong to the group
 	// Entity IDs to be assigned as group members.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.Entity
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	MemberEntityIds []*string `json:"memberEntityIds,omitempty" tf:"member_entity_ids,omitempty"`
+
+	// References to Entity in identity to populate memberEntityIds.
+	// +kubebuilder:validation:Optional
+	MemberEntityIdsRefs []v1.Reference `json:"memberEntityIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Entity in identity to populate memberEntityIds.
+	// +kubebuilder:validation:Optional
+	MemberEntityIdsSelector *v1.Selector `json:"memberEntityIdsSelector,omitempty" tf:"-"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
