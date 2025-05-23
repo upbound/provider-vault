@@ -71,6 +71,8 @@ const (
 
 	// Service account token path
 	serviceAccountTokenPath = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+
+	credentialsSourceKubernetes xpv1.CredentialsSource = "Kubernetes"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -122,8 +124,8 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 		}
 
 		switch pc.Spec.Credentials.Source { //nolint:exhaustive
-		case xpv1.CredentialsSourceInjectedIdentity:
-			if err := injectedIdentityAuth(pc, &ps); err != nil {
+		case credentialsSourceKubernetes:
+			if err := kubernetesAuth(pc, &ps); err != nil {
 				return ps, err
 			}
 		default:
@@ -175,7 +177,7 @@ func commonCredentialsAuth(ctx context.Context, client client.Client, pc *v1beta
 	return nil
 }
 
-func injectedIdentityAuth(pc *v1beta1.ProviderConfig, ps *terraform.Setup) error {
+func kubernetesAuth(pc *v1beta1.ProviderConfig, ps *terraform.Setup) error {
 	jwt, err := os.ReadFile(serviceAccountTokenPath)
 	if err != nil {
 		return errors.Wrap(err, errNoServiceAccountToken)
