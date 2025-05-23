@@ -221,7 +221,7 @@ spec:
             x-kubernetes-validations:
             - message: role is required when credentials.source is Kubernetes
               rule: self.credentials.source != 'Kubernetes' || (self.role != null
-                && self.role != ”)
+                && self.role != '')
           status:
             description: A ProviderConfigStatus reflects the observed state of a ProviderConfig.
             properties:
