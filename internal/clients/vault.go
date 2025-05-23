@@ -183,7 +183,7 @@ func kubernetesAuth(pc *v1beta1.ProviderConfig, ps *terraform.Setup) error {
 		return errors.Wrap(err, errNoServiceAccountToken)
 	}
 
-	if pc.Spec.Role == nil {
+	if pc.Spec.Role == nil || *pc.Spec.Role == "" {
 		return errors.New(errNoRole)
 	}
 
