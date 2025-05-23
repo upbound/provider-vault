@@ -36,8 +36,18 @@ type GroupMemberGroupIdsInitParameters struct {
 
 	// List of member groups that belong to the group
 	// Group IDs to be assigned as group members.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.Group
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
 	// +listType=set
 	MemberGroupIds []*string `json:"memberGroupIds,omitempty" tf:"member_group_ids,omitempty"`
+
+	// References to Group in identity to populate memberGroupIds.
+	// +kubebuilder:validation:Optional
+	MemberGroupIdsRefs []v1.Reference `json:"memberGroupIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Group in identity to populate memberGroupIds.
+	// +kubebuilder:validation:Optional
+	MemberGroupIdsSelector *v1.Selector `json:"memberGroupIdsSelector,omitempty" tf:"-"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -98,9 +108,19 @@ type GroupMemberGroupIdsParameters struct {
 
 	// List of member groups that belong to the group
 	// Group IDs to be assigned as group members.
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/identity/v1alpha1.Group
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	MemberGroupIds []*string `json:"memberGroupIds,omitempty" tf:"member_group_ids,omitempty"`
+
+	// References to Group in identity to populate memberGroupIds.
+	// +kubebuilder:validation:Optional
+	MemberGroupIdsRefs []v1.Reference `json:"memberGroupIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Group in identity to populate memberGroupIds.
+	// +kubebuilder:validation:Optional
+	MemberGroupIdsSelector *v1.Selector `json:"memberGroupIdsSelector,omitempty" tf:"-"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.

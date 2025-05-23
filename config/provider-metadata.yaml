@@ -3414,6 +3414,7 @@ resources:
                 }
               references:
                 group_id: vault_identity_group.internal.id
+                member_entity_ids: vault_identity_entity.user.id
               dependencies:
                 vault_identity_entity.user: |-
                     {
@@ -3440,6 +3441,7 @@ resources:
                 }
               references:
                 group_id: vault_identity_group.internal.id
+                member_entity_ids: vault_identity_entity.test_user.id
               dependencies:
                 vault_identity_entity.dev_user: |-
                     {
@@ -3473,6 +3475,7 @@ resources:
                 }
               references:
                 group_id: vault_identity_group.internal.id
+                member_entity_ids: vault_identity_entity.dev_user.id
               dependencies:
                 vault_identity_entity.dev_user: |-
                     {
@@ -3524,6 +3527,7 @@ resources:
                 }
               references:
                 group_id: vault_identity_group.internal.id
+                member_group_ids: vault_identity_group.users.id
               dependencies:
                 vault_identity_group.internal: |-
                     {
@@ -3552,6 +3556,7 @@ resources:
                 }
               references:
                 group_id: vault_identity_group.internal.id
+                member_group_ids: vault_identity_group.users.id
               dependencies:
                 vault_identity_group.internal: |-
                     {
@@ -3712,6 +3717,8 @@ resources:
                   ],
                   "name": "default"
                 }
+              references:
+                mfa_method_ids: vault_identity_mfa_duo.example.method_id
               dependencies:
                 vault_identity_mfa_duo.example: |-
                     {
@@ -3854,6 +3861,9 @@ resources:
                   ],
                   "name": "assignment"
                 }
+              references:
+                entity_ids: vault_identity_entity.test.id
+                group_ids: vault_identity_group.internal.id
               dependencies:
                 vault_identity_entity.test: |-
                     {
@@ -3902,6 +3912,8 @@ resources:
                     "http://127.0.0.1:8080/callback"
                   ]
                 }
+              references:
+                assignments: vault_identity_oidc_assignment.test.name
               dependencies:
                 vault_identity_oidc_assignment.test: |-
                     {
@@ -4037,6 +4049,9 @@ resources:
                     "${vault_identity_oidc_scope.test.name}"
                   ]
                 }
+              references:
+                allowed_client_ids: vault_identity_oidc_client.test.client_id
+                scopes_supported: vault_identity_oidc_scope.test.name
               dependencies:
                 vault_identity_oidc_assignment.test: |-
                     {

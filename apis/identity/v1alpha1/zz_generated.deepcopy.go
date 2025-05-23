@@ -1255,6 +1255,18 @@ func (in *GroupMemberEntityIdsInitParameters) DeepCopyInto(out *GroupMemberEntit
 			}
 		}
 	}
+	if in.MemberEntityIdsRefs != nil {
+		in, out := &in.MemberEntityIdsRefs, &out.MemberEntityIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.MemberEntityIdsSelector != nil {
+		in, out := &in.MemberEntityIdsSelector, &out.MemberEntityIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -1384,6 +1396,18 @@ func (in *GroupMemberEntityIdsParameters) DeepCopyInto(out *GroupMemberEntityIds
 			}
 		}
 	}
+	if in.MemberEntityIdsRefs != nil {
+		in, out := &in.MemberEntityIdsRefs, &out.MemberEntityIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.MemberEntityIdsSelector != nil {
+		in, out := &in.MemberEntityIdsSelector, &out.MemberEntityIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -1496,6 +1520,18 @@ func (in *GroupMemberGroupIdsInitParameters) DeepCopyInto(out *GroupMemberGroupI
 				**out = **in
 			}
 		}
+	}
+	if in.MemberGroupIdsRefs != nil {
+		in, out := &in.MemberGroupIdsRefs, &out.MemberGroupIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.MemberGroupIdsSelector != nil {
+		in, out := &in.MemberGroupIdsSelector, &out.MemberGroupIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
@@ -1625,6 +1661,18 @@ func (in *GroupMemberGroupIdsParameters) DeepCopyInto(out *GroupMemberGroupIdsPa
 				**out = **in
 			}
 		}
+	}
+	if in.MemberGroupIdsRefs != nil {
+		in, out := &in.MemberGroupIdsRefs, &out.MemberGroupIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.MemberGroupIdsSelector != nil {
+		in, out := &in.MemberGroupIdsSelector, &out.MemberGroupIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
@@ -2496,6 +2544,18 @@ func (in *MfaLoginEnforcementInitParameters) DeepCopyInto(out *MfaLoginEnforceme
 			}
 		}
 	}
+	if in.MfaMethodIdsRefs != nil {
+		in, out := &in.MfaMethodIdsRefs, &out.MfaMethodIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.MfaMethodIdsSelector != nil {
+		in, out := &in.MfaMethodIdsSelector, &out.MfaMethodIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -2707,6 +2767,18 @@ func (in *MfaLoginEnforcementParameters) DeepCopyInto(out *MfaLoginEnforcementPa
 				**out = **in
 			}
 		}
+	}
+	if in.MfaMethodIdsRefs != nil {
+		in, out := &in.MfaMethodIdsRefs, &out.MfaMethodIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.MfaMethodIdsSelector != nil {
+		in, out := &in.MfaMethodIdsSelector, &out.MfaMethodIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
@@ -3652,6 +3724,18 @@ func (in *OidcAssignmentInitParameters) DeepCopyInto(out *OidcAssignmentInitPara
 			}
 		}
 	}
+	if in.EntityIdsRefs != nil {
+		in, out := &in.EntityIdsRefs, &out.EntityIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.EntityIdsSelector != nil {
+		in, out := &in.EntityIdsSelector, &out.EntityIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.GroupIds != nil {
 		in, out := &in.GroupIds, &out.GroupIds
 		*out = make([]*string, len(*in))
@@ -3662,6 +3746,18 @@ func (in *OidcAssignmentInitParameters) DeepCopyInto(out *OidcAssignmentInitPara
 				**out = **in
 			}
 		}
+	}
+	if in.GroupIdsRefs != nil {
+		in, out := &in.GroupIdsRefs, &out.GroupIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.GroupIdsSelector != nil {
+		in, out := &in.GroupIdsSelector, &out.GroupIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
@@ -3783,6 +3879,18 @@ func (in *OidcAssignmentParameters) DeepCopyInto(out *OidcAssignmentParameters) 
 			}
 		}
 	}
+	if in.EntityIdsRefs != nil {
+		in, out := &in.EntityIdsRefs, &out.EntityIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.EntityIdsSelector != nil {
+		in, out := &in.EntityIdsSelector, &out.EntityIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.GroupIds != nil {
 		in, out := &in.GroupIds, &out.GroupIds
 		*out = make([]*string, len(*in))
@@ -3793,6 +3901,18 @@ func (in *OidcAssignmentParameters) DeepCopyInto(out *OidcAssignmentParameters) 
 				**out = **in
 			}
 		}
+	}
+	if in.GroupIdsRefs != nil {
+		in, out := &in.GroupIdsRefs, &out.GroupIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.GroupIdsSelector != nil {
+		in, out := &in.GroupIdsSelector, &out.GroupIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
@@ -3896,6 +4016,18 @@ func (in *OidcClientInitParameters) DeepCopyInto(out *OidcClientInitParameters) 
 				**out = **in
 			}
 		}
+	}
+	if in.AssignmentsRefs != nil {
+		in, out := &in.AssignmentsRefs, &out.AssignmentsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.AssignmentsSelector != nil {
+		in, out := &in.AssignmentsSelector, &out.AssignmentsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ClientType != nil {
 		in, out := &in.ClientType, &out.ClientType
@@ -4072,6 +4204,18 @@ func (in *OidcClientParameters) DeepCopyInto(out *OidcClientParameters) {
 				**out = **in
 			}
 		}
+	}
+	if in.AssignmentsRefs != nil {
+		in, out := &in.AssignmentsRefs, &out.AssignmentsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.AssignmentsSelector != nil {
+		in, out := &in.AssignmentsSelector, &out.AssignmentsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ClientType != nil {
 		in, out := &in.ClientType, &out.ClientType
@@ -4790,6 +4934,18 @@ func (in *OidcProviderInitParameters) DeepCopyInto(out *OidcProviderInitParamete
 			}
 		}
 	}
+	if in.AllowedClientIdsRefs != nil {
+		in, out := &in.AllowedClientIdsRefs, &out.AllowedClientIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.AllowedClientIdsSelector != nil {
+		in, out := &in.AllowedClientIdsSelector, &out.AllowedClientIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.HTTPSEnabled != nil {
 		in, out := &in.HTTPSEnabled, &out.HTTPSEnabled
 		*out = new(bool)
@@ -4820,6 +4976,18 @@ func (in *OidcProviderInitParameters) DeepCopyInto(out *OidcProviderInitParamete
 				**out = **in
 			}
 		}
+	}
+	if in.ScopesSupportedRefs != nil {
+		in, out := &in.ScopesSupportedRefs, &out.ScopesSupportedRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.ScopesSupportedSelector != nil {
+		in, out := &in.ScopesSupportedSelector, &out.ScopesSupportedSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -4946,6 +5114,18 @@ func (in *OidcProviderParameters) DeepCopyInto(out *OidcProviderParameters) {
 			}
 		}
 	}
+	if in.AllowedClientIdsRefs != nil {
+		in, out := &in.AllowedClientIdsRefs, &out.AllowedClientIdsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.AllowedClientIdsSelector != nil {
+		in, out := &in.AllowedClientIdsSelector, &out.AllowedClientIdsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.HTTPSEnabled != nil {
 		in, out := &in.HTTPSEnabled, &out.HTTPSEnabled
 		*out = new(bool)
@@ -4976,6 +5156,18 @@ func (in *OidcProviderParameters) DeepCopyInto(out *OidcProviderParameters) {
 				**out = **in
 			}
 		}
+	}
+	if in.ScopesSupportedRefs != nil {
+		in, out := &in.ScopesSupportedRefs, &out.ScopesSupportedRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.ScopesSupportedSelector != nil {
+		in, out := &in.ScopesSupportedSelector, &out.ScopesSupportedSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 }
 

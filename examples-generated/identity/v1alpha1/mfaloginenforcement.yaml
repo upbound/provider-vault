@@ -8,8 +8,8 @@ metadata:
   name: example
 spec:
   forProvider:
-    mfaMethodIds:
-    - ${vault_identity_mfa_duo.example.method_id}
+    mfaMethodIdsRefs:
+    - name: example
     name: default
 
 ---
