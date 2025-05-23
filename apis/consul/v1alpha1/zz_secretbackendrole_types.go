@@ -17,7 +17,7 @@ type SecretBackendRoleInitParameters struct {
 
 	// The unique name of an existing Consul secrets backend mount. Must not begin or end with a /. One of path or backend is required.
 	// The path of the Consul Secret Backend the role belongs to.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/consul/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/consul/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -171,7 +171,7 @@ type SecretBackendRoleParameters struct {
 
 	// The unique name of an existing Consul secrets backend mount. Must not begin or end with a /. One of path or backend is required.
 	// The path of the Consul Secret Backend the role belongs to.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/consul/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/consul/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`

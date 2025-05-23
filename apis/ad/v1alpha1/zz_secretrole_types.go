@@ -18,7 +18,7 @@ type SecretRoleInitParameters struct {
 	// The path the AD secret backend is mounted at,
 	// with no leading or trailing /s.
 	// The mount path for the AD backend.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/ad/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/ad/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("backend",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -98,7 +98,7 @@ type SecretRoleParameters struct {
 	// The path the AD secret backend is mounted at,
 	// with no leading or trailing /s.
 	// The mount path for the AD backend.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/ad/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/ad/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("backend",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
