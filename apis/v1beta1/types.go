@@ -11,7 +11,7 @@ import (
 )
 
 // A ProviderConfigSpec defines the desired state of a ProviderConfig.
-// +kubebuilder:validation:XValidation:rule="self.credentials.source != 'Kubernetes' || (self.role != null && self.role != '')",message="role is required when credentials.source is Kubernetes"
+// +kubebuilder:validation:XValidation:rule="self.credentials.source != 'Kubernetes' || (has(self.role) && self.role != '')",message="role is required when credentials.source is Kubernetes"
 type ProviderConfigSpec struct {
 	// Required origin URL of the Vault server.
 	// This is a URL with a scheme, a hostname
