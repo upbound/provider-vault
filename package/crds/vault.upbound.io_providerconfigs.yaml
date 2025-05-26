@@ -132,6 +132,7 @@ spec:
                     - InjectedIdentity
                     - Environment
                     - Filesystem
+                    - Kubernetes
                     type: string
                 required:
                 - source
@@ -172,6 +173,9 @@ spec:
                 type: integer
               namespace:
                 description: Set the namespace to use.
+                type: string
+              role:
+                description: Name of the role against which to login.
                 type: string
               skip_child_token:
                 description: |-
@@ -214,6 +218,10 @@ spec:
             required:
             - address
             type: object
+            x-kubernetes-validations:
+            - message: role is required when credentials.source is Kubernetes
+              rule: self.credentials.source != 'Kubernetes' || (has(self.role) &&
+                self.role != "")
           status:
             description: A ProviderConfigStatus reflects the observed state of a ProviderConfig.
             properties:

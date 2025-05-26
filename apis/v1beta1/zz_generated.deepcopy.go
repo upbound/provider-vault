@@ -75,6 +75,11 @@ func (in *ProviderConfigList) DeepCopyObject() runtime.Object {
 func (in *ProviderConfigSpec) DeepCopyInto(out *ProviderConfigSpec) {
 	*out = *in
 	out.Headers = in.Headers
+	if in.Role != nil {
+		in, out := &in.Role, &out.Role
+		*out = new(string)
+		**out = **in
+	}
 	in.Credentials.DeepCopyInto(&out.Credentials)
 }
 
