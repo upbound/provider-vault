@@ -33,15 +33,15 @@ type SecretBackendIntermediateSetSignedInitParameters struct {
 	// CA certificates to populate the whole chain, which will then enable returning the full chain from
 	// issue and sign operations.
 	// The certificate.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/pki/v1alpha1.SecretBackendRootSignIntermediate
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("certificate",true)
+	// +crossplane:generate:reference:type=SecretBackendRootSignIntermediate
+	// +crossplane:generate:reference:extractor=github.com/upbound/provider-vault/config/common.ExtractCrt()
 	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
 
-	// Reference to a SecretBackendRootSignIntermediate in pki to populate certificate.
+	// Reference to a SecretBackendRootSignIntermediate to populate certificate.
 	// +kubebuilder:validation:Optional
 	CertificateRef *v1.Reference `json:"certificateRef,omitempty" tf:"-"`
 
-	// Selector for a SecretBackendRootSignIntermediate in pki to populate certificate.
+	// Selector for a SecretBackendRootSignIntermediate to populate certificate.
 	// +kubebuilder:validation:Optional
 	CertificateSelector *v1.Selector `json:"certificateSelector,omitempty" tf:"-"`
 
@@ -105,16 +105,16 @@ type SecretBackendIntermediateSetSignedParameters struct {
 	// CA certificates to populate the whole chain, which will then enable returning the full chain from
 	// issue and sign operations.
 	// The certificate.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/pki/v1alpha1.SecretBackendRootSignIntermediate
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("certificate",true)
+	// +crossplane:generate:reference:type=SecretBackendRootSignIntermediate
+	// +crossplane:generate:reference:extractor=github.com/upbound/provider-vault/config/common.ExtractCrt()
 	// +kubebuilder:validation:Optional
 	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
 
-	// Reference to a SecretBackendRootSignIntermediate in pki to populate certificate.
+	// Reference to a SecretBackendRootSignIntermediate to populate certificate.
 	// +kubebuilder:validation:Optional
 	CertificateRef *v1.Reference `json:"certificateRef,omitempty" tf:"-"`
 
-	// Selector for a SecretBackendRootSignIntermediate in pki to populate certificate.
+	// Selector for a SecretBackendRootSignIntermediate to populate certificate.
 	// +kubebuilder:validation:Optional
 	CertificateSelector *v1.Selector `json:"certificateSelector,omitempty" tf:"-"`
 
