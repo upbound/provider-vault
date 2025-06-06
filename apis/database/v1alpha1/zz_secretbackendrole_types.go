@@ -17,7 +17,7 @@ type SecretBackendRoleInitParameters struct {
 
 	// The unique name of the Vault mount to configure.
 	// The path of the Database Secret Backend the role belongs to.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/vault/v1alpha1.Mount
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -49,7 +49,7 @@ type SecretBackendRoleInitParameters struct {
 	// The unique name of the database connection to use for
 	// the role.
 	// Database connection to use for this role.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/database/v1alpha1.SecretBackendConnection
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/database/v1alpha1.SecretBackendConnection
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	DBName *string `json:"dbName,omitempty" tf:"db_name,omitempty"`
 
@@ -169,7 +169,7 @@ type SecretBackendRoleParameters struct {
 
 	// The unique name of the Vault mount to configure.
 	// The path of the Database Secret Backend the role belongs to.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/vault/v1alpha1.Mount
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -205,7 +205,7 @@ type SecretBackendRoleParameters struct {
 	// The unique name of the database connection to use for
 	// the role.
 	// Database connection to use for this role.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/database/v1alpha1.SecretBackendConnection
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/database/v1alpha1.SecretBackendConnection
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	DBName *string `json:"dbName,omitempty" tf:"db_name,omitempty"`

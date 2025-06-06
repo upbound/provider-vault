@@ -22,8 +22,8 @@ import (
 	"github.com/pkg/errors"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	v1alpha1 "github.com/upbound/provider-vault/apis/approle/v1alpha1"
-	features "github.com/upbound/provider-vault/internal/features"
+	v1alpha1 "github.com/upbound/provider-vault/v2/apis/approle/v1alpha1"
+	features "github.com/upbound/provider-vault/v2/internal/features"
 )
 
 // Setup adds a controller that reconciles AuthBackendLogin managed resources.
