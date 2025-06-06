@@ -11,6 +11,7 @@ import (
 )
 
 // A ProviderConfigSpec defines the desired state of a ProviderConfig.
+// +kubebuilder:validation:XValidation:rule="self.credentials.source != 'Kubernetes' || (has(self.role) && self.role != \"\")",message="role is required when credentials.source is Kubernetes"
 type ProviderConfigSpec struct {
 	// Required origin URL of the Vault server.
 	// This is a URL with a scheme, a hostname
@@ -90,6 +91,10 @@ type ProviderConfigSpec struct {
 	// +optional
 	Headers ProviderHeaders `json:"headers,omitempty"`
 
+	// Name of the role against which to login.
+	// +optional
+	Role *string `json:"role,omitempty"`
+
 	// Credentials required to authenticate to this provider.
 	// There are many options to authenticate. They include
 	// - token - (Optional) Vault token that will be used
@@ -121,7 +126,7 @@ type ProviderHeaders struct {
 // ProviderCredentials required to authenticate.
 type ProviderCredentials struct {
 	// Source of the provider credentials.
-	// +kubebuilder:validation:Enum=None;Secret;InjectedIdentity;Environment;Filesystem
+	// +kubebuilder:validation:Enum=None;Secret;InjectedIdentity;Environment;Filesystem;Kubernetes
 	Source xpv1.CredentialsSource `json:"source"`
 
 	xpv1.CommonCredentialSelectors `json:",inline"`
