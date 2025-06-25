@@ -29,7 +29,7 @@ type SecretScopeInitParameters struct {
 	// The unique path this backend should be mounted at. Must
 	// not begin or end with a /. Defaults to kmip.
 	// Path where KMIP backend is mounted
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/kmip/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/kmip/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
@@ -89,7 +89,7 @@ type SecretScopeParameters struct {
 	// The unique path this backend should be mounted at. Must
 	// not begin or end with a /. Defaults to kmip.
 	// Path where KMIP backend is mounted
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/kmip/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/kmip/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`

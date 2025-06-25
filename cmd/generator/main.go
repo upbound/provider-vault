@@ -12,7 +12,7 @@ import (
 
 	"github.com/crossplane/upjet/pkg/pipeline"
 
-	"github.com/upbound/provider-vault/config"
+	"github.com/upbound/provider-vault/v2/config"
 )
 
 func main() {

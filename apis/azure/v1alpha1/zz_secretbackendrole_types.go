@@ -72,7 +72,7 @@ type SecretBackendRoleInitParameters struct {
 
 	// Path to the mounted Azure auth backend
 	// Unique name of the auth backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/azure/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/azure/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -199,7 +199,7 @@ type SecretBackendRoleParameters struct {
 
 	// Path to the mounted Azure auth backend
 	// Unique name of the auth backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/azure/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/azure/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`

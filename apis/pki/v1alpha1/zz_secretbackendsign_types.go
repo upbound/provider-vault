@@ -25,7 +25,7 @@ type SecretBackendSignInitParameters struct {
 
 	// The PKI secret backend the resource belongs to.
 	// The PKI secret backend the resource belongs to.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/vault/v1alpha1.Mount
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -70,7 +70,7 @@ type SecretBackendSignInitParameters struct {
 
 	// Name of the role to create the certificate against
 	// Name of the role to create the certificate against.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/pki/v1alpha1.SecretBackendRole
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/pki/v1alpha1.SecretBackendRole
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
@@ -211,7 +211,7 @@ type SecretBackendSignParameters struct {
 
 	// The PKI secret backend the resource belongs to.
 	// The PKI secret backend the resource belongs to.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/vault/v1alpha1.Mount
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -264,7 +264,7 @@ type SecretBackendSignParameters struct {
 
 	// Name of the role to create the certificate against
 	// Name of the role to create the certificate against.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/pki/v1alpha1.SecretBackendRole
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v2/apis/pki/v1alpha1.SecretBackendRole
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
