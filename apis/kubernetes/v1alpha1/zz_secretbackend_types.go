@@ -37,8 +37,6 @@ type SecretBackendInitParameters struct {
 	// Human-friendly description of the mount
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// Disable defaulting to the local CA certificate and
-	// service account JWT when Vault is running in a Kubernetes pod.
 	// Disable defaulting to the local CA certificate and service account JWT when running in a Kubernetes pod.
 	DisableLocalCAJwt *bool `json:"disableLocalCaJwt,omitempty" tf:"disable_local_ca_jwt,omitempty"`
 
@@ -48,16 +46,9 @@ type SecretBackendInitParameters struct {
 	// The key to use for signing plugin workload identity tokens
 	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
 
-	// A PEM-encoded CA certificate used by the
-	// secrets engine to verify the Kubernetes API server certificate. Defaults to the local
-	// pod’s CA if Vault is running in Kubernetes. Otherwise, defaults to the root CA set where
-	// Vault is running.
 	// A PEM-encoded CA certificate used by the secret engine to verify the Kubernetes API server certificate. Defaults to the local pod’s CA if found, or otherwise the host's root CA set.
 	KubernetesCACert *string `json:"kubernetesCaCert,omitempty" tf:"kubernetes_ca_cert,omitempty"`
 
-	// The Kubernetes API URL to connect to. Required if the
-	// standard pod environment variables KUBERNETES_SERVICE_HOST or KUBERNETES_SERVICE_PORT
-	// are not set on the host that Vault is running on.
 	// The Kubernetes API URL to connect to.
 	KubernetesHost *string `json:"kubernetesHost,omitempty" tf:"kubernetes_host,omitempty"`
 
@@ -70,10 +61,6 @@ type SecretBackendInitParameters struct {
 	// Maximum possible lease duration for tokens and secrets in seconds
 	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
 
-	// The namespace to provision the resource in.
-	// The value should not contain leading or trailing forward slashes.
-	// The namespace is always relative to the provider's configured namespace.
-	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
@@ -93,9 +80,6 @@ type SecretBackendInitParameters struct {
 	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
 
-	// The JSON web token of the service account used by the
-	// secrets engine to manage Kubernetes credentials. Defaults to the local pod’s JWT if Vault
-	// is running in Kubernetes.
 	// The JSON web token of the service account used by the secrets engine to manage Kubernetes credentials. Defaults to the local pod’s JWT if found.
 	ServiceAccountJwtSecretRef *v1.SecretKeySelector `json:"serviceAccountJwtSecretRef,omitempty" tf:"-"`
 }
@@ -127,8 +111,6 @@ type SecretBackendObservation struct {
 	// Human-friendly description of the mount
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// Disable defaulting to the local CA certificate and
-	// service account JWT when Vault is running in a Kubernetes pod.
 	// Disable defaulting to the local CA certificate and service account JWT when running in a Kubernetes pod.
 	DisableLocalCAJwt *bool `json:"disableLocalCaJwt,omitempty" tf:"disable_local_ca_jwt,omitempty"`
 
@@ -140,16 +122,9 @@ type SecretBackendObservation struct {
 	// The key to use for signing plugin workload identity tokens
 	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
 
-	// A PEM-encoded CA certificate used by the
-	// secrets engine to verify the Kubernetes API server certificate. Defaults to the local
-	// pod’s CA if Vault is running in Kubernetes. Otherwise, defaults to the root CA set where
-	// Vault is running.
 	// A PEM-encoded CA certificate used by the secret engine to verify the Kubernetes API server certificate. Defaults to the local pod’s CA if found, or otherwise the host's root CA set.
 	KubernetesCACert *string `json:"kubernetesCaCert,omitempty" tf:"kubernetes_ca_cert,omitempty"`
 
-	// The Kubernetes API URL to connect to. Required if the
-	// standard pod environment variables KUBERNETES_SERVICE_HOST or KUBERNETES_SERVICE_PORT
-	// are not set on the host that Vault is running on.
 	// The Kubernetes API URL to connect to.
 	KubernetesHost *string `json:"kubernetesHost,omitempty" tf:"kubernetes_host,omitempty"`
 
@@ -162,10 +137,6 @@ type SecretBackendObservation struct {
 	// Maximum possible lease duration for tokens and secrets in seconds
 	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
 
-	// The namespace to provision the resource in.
-	// The value should not contain leading or trailing forward slashes.
-	// The namespace is always relative to the provider's configured namespace.
-	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
@@ -217,8 +188,6 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// Disable defaulting to the local CA certificate and
-	// service account JWT when Vault is running in a Kubernetes pod.
 	// Disable defaulting to the local CA certificate and service account JWT when running in a Kubernetes pod.
 	// +kubebuilder:validation:Optional
 	DisableLocalCAJwt *bool `json:"disableLocalCaJwt,omitempty" tf:"disable_local_ca_jwt,omitempty"`
@@ -231,17 +200,10 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
 
-	// A PEM-encoded CA certificate used by the
-	// secrets engine to verify the Kubernetes API server certificate. Defaults to the local
-	// pod’s CA if Vault is running in Kubernetes. Otherwise, defaults to the root CA set where
-	// Vault is running.
 	// A PEM-encoded CA certificate used by the secret engine to verify the Kubernetes API server certificate. Defaults to the local pod’s CA if found, or otherwise the host's root CA set.
 	// +kubebuilder:validation:Optional
 	KubernetesCACert *string `json:"kubernetesCaCert,omitempty" tf:"kubernetes_ca_cert,omitempty"`
 
-	// The Kubernetes API URL to connect to. Required if the
-	// standard pod environment variables KUBERNETES_SERVICE_HOST or KUBERNETES_SERVICE_PORT
-	// are not set on the host that Vault is running on.
 	// The Kubernetes API URL to connect to.
 	// +kubebuilder:validation:Optional
 	KubernetesHost *string `json:"kubernetesHost,omitempty" tf:"kubernetes_host,omitempty"`
@@ -258,10 +220,6 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
 
-	// The namespace to provision the resource in.
-	// The value should not contain leading or trailing forward slashes.
-	// The namespace is always relative to the provider's configured namespace.
-	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
@@ -287,9 +245,6 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
 
-	// The JSON web token of the service account used by the
-	// secrets engine to manage Kubernetes credentials. Defaults to the local pod’s JWT if Vault
-	// is running in Kubernetes.
 	// The JSON web token of the service account used by the secrets engine to manage Kubernetes credentials. Defaults to the local pod’s JWT if found.
 	// +kubebuilder:validation:Optional
 	ServiceAccountJwtSecretRef *v1.SecretKeySelector `json:"serviceAccountJwtSecretRef,omitempty" tf:"-"`
@@ -322,7 +277,7 @@ type SecretBackendStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// SecretBackend is the Schema for the SecretBackends API. Creates a Kubernetes Secrets Engine in Vault.
+// SecretBackend is the Schema for the SecretBackends API. <no value>
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

@@ -95,6 +95,10 @@ type ProviderConfigSpec struct {
 	// +optional
 	Role *string `json:"role,omitempty"`
 
+	// Mount of the auth method to log in with.
+	// +optional
+	Mount *string `json:"mount,omitempty"`
+
 	// Credentials required to authenticate to this provider.
 	// There are many options to authenticate. They include
 	// - token - (Optional) Vault token that will be used
