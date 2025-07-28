@@ -171,6 +171,9 @@ spec:
                   Maximum number of retries for Client Controlled
                   Consistency related operations. Defaults to 10 retries.
                 type: integer
+              mount:
+                description: Mount of the auth method to log in with.
+                type: string
               namespace:
                 description: Set the namespace to use.
                 type: string

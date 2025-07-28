@@ -68,6 +68,7 @@ const (
 	errUnmarshalCredentials  = "cannot unmarshal vault credentials as JSON"
 	errNoServiceAccountToken = "no service account token found"
 	errNoRole                = "no role provided"
+	errNoMount               = "no mount provided"
 
 	// Service account token path
 	serviceAccountTokenPath = "/var/run/secrets/kubernetes.io/serviceaccount/token"
@@ -187,11 +188,16 @@ func kubernetesAuth(pc *v1beta1.ProviderConfig, ps *terraform.Setup) error {
 		return errors.New(errNoRole)
 	}
 
+	if pc.Spec.Mount == nil {
+		return errors.New(errNoMount)
+	}
+
 	ps.Configuration[keyAuthLoginJWT] = []any{
 		map[string]string{
-			"jwt":   string(jwt),
-			"mount": "kubernetes",
-			"role":  *pc.Spec.Role,
+			"jwt":       string(jwt),
+			"mount":     *pc.Spec.Mount,
+			"role":      *pc.Spec.Role,
+			"namespace": pc.Spec.Namespace,
 		},
 	}
 
