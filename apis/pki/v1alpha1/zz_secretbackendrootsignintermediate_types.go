@@ -28,7 +28,17 @@ type SecretBackendRootSignIntermediateInitParameters struct {
 	Country *string `json:"country,omitempty" tf:"country,omitempty"`
 
 	// The CSR.
+	// +crossplane:generate:reference:type=SecretBackendIntermediateCertRequest
+	// +crossplane:generate:reference:extractor=github.com/upbound/provider-vault/config/common.ExtractCsr()
 	Csr *string `json:"csr,omitempty" tf:"csr,omitempty"`
+
+	// Reference to a SecretBackendIntermediateCertRequest to populate csr.
+	// +kubebuilder:validation:Optional
+	CsrRef *v1.Reference `json:"csrRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackendIntermediateCertRequest to populate csr.
+	// +kubebuilder:validation:Optional
+	CsrSelector *v1.Selector `json:"csrSelector,omitempty" tf:"-"`
 
 	// Flag to exclude CN from SANs.
 	ExcludeCnFromSans *bool `json:"excludeCnFromSans,omitempty" tf:"exclude_cn_from_sans,omitempty"`
@@ -193,8 +203,18 @@ type SecretBackendRootSignIntermediateParameters struct {
 	Country *string `json:"country,omitempty" tf:"country,omitempty"`
 
 	// The CSR.
+	// +crossplane:generate:reference:type=SecretBackendIntermediateCertRequest
+	// +crossplane:generate:reference:extractor=github.com/upbound/provider-vault/config/common.ExtractCsr()
 	// +kubebuilder:validation:Optional
 	Csr *string `json:"csr,omitempty" tf:"csr,omitempty"`
+
+	// Reference to a SecretBackendIntermediateCertRequest to populate csr.
+	// +kubebuilder:validation:Optional
+	CsrRef *v1.Reference `json:"csrRef,omitempty" tf:"-"`
+
+	// Selector for a SecretBackendIntermediateCertRequest to populate csr.
+	// +kubebuilder:validation:Optional
+	CsrSelector *v1.Selector `json:"csrSelector,omitempty" tf:"-"`
 
 	// Flag to exclude CN from SANs.
 	// +kubebuilder:validation:Optional
@@ -307,7 +327,6 @@ type SecretBackendRootSignIntermediate struct {
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.backend) || (has(self.initProvider) && has(self.initProvider.backend))",message="spec.forProvider.backend is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.commonName) || (has(self.initProvider) && has(self.initProvider.commonName))",message="spec.forProvider.commonName is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.csr) || (has(self.initProvider) && has(self.initProvider.csr))",message="spec.forProvider.csr is a required parameter"
 	Spec   SecretBackendRootSignIntermediateSpec   `json:"spec"`
 	Status SecretBackendRootSignIntermediateStatus `json:"status,omitempty"`
 }

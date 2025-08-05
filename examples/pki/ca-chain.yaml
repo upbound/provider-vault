@@ -1,0 +1,74 @@
+apiVersion: vault.vault.upbound.io/v1alpha1
+kind: Mount
+metadata:
+  name: example-pki
+spec:
+  forProvider:
+    path: example
+    type: pki
+    maxLeaseTtlSeconds: 315576000
+---
+apiVersion: vault.vault.upbound.io/v1alpha1
+kind: Mount
+metadata:
+  name: example-pki-int
+spec:
+  forProvider:
+    path: example-int
+    type: pki
+    maxLeaseTtlSeconds: 157788000
+---
+apiVersion: pki.vault.upbound.io/v1alpha1
+kind: SecretBackendRootCert
+metadata:
+  name: example-root-ca
+spec:
+  forProvider:
+    backend: example
+    commonName: Root CA
+    issuerName: Example
+    excludeCnFromSans: true
+    format: pem
+    keyBits: 4096
+    keyType: rsa
+    privateKeyFormat: der
+    ttl: 87660h
+    type: internal
+---
+apiVersion: pki.vault.upbound.io/v1alpha1
+kind: SecretBackendIntermediateCertRequest
+metadata:
+  name: example-intermediate-ca-csr
+spec:
+  forProvider:
+    backend: example-int
+    commonName: Intermediate CA
+    keyBits: 4096
+    keyType: rsa
+    privateKeyFormat: der
+    type: internal
+    excludeCnFromSans: true
+    format: pem
+---
+apiVersion: pki.vault.upbound.io/v1alpha1
+kind: SecretBackendRootSignIntermediate
+metadata:
+  name: example-intermediate-ca-sign
+spec:
+  forProvider:
+    backend: example
+    issuerRef: Example
+    commonName: Intermediate CA
+    csrRef:
+      name: intermediate-ca-csr
+    ttl: 43830h
+---
+apiVersion: pki.vault.upbound.io/v1alpha1
+kind: SecretBackendIntermediateSetSigned
+metadata:
+  name: example-intermediate-ca-set-signed
+spec:
+  forProvider:
+    backend: example-int
+    certificateRef:
+      name: intermediate-ca-sign
