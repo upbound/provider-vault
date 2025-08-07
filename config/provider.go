@@ -11,10 +11,10 @@ import (
 
 	"github.com/pkg/errors"
 
-	ujconfig "github.com/crossplane/upjet/pkg/config"
-	"github.com/crossplane/upjet/pkg/registry/reference"
-	"github.com/crossplane/upjet/pkg/schema/traverser"
-	conversiontfjson "github.com/crossplane/upjet/pkg/types/conversion/tfjson"
+	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
+	"github.com/crossplane/upjet/v2/pkg/registry/reference"
+	"github.com/crossplane/upjet/v2/pkg/schema/traverser"
+	conversiontfjson "github.com/crossplane/upjet/v2/pkg/types/conversion/tfjson"
 
 	tfjson "github.com/hashicorp/terraform-json"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"

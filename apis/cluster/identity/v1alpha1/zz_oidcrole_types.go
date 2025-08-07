@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type OidcRoleInitParameters struct {
@@ -24,7 +24,7 @@ type OidcRoleInitParameters struct {
 	// before tokens can be issued.
 	// A configured named key, the key must already exist.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.OidcKey
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
 	// Reference to a OidcKey in identity to populate key.
@@ -108,7 +108,7 @@ type OidcRoleParameters struct {
 	// before tokens can be issued.
 	// A configured named key, the key must already exist.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.OidcKey
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 

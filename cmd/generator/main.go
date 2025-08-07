@@ -10,7 +10,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/crossplane/upjet/pkg/pipeline"
+	"github.com/crossplane/upjet/v2/pkg/pipeline"
 	tfvaultschema "github.com/hashicorp/terraform-provider-vault/schema"
 	tfvault "github.com/hashicorp/terraform-provider-vault/vault"
 

@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type TeamInitParameters struct {
@@ -19,7 +19,7 @@ type TeamInitParameters struct {
 	// if not specified.
 	// Auth backend to which team mapping will be configured.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/github/v1alpha1.AuthBackend
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
 	// Reference to a AuthBackend in github to populate backend.
@@ -77,7 +77,7 @@ type TeamParameters struct {
 	// if not specified.
 	// Auth backend to which team mapping will be configured.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/github/v1alpha1.AuthBackend
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 

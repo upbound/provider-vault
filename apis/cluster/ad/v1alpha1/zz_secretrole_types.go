@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type SecretRoleInitParameters struct {
@@ -19,7 +19,7 @@ type SecretRoleInitParameters struct {
 	// with no leading or trailing /s.
 	// The mount path for the AD backend.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/ad/v1alpha1.SecretBackend
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("backend",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("backend",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
 	// Reference to a SecretBackend in ad to populate backend.
@@ -99,7 +99,7 @@ type SecretRoleParameters struct {
 	// with no leading or trailing /s.
 	// The mount path for the AD backend.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/ad/v1alpha1.SecretBackend
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("backend",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("backend",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 

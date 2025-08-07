@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type SecretRoleInitParameters struct {
@@ -18,7 +18,7 @@ type SecretRoleInitParameters struct {
 	// The unique path this backend should be mounted at.
 	// The mount path for the Nomad backend.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/nomad/v1alpha1.SecretBackend
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("backend",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("backend",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
 	// Reference to a SecretBackend in nomad to populate backend.
@@ -98,7 +98,7 @@ type SecretRoleParameters struct {
 	// The unique path this backend should be mounted at.
 	// The mount path for the Nomad backend.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/nomad/v1alpha1.SecretBackend
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("backend",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("backend",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 

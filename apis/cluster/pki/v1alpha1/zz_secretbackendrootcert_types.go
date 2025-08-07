@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type SecretBackendRootCertInitParameters struct {
@@ -22,7 +22,7 @@ type SecretBackendRootCertInitParameters struct {
 	// The PKI secret backend the resource belongs to.
 	// The PKI secret backend the resource belongs to.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/vault/v1alpha1.Mount
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
 	// Reference to a Mount in vault to populate backend.
@@ -375,7 +375,7 @@ type SecretBackendRootCertParameters struct {
 	// The PKI secret backend the resource belongs to.
 	// The PKI secret backend the resource belongs to.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/vault/v1alpha1.Mount
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 

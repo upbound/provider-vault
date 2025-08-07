@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type TemplateInitParameters struct {
@@ -46,7 +46,7 @@ type TemplateInitParameters struct {
 	// Path to where the back-end is mounted within Vault.
 	// The mount path for a back-end, for example, the path given in "$ vault auth enable -path=my-aws aws".
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/transform/v1alpha1.Alphabet
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
 	// Reference to a Alphabet in transform to populate path.
@@ -149,7 +149,7 @@ type TemplateParameters struct {
 	// Path to where the back-end is mounted within Vault.
 	// The mount path for a back-end, for example, the path given in "$ vault auth enable -path=my-aws aws".
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/transform/v1alpha1.Alphabet
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 

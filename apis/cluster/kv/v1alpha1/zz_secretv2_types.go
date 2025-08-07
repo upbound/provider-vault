@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type CustomMetadataInitParameters struct {
@@ -125,7 +125,7 @@ type SecretV2InitParameters struct {
 	// Path where KV-V2 engine is mounted.
 	// Path where KV-V2 engine is mounted.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/vault/v1alpha1.Mount
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`
 
 	// Reference to a Mount in vault to populate mount.
@@ -274,7 +274,7 @@ type SecretV2Parameters struct {
 	// Path where KV-V2 engine is mounted.
 	// Path where KV-V2 engine is mounted.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/vault/v1alpha1.Mount
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`
 

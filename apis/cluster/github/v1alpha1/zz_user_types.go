@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type UserInitParameters struct {
@@ -19,7 +19,7 @@ type UserInitParameters struct {
 	// if not specified.
 	// Auth backend to which user mapping will be congigured.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/github/v1alpha1.AuthBackend
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
 	// Reference to a AuthBackend in github to populate backend.
@@ -79,7 +79,7 @@ type UserParameters struct {
 	// if not specified.
 	// Auth backend to which user mapping will be congigured.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/github/v1alpha1.AuthBackend
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 

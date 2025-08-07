@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type SecretBackendInitParameters struct {
@@ -18,7 +18,7 @@ type SecretBackendInitParameters struct {
 	// Path where the MongoDB Atlas Secrets Engine is mounted.
 	// Path where MongoDB Atlas secret backend is mounted
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/vault/v1alpha1.Mount
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`
 
 	// Reference to a Mount in vault to populate mount.
@@ -76,7 +76,7 @@ type SecretBackendParameters struct {
 	// Path where the MongoDB Atlas Secrets Engine is mounted.
 	// Path where MongoDB Atlas secret backend is mounted
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/vault/v1alpha1.Mount
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`
 

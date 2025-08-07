@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type SecretBackendRoleInitParameters struct {
@@ -18,7 +18,7 @@ type SecretBackendRoleInitParameters struct {
 	// The unique name of an existing Consul secrets backend mount. Must not begin or end with a /. One of path or backend is required.
 	// The path of the Consul Secret Backend the role belongs to.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/consul/v1alpha1.SecretBackend
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
 	// Reference to a SecretBackend in consul to populate backend.
@@ -172,7 +172,7 @@ type SecretBackendRoleParameters struct {
 	// The unique name of an existing Consul secrets backend mount. Must not begin or end with a /. One of path or backend is required.
 	// The path of the Consul Secret Backend the role belongs to.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/consul/v1alpha1.SecretBackend
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 

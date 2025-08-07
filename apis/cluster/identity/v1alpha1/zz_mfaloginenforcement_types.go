@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type MfaLoginEnforcementInitParameters struct {
@@ -38,7 +38,7 @@ type MfaLoginEnforcementInitParameters struct {
 	// Set of MFA method UUIDs.
 	// Set of MFA method UUIDs.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.MfaDuo
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("method_id",true)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("method_id",true)
 	// +listType=set
 	MfaMethodIds []*string `json:"mfaMethodIds,omitempty" tf:"mfa_method_ids,omitempty"`
 
@@ -138,7 +138,7 @@ type MfaLoginEnforcementParameters struct {
 	// Set of MFA method UUIDs.
 	// Set of MFA method UUIDs.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.MfaDuo
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("method_id",true)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("method_id",true)
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	MfaMethodIds []*string `json:"mfaMethodIds,omitempty" tf:"mfa_method_ids,omitempty"`

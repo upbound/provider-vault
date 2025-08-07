@@ -5,7 +5,7 @@ Copyright 2022 Upbound Inc.
 
 package v1alpha1
 
-import resource "github.com/crossplane/crossplane-runtime/pkg/resource"
+import resource "github.com/crossplane/crossplane-runtime/v2/pkg/resource"
 
 // GetItems of this PolicyList.
 func (l *PolicyList) GetItems() []resource.Managed {

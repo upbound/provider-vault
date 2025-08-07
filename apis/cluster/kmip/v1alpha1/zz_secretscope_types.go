@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type SecretScopeInitParameters struct {
@@ -30,7 +30,7 @@ type SecretScopeInitParameters struct {
 	// not begin or end with a /. Defaults to kmip.
 	// Path where KMIP backend is mounted
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/kmip/v1alpha1.SecretBackend
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
 	// Reference to a SecretBackend in kmip to populate path.
@@ -90,7 +90,7 @@ type SecretScopeParameters struct {
 	// not begin or end with a /. Defaults to kmip.
 	// Path where KMIP backend is mounted
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/kmip/v1alpha1.SecretBackend
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 

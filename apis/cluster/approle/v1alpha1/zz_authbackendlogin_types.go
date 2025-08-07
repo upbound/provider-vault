@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type AuthBackendLoginInitParameters struct {
@@ -18,7 +18,7 @@ type AuthBackendLoginInitParameters struct {
 	// The unique path of the Vault backend to log in with.
 	// Unique name of the auth backend to configure.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/auth/v1alpha1.Backend
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
 	// Reference to a Backend in auth to populate backend.
@@ -39,7 +39,7 @@ type AuthBackendLoginInitParameters struct {
 	// The ID of the role to log in with.
 	// The RoleID to log in with.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/approle/v1alpha1.AuthBackendRole
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("role_id",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("role_id",false)
 	RoleID *string `json:"roleId,omitempty" tf:"role_id,omitempty"`
 
 	// Reference to a AuthBackendRole in approle to populate roleId.
@@ -105,7 +105,7 @@ type AuthBackendLoginParameters struct {
 	// The unique path of the Vault backend to log in with.
 	// Unique name of the auth backend to configure.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/auth/v1alpha1.Backend
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("path",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -128,7 +128,7 @@ type AuthBackendLoginParameters struct {
 	// The ID of the role to log in with.
 	// The RoleID to log in with.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/approle/v1alpha1.AuthBackendRole
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("role_id",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("role_id",false)
 	// +kubebuilder:validation:Optional
 	RoleID *string `json:"roleId,omitempty" tf:"role_id,omitempty"`
 

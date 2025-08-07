@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type GroupAliasInitParameters struct {
@@ -18,7 +18,7 @@ type GroupAliasInitParameters struct {
 	// ID of the group to which this is an alias.
 	// ID of the group to which this is an alias.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.Group
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	CanonicalID *string `json:"canonicalId,omitempty" tf:"canonical_id,omitempty"`
 
 	// Reference to a Group in identity to populate canonicalId.
@@ -32,7 +32,7 @@ type GroupAliasInitParameters struct {
 	// Mount accessor of the authentication backend to which this alias belongs to.
 	// Mount accessor to which this alias belongs to.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/auth/v1alpha1.Backend
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("accessor",true)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("accessor",true)
 	MountAccessor *string `json:"mountAccessor,omitempty" tf:"mount_accessor,omitempty"`
 
 	// Reference to a Backend in auth to populate mountAccessor.
@@ -85,7 +85,7 @@ type GroupAliasParameters struct {
 	// ID of the group to which this is an alias.
 	// ID of the group to which this is an alias.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.Group
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	CanonicalID *string `json:"canonicalId,omitempty" tf:"canonical_id,omitempty"`
 
@@ -100,7 +100,7 @@ type GroupAliasParameters struct {
 	// Mount accessor of the authentication backend to which this alias belongs to.
 	// Mount accessor to which this alias belongs to.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/auth/v1alpha1.Backend
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("accessor",true)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("accessor",true)
 	// +kubebuilder:validation:Optional
 	MountAccessor *string `json:"mountAccessor,omitempty" tf:"mount_accessor,omitempty"`
 

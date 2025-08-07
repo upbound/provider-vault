@@ -5,7 +5,7 @@ Copyright 2022 Upbound Inc.
 
 package v1alpha1
 
-import resource "github.com/crossplane/crossplane-runtime/pkg/resource"
+import resource "github.com/crossplane/crossplane-runtime/v2/pkg/resource"
 
 // GetItems of this AutopilotList.
 func (l *AutopilotList) GetItems() []resource.Managed {

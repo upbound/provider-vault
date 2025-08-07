@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type OidcKeyAllowedClientIDInitParameters struct {
@@ -18,7 +18,7 @@ type OidcKeyAllowedClientIDInitParameters struct {
 	// Client ID to allow usage with the OIDC named key
 	// Role Client ID allowed to use the key for signing.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.OidcRole
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("client_id",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("client_id",false)
 	AllowedClientID *string `json:"allowedClientId,omitempty" tf:"allowed_client_id,omitempty"`
 
 	// Reference to a OidcRole in identity to populate allowedClientId.
@@ -32,7 +32,7 @@ type OidcKeyAllowedClientIDInitParameters struct {
 	// Name of the OIDC Key allow the Client ID.
 	// Name of the key.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.OidcKey
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	KeyName *string `json:"keyName,omitempty" tf:"key_name,omitempty"`
 
 	// Reference to a OidcKey in identity to populate keyName.
@@ -76,7 +76,7 @@ type OidcKeyAllowedClientIDParameters struct {
 	// Client ID to allow usage with the OIDC named key
 	// Role Client ID allowed to use the key for signing.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.OidcRole
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("client_id",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("client_id",false)
 	// +kubebuilder:validation:Optional
 	AllowedClientID *string `json:"allowedClientId,omitempty" tf:"allowed_client_id,omitempty"`
 
@@ -91,7 +91,7 @@ type OidcKeyAllowedClientIDParameters struct {
 	// Name of the OIDC Key allow the Client ID.
 	// Name of the key.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.OidcKey
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	KeyName *string `json:"keyName,omitempty" tf:"key_name,omitempty"`
 
