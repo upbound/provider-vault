@@ -1,0 +1,62 @@
+apiVersion: aws.vault.upbound.io/v1alpha1
+kind: AuthBackendRoleTag
+metadata:
+  annotations:
+    meta.upbound.io/example-id: aws/v1alpha1/authbackendroletag
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: aws
+    instanceId: i-1234567
+    maxTtl: 1h
+    policies:
+    - prod
+    - dev
+    - test
+    roleSelector:
+      matchLabels:
+        testing.upbound.io/example-name: role
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: aws/v1alpha1/authbackendroletag
+  labels:
+    testing.upbound.io/example-name: aws
+  name: aws
+spec:
+  forProvider:
+    path: '%s'
+    type: aws
+
+---
+
+apiVersion: aws.vault.upbound.io/v1alpha1
+kind: AuthBackendRole
+metadata:
+  annotations:
+    meta.upbound.io/example-id: aws/v1alpha1/authbackendroletag
+  labels:
+    testing.upbound.io/example-name: role
+  name: role
+spec:
+  forProvider:
+    authType: ec2
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    bound_account_id: "123456789012"
+    policies:
+    - dev
+    - prod
+    - qa
+    - test
+    role: '%s'
+    roleTag: VaultRoleTag

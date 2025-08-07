@@ -166,6 +166,16 @@ func (in *SecretBackendCAInitParameters) DeepCopyInto(out *SecretBackendCAInitPa
 		*out = new(string)
 		**out = **in
 	}
+	if in.ManagedKeyID != nil {
+		in, out := &in.ManagedKeyID, &out.ManagedKeyID
+		*out = new(string)
+		**out = **in
+	}
+	if in.ManagedKeyName != nil {
+		in, out := &in.ManagedKeyName, &out.ManagedKeyName
+		*out = new(string)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -253,6 +263,16 @@ func (in *SecretBackendCAObservation) DeepCopyInto(out *SecretBackendCAObservati
 		*out = new(string)
 		**out = **in
 	}
+	if in.ManagedKeyID != nil {
+		in, out := &in.ManagedKeyID, &out.ManagedKeyID
+		*out = new(string)
+		**out = **in
+	}
+	if in.ManagedKeyName != nil {
+		in, out := &in.ManagedKeyName, &out.ManagedKeyName
+		*out = new(string)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -305,6 +325,16 @@ func (in *SecretBackendCAParameters) DeepCopyInto(out *SecretBackendCAParameters
 	}
 	if in.KeyType != nil {
 		in, out := &in.KeyType, &out.KeyType
+		*out = new(string)
+		**out = **in
+	}
+	if in.ManagedKeyID != nil {
+		in, out := &in.ManagedKeyID, &out.ManagedKeyID
+		*out = new(string)
+		**out = **in
+	}
+	if in.ManagedKeyName != nil {
+		in, out := &in.ManagedKeyName, &out.ManagedKeyName
 		*out = new(string)
 		**out = **in
 	}

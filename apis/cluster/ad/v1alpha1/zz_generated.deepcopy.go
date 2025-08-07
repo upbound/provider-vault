@@ -58,7 +58,7 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 		*out = new(string)
 		**out = **in
 	}
-	out.BindpassSecretRef = in.BindpassSecretRef
+	in.BindpassSecretRef.DeepCopyInto(&out.BindpassSecretRef)
 	if in.CaseSensitiveNames != nil {
 		in, out := &in.CaseSensitiveNames, &out.CaseSensitiveNames
 		*out = new(bool)
@@ -446,7 +446,7 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	out.BindpassSecretRef = in.BindpassSecretRef
+	in.BindpassSecretRef.DeepCopyInto(&out.BindpassSecretRef)
 	if in.CaseSensitiveNames != nil {
 		in, out := &in.CaseSensitiveNames, &out.CaseSensitiveNames
 		*out = new(bool)

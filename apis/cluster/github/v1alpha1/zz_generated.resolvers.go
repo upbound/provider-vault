@@ -23,6 +23,7 @@ func (mg *Team) ResolveReferences(ctx context.Context, c client.Reader) error {
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
 		Extract:      resource.ExtractResourceID(),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
 		To: reference.To{
@@ -39,6 +40,7 @@ func (mg *Team) ResolveReferences(ctx context.Context, c client.Reader) error {
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
 		Extract:      resource.ExtractResourceID(),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
 		To: reference.To{
@@ -65,6 +67,7 @@ func (mg *User) ResolveReferences(ctx context.Context, c client.Reader) error {
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
 		Extract:      resource.ExtractResourceID(),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
 		To: reference.To{
@@ -81,6 +84,7 @@ func (mg *User) ResolveReferences(ctx context.Context, c client.Reader) error {
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
 		Extract:      resource.ExtractResourceID(),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
 		To: reference.To{

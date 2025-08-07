@@ -23,6 +23,7 @@ func (mg *CloudSecretCreds) ResolveReferences(ctx context.Context, c client.Read
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
 		Extract:      resource.ExtractParamPath("backend", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
 		To: reference.To{
@@ -39,6 +40,7 @@ func (mg *CloudSecretCreds) ResolveReferences(ctx context.Context, c client.Read
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Role),
 		Extract:      resource.ExtractParamPath("name", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.RoleRef,
 		Selector:     mg.Spec.ForProvider.RoleSelector,
 		To: reference.To{
@@ -55,6 +57,7 @@ func (mg *CloudSecretCreds) ResolveReferences(ctx context.Context, c client.Read
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
 		Extract:      resource.ExtractParamPath("backend", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
 		To: reference.To{
@@ -71,6 +74,7 @@ func (mg *CloudSecretCreds) ResolveReferences(ctx context.Context, c client.Read
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Role),
 		Extract:      resource.ExtractParamPath("name", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.RoleRef,
 		Selector:     mg.Spec.InitProvider.RoleSelector,
 		To: reference.To{
@@ -97,6 +101,7 @@ func (mg *CloudSecretRole) ResolveReferences(ctx context.Context, c client.Reade
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
 		Extract:      resource.ExtractParamPath("backend", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
 		To: reference.To{
@@ -113,6 +118,7 @@ func (mg *CloudSecretRole) ResolveReferences(ctx context.Context, c client.Reade
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
 		Extract:      resource.ExtractParamPath("backend", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
 		To: reference.To{

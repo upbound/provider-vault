@@ -921,6 +921,11 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 		*out = new(bool)
 		**out = **in
 	}
+	if in.ForceNoCache != nil {
+		in, out := &in.ForceNoCache, &out.ForceNoCache
+		*out = new(bool)
+		**out = **in
+	}
 	if in.IdentityTokenKey != nil {
 		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
 		*out = new(string)
@@ -1130,6 +1135,11 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 		*out = new(bool)
 		**out = **in
 	}
+	if in.ForceNoCache != nil {
+		in, out := &in.ForceNoCache, &out.ForceNoCache
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
 		*out = new(string)
@@ -1299,6 +1309,11 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 	}
 	if in.ExternalEntropyAccess != nil {
 		in, out := &in.ExternalEntropyAccess, &out.ExternalEntropyAccess
+		*out = new(bool)
+		**out = **in
+	}
+	if in.ForceNoCache != nil {
+		in, out := &in.ForceNoCache, &out.ForceNoCache
 		*out = new(bool)
 		**out = **in
 	}

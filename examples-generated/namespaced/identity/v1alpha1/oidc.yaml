@@ -1,0 +1,12 @@
+apiVersion: identity.vault.m.upbound.io/v1alpha1
+kind: Oidc
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/oidc
+  labels:
+    testing.upbound.io/example-name: server
+  name: server
+  namespace: upbound-system
+spec:
+  forProvider:
+    issuer: https://www.acme.com

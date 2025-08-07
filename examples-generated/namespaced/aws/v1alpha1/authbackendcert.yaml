@@ -1,0 +1,35 @@
+apiVersion: aws.vault.m.upbound.io/v1alpha1
+kind: AuthBackendCert
+metadata:
+  annotations:
+    meta.upbound.io/example-id: aws/v1alpha1/authbackendcert
+  labels:
+    testing.upbound.io/example-name: cert
+  name: cert
+  namespace: upbound-system
+spec:
+  forProvider:
+    awsPublicCert: |-
+      ${file("${path.module}/aws_public_key.crt)"
+        type            = "pkcs7"
+      }
+      }
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: aws
+    certName: my-cert
+
+---
+
+apiVersion: auth.vault.m.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: aws/v1alpha1/authbackendcert
+  labels:
+    testing.upbound.io/example-name: aws
+  name: aws
+  namespace: upbound-system
+spec:
+  forProvider:
+    type: aws

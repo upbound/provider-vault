@@ -45,6 +45,9 @@ type SecretBackendInitParameters struct {
 	// Enable the secrets engine to access Vault's external entropy source
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
 
+	// If set to true, disables caching.
+	ForceNoCache *bool `json:"forceNoCache,omitempty" tf:"force_no_cache,omitempty"`
+
 	// The key to use for signing plugin workload identity tokens
 	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
 
@@ -134,6 +137,9 @@ type SecretBackendObservation struct {
 
 	// Enable the secrets engine to access Vault's external entropy source
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
+
+	// If set to true, disables caching.
+	ForceNoCache *bool `json:"forceNoCache,omitempty" tf:"force_no_cache,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -226,6 +232,10 @@ type SecretBackendParameters struct {
 	// Enable the secrets engine to access Vault's external entropy source
 	// +kubebuilder:validation:Optional
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
+
+	// If set to true, disables caching.
+	// +kubebuilder:validation:Optional
+	ForceNoCache *bool `json:"forceNoCache,omitempty" tf:"force_no_cache,omitempty"`
 
 	// The key to use for signing plugin workload identity tokens
 	// +kubebuilder:validation:Optional

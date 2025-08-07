@@ -24,6 +24,7 @@ func (mg *AuthBackendLogin) ResolveReferences(ctx context.Context, c client.Read
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
 		To: reference.To{
@@ -40,6 +41,7 @@ func (mg *AuthBackendLogin) ResolveReferences(ctx context.Context, c client.Read
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.RoleID),
 		Extract:      resource.ExtractParamPath("role_id", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.RoleIDRef,
 		Selector:     mg.Spec.ForProvider.RoleIDSelector,
 		To: reference.To{
@@ -56,6 +58,7 @@ func (mg *AuthBackendLogin) ResolveReferences(ctx context.Context, c client.Read
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
 		To: reference.To{
@@ -72,6 +75,7 @@ func (mg *AuthBackendLogin) ResolveReferences(ctx context.Context, c client.Read
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.RoleID),
 		Extract:      resource.ExtractParamPath("role_id", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.RoleIDRef,
 		Selector:     mg.Spec.InitProvider.RoleIDSelector,
 		To: reference.To{
@@ -98,6 +102,7 @@ func (mg *AuthBackendRole) ResolveReferences(ctx context.Context, c client.Reade
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
 		To: reference.To{
@@ -114,6 +119,7 @@ func (mg *AuthBackendRole) ResolveReferences(ctx context.Context, c client.Reade
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
 		To: reference.To{
@@ -140,6 +146,7 @@ func (mg *AuthBackendRoleSecretID) ResolveReferences(ctx context.Context, c clie
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
 		To: reference.To{
@@ -156,6 +163,7 @@ func (mg *AuthBackendRoleSecretID) ResolveReferences(ctx context.Context, c clie
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.RoleName),
 		Extract:      resource.ExtractParamPath("role_name", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.RoleNameRef,
 		Selector:     mg.Spec.ForProvider.RoleNameSelector,
 		To: reference.To{
@@ -172,6 +180,7 @@ func (mg *AuthBackendRoleSecretID) ResolveReferences(ctx context.Context, c clie
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
 		To: reference.To{
@@ -188,6 +197,7 @@ func (mg *AuthBackendRoleSecretID) ResolveReferences(ctx context.Context, c clie
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.RoleName),
 		Extract:      resource.ExtractParamPath("role_name", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.RoleNameRef,
 		Selector:     mg.Spec.InitProvider.RoleNameSelector,
 		To: reference.To{

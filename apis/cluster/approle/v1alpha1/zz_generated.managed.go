@@ -27,11 +27,6 @@ func (mg *AuthBackendLogin) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-// GetPublishConnectionDetailsTo of this AuthBackendLogin.
-func (mg *AuthBackendLogin) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
-	return mg.Spec.PublishConnectionDetailsTo
-}
-
 // GetWriteConnectionSecretToReference of this AuthBackendLogin.
 func (mg *AuthBackendLogin) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
@@ -55,11 +50,6 @@ func (mg *AuthBackendLogin) SetManagementPolicies(r xpv1.ManagementPolicies) {
 // SetProviderConfigReference of this AuthBackendLogin.
 func (mg *AuthBackendLogin) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-// SetPublishConnectionDetailsTo of this AuthBackendLogin.
-func (mg *AuthBackendLogin) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
-	mg.Spec.PublishConnectionDetailsTo = r
 }
 
 // SetWriteConnectionSecretToReference of this AuthBackendLogin.
@@ -87,11 +77,6 @@ func (mg *AuthBackendRole) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-// GetPublishConnectionDetailsTo of this AuthBackendRole.
-func (mg *AuthBackendRole) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
-	return mg.Spec.PublishConnectionDetailsTo
-}
-
 // GetWriteConnectionSecretToReference of this AuthBackendRole.
 func (mg *AuthBackendRole) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
@@ -115,11 +100,6 @@ func (mg *AuthBackendRole) SetManagementPolicies(r xpv1.ManagementPolicies) {
 // SetProviderConfigReference of this AuthBackendRole.
 func (mg *AuthBackendRole) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-// SetPublishConnectionDetailsTo of this AuthBackendRole.
-func (mg *AuthBackendRole) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
-	mg.Spec.PublishConnectionDetailsTo = r
 }
 
 // SetWriteConnectionSecretToReference of this AuthBackendRole.
@@ -147,11 +127,6 @@ func (mg *AuthBackendRoleSecretID) GetProviderConfigReference() *xpv1.Reference 
 	return mg.Spec.ProviderConfigReference
 }
 
-// GetPublishConnectionDetailsTo of this AuthBackendRoleSecretID.
-func (mg *AuthBackendRoleSecretID) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
-	return mg.Spec.PublishConnectionDetailsTo
-}
-
 // GetWriteConnectionSecretToReference of this AuthBackendRoleSecretID.
 func (mg *AuthBackendRoleSecretID) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
@@ -175,11 +150,6 @@ func (mg *AuthBackendRoleSecretID) SetManagementPolicies(r xpv1.ManagementPolici
 // SetProviderConfigReference of this AuthBackendRoleSecretID.
 func (mg *AuthBackendRoleSecretID) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-// SetPublishConnectionDetailsTo of this AuthBackendRoleSecretID.
-func (mg *AuthBackendRoleSecretID) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
-	mg.Spec.PublishConnectionDetailsTo = r
 }
 
 // SetWriteConnectionSecretToReference of this AuthBackendRoleSecretID.

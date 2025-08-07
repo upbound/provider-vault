@@ -19,6 +19,19 @@ type SecretBackendInitParameters struct {
 	// Specifies the address of the Consul instance, provided as "host:port" like "127.0.0.1:8500".
 	Address *string `json:"address,omitempty" tf:"address,omitempty"`
 
+	// List of managed key registry entry names that the mount in question is allowed to access
+	// +listType=set
+	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
+
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
+
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
+
 	// Denotes that the resource is used to bootstrap the Consul ACL system.
 	// Denotes a backend resource that is used to bootstrap the Consul ACL system. Only one resource may be used to bootstrap.
 	Bootstrap *bool `json:"bootstrap,omitempty" tf:"bootstrap,omitempty"`
@@ -41,6 +54,9 @@ type SecretBackendInitParameters struct {
 	// Default lease duration for secrets in seconds
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
 
+	// List of headers to allow and pass from the request to the plugin
+	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
+
 	// A human-friendly description for this backend.
 	// Human-friendly description of the mount for the backend.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -49,6 +65,18 @@ type SecretBackendInitParameters struct {
 	// See here for more info on Mount Migration
 	// If set, opts out of mount migration on path updates.
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
+
+	// Enable the secrets engine to access Vault's external entropy source
+	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
+
+	// If set to true, disables caching.
+	ForceNoCache *bool `json:"forceNoCache,omitempty" tf:"force_no_cache,omitempty"`
+
+	// The key to use for signing plugin workload identity tokens
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
+	// Specifies whether to show this mount in the UI-specific listing endpoint
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
 
 	// Specifies if the secret backend is local only.
 	// Specifies if the secret backend is local only
@@ -66,14 +94,27 @@ type SecretBackendInitParameters struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Specifies mount type specific options that are passed to the backend
+	// +mapType=granular
+	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
+
 	// The unique location this backend should be mounted at. Must not begin or end with a /. Defaults
 	// to consul.
 	// Unique name of the Vault Consul mount to configure
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
+
 	// Specifies the URL scheme to use. Defaults to http.
 	// Specifies the URL scheme to use. Defaults to "http".
 	Scheme *string `json:"scheme,omitempty" tf:"scheme,omitempty"`
+
+	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
+	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
 
 	// The Consul management token this backend should use to issue new tokens. This field is required
 	// when bootstrap is false.
@@ -83,9 +124,25 @@ type SecretBackendInitParameters struct {
 
 type SecretBackendObservation struct {
 
+	// Accessor of the mount
+	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
+
 	// Specifies the address of the Consul instance, provided as "host:port" like "127.0.0.1:8500".
 	// Specifies the address of the Consul instance, provided as "host:port" like "127.0.0.1:8500".
 	Address *string `json:"address,omitempty" tf:"address,omitempty"`
+
+	// List of managed key registry entry names that the mount in question is allowed to access
+	// +listType=set
+	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
+
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
+
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
 
 	// Denotes that the resource is used to bootstrap the Consul ACL system.
 	// Denotes a backend resource that is used to bootstrap the Consul ACL system. Only one resource may be used to bootstrap.
@@ -99,6 +156,9 @@ type SecretBackendObservation struct {
 	// Default lease duration for secrets in seconds
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
 
+	// List of headers to allow and pass from the request to the plugin
+	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
+
 	// A human-friendly description for this backend.
 	// Human-friendly description of the mount for the backend.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -108,7 +168,19 @@ type SecretBackendObservation struct {
 	// If set, opts out of mount migration on path updates.
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
+	// Enable the secrets engine to access Vault's external entropy source
+	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
+
+	// If set to true, disables caching.
+	ForceNoCache *bool `json:"forceNoCache,omitempty" tf:"force_no_cache,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The key to use for signing plugin workload identity tokens
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
+	// Specifies whether to show this mount in the UI-specific listing endpoint
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
 
 	// Specifies if the secret backend is local only.
 	// Specifies if the secret backend is local only
@@ -126,14 +198,27 @@ type SecretBackendObservation struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Specifies mount type specific options that are passed to the backend
+	// +mapType=granular
+	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
+
 	// The unique location this backend should be mounted at. Must not begin or end with a /. Defaults
 	// to consul.
 	// Unique name of the Vault Consul mount to configure
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
+
 	// Specifies the URL scheme to use. Defaults to http.
 	// Specifies the URL scheme to use. Defaults to "http".
 	Scheme *string `json:"scheme,omitempty" tf:"scheme,omitempty"`
+
+	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
+	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
 }
 
 type SecretBackendParameters struct {
@@ -142,6 +227,23 @@ type SecretBackendParameters struct {
 	// Specifies the address of the Consul instance, provided as "host:port" like "127.0.0.1:8500".
 	// +kubebuilder:validation:Optional
 	Address *string `json:"address,omitempty" tf:"address,omitempty"`
+
+	// List of managed key registry entry names that the mount in question is allowed to access
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	// +kubebuilder:validation:Optional
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
+
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
+	// +kubebuilder:validation:Optional
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
+
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
+	// +kubebuilder:validation:Optional
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
 
 	// Denotes that the resource is used to bootstrap the Consul ACL system.
 	// Denotes a backend resource that is used to bootstrap the Consul ACL system. Only one resource may be used to bootstrap.
@@ -170,6 +272,10 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
 
+	// List of headers to allow and pass from the request to the plugin
+	// +kubebuilder:validation:Optional
+	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
+
 	// A human-friendly description for this backend.
 	// Human-friendly description of the mount for the backend.
 	// +kubebuilder:validation:Optional
@@ -180,6 +286,22 @@ type SecretBackendParameters struct {
 	// If set, opts out of mount migration on path updates.
 	// +kubebuilder:validation:Optional
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
+
+	// Enable the secrets engine to access Vault's external entropy source
+	// +kubebuilder:validation:Optional
+	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
+
+	// If set to true, disables caching.
+	// +kubebuilder:validation:Optional
+	ForceNoCache *bool `json:"forceNoCache,omitempty" tf:"force_no_cache,omitempty"`
+
+	// The key to use for signing plugin workload identity tokens
+	// +kubebuilder:validation:Optional
+	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
+
+	// Specifies whether to show this mount in the UI-specific listing endpoint
+	// +kubebuilder:validation:Optional
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
 
 	// Specifies if the secret backend is local only.
 	// Specifies if the secret backend is local only
@@ -200,16 +322,33 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Specifies mount type specific options that are passed to the backend
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	// +kubebuilder:validation:Optional
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
+
 	// The unique location this backend should be mounted at. Must not begin or end with a /. Defaults
 	// to consul.
 	// Unique name of the Vault Consul mount to configure
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
+
 	// Specifies the URL scheme to use. Defaults to http.
 	// Specifies the URL scheme to use. Defaults to "http".
 	// +kubebuilder:validation:Optional
 	Scheme *string `json:"scheme,omitempty" tf:"scheme,omitempty"`
+
+	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
+	// +kubebuilder:validation:Optional
+	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
 
 	// The Consul management token this backend should use to issue new tokens. This field is required
 	// when bootstrap is false.

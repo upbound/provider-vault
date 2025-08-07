@@ -50,6 +50,9 @@ type MountInitParameters struct {
 	// Enable the secrets engine to access Vault's external entropy source
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
 
+	// If set to true, disables caching.
+	ForceNoCache *bool `json:"forceNoCache,omitempty" tf:"force_no_cache,omitempty"`
+
 	// The key to use for signing plugin workload identity tokens. If
 	// not provided, this will default to Vault's OIDC default key.
 	// The key to use for signing plugin workload identity tokens
@@ -144,6 +147,9 @@ type MountObservation struct {
 	// Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault's external entropy source
 	// Enable the secrets engine to access Vault's external entropy source
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
+
+	// If set to true, disables caching.
+	ForceNoCache *bool `json:"forceNoCache,omitempty" tf:"force_no_cache,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -245,6 +251,10 @@ type MountParameters struct {
 	// Enable the secrets engine to access Vault's external entropy source
 	// +kubebuilder:validation:Optional
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
+
+	// If set to true, disables caching.
+	// +kubebuilder:validation:Optional
+	ForceNoCache *bool `json:"forceNoCache,omitempty" tf:"force_no_cache,omitempty"`
 
 	// The key to use for signing plugin workload identity tokens. If
 	// not provided, this will default to Vault's OIDC default key.

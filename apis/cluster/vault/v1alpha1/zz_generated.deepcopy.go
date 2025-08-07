@@ -380,6 +380,11 @@ func (in *MountInitParameters) DeepCopyInto(out *MountInitParameters) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.ForceNoCache != nil {
+		in, out := &in.ForceNoCache, &out.ForceNoCache
+		*out = new(bool)
+		**out = **in
+	}
 	if in.IdentityTokenKey != nil {
 		in, out := &in.IdentityTokenKey, &out.IdentityTokenKey
 		*out = new(string)
@@ -574,6 +579,11 @@ func (in *MountObservation) DeepCopyInto(out *MountObservation) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.ForceNoCache != nil {
+		in, out := &in.ForceNoCache, &out.ForceNoCache
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
 		*out = new(string)
@@ -733,6 +743,11 @@ func (in *MountParameters) DeepCopyInto(out *MountParameters) {
 	}
 	if in.ExternalEntropyAccess != nil {
 		in, out := &in.ExternalEntropyAccess, &out.ExternalEntropyAccess
+		*out = new(bool)
+		**out = **in
+	}
+	if in.ForceNoCache != nil {
+		in, out := &in.ForceNoCache, &out.ForceNoCache
 		*out = new(bool)
 		**out = **in
 	}

@@ -1485,6 +1485,9 @@ type SecretsMountInitParameters struct {
 	// Enable the secrets engine to access Vault's external entropy source
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
 
+	// If set to true, disables caching.
+	ForceNoCache *bool `json:"forceNoCache,omitempty" tf:"force_no_cache,omitempty"`
+
 	// A nested block containing configuration options for SAP HanaDB connections.
 	// See
 	// Connection parameters for the hana-database-plugin plugin.
@@ -3763,6 +3766,9 @@ type SecretsMountObservation struct {
 	// Enable the secrets engine to access Vault's external entropy source
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
 
+	// If set to true, disables caching.
+	ForceNoCache *bool `json:"forceNoCache,omitempty" tf:"force_no_cache,omitempty"`
+
 	// A nested block containing configuration options for SAP HanaDB connections.
 	// See
 	// Connection parameters for the hana-database-plugin plugin.
@@ -4243,6 +4249,10 @@ type SecretsMountParameters struct {
 	// Enable the secrets engine to access Vault's external entropy source
 	// +kubebuilder:validation:Optional
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
+
+	// If set to true, disables caching.
+	// +kubebuilder:validation:Optional
+	ForceNoCache *bool `json:"forceNoCache,omitempty" tf:"force_no_cache,omitempty"`
 
 	// A nested block containing configuration options for SAP HanaDB connections.
 	// See

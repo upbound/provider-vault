@@ -23,6 +23,7 @@ func (mg *VaultNamespace) ResolveReferences(ctx context.Context, c client.Reader
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Namespace),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.NamespaceRef,
 		Selector:     mg.Spec.ForProvider.NamespaceSelector,
 		To: reference.To{
@@ -39,6 +40,7 @@ func (mg *VaultNamespace) ResolveReferences(ctx context.Context, c client.Reader
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Namespace),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.NamespaceRef,
 		Selector:     mg.Spec.InitProvider.NamespaceSelector,
 		To: reference.To{

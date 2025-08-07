@@ -1,0 +1,49 @@
+apiVersion: identity.vault.upbound.io/v1alpha1
+kind: GroupAlias
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/groupalias
+  labels:
+    testing.upbound.io/example-name: group-alias
+  name: group-alias
+spec:
+  forProvider:
+    canonicalIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: group
+    mountAccessorSelector:
+      matchLabels:
+        testing.upbound.io/example-name: github
+    name: Github_Team_Slug
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/groupalias
+  labels:
+    testing.upbound.io/example-name: github
+  name: github
+spec:
+  forProvider:
+    path: github
+    type: github
+
+---
+
+apiVersion: identity.vault.upbound.io/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/groupalias
+  labels:
+    testing.upbound.io/example-name: group
+  name: group
+spec:
+  forProvider:
+    name: test
+    policies:
+    - test
+    type: external

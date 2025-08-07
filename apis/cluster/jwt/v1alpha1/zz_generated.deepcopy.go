@@ -68,6 +68,28 @@ func (in *AuthBackendInitParameters) DeepCopyInto(out *AuthBackendInitParameters
 		*out = new(string)
 		**out = **in
 	}
+	if in.JwksPairs != nil {
+		in, out := &in.JwksPairs, &out.JwksPairs
+		*out = make([]map[string]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = make(map[string]*string, len(*in))
+				for key, val := range *in {
+					var outVal *string
+					if val == nil {
+						(*out)[key] = nil
+					} else {
+						inVal := (*in)[key]
+						in, out := &inVal, &outVal
+						*out = new(string)
+						**out = **in
+					}
+					(*out)[key] = outVal
+				}
+			}
+		}
+	}
 	if in.JwksURL != nil {
 		in, out := &in.JwksURL, &out.JwksURL
 		*out = new(string)
@@ -261,6 +283,28 @@ func (in *AuthBackendObservation) DeepCopyInto(out *AuthBackendObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.JwksPairs != nil {
+		in, out := &in.JwksPairs, &out.JwksPairs
+		*out = make([]map[string]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = make(map[string]*string, len(*in))
+				for key, val := range *in {
+					var outVal *string
+					if val == nil {
+						(*out)[key] = nil
+					} else {
+						inVal := (*in)[key]
+						in, out := &inVal, &outVal
+						*out = new(string)
+						**out = **in
+					}
+					(*out)[key] = outVal
+				}
+			}
+		}
+	}
 	if in.JwksURL != nil {
 		in, out := &in.JwksURL, &out.JwksURL
 		*out = new(string)
@@ -406,6 +450,28 @@ func (in *AuthBackendParameters) DeepCopyInto(out *AuthBackendParameters) {
 		in, out := &in.JwksCAPem, &out.JwksCAPem
 		*out = new(string)
 		**out = **in
+	}
+	if in.JwksPairs != nil {
+		in, out := &in.JwksPairs, &out.JwksPairs
+		*out = make([]map[string]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = make(map[string]*string, len(*in))
+				for key, val := range *in {
+					var outVal *string
+					if val == nil {
+						(*out)[key] = nil
+					} else {
+						inVal := (*in)[key]
+						in, out := &inVal, &outVal
+						*out = new(string)
+						**out = **in
+					}
+					(*out)[key] = outVal
+				}
+			}
+		}
 	}
 	if in.JwksURL != nil {
 		in, out := &in.JwksURL, &out.JwksURL

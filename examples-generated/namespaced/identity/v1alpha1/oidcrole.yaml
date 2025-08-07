@@ -1,0 +1,33 @@
+apiVersion: identity.vault.m.upbound.io/v1alpha1
+kind: OidcRole
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/oidcrole
+  labels:
+    testing.upbound.io/example-name: role
+  name: role
+  namespace: upbound-system
+spec:
+  forProvider:
+    keySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    name: role
+
+---
+
+apiVersion: identity.vault.m.upbound.io/v1alpha1
+kind: OidcKey
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/oidcrole
+  labels:
+    testing.upbound.io/example-name: key
+  name: key
+  namespace: upbound-system
+spec:
+  forProvider:
+    algorithm: RS256
+    allowedClientIds:
+    - ${vault_identity_oidc_role.role.client_id}
+    name: ${var.key}

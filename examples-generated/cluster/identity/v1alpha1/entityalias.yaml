@@ -1,0 +1,13 @@
+apiVersion: identity.vault.upbound.io/v1alpha1
+kind: EntityAlias
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/entityalias
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    canonicalId: 49877D63-07AD-4B85-BDA8-B61626C477E8
+    mountAccessor: token_1f2bd5
+    name: user_1

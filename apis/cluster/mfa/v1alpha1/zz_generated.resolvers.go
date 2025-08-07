@@ -24,6 +24,7 @@ func (mg *Duo) ResolveReferences(ctx context.Context, c client.Reader) error {
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.MountAccessor),
 		Extract:      resource.ExtractParamPath("accessor", true),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.MountAccessorRef,
 		Selector:     mg.Spec.ForProvider.MountAccessorSelector,
 		To: reference.To{
@@ -40,6 +41,7 @@ func (mg *Duo) ResolveReferences(ctx context.Context, c client.Reader) error {
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.MountAccessor),
 		Extract:      resource.ExtractParamPath("accessor", true),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.MountAccessorRef,
 		Selector:     mg.Spec.InitProvider.MountAccessorSelector,
 		To: reference.To{
@@ -66,6 +68,7 @@ func (mg *Okta) ResolveReferences(ctx context.Context, c client.Reader) error {
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.MountAccessor),
 		Extract:      resource.ExtractParamPath("accessor", true),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.MountAccessorRef,
 		Selector:     mg.Spec.ForProvider.MountAccessorSelector,
 		To: reference.To{
@@ -82,6 +85,7 @@ func (mg *Okta) ResolveReferences(ctx context.Context, c client.Reader) error {
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.MountAccessor),
 		Extract:      resource.ExtractParamPath("accessor", true),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.MountAccessorRef,
 		Selector:     mg.Spec.InitProvider.MountAccessorSelector,
 		To: reference.To{
@@ -108,6 +112,7 @@ func (mg *Pingid) ResolveReferences(ctx context.Context, c client.Reader) error 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.MountAccessor),
 		Extract:      resource.ExtractParamPath("accessor", true),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.MountAccessorRef,
 		Selector:     mg.Spec.ForProvider.MountAccessorSelector,
 		To: reference.To{
@@ -124,6 +129,7 @@ func (mg *Pingid) ResolveReferences(ctx context.Context, c client.Reader) error 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.MountAccessor),
 		Extract:      resource.ExtractParamPath("accessor", true),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.MountAccessorRef,
 		Selector:     mg.Spec.InitProvider.MountAccessorSelector,
 		To: reference.To{

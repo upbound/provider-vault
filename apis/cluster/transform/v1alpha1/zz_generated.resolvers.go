@@ -24,6 +24,7 @@ func (mg *Alphabet) ResolveReferences(ctx context.Context, c client.Reader) erro
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Path),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.PathRef,
 		Selector:     mg.Spec.ForProvider.PathSelector,
 		To: reference.To{
@@ -40,6 +41,7 @@ func (mg *Alphabet) ResolveReferences(ctx context.Context, c client.Reader) erro
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Path),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.PathRef,
 		Selector:     mg.Spec.InitProvider.PathSelector,
 		To: reference.To{
@@ -66,6 +68,7 @@ func (mg *Role) ResolveReferences(ctx context.Context, c client.Reader) error {
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Path),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.PathRef,
 		Selector:     mg.Spec.ForProvider.PathSelector,
 		To: reference.To{
@@ -82,6 +85,7 @@ func (mg *Role) ResolveReferences(ctx context.Context, c client.Reader) error {
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Path),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.PathRef,
 		Selector:     mg.Spec.InitProvider.PathSelector,
 		To: reference.To{
@@ -108,6 +112,7 @@ func (mg *Template) ResolveReferences(ctx context.Context, c client.Reader) erro
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Path),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.PathRef,
 		Selector:     mg.Spec.ForProvider.PathSelector,
 		To: reference.To{
@@ -124,6 +129,7 @@ func (mg *Template) ResolveReferences(ctx context.Context, c client.Reader) erro
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Path),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.PathRef,
 		Selector:     mg.Spec.InitProvider.PathSelector,
 		To: reference.To{
@@ -150,6 +156,7 @@ func (mg *Transformation) ResolveReferences(ctx context.Context, c client.Reader
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Path),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.PathRef,
 		Selector:     mg.Spec.ForProvider.PathSelector,
 		To: reference.To{
@@ -166,6 +173,7 @@ func (mg *Transformation) ResolveReferences(ctx context.Context, c client.Reader
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Path),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.PathRef,
 		Selector:     mg.Spec.InitProvider.PathSelector,
 		To: reference.To{

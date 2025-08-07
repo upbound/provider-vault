@@ -23,6 +23,7 @@ func (mg *SecretRole) ResolveReferences(ctx context.Context, c client.Reader) er
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Path),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.PathRef,
 		Selector:     mg.Spec.ForProvider.PathSelector,
 		To: reference.To{
@@ -39,6 +40,7 @@ func (mg *SecretRole) ResolveReferences(ctx context.Context, c client.Reader) er
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Scope),
 		Extract:      resource.ExtractParamPath("scope", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.ScopeRef,
 		Selector:     mg.Spec.ForProvider.ScopeSelector,
 		To: reference.To{
@@ -55,6 +57,7 @@ func (mg *SecretRole) ResolveReferences(ctx context.Context, c client.Reader) er
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Path),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.PathRef,
 		Selector:     mg.Spec.InitProvider.PathSelector,
 		To: reference.To{
@@ -71,6 +74,7 @@ func (mg *SecretRole) ResolveReferences(ctx context.Context, c client.Reader) er
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Scope),
 		Extract:      resource.ExtractParamPath("scope", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.ScopeRef,
 		Selector:     mg.Spec.InitProvider.ScopeSelector,
 		To: reference.To{
@@ -97,6 +101,7 @@ func (mg *SecretScope) ResolveReferences(ctx context.Context, c client.Reader) e
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Path),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.PathRef,
 		Selector:     mg.Spec.ForProvider.PathSelector,
 		To: reference.To{
@@ -113,6 +118,7 @@ func (mg *SecretScope) ResolveReferences(ctx context.Context, c client.Reader) e
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Path),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.PathRef,
 		Selector:     mg.Spec.InitProvider.PathSelector,
 		To: reference.To{

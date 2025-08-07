@@ -24,6 +24,7 @@ func (mg *SecretBackendCert) ResolveReferences(ctx context.Context, c client.Rea
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
 		To: reference.To{
@@ -40,6 +41,7 @@ func (mg *SecretBackendCert) ResolveReferences(ctx context.Context, c client.Rea
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Name),
 		Extract:      resource.ExtractParamPath("name", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.NameRef,
 		Selector:     mg.Spec.ForProvider.NameSelector,
 		To: reference.To{
@@ -56,6 +58,7 @@ func (mg *SecretBackendCert) ResolveReferences(ctx context.Context, c client.Rea
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
 		To: reference.To{
@@ -72,6 +75,7 @@ func (mg *SecretBackendCert) ResolveReferences(ctx context.Context, c client.Rea
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Name),
 		Extract:      resource.ExtractParamPath("name", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.NameRef,
 		Selector:     mg.Spec.InitProvider.NameSelector,
 		To: reference.To{
@@ -98,6 +102,7 @@ func (mg *SecretBackendConfigCA) ResolveReferences(ctx context.Context, c client
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
 		To: reference.To{
@@ -114,6 +119,7 @@ func (mg *SecretBackendConfigCA) ResolveReferences(ctx context.Context, c client
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
 		To: reference.To{
@@ -140,6 +146,7 @@ func (mg *SecretBackendConfigUrls) ResolveReferences(ctx context.Context, c clie
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
 		To: reference.To{
@@ -156,6 +163,7 @@ func (mg *SecretBackendConfigUrls) ResolveReferences(ctx context.Context, c clie
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
 		To: reference.To{
@@ -182,6 +190,7 @@ func (mg *SecretBackendCrlConfig) ResolveReferences(ctx context.Context, c clien
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
 		To: reference.To{
@@ -198,6 +207,7 @@ func (mg *SecretBackendCrlConfig) ResolveReferences(ctx context.Context, c clien
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
 		To: reference.To{
@@ -224,6 +234,7 @@ func (mg *SecretBackendIntermediateCertRequest) ResolveReferences(ctx context.Co
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
 		To: reference.To{
@@ -240,6 +251,7 @@ func (mg *SecretBackendIntermediateCertRequest) ResolveReferences(ctx context.Co
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
 		To: reference.To{
@@ -266,6 +278,7 @@ func (mg *SecretBackendIntermediateSetSigned) ResolveReferences(ctx context.Cont
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
 		To: reference.To{
@@ -282,6 +295,7 @@ func (mg *SecretBackendIntermediateSetSigned) ResolveReferences(ctx context.Cont
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Certificate),
 		Extract:      resource.ExtractParamPath("certificate", true),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.CertificateRef,
 		Selector:     mg.Spec.ForProvider.CertificateSelector,
 		To: reference.To{
@@ -298,6 +312,7 @@ func (mg *SecretBackendIntermediateSetSigned) ResolveReferences(ctx context.Cont
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
 		To: reference.To{
@@ -314,6 +329,7 @@ func (mg *SecretBackendIntermediateSetSigned) ResolveReferences(ctx context.Cont
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Certificate),
 		Extract:      resource.ExtractParamPath("certificate", true),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.CertificateRef,
 		Selector:     mg.Spec.InitProvider.CertificateSelector,
 		To: reference.To{
@@ -340,6 +356,7 @@ func (mg *SecretBackendRole) ResolveReferences(ctx context.Context, c client.Rea
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
 		To: reference.To{
@@ -356,6 +373,7 @@ func (mg *SecretBackendRole) ResolveReferences(ctx context.Context, c client.Rea
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
 		To: reference.To{
@@ -382,6 +400,7 @@ func (mg *SecretBackendRootCert) ResolveReferences(ctx context.Context, c client
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
 		To: reference.To{
@@ -398,6 +417,7 @@ func (mg *SecretBackendRootCert) ResolveReferences(ctx context.Context, c client
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
 		To: reference.To{
@@ -424,6 +444,7 @@ func (mg *SecretBackendSign) ResolveReferences(ctx context.Context, c client.Rea
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.BackendRef,
 		Selector:     mg.Spec.ForProvider.BackendSelector,
 		To: reference.To{
@@ -440,6 +461,7 @@ func (mg *SecretBackendSign) ResolveReferences(ctx context.Context, c client.Rea
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Name),
 		Extract:      resource.ExtractParamPath("name", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.NameRef,
 		Selector:     mg.Spec.ForProvider.NameSelector,
 		To: reference.To{
@@ -456,6 +478,7 @@ func (mg *SecretBackendSign) ResolveReferences(ctx context.Context, c client.Rea
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.BackendRef,
 		Selector:     mg.Spec.InitProvider.BackendSelector,
 		To: reference.To{
@@ -472,6 +495,7 @@ func (mg *SecretBackendSign) ResolveReferences(ctx context.Context, c client.Rea
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Name),
 		Extract:      resource.ExtractParamPath("name", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.NameRef,
 		Selector:     mg.Spec.InitProvider.NameSelector,
 		To: reference.To{

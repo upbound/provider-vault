@@ -24,6 +24,7 @@ func (mg *EntityPolicies) ResolveReferences(ctx context.Context, c client.Reader
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.EntityID),
 		Extract:      resource.ExtractResourceID(),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.EntityIDRef,
 		Selector:     mg.Spec.ForProvider.EntityIDSelector,
 		To: reference.To{
@@ -40,6 +41,7 @@ func (mg *EntityPolicies) ResolveReferences(ctx context.Context, c client.Reader
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.EntityID),
 		Extract:      resource.ExtractResourceID(),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.EntityIDRef,
 		Selector:     mg.Spec.InitProvider.EntityIDSelector,
 		To: reference.To{
@@ -66,6 +68,7 @@ func (mg *GroupAlias) ResolveReferences(ctx context.Context, c client.Reader) er
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.CanonicalID),
 		Extract:      resource.ExtractResourceID(),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.CanonicalIDRef,
 		Selector:     mg.Spec.ForProvider.CanonicalIDSelector,
 		To: reference.To{
@@ -82,6 +85,7 @@ func (mg *GroupAlias) ResolveReferences(ctx context.Context, c client.Reader) er
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.MountAccessor),
 		Extract:      resource.ExtractParamPath("accessor", true),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.MountAccessorRef,
 		Selector:     mg.Spec.ForProvider.MountAccessorSelector,
 		To: reference.To{
@@ -98,6 +102,7 @@ func (mg *GroupAlias) ResolveReferences(ctx context.Context, c client.Reader) er
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.CanonicalID),
 		Extract:      resource.ExtractResourceID(),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.CanonicalIDRef,
 		Selector:     mg.Spec.InitProvider.CanonicalIDSelector,
 		To: reference.To{
@@ -114,6 +119,7 @@ func (mg *GroupAlias) ResolveReferences(ctx context.Context, c client.Reader) er
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.MountAccessor),
 		Extract:      resource.ExtractParamPath("accessor", true),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.MountAccessorRef,
 		Selector:     mg.Spec.InitProvider.MountAccessorSelector,
 		To: reference.To{
@@ -141,6 +147,7 @@ func (mg *GroupMemberEntityIds) ResolveReferences(ctx context.Context, c client.
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.GroupID),
 		Extract:      resource.ExtractResourceID(),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.GroupIDRef,
 		Selector:     mg.Spec.ForProvider.GroupIDSelector,
 		To: reference.To{
@@ -157,6 +164,7 @@ func (mg *GroupMemberEntityIds) ResolveReferences(ctx context.Context, c client.
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.MemberEntityIds),
 		Extract:       resource.ExtractResourceID(),
+		Namespace:     mg.GetNamespace(),
 		References:    mg.Spec.ForProvider.MemberEntityIdsRefs,
 		Selector:      mg.Spec.ForProvider.MemberEntityIdsSelector,
 		To: reference.To{
@@ -173,6 +181,7 @@ func (mg *GroupMemberEntityIds) ResolveReferences(ctx context.Context, c client.
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.GroupID),
 		Extract:      resource.ExtractResourceID(),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.GroupIDRef,
 		Selector:     mg.Spec.InitProvider.GroupIDSelector,
 		To: reference.To{
@@ -189,6 +198,7 @@ func (mg *GroupMemberEntityIds) ResolveReferences(ctx context.Context, c client.
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.MemberEntityIds),
 		Extract:       resource.ExtractResourceID(),
+		Namespace:     mg.GetNamespace(),
 		References:    mg.Spec.InitProvider.MemberEntityIdsRefs,
 		Selector:      mg.Spec.InitProvider.MemberEntityIdsSelector,
 		To: reference.To{
@@ -216,6 +226,7 @@ func (mg *GroupMemberGroupIds) ResolveReferences(ctx context.Context, c client.R
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.GroupID),
 		Extract:      resource.ExtractResourceID(),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.GroupIDRef,
 		Selector:     mg.Spec.ForProvider.GroupIDSelector,
 		To: reference.To{
@@ -232,6 +243,7 @@ func (mg *GroupMemberGroupIds) ResolveReferences(ctx context.Context, c client.R
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.MemberGroupIds),
 		Extract:       resource.ExtractResourceID(),
+		Namespace:     mg.GetNamespace(),
 		References:    mg.Spec.ForProvider.MemberGroupIdsRefs,
 		Selector:      mg.Spec.ForProvider.MemberGroupIdsSelector,
 		To: reference.To{
@@ -248,6 +260,7 @@ func (mg *GroupMemberGroupIds) ResolveReferences(ctx context.Context, c client.R
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.GroupID),
 		Extract:      resource.ExtractResourceID(),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.GroupIDRef,
 		Selector:     mg.Spec.InitProvider.GroupIDSelector,
 		To: reference.To{
@@ -264,6 +277,7 @@ func (mg *GroupMemberGroupIds) ResolveReferences(ctx context.Context, c client.R
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.MemberGroupIds),
 		Extract:       resource.ExtractResourceID(),
+		Namespace:     mg.GetNamespace(),
 		References:    mg.Spec.InitProvider.MemberGroupIdsRefs,
 		Selector:      mg.Spec.InitProvider.MemberGroupIdsSelector,
 		To: reference.To{
@@ -290,6 +304,7 @@ func (mg *GroupPolicies) ResolveReferences(ctx context.Context, c client.Reader)
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.GroupID),
 		Extract:      resource.ExtractResourceID(),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.GroupIDRef,
 		Selector:     mg.Spec.ForProvider.GroupIDSelector,
 		To: reference.To{
@@ -306,6 +321,7 @@ func (mg *GroupPolicies) ResolveReferences(ctx context.Context, c client.Reader)
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.GroupID),
 		Extract:      resource.ExtractResourceID(),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.GroupIDRef,
 		Selector:     mg.Spec.InitProvider.GroupIDSelector,
 		To: reference.To{
@@ -332,6 +348,7 @@ func (mg *MfaLoginEnforcement) ResolveReferences(ctx context.Context, c client.R
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.MfaMethodIds),
 		Extract:       resource.ExtractParamPath("method_id", true),
+		Namespace:     mg.GetNamespace(),
 		References:    mg.Spec.ForProvider.MfaMethodIdsRefs,
 		Selector:      mg.Spec.ForProvider.MfaMethodIdsSelector,
 		To: reference.To{
@@ -348,6 +365,7 @@ func (mg *MfaLoginEnforcement) ResolveReferences(ctx context.Context, c client.R
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.MfaMethodIds),
 		Extract:       resource.ExtractParamPath("method_id", true),
+		Namespace:     mg.GetNamespace(),
 		References:    mg.Spec.InitProvider.MfaMethodIdsRefs,
 		Selector:      mg.Spec.InitProvider.MfaMethodIdsSelector,
 		To: reference.To{
@@ -374,6 +392,7 @@ func (mg *OidcAssignment) ResolveReferences(ctx context.Context, c client.Reader
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.EntityIds),
 		Extract:       resource.ExtractResourceID(),
+		Namespace:     mg.GetNamespace(),
 		References:    mg.Spec.ForProvider.EntityIdsRefs,
 		Selector:      mg.Spec.ForProvider.EntityIdsSelector,
 		To: reference.To{
@@ -390,6 +409,7 @@ func (mg *OidcAssignment) ResolveReferences(ctx context.Context, c client.Reader
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.GroupIds),
 		Extract:       resource.ExtractResourceID(),
+		Namespace:     mg.GetNamespace(),
 		References:    mg.Spec.ForProvider.GroupIdsRefs,
 		Selector:      mg.Spec.ForProvider.GroupIdsSelector,
 		To: reference.To{
@@ -406,6 +426,7 @@ func (mg *OidcAssignment) ResolveReferences(ctx context.Context, c client.Reader
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.EntityIds),
 		Extract:       resource.ExtractResourceID(),
+		Namespace:     mg.GetNamespace(),
 		References:    mg.Spec.InitProvider.EntityIdsRefs,
 		Selector:      mg.Spec.InitProvider.EntityIdsSelector,
 		To: reference.To{
@@ -422,6 +443,7 @@ func (mg *OidcAssignment) ResolveReferences(ctx context.Context, c client.Reader
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.GroupIds),
 		Extract:       resource.ExtractResourceID(),
+		Namespace:     mg.GetNamespace(),
 		References:    mg.Spec.InitProvider.GroupIdsRefs,
 		Selector:      mg.Spec.InitProvider.GroupIdsSelector,
 		To: reference.To{
@@ -448,6 +470,7 @@ func (mg *OidcClient) ResolveReferences(ctx context.Context, c client.Reader) er
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.Assignments),
 		Extract:       resource.ExtractParamPath("name", false),
+		Namespace:     mg.GetNamespace(),
 		References:    mg.Spec.ForProvider.AssignmentsRefs,
 		Selector:      mg.Spec.ForProvider.AssignmentsSelector,
 		To: reference.To{
@@ -464,6 +487,7 @@ func (mg *OidcClient) ResolveReferences(ctx context.Context, c client.Reader) er
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.Assignments),
 		Extract:       resource.ExtractParamPath("name", false),
+		Namespace:     mg.GetNamespace(),
 		References:    mg.Spec.InitProvider.AssignmentsRefs,
 		Selector:      mg.Spec.InitProvider.AssignmentsSelector,
 		To: reference.To{
@@ -490,6 +514,7 @@ func (mg *OidcKeyAllowedClientID) ResolveReferences(ctx context.Context, c clien
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.AllowedClientID),
 		Extract:      resource.ExtractParamPath("client_id", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.AllowedClientIDRef,
 		Selector:     mg.Spec.ForProvider.AllowedClientIDSelector,
 		To: reference.To{
@@ -506,6 +531,7 @@ func (mg *OidcKeyAllowedClientID) ResolveReferences(ctx context.Context, c clien
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.KeyName),
 		Extract:      resource.ExtractParamPath("name", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.KeyNameRef,
 		Selector:     mg.Spec.ForProvider.KeyNameSelector,
 		To: reference.To{
@@ -522,6 +548,7 @@ func (mg *OidcKeyAllowedClientID) ResolveReferences(ctx context.Context, c clien
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.AllowedClientID),
 		Extract:      resource.ExtractParamPath("client_id", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.AllowedClientIDRef,
 		Selector:     mg.Spec.InitProvider.AllowedClientIDSelector,
 		To: reference.To{
@@ -538,6 +565,7 @@ func (mg *OidcKeyAllowedClientID) ResolveReferences(ctx context.Context, c clien
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.KeyName),
 		Extract:      resource.ExtractParamPath("name", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.KeyNameRef,
 		Selector:     mg.Spec.InitProvider.KeyNameSelector,
 		To: reference.To{
@@ -564,6 +592,7 @@ func (mg *OidcProvider) ResolveReferences(ctx context.Context, c client.Reader) 
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.AllowedClientIds),
 		Extract:       resource.ExtractParamPath("client_id", true),
+		Namespace:     mg.GetNamespace(),
 		References:    mg.Spec.ForProvider.AllowedClientIdsRefs,
 		Selector:      mg.Spec.ForProvider.AllowedClientIdsSelector,
 		To: reference.To{
@@ -580,6 +609,7 @@ func (mg *OidcProvider) ResolveReferences(ctx context.Context, c client.Reader) 
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.ScopesSupported),
 		Extract:       resource.ExtractParamPath("name", false),
+		Namespace:     mg.GetNamespace(),
 		References:    mg.Spec.ForProvider.ScopesSupportedRefs,
 		Selector:      mg.Spec.ForProvider.ScopesSupportedSelector,
 		To: reference.To{
@@ -596,6 +626,7 @@ func (mg *OidcProvider) ResolveReferences(ctx context.Context, c client.Reader) 
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.AllowedClientIds),
 		Extract:       resource.ExtractParamPath("client_id", true),
+		Namespace:     mg.GetNamespace(),
 		References:    mg.Spec.InitProvider.AllowedClientIdsRefs,
 		Selector:      mg.Spec.InitProvider.AllowedClientIdsSelector,
 		To: reference.To{
@@ -612,6 +643,7 @@ func (mg *OidcProvider) ResolveReferences(ctx context.Context, c client.Reader) 
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.ScopesSupported),
 		Extract:       resource.ExtractParamPath("name", false),
+		Namespace:     mg.GetNamespace(),
 		References:    mg.Spec.InitProvider.ScopesSupportedRefs,
 		Selector:      mg.Spec.InitProvider.ScopesSupportedSelector,
 		To: reference.To{
@@ -638,6 +670,7 @@ func (mg *OidcRole) ResolveReferences(ctx context.Context, c client.Reader) erro
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Key),
 		Extract:      resource.ExtractParamPath("name", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.KeyRef,
 		Selector:     mg.Spec.ForProvider.KeySelector,
 		To: reference.To{
@@ -654,6 +687,7 @@ func (mg *OidcRole) ResolveReferences(ctx context.Context, c client.Reader) erro
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Key),
 		Extract:      resource.ExtractParamPath("name", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.KeyRef,
 		Selector:     mg.Spec.InitProvider.KeySelector,
 		To: reference.To{

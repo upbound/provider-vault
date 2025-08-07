@@ -1,0 +1,29 @@
+apiVersion: aws.vault.upbound.io/v1alpha1
+kind: AuthBackendStsRole
+metadata:
+  annotations:
+    meta.upbound.io/example-id: aws/v1alpha1/authbackendstsrole
+  labels:
+    testing.upbound.io/example-name: role
+  name: role
+spec:
+  forProvider:
+    accountId: "1234567890"
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: aws
+    stsRole: arn:aws:iam::1234567890:role/my-role
+
+---
+
+apiVersion: auth.vault.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: aws/v1alpha1/authbackendstsrole
+  labels:
+    testing.upbound.io/example-name: aws
+  name: aws
+spec:
+  forProvider:
+    type: aws

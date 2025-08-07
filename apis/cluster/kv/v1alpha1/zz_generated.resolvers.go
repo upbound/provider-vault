@@ -24,6 +24,7 @@ func (mg *SecretBackendV2) ResolveReferences(ctx context.Context, c client.Reade
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Mount),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.MountRef,
 		Selector:     mg.Spec.ForProvider.MountSelector,
 		To: reference.To{
@@ -40,6 +41,7 @@ func (mg *SecretBackendV2) ResolveReferences(ctx context.Context, c client.Reade
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Mount),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.MountRef,
 		Selector:     mg.Spec.InitProvider.MountSelector,
 		To: reference.To{
@@ -66,6 +68,7 @@ func (mg *SecretV2) ResolveReferences(ctx context.Context, c client.Reader) erro
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Mount),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.ForProvider.MountRef,
 		Selector:     mg.Spec.ForProvider.MountSelector,
 		To: reference.To{
@@ -82,6 +85,7 @@ func (mg *SecretV2) ResolveReferences(ctx context.Context, c client.Reader) erro
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Mount),
 		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
 		Reference:    mg.Spec.InitProvider.MountRef,
 		Selector:     mg.Spec.InitProvider.MountSelector,
 		To: reference.To{

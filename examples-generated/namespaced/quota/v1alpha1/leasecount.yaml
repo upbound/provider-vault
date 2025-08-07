@@ -1,0 +1,14 @@
+apiVersion: quota.vault.m.upbound.io/v1alpha1
+kind: LeaseCount
+metadata:
+  annotations:
+    meta.upbound.io/example-id: quota/v1alpha1/leasecount
+  labels:
+    testing.upbound.io/example-name: global
+  name: global
+  namespace: upbound-system
+spec:
+  forProvider:
+    maxLeases: 100
+    name: global
+    path: ""

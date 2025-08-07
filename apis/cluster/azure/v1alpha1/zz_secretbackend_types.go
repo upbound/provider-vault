@@ -15,6 +15,19 @@ import (
 
 type SecretBackendInitParameters struct {
 
+	// List of managed key registry entry names that the mount in question is allowed to access
+	// +listType=set
+	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
+
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
+
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
+
 	// The OAuth2 client id to connect to Azure.
 	// The client id for credentials to query the Azure APIs. Currently read permissions to query compute resources are required.
 	ClientIDSecretRef *v1.SecretKeySelector `json:"clientIdSecretRef,omitempty" tf:"-"`
@@ -22,6 +35,12 @@ type SecretBackendInitParameters struct {
 	// The OAuth2 client secret to connect to Azure.
 	// The client secret for credentials to query the Azure APIs
 	ClientSecretSecretRef *v1.SecretKeySelector `json:"clientSecretSecretRef,omitempty" tf:"-"`
+
+	// Default lease duration for tokens and secrets in seconds
+	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
 
 	// Human-friendly description of the mount for the backend.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -40,6 +59,12 @@ type SecretBackendInitParameters struct {
 	// The Azure cloud environment. Valid values: AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud, AzureGermanCloud.
 	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
 
+	// Enable the secrets engine to access Vault's external entropy source
+	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
+
+	// If set to true, disables caching.
+	ForceNoCache *bool `json:"forceNoCache,omitempty" tf:"force_no_cache,omitempty"`
+
 	// The audience claim value. Requires Vault 1.17+.
 	// Available only for Vault Enterprise
 	// The audience claim value.
@@ -55,6 +80,15 @@ type SecretBackendInitParameters struct {
 	// The TTL of generated identity tokens in seconds.
 	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
+	// Specifies whether to show this mount in the UI-specific listing endpoint
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
+
+	// Local mount flag that can be explicitly set to true to enforce local mount in HA environment
+	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
+
+	// Maximum possible lease duration for tokens and secrets in seconds
+	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -62,9 +96,22 @@ type SecretBackendInitParameters struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Specifies mount type specific options that are passed to the backend
+	// +mapType=granular
+	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
+
 	// The unique path this backend should be mounted at. Defaults to azure.
 	// Path to mount the backend at.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
+
+	// The TTL in seconds of the root password in Azure when rotate-root generates a new client secret
+	RootPasswordTTL *float64 `json:"rootPasswordTtl,omitempty" tf:"root_password_ttl,omitempty"`
 
 	// The amount of time in seconds Vault should wait before rotating the root credential.
 	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
@@ -84,6 +131,9 @@ type SecretBackendInitParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
+	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
+
 	// The subscription id for the Azure Active Directory.
 	// The subscription id for the Azure Active Directory.
 	SubscriptionIDSecretRef v1.SecretKeySelector `json:"subscriptionIdSecretRef" tf:"-"`
@@ -94,6 +144,28 @@ type SecretBackendInitParameters struct {
 }
 
 type SecretBackendObservation struct {
+
+	// Accessor of the mount
+	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
+
+	// List of managed key registry entry names that the mount in question is allowed to access
+	// +listType=set
+	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
+
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
+
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
+
+	// Default lease duration for tokens and secrets in seconds
+	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
 
 	// Human-friendly description of the mount for the backend.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -111,6 +183,12 @@ type SecretBackendObservation struct {
 	// The Azure environment.
 	// The Azure cloud environment. Valid values: AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud, AzureGermanCloud.
 	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
+
+	// Enable the secrets engine to access Vault's external entropy source
+	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
+
+	// If set to true, disables caching.
+	ForceNoCache *bool `json:"forceNoCache,omitempty" tf:"force_no_cache,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -129,6 +207,15 @@ type SecretBackendObservation struct {
 	// The TTL of generated identity tokens in seconds.
 	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
+	// Specifies whether to show this mount in the UI-specific listing endpoint
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
+
+	// Local mount flag that can be explicitly set to true to enforce local mount in HA environment
+	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
+
+	// Maximum possible lease duration for tokens and secrets in seconds
+	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -136,9 +223,22 @@ type SecretBackendObservation struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Specifies mount type specific options that are passed to the backend
+	// +mapType=granular
+	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
+
 	// The unique path this backend should be mounted at. Defaults to azure.
 	// Path to mount the backend at.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
+
+	// The TTL in seconds of the root password in Azure when rotate-root generates a new client secret
+	RootPasswordTTL *float64 `json:"rootPasswordTtl,omitempty" tf:"root_password_ttl,omitempty"`
 
 	// The amount of time in seconds Vault should wait before rotating the root credential.
 	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
@@ -157,9 +257,29 @@ type SecretBackendObservation struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+. Available only for Vault Enterprise
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
+	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
 }
 
 type SecretBackendParameters struct {
+
+	// List of managed key registry entry names that the mount in question is allowed to access
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	// +kubebuilder:validation:Optional
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
+
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
+	// +kubebuilder:validation:Optional
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
+
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
+	// +kubebuilder:validation:Optional
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
 
 	// The OAuth2 client id to connect to Azure.
 	// The client id for credentials to query the Azure APIs. Currently read permissions to query compute resources are required.
@@ -170,6 +290,14 @@ type SecretBackendParameters struct {
 	// The client secret for credentials to query the Azure APIs
 	// +kubebuilder:validation:Optional
 	ClientSecretSecretRef *v1.SecretKeySelector `json:"clientSecretSecretRef,omitempty" tf:"-"`
+
+	// Default lease duration for tokens and secrets in seconds
+	// +kubebuilder:validation:Optional
+	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	// +kubebuilder:validation:Optional
+	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
 
 	// Human-friendly description of the mount for the backend.
 	// +kubebuilder:validation:Optional
@@ -192,6 +320,14 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
 
+	// Enable the secrets engine to access Vault's external entropy source
+	// +kubebuilder:validation:Optional
+	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
+
+	// If set to true, disables caching.
+	// +kubebuilder:validation:Optional
+	ForceNoCache *bool `json:"forceNoCache,omitempty" tf:"force_no_cache,omitempty"`
+
 	// The audience claim value. Requires Vault 1.17+.
 	// Available only for Vault Enterprise
 	// The audience claim value.
@@ -210,6 +346,18 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
+	// Specifies whether to show this mount in the UI-specific listing endpoint
+	// +kubebuilder:validation:Optional
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
+
+	// Local mount flag that can be explicitly set to true to enforce local mount in HA environment
+	// +kubebuilder:validation:Optional
+	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
+
+	// Maximum possible lease duration for tokens and secrets in seconds
+	// +kubebuilder:validation:Optional
+	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -218,10 +366,27 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Specifies mount type specific options that are passed to the backend
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
+
+	// List of headers to allow and pass from the request to the plugin
+	// +kubebuilder:validation:Optional
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
+
 	// The unique path this backend should be mounted at. Defaults to azure.
 	// Path to mount the backend at.
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
+
+	// The TTL in seconds of the root password in Azure when rotate-root generates a new client secret
+	// +kubebuilder:validation:Optional
+	RootPasswordTTL *float64 `json:"rootPasswordTtl,omitempty" tf:"root_password_ttl,omitempty"`
 
 	// The amount of time in seconds Vault should wait before rotating the root credential.
 	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
@@ -243,6 +408,10 @@ type SecretBackendParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
+	// +kubebuilder:validation:Optional
+	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
 
 	// The subscription id for the Azure Active Directory.
 	// The subscription id for the Azure Active Directory.
