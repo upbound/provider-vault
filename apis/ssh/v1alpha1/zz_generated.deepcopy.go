@@ -410,6 +410,11 @@ func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleIn
 		*out = new(bool)
 		**out = **in
 	}
+	if in.AllowEmptyPrincipals != nil {
+		in, out := &in.AllowEmptyPrincipals, &out.AllowEmptyPrincipals
+		*out = new(bool)
+		**out = **in
+	}
 	if in.AllowHostCertificates != nil {
 		in, out := &in.AllowHostCertificates, &out.AllowHostCertificates
 		*out = new(bool)
@@ -621,6 +626,11 @@ func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObser
 		*out = new(bool)
 		**out = **in
 	}
+	if in.AllowEmptyPrincipals != nil {
+		in, out := &in.AllowEmptyPrincipals, &out.AllowEmptyPrincipals
+		*out = new(bool)
+		**out = **in
+	}
 	if in.AllowHostCertificates != nil {
 		in, out := &in.AllowHostCertificates, &out.AllowHostCertificates
 		*out = new(bool)
@@ -792,6 +802,11 @@ func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParame
 	}
 	if in.AllowBareDomains != nil {
 		in, out := &in.AllowBareDomains, &out.AllowBareDomains
+		*out = new(bool)
+		**out = **in
+	}
+	if in.AllowEmptyPrincipals != nil {
+		in, out := &in.AllowEmptyPrincipals, &out.AllowEmptyPrincipals
 		*out = new(bool)
 		**out = **in
 	}

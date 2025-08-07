@@ -62,6 +62,11 @@ func (in *CassandraInitParameters) DeepCopyInto(out *CassandraInitParameters) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.SkipVerification != nil {
+		in, out := &in.SkipVerification, &out.SkipVerification
+		*out = new(bool)
+		**out = **in
+	}
 	if in.TLS != nil {
 		in, out := &in.TLS, &out.TLS
 		*out = new(bool)
@@ -116,6 +121,11 @@ func (in *CassandraObservation) DeepCopyInto(out *CassandraObservation) {
 	if in.ProtocolVersion != nil {
 		in, out := &in.ProtocolVersion, &out.ProtocolVersion
 		*out = new(float64)
+		**out = **in
+	}
+	if in.SkipVerification != nil {
+		in, out := &in.SkipVerification, &out.SkipVerification
+		*out = new(bool)
 		**out = **in
 	}
 	if in.TLS != nil {
@@ -187,6 +197,11 @@ func (in *CassandraParameters) DeepCopyInto(out *CassandraParameters) {
 	if in.ProtocolVersion != nil {
 		in, out := &in.ProtocolVersion, &out.ProtocolVersion
 		*out = new(float64)
+		**out = **in
+	}
+	if in.SkipVerification != nil {
+		in, out := &in.SkipVerification, &out.SkipVerification
+		*out = new(bool)
 		**out = **in
 	}
 	if in.TLS != nil {
@@ -591,6 +606,16 @@ func (in *HanaInitParameters) DeepCopyInto(out *HanaInitParameters) {
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
 		*out = new(string)
@@ -633,6 +658,16 @@ func (in *HanaObservation) DeepCopyInto(out *HanaObservation) {
 	}
 	if in.MaxOpenConnections != nil {
 		in, out := &in.MaxOpenConnections, &out.MaxOpenConnections
+		*out = new(float64)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
 		*out = new(float64)
 		**out = **in
 	}
@@ -684,6 +719,16 @@ func (in *HanaParameters) DeepCopyInto(out *HanaParameters) {
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
 		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Username != nil {
@@ -903,6 +948,16 @@ func (in *MongodbInitParameters) DeepCopyInto(out *MongodbInitParameters) {
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
 		*out = new(string)
@@ -945,6 +1000,16 @@ func (in *MongodbObservation) DeepCopyInto(out *MongodbObservation) {
 	}
 	if in.MaxOpenConnections != nil {
 		in, out := &in.MaxOpenConnections, &out.MaxOpenConnections
+		*out = new(float64)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
 		*out = new(float64)
 		**out = **in
 	}
@@ -996,6 +1061,16 @@ func (in *MongodbParameters) DeepCopyInto(out *MongodbParameters) {
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
 		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Username != nil {
@@ -1135,6 +1210,16 @@ func (in *MssqlInitParameters) DeepCopyInto(out *MssqlInitParameters) {
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
 		*out = new(string)
@@ -1187,6 +1272,16 @@ func (in *MssqlObservation) DeepCopyInto(out *MssqlObservation) {
 	}
 	if in.MaxOpenConnections != nil {
 		in, out := &in.MaxOpenConnections, &out.MaxOpenConnections
+		*out = new(float64)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
 		*out = new(float64)
 		**out = **in
 	}
@@ -1250,6 +1345,16 @@ func (in *MssqlParameters) DeepCopyInto(out *MssqlParameters) {
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
 		*out = new(string)
@@ -1303,6 +1408,16 @@ func (in *MySQLAuroraInitParameters) DeepCopyInto(out *MySQLAuroraInitParameters
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
 		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServiceAccountJSONSecretRef != nil {
@@ -1370,6 +1485,16 @@ func (in *MySQLAuroraObservation) DeepCopyInto(out *MySQLAuroraObservation) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.TLSCA != nil {
 		in, out := &in.TLSCA, &out.TLSCA
 		*out = new(string)
@@ -1428,6 +1553,16 @@ func (in *MySQLAuroraParameters) DeepCopyInto(out *MySQLAuroraParameters) {
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
 		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServiceAccountJSONSecretRef != nil {
@@ -1500,6 +1635,16 @@ func (in *MySQLInitParameters) DeepCopyInto(out *MySQLInitParameters) {
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.ServiceAccountJSONSecretRef != nil {
 		in, out := &in.ServiceAccountJSONSecretRef, &out.ServiceAccountJSONSecretRef
 		*out = new(v1.SecretKeySelector)
@@ -1570,6 +1715,16 @@ func (in *MySQLLegacyInitParameters) DeepCopyInto(out *MySQLLegacyInitParameters
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.ServiceAccountJSONSecretRef != nil {
 		in, out := &in.ServiceAccountJSONSecretRef, &out.ServiceAccountJSONSecretRef
 		*out = new(v1.SecretKeySelector)
@@ -1635,6 +1790,16 @@ func (in *MySQLLegacyObservation) DeepCopyInto(out *MySQLLegacyObservation) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.TLSCA != nil {
 		in, out := &in.TLSCA, &out.TLSCA
 		*out = new(string)
@@ -1693,6 +1858,16 @@ func (in *MySQLLegacyParameters) DeepCopyInto(out *MySQLLegacyParameters) {
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
 		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServiceAccountJSONSecretRef != nil {
@@ -1760,6 +1935,16 @@ func (in *MySQLObservation) DeepCopyInto(out *MySQLObservation) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.TLSCA != nil {
 		in, out := &in.TLSCA, &out.TLSCA
 		*out = new(string)
@@ -1818,6 +2003,16 @@ func (in *MySQLParameters) DeepCopyInto(out *MySQLParameters) {
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
 		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServiceAccountJSONSecretRef != nil {
@@ -1890,6 +2085,16 @@ func (in *MySQLRDSInitParameters) DeepCopyInto(out *MySQLRDSInitParameters) {
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.ServiceAccountJSONSecretRef != nil {
 		in, out := &in.ServiceAccountJSONSecretRef, &out.ServiceAccountJSONSecretRef
 		*out = new(v1.SecretKeySelector)
@@ -1955,6 +2160,16 @@ func (in *MySQLRDSObservation) DeepCopyInto(out *MySQLRDSObservation) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.TLSCA != nil {
 		in, out := &in.TLSCA, &out.TLSCA
 		*out = new(string)
@@ -2013,6 +2228,16 @@ func (in *MySQLRDSParameters) DeepCopyInto(out *MySQLRDSParameters) {
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
 		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServiceAccountJSONSecretRef != nil {
@@ -2085,6 +2310,16 @@ func (in *OracleInitParameters) DeepCopyInto(out *OracleInitParameters) {
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.SplitStatements != nil {
 		in, out := &in.SplitStatements, &out.SplitStatements
 		*out = new(bool)
@@ -2137,6 +2372,16 @@ func (in *OracleObservation) DeepCopyInto(out *OracleObservation) {
 	}
 	if in.MaxOpenConnections != nil {
 		in, out := &in.MaxOpenConnections, &out.MaxOpenConnections
+		*out = new(float64)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
 		*out = new(float64)
 		**out = **in
 	}
@@ -2200,6 +2445,16 @@ func (in *OracleParameters) DeepCopyInto(out *OracleParameters) {
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.SplitStatements != nil {
 		in, out := &in.SplitStatements, &out.SplitStatements
 		*out = new(bool)
@@ -2260,14 +2515,49 @@ func (in *PostgresqlInitParameters) DeepCopyInto(out *PostgresqlInitParameters) 
 		*out = new(float64)
 		**out = **in
 	}
+	if in.PasswordAuthentication != nil {
+		in, out := &in.PasswordAuthentication, &out.PasswordAuthentication
+		*out = new(string)
+		**out = **in
+	}
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
+	if in.PrivateKeySecretRef != nil {
+		in, out := &in.PrivateKeySecretRef, &out.PrivateKeySecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.SelfManaged != nil {
+		in, out := &in.SelfManaged, &out.SelfManaged
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ServiceAccountJSONSecretRef != nil {
 		in, out := &in.ServiceAccountJSONSecretRef, &out.ServiceAccountJSONSecretRef
 		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.TLSCA != nil {
+		in, out := &in.TLSCA, &out.TLSCA
+		*out = new(string)
+		**out = **in
+	}
+	if in.TLSCertificate != nil {
+		in, out := &in.TLSCertificate, &out.TLSCertificate
+		*out = new(string)
 		**out = **in
 	}
 	if in.Username != nil {
@@ -2325,6 +2615,36 @@ func (in *PostgresqlObservation) DeepCopyInto(out *PostgresqlObservation) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.PasswordAuthentication != nil {
+		in, out := &in.PasswordAuthentication, &out.PasswordAuthentication
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
+	if in.SelfManaged != nil {
+		in, out := &in.SelfManaged, &out.SelfManaged
+		*out = new(bool)
+		**out = **in
+	}
+	if in.TLSCA != nil {
+		in, out := &in.TLSCA, &out.TLSCA
+		*out = new(string)
+		**out = **in
+	}
+	if in.TLSCertificate != nil {
+		in, out := &in.TLSCertificate, &out.TLSCertificate
+		*out = new(string)
+		**out = **in
+	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
 		*out = new(string)
@@ -2380,14 +2700,49 @@ func (in *PostgresqlParameters) DeepCopyInto(out *PostgresqlParameters) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.PasswordAuthentication != nil {
+		in, out := &in.PasswordAuthentication, &out.PasswordAuthentication
+		*out = new(string)
+		**out = **in
+	}
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
+	if in.PrivateKeySecretRef != nil {
+		in, out := &in.PrivateKeySecretRef, &out.PrivateKeySecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.SelfManaged != nil {
+		in, out := &in.SelfManaged, &out.SelfManaged
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ServiceAccountJSONSecretRef != nil {
 		in, out := &in.ServiceAccountJSONSecretRef, &out.ServiceAccountJSONSecretRef
 		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.TLSCA != nil {
+		in, out := &in.TLSCA, &out.TLSCA
+		*out = new(string)
+		**out = **in
+	}
+	if in.TLSCertificate != nil {
+		in, out := &in.TLSCertificate, &out.TLSCertificate
+		*out = new(string)
 		**out = **in
 	}
 	if in.Username != nil {
@@ -2677,6 +3032,16 @@ func (in *RedshiftInitParameters) DeepCopyInto(out *RedshiftInitParameters) {
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
 		*out = new(string)
@@ -2724,6 +3089,16 @@ func (in *RedshiftObservation) DeepCopyInto(out *RedshiftObservation) {
 	}
 	if in.MaxOpenConnections != nil {
 		in, out := &in.MaxOpenConnections, &out.MaxOpenConnections
+		*out = new(float64)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
 		*out = new(float64)
 		**out = **in
 	}
@@ -2780,6 +3155,16 @@ func (in *RedshiftParameters) DeepCopyInto(out *RedshiftParameters) {
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
 		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Username != nil {
@@ -2889,6 +3274,11 @@ func (in *SecretBackendConnectionInitParameters) DeepCopyInto(out *SecretBackend
 			}
 			(*out)[key] = outVal
 		}
+	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
 	}
 	if in.Elasticsearch != nil {
 		in, out := &in.Elasticsearch, &out.Elasticsearch
@@ -3021,6 +3411,21 @@ func (in *SecretBackendConnectionInitParameters) DeepCopyInto(out *SecretBackend
 			}
 		}
 	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Snowflake != nil {
 		in, out := &in.Snowflake, &out.Snowflake
 		*out = make([]SnowflakeInitParameters, len(*in))
@@ -3125,6 +3530,11 @@ func (in *SecretBackendConnectionObservation) DeepCopyInto(out *SecretBackendCon
 			}
 			(*out)[key] = outVal
 		}
+	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
 	}
 	if in.Elasticsearch != nil {
 		in, out := &in.Elasticsearch, &out.Elasticsearch
@@ -3262,6 +3672,21 @@ func (in *SecretBackendConnectionObservation) DeepCopyInto(out *SecretBackendCon
 			}
 		}
 	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Snowflake != nil {
 		in, out := &in.Snowflake, &out.Snowflake
 		*out = make([]SnowflakeObservation, len(*in))
@@ -3344,6 +3769,11 @@ func (in *SecretBackendConnectionParameters) DeepCopyInto(out *SecretBackendConn
 			}
 			(*out)[key] = outVal
 		}
+	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
 	}
 	if in.Elasticsearch != nil {
 		in, out := &in.Elasticsearch, &out.Elasticsearch
@@ -3475,6 +3905,21 @@ func (in *SecretBackendConnectionParameters) DeepCopyInto(out *SecretBackendConn
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.Snowflake != nil {
 		in, out := &in.Snowflake, &out.Snowflake
@@ -4049,6 +4494,27 @@ func (in *SecretBackendStaticRoleInitParameters) DeepCopyInto(out *SecretBackend
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.CredentialConfig != nil {
+		in, out := &in.CredentialConfig, &out.CredentialConfig
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
+	}
+	if in.CredentialType != nil {
+		in, out := &in.CredentialType, &out.CredentialType
+		*out = new(string)
+		**out = **in
+	}
 	if in.DBName != nil {
 		in, out := &in.DBName, &out.DBName
 		*out = new(string)
@@ -4098,6 +4564,16 @@ func (in *SecretBackendStaticRoleInitParameters) DeepCopyInto(out *SecretBackend
 	if in.RotationWindow != nil {
 		in, out := &in.RotationWindow, &out.RotationWindow
 		*out = new(float64)
+		**out = **in
+	}
+	if in.SelfManagedPasswordSecretRef != nil {
+		in, out := &in.SelfManagedPasswordSecretRef, &out.SelfManagedPasswordSecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.SkipImportRotation != nil {
+		in, out := &in.SkipImportRotation, &out.SkipImportRotation
+		*out = new(bool)
 		**out = **in
 	}
 	if in.Username != nil {
@@ -4157,6 +4633,27 @@ func (in *SecretBackendStaticRoleObservation) DeepCopyInto(out *SecretBackendSta
 		*out = new(string)
 		**out = **in
 	}
+	if in.CredentialConfig != nil {
+		in, out := &in.CredentialConfig, &out.CredentialConfig
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
+	}
+	if in.CredentialType != nil {
+		in, out := &in.CredentialType, &out.CredentialType
+		*out = new(string)
+		**out = **in
+	}
 	if in.DBName != nil {
 		in, out := &in.DBName, &out.DBName
 		*out = new(string)
@@ -4203,6 +4700,11 @@ func (in *SecretBackendStaticRoleObservation) DeepCopyInto(out *SecretBackendSta
 		*out = new(float64)
 		**out = **in
 	}
+	if in.SkipImportRotation != nil {
+		in, out := &in.SkipImportRotation, &out.SkipImportRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
 		*out = new(string)
@@ -4237,6 +4739,27 @@ func (in *SecretBackendStaticRoleParameters) DeepCopyInto(out *SecretBackendStat
 		in, out := &in.BackendSelector, &out.BackendSelector
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
+	}
+	if in.CredentialConfig != nil {
+		in, out := &in.CredentialConfig, &out.CredentialConfig
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
+	}
+	if in.CredentialType != nil {
+		in, out := &in.CredentialType, &out.CredentialType
+		*out = new(string)
+		**out = **in
 	}
 	if in.DBName != nil {
 		in, out := &in.DBName, &out.DBName
@@ -4287,6 +4810,16 @@ func (in *SecretBackendStaticRoleParameters) DeepCopyInto(out *SecretBackendStat
 	if in.RotationWindow != nil {
 		in, out := &in.RotationWindow, &out.RotationWindow
 		*out = new(float64)
+		**out = **in
+	}
+	if in.SelfManagedPasswordSecretRef != nil {
+		in, out := &in.SelfManagedPasswordSecretRef, &out.SelfManagedPasswordSecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.SkipImportRotation != nil {
+		in, out := &in.SkipImportRotation, &out.SkipImportRotation
+		*out = new(bool)
 		**out = **in
 	}
 	if in.Username != nil {
@@ -4403,6 +4936,11 @@ func (in *SecretsMountCassandraInitParameters) DeepCopyInto(out *SecretsMountCas
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Hosts != nil {
 		in, out := &in.Hosts, &out.Hosts
 		*out = make([]*string, len(*in))
@@ -4464,6 +5002,26 @@ func (in *SecretsMountCassandraInitParameters) DeepCopyInto(out *SecretsMountCas
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
+	}
+	if in.SkipVerification != nil {
+		in, out := &in.SkipVerification, &out.SkipVerification
+		*out = new(bool)
+		**out = **in
 	}
 	if in.TLS != nil {
 		in, out := &in.TLS, &out.TLS
@@ -4527,6 +5085,11 @@ func (in *SecretsMountCassandraObservation) DeepCopyInto(out *SecretsMountCassan
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Hosts != nil {
 		in, out := &in.Hosts, &out.Hosts
 		*out = make([]*string, len(*in))
@@ -4573,6 +5136,26 @@ func (in *SecretsMountCassandraObservation) DeepCopyInto(out *SecretsMountCassan
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
+	}
+	if in.SkipVerification != nil {
+		in, out := &in.SkipVerification, &out.SkipVerification
+		*out = new(bool)
+		**out = **in
 	}
 	if in.TLS != nil {
 		in, out := &in.TLS, &out.TLS
@@ -4636,6 +5219,11 @@ func (in *SecretsMountCassandraParameters) DeepCopyInto(out *SecretsMountCassand
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Hosts != nil {
 		in, out := &in.Hosts, &out.Hosts
 		*out = make([]*string, len(*in))
@@ -4697,6 +5285,26 @@ func (in *SecretsMountCassandraParameters) DeepCopyInto(out *SecretsMountCassand
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
+	}
+	if in.SkipVerification != nil {
+		in, out := &in.SkipVerification, &out.SkipVerification
+		*out = new(bool)
+		**out = **in
 	}
 	if in.TLS != nil {
 		in, out := &in.TLS, &out.TLS
@@ -4765,6 +5373,11 @@ func (in *SecretsMountCouchbaseInitParameters) DeepCopyInto(out *SecretsMountCou
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Hosts != nil {
 		in, out := &in.Hosts, &out.Hosts
 		*out = make([]*string, len(*in))
@@ -4802,6 +5415,21 @@ func (in *SecretsMountCouchbaseInitParameters) DeepCopyInto(out *SecretsMountCou
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.TLS != nil {
 		in, out := &in.TLS, &out.TLS
@@ -4870,6 +5498,11 @@ func (in *SecretsMountCouchbaseObservation) DeepCopyInto(out *SecretsMountCouchb
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Hosts != nil {
 		in, out := &in.Hosts, &out.Hosts
 		*out = make([]*string, len(*in))
@@ -4906,6 +5539,21 @@ func (in *SecretsMountCouchbaseObservation) DeepCopyInto(out *SecretsMountCouchb
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.TLS != nil {
 		in, out := &in.TLS, &out.TLS
@@ -4979,6 +5627,11 @@ func (in *SecretsMountCouchbaseParameters) DeepCopyInto(out *SecretsMountCouchba
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Hosts != nil {
 		in, out := &in.Hosts, &out.Hosts
 		*out = make([]*string, len(*in))
@@ -5016,6 +5669,21 @@ func (in *SecretsMountCouchbaseParameters) DeepCopyInto(out *SecretsMountCouchba
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.TLS != nil {
 		in, out := &in.TLS, &out.TLS
@@ -5099,6 +5767,11 @@ func (in *SecretsMountElasticsearchInitParameters) DeepCopyInto(out *SecretsMoun
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Insecure != nil {
 		in, out := &in.Insecure, &out.Insecure
 		*out = new(bool)
@@ -5125,6 +5798,21 @@ func (in *SecretsMountElasticsearchInitParameters) DeepCopyInto(out *SecretsMoun
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.TLSServerName != nil {
 		in, out := &in.TLSServerName, &out.TLSServerName
@@ -5213,6 +5901,11 @@ func (in *SecretsMountElasticsearchObservation) DeepCopyInto(out *SecretsMountEl
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Insecure != nil {
 		in, out := &in.Insecure, &out.Insecure
 		*out = new(bool)
@@ -5238,6 +5931,21 @@ func (in *SecretsMountElasticsearchObservation) DeepCopyInto(out *SecretsMountEl
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.TLSServerName != nil {
 		in, out := &in.TLSServerName, &out.TLSServerName
@@ -5326,6 +6034,11 @@ func (in *SecretsMountElasticsearchParameters) DeepCopyInto(out *SecretsMountEla
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Insecure != nil {
 		in, out := &in.Insecure, &out.Insecure
 		*out = new(bool)
@@ -5352,6 +6065,21 @@ func (in *SecretsMountElasticsearchParameters) DeepCopyInto(out *SecretsMountEla
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.TLSServerName != nil {
 		in, out := &in.TLSServerName, &out.TLSServerName
@@ -5425,6 +6153,11 @@ func (in *SecretsMountHanaInitParameters) DeepCopyInto(out *SecretsMountHanaInit
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableEscaping != nil {
 		in, out := &in.DisableEscaping, &out.DisableEscaping
 		*out = new(bool)
@@ -5455,6 +6188,16 @@ func (in *SecretsMountHanaInitParameters) DeepCopyInto(out *SecretsMountHanaInit
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -5470,6 +6213,21 @@ func (in *SecretsMountHanaInitParameters) DeepCopyInto(out *SecretsMountHanaInit
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -5528,6 +6286,11 @@ func (in *SecretsMountHanaObservation) DeepCopyInto(out *SecretsMountHanaObserva
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableEscaping != nil {
 		in, out := &in.DisableEscaping, &out.DisableEscaping
 		*out = new(bool)
@@ -5553,6 +6316,16 @@ func (in *SecretsMountHanaObservation) DeepCopyInto(out *SecretsMountHanaObserva
 		*out = new(string)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -5568,6 +6341,21 @@ func (in *SecretsMountHanaObservation) DeepCopyInto(out *SecretsMountHanaObserva
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -5626,6 +6414,11 @@ func (in *SecretsMountHanaParameters) DeepCopyInto(out *SecretsMountHanaParamete
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableEscaping != nil {
 		in, out := &in.DisableEscaping, &out.DisableEscaping
 		*out = new(bool)
@@ -5656,6 +6449,16 @@ func (in *SecretsMountHanaParameters) DeepCopyInto(out *SecretsMountHanaParamete
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -5671,6 +6474,21 @@ func (in *SecretsMountHanaParameters) DeepCopyInto(out *SecretsMountHanaParamete
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -5729,6 +6547,11 @@ func (in *SecretsMountInfluxdbInitParameters) DeepCopyInto(out *SecretsMountInfl
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Host != nil {
 		in, out := &in.Host, &out.Host
 		*out = new(string)
@@ -5775,6 +6598,21 @@ func (in *SecretsMountInfluxdbInitParameters) DeepCopyInto(out *SecretsMountInfl
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.TLS != nil {
 		in, out := &in.TLS, &out.TLS
@@ -5843,6 +6681,11 @@ func (in *SecretsMountInfluxdbObservation) DeepCopyInto(out *SecretsMountInfluxd
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Host != nil {
 		in, out := &in.Host, &out.Host
 		*out = new(string)
@@ -5878,6 +6721,21 @@ func (in *SecretsMountInfluxdbObservation) DeepCopyInto(out *SecretsMountInfluxd
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.TLS != nil {
 		in, out := &in.TLS, &out.TLS
@@ -5946,6 +6804,11 @@ func (in *SecretsMountInfluxdbParameters) DeepCopyInto(out *SecretsMountInfluxdb
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Host != nil {
 		in, out := &in.Host, &out.Host
 		*out = new(string)
@@ -5992,6 +6855,21 @@ func (in *SecretsMountInfluxdbParameters) DeepCopyInto(out *SecretsMountInfluxdb
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.TLS != nil {
 		in, out := &in.TLS, &out.TLS
@@ -6370,6 +7248,11 @@ func (in *SecretsMountMongodbInitParameters) DeepCopyInto(out *SecretsMountMongo
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -6395,6 +7278,16 @@ func (in *SecretsMountMongodbInitParameters) DeepCopyInto(out *SecretsMountMongo
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -6410,6 +7303,21 @@ func (in *SecretsMountMongodbInitParameters) DeepCopyInto(out *SecretsMountMongo
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -6473,6 +7381,11 @@ func (in *SecretsMountMongodbObservation) DeepCopyInto(out *SecretsMountMongodbO
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -6493,6 +7406,16 @@ func (in *SecretsMountMongodbObservation) DeepCopyInto(out *SecretsMountMongodbO
 		*out = new(string)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -6508,6 +7431,21 @@ func (in *SecretsMountMongodbObservation) DeepCopyInto(out *SecretsMountMongodbO
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -6571,6 +7509,11 @@ func (in *SecretsMountMongodbParameters) DeepCopyInto(out *SecretsMountMongodbPa
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -6596,6 +7539,16 @@ func (in *SecretsMountMongodbParameters) DeepCopyInto(out *SecretsMountMongodbPa
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -6611,6 +7564,21 @@ func (in *SecretsMountMongodbParameters) DeepCopyInto(out *SecretsMountMongodbPa
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -6669,6 +7637,11 @@ func (in *SecretsMountMongodbatlasInitParameters) DeepCopyInto(out *SecretsMount
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -6700,6 +7673,21 @@ func (in *SecretsMountMongodbatlasInitParameters) DeepCopyInto(out *SecretsMount
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.VerifyConnection != nil {
 		in, out := &in.VerifyConnection, &out.VerifyConnection
@@ -6748,6 +7736,11 @@ func (in *SecretsMountMongodbatlasObservation) DeepCopyInto(out *SecretsMountMon
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -6778,6 +7771,21 @@ func (in *SecretsMountMongodbatlasObservation) DeepCopyInto(out *SecretsMountMon
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.VerifyConnection != nil {
 		in, out := &in.VerifyConnection, &out.VerifyConnection
@@ -6826,6 +7834,11 @@ func (in *SecretsMountMongodbatlasParameters) DeepCopyInto(out *SecretsMountMong
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -6857,6 +7870,21 @@ func (in *SecretsMountMongodbatlasParameters) DeepCopyInto(out *SecretsMountMong
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.VerifyConnection != nil {
 		in, out := &in.VerifyConnection, &out.VerifyConnection
@@ -6915,6 +7943,11 @@ func (in *SecretsMountMssqlInitParameters) DeepCopyInto(out *SecretsMountMssqlIn
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableEscaping != nil {
 		in, out := &in.DisableEscaping, &out.DisableEscaping
 		*out = new(bool)
@@ -6945,6 +7978,16 @@ func (in *SecretsMountMssqlInitParameters) DeepCopyInto(out *SecretsMountMssqlIn
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -6960,6 +8003,21 @@ func (in *SecretsMountMssqlInitParameters) DeepCopyInto(out *SecretsMountMssqlIn
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -7028,6 +8086,11 @@ func (in *SecretsMountMssqlObservation) DeepCopyInto(out *SecretsMountMssqlObser
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableEscaping != nil {
 		in, out := &in.DisableEscaping, &out.DisableEscaping
 		*out = new(bool)
@@ -7053,6 +8116,16 @@ func (in *SecretsMountMssqlObservation) DeepCopyInto(out *SecretsMountMssqlObser
 		*out = new(string)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -7068,6 +8141,21 @@ func (in *SecretsMountMssqlObservation) DeepCopyInto(out *SecretsMountMssqlObser
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -7136,6 +8224,11 @@ func (in *SecretsMountMssqlParameters) DeepCopyInto(out *SecretsMountMssqlParame
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableEscaping != nil {
 		in, out := &in.DisableEscaping, &out.DisableEscaping
 		*out = new(bool)
@@ -7166,6 +8259,16 @@ func (in *SecretsMountMssqlParameters) DeepCopyInto(out *SecretsMountMssqlParame
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -7181,6 +8284,21 @@ func (in *SecretsMountMssqlParameters) DeepCopyInto(out *SecretsMountMssqlParame
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -7249,6 +8367,11 @@ func (in *SecretsMountMySQLAuroraInitParameters) DeepCopyInto(out *SecretsMountM
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -7274,6 +8397,16 @@ func (in *SecretsMountMySQLAuroraInitParameters) DeepCopyInto(out *SecretsMountM
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -7289,6 +8422,21 @@ func (in *SecretsMountMySQLAuroraInitParameters) DeepCopyInto(out *SecretsMountM
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.ServiceAccountJSONSecretRef != nil {
 		in, out := &in.ServiceAccountJSONSecretRef, &out.ServiceAccountJSONSecretRef
@@ -7372,6 +8520,11 @@ func (in *SecretsMountMySQLAuroraObservation) DeepCopyInto(out *SecretsMountMySQ
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -7392,6 +8545,16 @@ func (in *SecretsMountMySQLAuroraObservation) DeepCopyInto(out *SecretsMountMySQ
 		*out = new(string)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -7407,6 +8570,21 @@ func (in *SecretsMountMySQLAuroraObservation) DeepCopyInto(out *SecretsMountMySQ
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.TLSCA != nil {
 		in, out := &in.TLSCA, &out.TLSCA
@@ -7480,6 +8658,11 @@ func (in *SecretsMountMySQLAuroraParameters) DeepCopyInto(out *SecretsMountMySQL
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -7505,6 +8688,16 @@ func (in *SecretsMountMySQLAuroraParameters) DeepCopyInto(out *SecretsMountMySQL
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -7520,6 +8713,21 @@ func (in *SecretsMountMySQLAuroraParameters) DeepCopyInto(out *SecretsMountMySQL
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.ServiceAccountJSONSecretRef != nil {
 		in, out := &in.ServiceAccountJSONSecretRef, &out.ServiceAccountJSONSecretRef
@@ -7603,6 +8811,11 @@ func (in *SecretsMountMySQLInitParameters) DeepCopyInto(out *SecretsMountMySQLIn
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -7628,6 +8841,16 @@ func (in *SecretsMountMySQLInitParameters) DeepCopyInto(out *SecretsMountMySQLIn
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -7643,6 +8866,21 @@ func (in *SecretsMountMySQLInitParameters) DeepCopyInto(out *SecretsMountMySQLIn
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.ServiceAccountJSONSecretRef != nil {
 		in, out := &in.ServiceAccountJSONSecretRef, &out.ServiceAccountJSONSecretRef
@@ -7726,6 +8964,11 @@ func (in *SecretsMountMySQLLegacyInitParameters) DeepCopyInto(out *SecretsMountM
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -7751,6 +8994,16 @@ func (in *SecretsMountMySQLLegacyInitParameters) DeepCopyInto(out *SecretsMountM
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -7766,6 +9019,21 @@ func (in *SecretsMountMySQLLegacyInitParameters) DeepCopyInto(out *SecretsMountM
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.ServiceAccountJSONSecretRef != nil {
 		in, out := &in.ServiceAccountJSONSecretRef, &out.ServiceAccountJSONSecretRef
@@ -7849,6 +9117,11 @@ func (in *SecretsMountMySQLLegacyObservation) DeepCopyInto(out *SecretsMountMySQ
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -7869,6 +9142,16 @@ func (in *SecretsMountMySQLLegacyObservation) DeepCopyInto(out *SecretsMountMySQ
 		*out = new(string)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -7884,6 +9167,21 @@ func (in *SecretsMountMySQLLegacyObservation) DeepCopyInto(out *SecretsMountMySQ
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.TLSCA != nil {
 		in, out := &in.TLSCA, &out.TLSCA
@@ -7957,6 +9255,11 @@ func (in *SecretsMountMySQLLegacyParameters) DeepCopyInto(out *SecretsMountMySQL
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -7982,6 +9285,16 @@ func (in *SecretsMountMySQLLegacyParameters) DeepCopyInto(out *SecretsMountMySQL
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -7997,6 +9310,21 @@ func (in *SecretsMountMySQLLegacyParameters) DeepCopyInto(out *SecretsMountMySQL
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.ServiceAccountJSONSecretRef != nil {
 		in, out := &in.ServiceAccountJSONSecretRef, &out.ServiceAccountJSONSecretRef
@@ -8080,6 +9408,11 @@ func (in *SecretsMountMySQLObservation) DeepCopyInto(out *SecretsMountMySQLObser
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -8100,6 +9433,16 @@ func (in *SecretsMountMySQLObservation) DeepCopyInto(out *SecretsMountMySQLObser
 		*out = new(string)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -8115,6 +9458,21 @@ func (in *SecretsMountMySQLObservation) DeepCopyInto(out *SecretsMountMySQLObser
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.TLSCA != nil {
 		in, out := &in.TLSCA, &out.TLSCA
@@ -8188,6 +9546,11 @@ func (in *SecretsMountMySQLParameters) DeepCopyInto(out *SecretsMountMySQLParame
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -8213,6 +9576,16 @@ func (in *SecretsMountMySQLParameters) DeepCopyInto(out *SecretsMountMySQLParame
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -8228,6 +9601,21 @@ func (in *SecretsMountMySQLParameters) DeepCopyInto(out *SecretsMountMySQLParame
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.ServiceAccountJSONSecretRef != nil {
 		in, out := &in.ServiceAccountJSONSecretRef, &out.ServiceAccountJSONSecretRef
@@ -8311,6 +9699,11 @@ func (in *SecretsMountMySQLRDSInitParameters) DeepCopyInto(out *SecretsMountMySQ
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -8336,6 +9729,16 @@ func (in *SecretsMountMySQLRDSInitParameters) DeepCopyInto(out *SecretsMountMySQ
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -8351,6 +9754,21 @@ func (in *SecretsMountMySQLRDSInitParameters) DeepCopyInto(out *SecretsMountMySQ
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.ServiceAccountJSONSecretRef != nil {
 		in, out := &in.ServiceAccountJSONSecretRef, &out.ServiceAccountJSONSecretRef
@@ -8434,6 +9852,11 @@ func (in *SecretsMountMySQLRDSObservation) DeepCopyInto(out *SecretsMountMySQLRD
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -8454,6 +9877,16 @@ func (in *SecretsMountMySQLRDSObservation) DeepCopyInto(out *SecretsMountMySQLRD
 		*out = new(string)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -8469,6 +9902,21 @@ func (in *SecretsMountMySQLRDSObservation) DeepCopyInto(out *SecretsMountMySQLRD
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.TLSCA != nil {
 		in, out := &in.TLSCA, &out.TLSCA
@@ -8542,6 +9990,11 @@ func (in *SecretsMountMySQLRDSParameters) DeepCopyInto(out *SecretsMountMySQLRDS
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -8567,6 +10020,16 @@ func (in *SecretsMountMySQLRDSParameters) DeepCopyInto(out *SecretsMountMySQLRDS
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -8582,6 +10045,21 @@ func (in *SecretsMountMySQLRDSParameters) DeepCopyInto(out *SecretsMountMySQLRDS
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.ServiceAccountJSONSecretRef != nil {
 		in, out := &in.ServiceAccountJSONSecretRef, &out.ServiceAccountJSONSecretRef
@@ -8953,6 +10431,11 @@ func (in *SecretsMountOracleInitParameters) DeepCopyInto(out *SecretsMountOracle
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisconnectSessions != nil {
 		in, out := &in.DisconnectSessions, &out.DisconnectSessions
 		*out = new(bool)
@@ -8983,6 +10466,16 @@ func (in *SecretsMountOracleInitParameters) DeepCopyInto(out *SecretsMountOracle
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -8998,6 +10491,21 @@ func (in *SecretsMountOracleInitParameters) DeepCopyInto(out *SecretsMountOracle
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.SplitStatements != nil {
 		in, out := &in.SplitStatements, &out.SplitStatements
@@ -9066,6 +10574,11 @@ func (in *SecretsMountOracleObservation) DeepCopyInto(out *SecretsMountOracleObs
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisconnectSessions != nil {
 		in, out := &in.DisconnectSessions, &out.DisconnectSessions
 		*out = new(bool)
@@ -9091,6 +10604,16 @@ func (in *SecretsMountOracleObservation) DeepCopyInto(out *SecretsMountOracleObs
 		*out = new(string)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -9106,6 +10629,21 @@ func (in *SecretsMountOracleObservation) DeepCopyInto(out *SecretsMountOracleObs
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.SplitStatements != nil {
 		in, out := &in.SplitStatements, &out.SplitStatements
@@ -9174,6 +10712,11 @@ func (in *SecretsMountOracleParameters) DeepCopyInto(out *SecretsMountOraclePara
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisconnectSessions != nil {
 		in, out := &in.DisconnectSessions, &out.DisconnectSessions
 		*out = new(bool)
@@ -9204,6 +10747,16 @@ func (in *SecretsMountOracleParameters) DeepCopyInto(out *SecretsMountOraclePara
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -9219,6 +10772,21 @@ func (in *SecretsMountOracleParameters) DeepCopyInto(out *SecretsMountOraclePara
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.SplitStatements != nil {
 		in, out := &in.SplitStatements, &out.SplitStatements
@@ -9570,6 +11138,11 @@ func (in *SecretsMountPostgresqlInitParameters) DeepCopyInto(out *SecretsMountPo
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableEscaping != nil {
 		in, out := &in.DisableEscaping, &out.DisableEscaping
 		*out = new(bool)
@@ -9595,14 +11168,34 @@ func (in *SecretsMountPostgresqlInitParameters) DeepCopyInto(out *SecretsMountPo
 		*out = new(string)
 		**out = **in
 	}
+	if in.PasswordAuthentication != nil {
+		in, out := &in.PasswordAuthentication, &out.PasswordAuthentication
+		*out = new(string)
+		**out = **in
+	}
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
+		**out = **in
+	}
+	if in.PrivateKeySecretRef != nil {
+		in, out := &in.PrivateKeySecretRef, &out.PrivateKeySecretRef
+		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
 	if in.RootRotationStatements != nil {
@@ -9616,9 +11209,39 @@ func (in *SecretsMountPostgresqlInitParameters) DeepCopyInto(out *SecretsMountPo
 			}
 		}
 	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
+	}
+	if in.SelfManaged != nil {
+		in, out := &in.SelfManaged, &out.SelfManaged
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ServiceAccountJSONSecretRef != nil {
 		in, out := &in.ServiceAccountJSONSecretRef, &out.ServiceAccountJSONSecretRef
 		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.TLSCA != nil {
+		in, out := &in.TLSCA, &out.TLSCA
+		*out = new(string)
+		**out = **in
+	}
+	if in.TLSCertificate != nil {
+		in, out := &in.TLSCertificate, &out.TLSCertificate
+		*out = new(string)
 		**out = **in
 	}
 	if in.Username != nil {
@@ -9688,6 +11311,11 @@ func (in *SecretsMountPostgresqlObservation) DeepCopyInto(out *SecretsMountPostg
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableEscaping != nil {
 		in, out := &in.DisableEscaping, &out.DisableEscaping
 		*out = new(bool)
@@ -9713,6 +11341,21 @@ func (in *SecretsMountPostgresqlObservation) DeepCopyInto(out *SecretsMountPostg
 		*out = new(string)
 		**out = **in
 	}
+	if in.PasswordAuthentication != nil {
+		in, out := &in.PasswordAuthentication, &out.PasswordAuthentication
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -9728,6 +11371,36 @@ func (in *SecretsMountPostgresqlObservation) DeepCopyInto(out *SecretsMountPostg
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
+	}
+	if in.SelfManaged != nil {
+		in, out := &in.SelfManaged, &out.SelfManaged
+		*out = new(bool)
+		**out = **in
+	}
+	if in.TLSCA != nil {
+		in, out := &in.TLSCA, &out.TLSCA
+		*out = new(string)
+		**out = **in
+	}
+	if in.TLSCertificate != nil {
+		in, out := &in.TLSCertificate, &out.TLSCertificate
+		*out = new(string)
+		**out = **in
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -9796,6 +11469,11 @@ func (in *SecretsMountPostgresqlParameters) DeepCopyInto(out *SecretsMountPostgr
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableEscaping != nil {
 		in, out := &in.DisableEscaping, &out.DisableEscaping
 		*out = new(bool)
@@ -9821,14 +11499,34 @@ func (in *SecretsMountPostgresqlParameters) DeepCopyInto(out *SecretsMountPostgr
 		*out = new(string)
 		**out = **in
 	}
+	if in.PasswordAuthentication != nil {
+		in, out := &in.PasswordAuthentication, &out.PasswordAuthentication
+		*out = new(string)
+		**out = **in
+	}
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
+		**out = **in
+	}
+	if in.PrivateKeySecretRef != nil {
+		in, out := &in.PrivateKeySecretRef, &out.PrivateKeySecretRef
+		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
 	if in.RootRotationStatements != nil {
@@ -9842,9 +11540,39 @@ func (in *SecretsMountPostgresqlParameters) DeepCopyInto(out *SecretsMountPostgr
 			}
 		}
 	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
+	}
+	if in.SelfManaged != nil {
+		in, out := &in.SelfManaged, &out.SelfManaged
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ServiceAccountJSONSecretRef != nil {
 		in, out := &in.ServiceAccountJSONSecretRef, &out.ServiceAccountJSONSecretRef
 		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.TLSCA != nil {
+		in, out := &in.TLSCA, &out.TLSCA
+		*out = new(string)
+		**out = **in
+	}
+	if in.TLSCertificate != nil {
+		in, out := &in.TLSCertificate, &out.TLSCertificate
+		*out = new(string)
 		**out = **in
 	}
 	if in.Username != nil {
@@ -9904,6 +11632,11 @@ func (in *SecretsMountRedisElasticacheInitParameters) DeepCopyInto(out *SecretsM
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -9934,6 +11667,21 @@ func (in *SecretsMountRedisElasticacheInitParameters) DeepCopyInto(out *SecretsM
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.URL != nil {
 		in, out := &in.URL, &out.URL
@@ -9992,6 +11740,11 @@ func (in *SecretsMountRedisElasticacheObservation) DeepCopyInto(out *SecretsMoun
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -10017,6 +11770,21 @@ func (in *SecretsMountRedisElasticacheObservation) DeepCopyInto(out *SecretsMoun
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.URL != nil {
 		in, out := &in.URL, &out.URL
@@ -10070,6 +11838,11 @@ func (in *SecretsMountRedisElasticacheParameters) DeepCopyInto(out *SecretsMount
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -10100,6 +11873,21 @@ func (in *SecretsMountRedisElasticacheParameters) DeepCopyInto(out *SecretsMount
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.URL != nil {
 		in, out := &in.URL, &out.URL
@@ -10163,6 +11951,11 @@ func (in *SecretsMountRedisInitParameters) DeepCopyInto(out *SecretsMountRedisIn
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Host != nil {
 		in, out := &in.Host, &out.Host
 		*out = new(string)
@@ -10199,6 +11992,21 @@ func (in *SecretsMountRedisInitParameters) DeepCopyInto(out *SecretsMountRedisIn
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.TLS != nil {
 		in, out := &in.TLS, &out.TLS
@@ -10262,6 +12070,11 @@ func (in *SecretsMountRedisObservation) DeepCopyInto(out *SecretsMountRedisObser
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Host != nil {
 		in, out := &in.Host, &out.Host
 		*out = new(string)
@@ -10297,6 +12110,21 @@ func (in *SecretsMountRedisObservation) DeepCopyInto(out *SecretsMountRedisObser
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.TLS != nil {
 		in, out := &in.TLS, &out.TLS
@@ -10360,6 +12188,11 @@ func (in *SecretsMountRedisParameters) DeepCopyInto(out *SecretsMountRedisParame
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Host != nil {
 		in, out := &in.Host, &out.Host
 		*out = new(string)
@@ -10396,6 +12229,21 @@ func (in *SecretsMountRedisParameters) DeepCopyInto(out *SecretsMountRedisParame
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.TLS != nil {
 		in, out := &in.TLS, &out.TLS
@@ -10459,6 +12307,11 @@ func (in *SecretsMountRedshiftInitParameters) DeepCopyInto(out *SecretsMountReds
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableEscaping != nil {
 		in, out := &in.DisableEscaping, &out.DisableEscaping
 		*out = new(bool)
@@ -10489,6 +12342,16 @@ func (in *SecretsMountRedshiftInitParameters) DeepCopyInto(out *SecretsMountReds
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -10504,6 +12367,21 @@ func (in *SecretsMountRedshiftInitParameters) DeepCopyInto(out *SecretsMountReds
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -10567,6 +12445,11 @@ func (in *SecretsMountRedshiftObservation) DeepCopyInto(out *SecretsMountRedshif
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableEscaping != nil {
 		in, out := &in.DisableEscaping, &out.DisableEscaping
 		*out = new(bool)
@@ -10592,6 +12475,16 @@ func (in *SecretsMountRedshiftObservation) DeepCopyInto(out *SecretsMountRedshif
 		*out = new(string)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -10607,6 +12500,21 @@ func (in *SecretsMountRedshiftObservation) DeepCopyInto(out *SecretsMountRedshif
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -10670,6 +12578,11 @@ func (in *SecretsMountRedshiftParameters) DeepCopyInto(out *SecretsMountRedshift
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableEscaping != nil {
 		in, out := &in.DisableEscaping, &out.DisableEscaping
 		*out = new(bool)
@@ -10700,6 +12613,16 @@ func (in *SecretsMountRedshiftParameters) DeepCopyInto(out *SecretsMountRedshift
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
@@ -10715,6 +12638,21 @@ func (in *SecretsMountRedshiftParameters) DeepCopyInto(out *SecretsMountRedshift
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -10778,6 +12716,11 @@ func (in *SecretsMountSnowflakeInitParameters) DeepCopyInto(out *SecretsMountSno
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -10803,9 +12746,29 @@ func (in *SecretsMountSnowflakeInitParameters) DeepCopyInto(out *SecretsMountSno
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
+		**out = **in
+	}
+	if in.PrivateKeyWoSecretRef != nil {
+		in, out := &in.PrivateKeyWoSecretRef, &out.PrivateKeyWoSecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PrivateKeyWoVersion != nil {
+		in, out := &in.PrivateKeyWoVersion, &out.PrivateKeyWoVersion
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RootRotationStatements != nil {
@@ -10818,6 +12781,21 @@ func (in *SecretsMountSnowflakeInitParameters) DeepCopyInto(out *SecretsMountSno
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -10881,6 +12859,11 @@ func (in *SecretsMountSnowflakeObservation) DeepCopyInto(out *SecretsMountSnowfl
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -10901,9 +12884,24 @@ func (in *SecretsMountSnowflakeObservation) DeepCopyInto(out *SecretsMountSnowfl
 		*out = new(string)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
+		**out = **in
+	}
+	if in.PrivateKeyWoVersion != nil {
+		in, out := &in.PrivateKeyWoVersion, &out.PrivateKeyWoVersion
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RootRotationStatements != nil {
@@ -10916,6 +12914,21 @@ func (in *SecretsMountSnowflakeObservation) DeepCopyInto(out *SecretsMountSnowfl
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -10979,6 +12992,11 @@ func (in *SecretsMountSnowflakeParameters) DeepCopyInto(out *SecretsMountSnowfla
 			(*out)[key] = outVal
 		}
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.MaxConnectionLifetime != nil {
 		in, out := &in.MaxConnectionLifetime, &out.MaxConnectionLifetime
 		*out = new(float64)
@@ -11004,9 +13022,29 @@ func (in *SecretsMountSnowflakeParameters) DeepCopyInto(out *SecretsMountSnowfla
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.PluginName != nil {
 		in, out := &in.PluginName, &out.PluginName
 		*out = new(string)
+		**out = **in
+	}
+	if in.PrivateKeyWoSecretRef != nil {
+		in, out := &in.PrivateKeyWoSecretRef, &out.PrivateKeyWoSecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PrivateKeyWoVersion != nil {
+		in, out := &in.PrivateKeyWoVersion, &out.PrivateKeyWoVersion
+		*out = new(float64)
 		**out = **in
 	}
 	if in.RootRotationStatements != nil {
@@ -11019,6 +13057,21 @@ func (in *SecretsMountSnowflakeParameters) DeepCopyInto(out *SecretsMountSnowfla
 				**out = **in
 			}
 		}
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
 	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
@@ -11110,6 +13163,26 @@ func (in *SnowflakeInitParameters) DeepCopyInto(out *SnowflakeInitParameters) {
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
+	if in.PrivateKeyWoSecretRef != nil {
+		in, out := &in.PrivateKeyWoSecretRef, &out.PrivateKeyWoSecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PrivateKeyWoVersion != nil {
+		in, out := &in.PrivateKeyWoVersion, &out.PrivateKeyWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Username != nil {
 		in, out := &in.Username, &out.Username
 		*out = new(string)
@@ -11152,6 +13225,21 @@ func (in *SnowflakeObservation) DeepCopyInto(out *SnowflakeObservation) {
 	}
 	if in.MaxOpenConnections != nil {
 		in, out := &in.MaxOpenConnections, &out.MaxOpenConnections
+		*out = new(float64)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
+	if in.PrivateKeyWoVersion != nil {
+		in, out := &in.PrivateKeyWoVersion, &out.PrivateKeyWoVersion
 		*out = new(float64)
 		**out = **in
 	}
@@ -11203,6 +13291,26 @@ func (in *SnowflakeParameters) DeepCopyInto(out *SnowflakeParameters) {
 	if in.PasswordSecretRef != nil {
 		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
 		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PasswordWo != nil {
+		in, out := &in.PasswordWo, &out.PasswordWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
+	if in.PrivateKeyWoSecretRef != nil {
+		in, out := &in.PrivateKeyWoSecretRef, &out.PrivateKeyWoSecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PrivateKeyWoVersion != nil {
+		in, out := &in.PrivateKeyWoVersion, &out.PrivateKeyWoVersion
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Username != nil {

@@ -803,6 +803,11 @@ func (in *AuthBackendRoleSecretIDInitParameters) DeepCopyInto(out *AuthBackendRo
 		*out = new(string)
 		**out = **in
 	}
+	if in.NumUses != nil {
+		in, out := &in.NumUses, &out.NumUses
+		*out = new(float64)
+		**out = **in
+	}
 	if in.RoleName != nil {
 		in, out := &in.RoleName, &out.RoleName
 		*out = new(string)
@@ -821,6 +826,11 @@ func (in *AuthBackendRoleSecretIDInitParameters) DeepCopyInto(out *AuthBackendRo
 	if in.SecretIDSecretRef != nil {
 		in, out := &in.SecretIDSecretRef, &out.SecretIDSecretRef
 		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.TTL != nil {
+		in, out := &in.TTL, &out.TTL
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WithWrappedAccessor != nil {
@@ -916,9 +926,19 @@ func (in *AuthBackendRoleSecretIDObservation) DeepCopyInto(out *AuthBackendRoleS
 		*out = new(string)
 		**out = **in
 	}
+	if in.NumUses != nil {
+		in, out := &in.NumUses, &out.NumUses
+		*out = new(float64)
+		**out = **in
+	}
 	if in.RoleName != nil {
 		in, out := &in.RoleName, &out.RoleName
 		*out = new(string)
+		**out = **in
+	}
+	if in.TTL != nil {
+		in, out := &in.TTL, &out.TTL
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WithWrappedAccessor != nil {
@@ -987,6 +1007,11 @@ func (in *AuthBackendRoleSecretIDParameters) DeepCopyInto(out *AuthBackendRoleSe
 		*out = new(string)
 		**out = **in
 	}
+	if in.NumUses != nil {
+		in, out := &in.NumUses, &out.NumUses
+		*out = new(float64)
+		**out = **in
+	}
 	if in.RoleName != nil {
 		in, out := &in.RoleName, &out.RoleName
 		*out = new(string)
@@ -1005,6 +1030,11 @@ func (in *AuthBackendRoleSecretIDParameters) DeepCopyInto(out *AuthBackendRoleSe
 	if in.SecretIDSecretRef != nil {
 		in, out := &in.SecretIDSecretRef, &out.SecretIDSecretRef
 		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.TTL != nil {
+		in, out := &in.TTL, &out.TTL
+		*out = new(float64)
 		**out = **in
 	}
 	if in.WithWrappedAccessor != nil {

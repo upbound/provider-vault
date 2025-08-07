@@ -29,9 +29,6 @@ type AuthBackendInitParameters struct {
 
 	Group []GroupInitParameters `json:"group,omitempty" tf:"group,omitempty"`
 
-	// Maximum duration after which authentication will be expired
-	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
-
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
@@ -40,9 +37,6 @@ type AuthBackendInitParameters struct {
 
 	// path to mount the backend
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
-
-	// Duration after which authentication will be expired
-	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
 	// +listType=set
@@ -100,9 +94,6 @@ type AuthBackendObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Maximum duration after which authentication will be expired
-	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
-
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
@@ -111,9 +102,6 @@ type AuthBackendObservation struct {
 
 	// path to mount the backend
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
-
-	// Duration after which authentication will be expired
-	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
 	// +listType=set
@@ -168,10 +156,6 @@ type AuthBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	Group []GroupParameters `json:"group,omitempty" tf:"group,omitempty"`
 
-	// Maximum duration after which authentication will be expired
-	// +kubebuilder:validation:Optional
-	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
-
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
@@ -183,10 +167,6 @@ type AuthBackendParameters struct {
 	// path to mount the backend
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
-
-	// Duration after which authentication will be expired
-	// +kubebuilder:validation:Optional
-	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
 	// Specifies the blocks of IP addresses which are allowed to use the generated token
 	// +kubebuilder:validation:Optional

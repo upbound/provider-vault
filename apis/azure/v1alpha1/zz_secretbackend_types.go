@@ -26,6 +26,11 @@ type SecretBackendInitParameters struct {
 	// Human-friendly description of the mount for the backend.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Available only for Vault Enterprise
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// If set, opts out of mount migration on path updates.
 	// See here for more info on Mount Migration
 	// If set, opts out of mount migration on path updates.
@@ -61,6 +66,24 @@ type SecretBackendInitParameters struct {
 	// Path to mount the backend at.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// Available only for Vault Enterprise
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// Available only for Vault Enterprise
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+. Available only for Vault Enterprise
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// The subscription id for the Azure Active Directory.
 	// The subscription id for the Azure Active Directory.
 	SubscriptionIDSecretRef v1.SecretKeySelector `json:"subscriptionIdSecretRef" tf:"-"`
@@ -68,18 +91,17 @@ type SecretBackendInitParameters struct {
 	// The tenant id for the Azure Active Directory.
 	// The tenant id for the Azure Active Directory organization.
 	TenantIDSecretRef v1.SecretKeySelector `json:"tenantIdSecretRef" tf:"-"`
-
-	// Indicates whether the secrets engine should use
-	// the Microsoft Graph API. This parameter has been deprecated and will be ignored in vault-1.12+.
-	// For more information, please refer to the Vault docs
-	// Use the Microsoft Graph API. Should be set to true on vault-1.10+
-	UseMicrosoftGraphAPI *bool `json:"useMicrosoftGraphApi,omitempty" tf:"use_microsoft_graph_api,omitempty"`
 }
 
 type SecretBackendObservation struct {
 
 	// Human-friendly description of the mount for the backend.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Available only for Vault Enterprise
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// If set, opts out of mount migration on path updates.
 	// See here for more info on Mount Migration
@@ -118,11 +140,23 @@ type SecretBackendObservation struct {
 	// Path to mount the backend at.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
-	// Indicates whether the secrets engine should use
-	// the Microsoft Graph API. This parameter has been deprecated and will be ignored in vault-1.12+.
-	// For more information, please refer to the Vault docs
-	// Use the Microsoft Graph API. Should be set to true on vault-1.10+
-	UseMicrosoftGraphAPI *bool `json:"useMicrosoftGraphApi,omitempty" tf:"use_microsoft_graph_api,omitempty"`
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// Available only for Vault Enterprise
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// Available only for Vault Enterprise
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+. Available only for Vault Enterprise
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 }
 
 type SecretBackendParameters struct {
@@ -140,6 +174,12 @@ type SecretBackendParameters struct {
 	// Human-friendly description of the mount for the backend.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Available only for Vault Enterprise
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// If set, opts out of mount migration on path updates.
 	// See here for more info on Mount Migration
@@ -183,6 +223,27 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// Available only for Vault Enterprise
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// Available only for Vault Enterprise
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+. Available only for Vault Enterprise
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// The subscription id for the Azure Active Directory.
 	// The subscription id for the Azure Active Directory.
 	// +kubebuilder:validation:Optional
@@ -192,13 +253,6 @@ type SecretBackendParameters struct {
 	// The tenant id for the Azure Active Directory organization.
 	// +kubebuilder:validation:Optional
 	TenantIDSecretRef v1.SecretKeySelector `json:"tenantIdSecretRef" tf:"-"`
-
-	// Indicates whether the secrets engine should use
-	// the Microsoft Graph API. This parameter has been deprecated and will be ignored in vault-1.12+.
-	// For more information, please refer to the Vault docs
-	// Use the Microsoft Graph API. Should be set to true on vault-1.10+
-	// +kubebuilder:validation:Optional
-	UseMicrosoftGraphAPI *bool `json:"useMicrosoftGraphApi,omitempty" tf:"use_microsoft_graph_api,omitempty"`
 }
 
 // SecretBackendSpec defines the desired state of SecretBackend

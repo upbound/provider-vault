@@ -11,6 +11,8 @@ spec:
     identityTokenAudience: <TOKEN_AUDIENCE>
     identityTokenTtl: <TOKEN_TTL>
     roleArn: <AWS_ROLE_ARN>
+    rotationSchedule: 0 * * * SAT
+    rotationWindow: 3600
 
 ---
 

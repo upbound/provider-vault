@@ -19,6 +19,15 @@ type SecretBackendInitParameters struct {
 	// JSON-encoded credentials to use to connect to GCP
 	CredentialsSecretRef *v1.SecretKeySelector `json:"credentialsSecretRef,omitempty" tf:"-"`
 
+	// The GCP service account credentials in JSON format. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only JSON-encoded credentials to use to connect to GCP
+	CredentialsWoSecretRef *v1.SecretKeySelector `json:"credentialsWoSecretRef,omitempty" tf:"-"`
+
+	// The version of the credentials_wo. For more info see updating write-only attributes.
+	// Version counter for write-only JSON-encoded credentials
+	CredentialsWoVersion *float64 `json:"credentialsWoVersion,omitempty" tf:"credentials_wo_version,omitempty"`
+
 	// The default TTL for credentials
 	// issued by this backend. Defaults to '0'.
 	// Default lease duration for secrets in seconds
@@ -27,6 +36,11 @@ type SecretBackendInitParameters struct {
 	// A human-friendly description for this backend.
 	// Human-friendly description of the mount for the backend.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Available only for Vault Enterprise.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// If set, opts out of mount migration on path updates.
 	// See here for more info on Mount Migration
@@ -71,6 +85,23 @@ type SecretBackendInitParameters struct {
 	// Path to mount the backend at.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// Available only for Vault Enterprise.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+. Available only for Vault Enterprise.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+. Available only for Vault Enterprise.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// –  Service Account to impersonate for plugin workload identity federation.
 	// Required with identity_token_audience. Requires Vault 1.17+. Available only for Vault Enterprise.
 	// Service Account to impersonate for plugin workload identity federation.
@@ -83,6 +114,10 @@ type SecretBackendObservation struct {
 	// Accessor of the created GCP mount.
 	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
 
+	// The version of the credentials_wo. For more info see updating write-only attributes.
+	// Version counter for write-only JSON-encoded credentials
+	CredentialsWoVersion *float64 `json:"credentialsWoVersion,omitempty" tf:"credentials_wo_version,omitempty"`
+
 	// The default TTL for credentials
 	// issued by this backend. Defaults to '0'.
 	// Default lease duration for secrets in seconds
@@ -91,6 +126,11 @@ type SecretBackendObservation struct {
 	// A human-friendly description for this backend.
 	// Human-friendly description of the mount for the backend.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Available only for Vault Enterprise.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// If set, opts out of mount migration on path updates.
 	// See here for more info on Mount Migration
@@ -137,6 +177,23 @@ type SecretBackendObservation struct {
 	// Path to mount the backend at.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// Available only for Vault Enterprise.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+. Available only for Vault Enterprise.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+. Available only for Vault Enterprise.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// –  Service Account to impersonate for plugin workload identity federation.
 	// Required with identity_token_audience. Requires Vault 1.17+. Available only for Vault Enterprise.
 	// Service Account to impersonate for plugin workload identity federation.
@@ -150,6 +207,17 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	CredentialsSecretRef *v1.SecretKeySelector `json:"credentialsSecretRef,omitempty" tf:"-"`
 
+	// The GCP service account credentials in JSON format. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only JSON-encoded credentials to use to connect to GCP
+	// +kubebuilder:validation:Optional
+	CredentialsWoSecretRef *v1.SecretKeySelector `json:"credentialsWoSecretRef,omitempty" tf:"-"`
+
+	// The version of the credentials_wo. For more info see updating write-only attributes.
+	// Version counter for write-only JSON-encoded credentials
+	// +kubebuilder:validation:Optional
+	CredentialsWoVersion *float64 `json:"credentialsWoVersion,omitempty" tf:"credentials_wo_version,omitempty"`
+
 	// The default TTL for credentials
 	// issued by this backend. Defaults to '0'.
 	// Default lease duration for secrets in seconds
@@ -160,6 +228,12 @@ type SecretBackendParameters struct {
 	// Human-friendly description of the mount for the backend.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Available only for Vault Enterprise.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// If set, opts out of mount migration on path updates.
 	// See here for more info on Mount Migration
@@ -211,6 +285,26 @@ type SecretBackendParameters struct {
 	// Path to mount the backend at.
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// Available only for Vault Enterprise.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+. Available only for Vault Enterprise.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+. Available only for Vault Enterprise.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// –  Service Account to impersonate for plugin workload identity federation.
 	// Required with identity_token_audience. Requires Vault 1.17+. Available only for Vault Enterprise.

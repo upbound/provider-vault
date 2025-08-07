@@ -302,6 +302,11 @@ func (in *AuthBackendClientInitParameters) DeepCopyInto(out *AuthBackendClientIn
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.EC2Endpoint != nil {
 		in, out := &in.EC2Endpoint, &out.EC2Endpoint
 		*out = new(string)
@@ -340,6 +345,21 @@ func (in *AuthBackendClientInitParameters) DeepCopyInto(out *AuthBackendClientIn
 	if in.RoleArn != nil {
 		in, out := &in.RoleArn, &out.RoleArn
 		*out = new(string)
+		**out = **in
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
 		**out = **in
 	}
 	if in.SecretKeySecretRef != nil {
@@ -414,6 +434,11 @@ func (in *AuthBackendClientObservation) DeepCopyInto(out *AuthBackendClientObser
 		*out = new(string)
 		**out = **in
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.EC2Endpoint != nil {
 		in, out := &in.EC2Endpoint, &out.EC2Endpoint
 		*out = new(string)
@@ -457,6 +482,21 @@ func (in *AuthBackendClientObservation) DeepCopyInto(out *AuthBackendClientObser
 	if in.RoleArn != nil {
 		in, out := &in.RoleArn, &out.RoleArn
 		*out = new(string)
+		**out = **in
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
 		**out = **in
 	}
 	if in.StsEndpoint != nil {
@@ -509,6 +549,11 @@ func (in *AuthBackendClientParameters) DeepCopyInto(out *AuthBackendClientParame
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.EC2Endpoint != nil {
 		in, out := &in.EC2Endpoint, &out.EC2Endpoint
 		*out = new(string)
@@ -547,6 +592,21 @@ func (in *AuthBackendClientParameters) DeepCopyInto(out *AuthBackendClientParame
 	if in.RoleArn != nil {
 		in, out := &in.RoleArn, &out.RoleArn
 		*out = new(string)
+		**out = **in
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
 		**out = **in
 	}
 	if in.SecretKeySecretRef != nil {
@@ -2924,6 +2984,11 @@ func (in *AuthBackendStsRoleInitParameters) DeepCopyInto(out *AuthBackendStsRole
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.ExternalID != nil {
+		in, out := &in.ExternalID, &out.ExternalID
+		*out = new(string)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -2991,6 +3056,11 @@ func (in *AuthBackendStsRoleObservation) DeepCopyInto(out *AuthBackendStsRoleObs
 		*out = new(string)
 		**out = **in
 	}
+	if in.ExternalID != nil {
+		in, out := &in.ExternalID, &out.ExternalID
+		*out = new(string)
+		**out = **in
+	}
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
 		*out = new(string)
@@ -3040,6 +3110,11 @@ func (in *AuthBackendStsRoleParameters) DeepCopyInto(out *AuthBackendStsRolePara
 		in, out := &in.BackendSelector, &out.BackendSelector
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
+	}
+	if in.ExternalID != nil {
+		in, out := &in.ExternalID, &out.ExternalID
+		*out = new(string)
+		**out = **in
 	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
@@ -3143,6 +3218,11 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 		*out = new(string)
 		**out = **in
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableRemount != nil {
 		in, out := &in.DisableRemount, &out.DisableRemount
 		*out = new(bool)
@@ -3198,6 +3278,21 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 		*out = new(string)
 		**out = **in
 	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
+	}
 	if in.SecretKeySecretRef != nil {
 		in, out := &in.SecretKeySecretRef, &out.SecretKeySecretRef
 		*out = new(v1.SecretKeySelector)
@@ -3205,6 +3300,33 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 	}
 	if in.StsEndpoint != nil {
 		in, out := &in.StsEndpoint, &out.StsEndpoint
+		*out = new(string)
+		**out = **in
+	}
+	if in.StsFallbackEndpoints != nil {
+		in, out := &in.StsFallbackEndpoints, &out.StsFallbackEndpoints
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.StsFallbackRegions != nil {
+		in, out := &in.StsFallbackRegions, &out.StsFallbackRegions
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.StsRegion != nil {
+		in, out := &in.StsRegion, &out.StsRegion
 		*out = new(string)
 		**out = **in
 	}
@@ -3270,6 +3392,11 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableRemount != nil {
 		in, out := &in.DisableRemount, &out.DisableRemount
 		*out = new(bool)
@@ -3330,8 +3457,50 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
+	}
 	if in.StsEndpoint != nil {
 		in, out := &in.StsEndpoint, &out.StsEndpoint
+		*out = new(string)
+		**out = **in
+	}
+	if in.StsFallbackEndpoints != nil {
+		in, out := &in.StsFallbackEndpoints, &out.StsFallbackEndpoints
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.StsFallbackRegions != nil {
+		in, out := &in.StsFallbackRegions, &out.StsFallbackRegions
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.StsRegion != nil {
+		in, out := &in.StsRegion, &out.StsRegion
 		*out = new(string)
 		**out = **in
 	}
@@ -3368,6 +3537,11 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
+		**out = **in
+	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
 		**out = **in
 	}
 	if in.DisableRemount != nil {
@@ -3425,6 +3599,21 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
+	}
 	if in.SecretKeySecretRef != nil {
 		in, out := &in.SecretKeySecretRef, &out.SecretKeySecretRef
 		*out = new(v1.SecretKeySelector)
@@ -3432,6 +3621,33 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 	}
 	if in.StsEndpoint != nil {
 		in, out := &in.StsEndpoint, &out.StsEndpoint
+		*out = new(string)
+		**out = **in
+	}
+	if in.StsFallbackEndpoints != nil {
+		in, out := &in.StsFallbackEndpoints, &out.StsFallbackEndpoints
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.StsFallbackRegions != nil {
+		in, out := &in.StsFallbackRegions, &out.StsFallbackRegions
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.StsRegion != nil {
+		in, out := &in.StsRegion, &out.StsRegion
 		*out = new(string)
 		**out = **in
 	}

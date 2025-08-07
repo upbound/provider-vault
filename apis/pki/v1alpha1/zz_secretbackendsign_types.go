@@ -37,6 +37,10 @@ type SecretBackendSignInitParameters struct {
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
+	// A base 64 encoded value or an empty string to associate with the certificate's serial number. The role's no_store_metadata must be set to false, otherwise an error is returned when specified.
+	// A base 64 encoded value or an empty string to associate with the certificate's serial number. The role's no_store_metadata must be set to false, otherwise an error is returned when specified.
+	CertMetadata *string `json:"certMetadata,omitempty" tf:"cert_metadata,omitempty"`
+
 	// CN of certificate to create
 	// CN of intermediate to create.
 	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
@@ -89,6 +93,10 @@ type SecretBackendSignInitParameters struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
+	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
+	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
+
 	// List of other SANs
 	// List of other SANs.
 	OtherSans []*string `json:"otherSans,omitempty" tf:"other_sans,omitempty"`
@@ -119,6 +127,10 @@ type SecretBackendSignObservation struct {
 	// The CA chain
 	// The CA chain.
 	CAChain []*string `json:"caChain,omitempty" tf:"ca_chain,omitempty"`
+
+	// A base 64 encoded value or an empty string to associate with the certificate's serial number. The role's no_store_metadata must be set to false, otherwise an error is returned when specified.
+	// A base 64 encoded value or an empty string to associate with the certificate's serial number. The role's no_store_metadata must be set to false, otherwise an error is returned when specified.
+	CertMetadata *string `json:"certMetadata,omitempty" tf:"cert_metadata,omitempty"`
 
 	// The certificate
 	// The certicate.
@@ -176,6 +188,10 @@ type SecretBackendSignObservation struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
+	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
+	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
+
 	// List of other SANs
 	// List of other SANs.
 	OtherSans []*string `json:"otherSans,omitempty" tf:"other_sans,omitempty"`
@@ -223,6 +239,11 @@ type SecretBackendSignParameters struct {
 	// Selector for a Mount in vault to populate backend.
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
+
+	// A base 64 encoded value or an empty string to associate with the certificate's serial number. The role's no_store_metadata must be set to false, otherwise an error is returned when specified.
+	// A base 64 encoded value or an empty string to associate with the certificate's serial number. The role's no_store_metadata must be set to false, otherwise an error is returned when specified.
+	// +kubebuilder:validation:Optional
+	CertMetadata *string `json:"certMetadata,omitempty" tf:"cert_metadata,omitempty"`
 
 	// CN of certificate to create
 	// CN of intermediate to create.
@@ -284,6 +305,11 @@ type SecretBackendSignParameters struct {
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
+	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
+	// +kubebuilder:validation:Optional
+	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
 
 	// List of other SANs
 	// List of other SANs.

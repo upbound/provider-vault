@@ -292,11 +292,6 @@ func (in *AuthBackendInitParameters) DeepCopyInto(out *AuthBackendInitParameters
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.MaxTTL != nil {
-		in, out := &in.MaxTTL, &out.MaxTTL
-		*out = new(string)
-		**out = **in
-	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -309,11 +304,6 @@ func (in *AuthBackendInitParameters) DeepCopyInto(out *AuthBackendInitParameters
 	}
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
-		*out = new(string)
-		**out = **in
-	}
-	if in.TTL != nil {
-		in, out := &in.TTL, &out.TTL
 		*out = new(string)
 		**out = **in
 	}
@@ -470,11 +460,6 @@ func (in *AuthBackendObservation) DeepCopyInto(out *AuthBackendObservation) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.MaxTTL != nil {
-		in, out := &in.MaxTTL, &out.MaxTTL
-		*out = new(string)
-		**out = **in
-	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -487,11 +472,6 @@ func (in *AuthBackendObservation) DeepCopyInto(out *AuthBackendObservation) {
 	}
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
-		*out = new(string)
-		**out = **in
-	}
-	if in.TTL != nil {
-		in, out := &in.TTL, &out.TTL
 		*out = new(string)
 		**out = **in
 	}
@@ -601,11 +581,6 @@ func (in *AuthBackendParameters) DeepCopyInto(out *AuthBackendParameters) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.MaxTTL != nil {
-		in, out := &in.MaxTTL, &out.MaxTTL
-		*out = new(string)
-		**out = **in
-	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -618,11 +593,6 @@ func (in *AuthBackendParameters) DeepCopyInto(out *AuthBackendParameters) {
 	}
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
-		*out = new(string)
-		**out = **in
-	}
-	if in.TTL != nil {
-		in, out := &in.TTL, &out.TTL
 		*out = new(string)
 		**out = **in
 	}

@@ -4,9 +4,11 @@ metadata:
   annotations:
     meta.upbound.io/example-id: auth/v1alpha1/backend
   labels:
-    testing.upbound.io/example-name: cert
-  name: cert
+    testing.upbound.io/example-name: example
+  name: example
 spec:
   forProvider:
-    path: cert
-    type: cert
+    tune:
+    - listingVisibility: unauth
+      maxLeaseTtl: 90000s
+    type: github

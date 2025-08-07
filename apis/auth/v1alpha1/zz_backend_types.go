@@ -15,15 +15,19 @@ import (
 
 type BackendInitParameters struct {
 
+	// A description of the auth method.
 	// The description of the auth backend
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// If set, opts out of mount migration on path updates.
+	// See here for more info on Mount Migration
 	// If set, opts out of mount migration on path updates.
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
 	// The key to use for signing identity tokens.
 	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
 
+	// Specifies if the auth method is local only.
 	// Specifies if the auth method is local only
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
@@ -34,23 +38,30 @@ type BackendInitParameters struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The path to mount the auth method — this defaults to the name of the type.
 	// path to mount the backend. This defaults to the type.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Extra configuration block. Structure is documented below.
 	Tune []TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 
+	// The name of the auth method type.
 	// Name of the auth backend
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type BackendObservation struct {
 
+	// The accessor for this auth method
 	// The accessor of the auth backend
 	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
 
+	// A description of the auth method.
 	// The description of the auth backend
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// If set, opts out of mount migration on path updates.
+	// See here for more info on Mount Migration
 	// If set, opts out of mount migration on path updates.
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
@@ -59,6 +70,7 @@ type BackendObservation struct {
 	// The key to use for signing identity tokens.
 	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
 
+	// Specifies if the auth method is local only.
 	// Specifies if the auth method is local only
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
@@ -69,21 +81,27 @@ type BackendObservation struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The path to mount the auth method — this defaults to the name of the type.
 	// path to mount the backend. This defaults to the type.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Extra configuration block. Structure is documented below.
 	Tune []TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
 
+	// The name of the auth method type.
 	// Name of the auth backend
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type BackendParameters struct {
 
+	// A description of the auth method.
 	// The description of the auth backend
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// If set, opts out of mount migration on path updates.
+	// See here for more info on Mount Migration
 	// If set, opts out of mount migration on path updates.
 	// +kubebuilder:validation:Optional
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
@@ -92,6 +110,7 @@ type BackendParameters struct {
 	// +kubebuilder:validation:Optional
 	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
 
+	// Specifies if the auth method is local only.
 	// Specifies if the auth method is local only
 	// +kubebuilder:validation:Optional
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
@@ -104,92 +123,136 @@ type BackendParameters struct {
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The path to mount the auth method — this defaults to the name of the type.
 	// path to mount the backend. This defaults to the type.
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Extra configuration block. Structure is documented below.
 	// +kubebuilder:validation:Optional
 	Tune []TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 
+	// The name of the auth method type.
 	// Name of the auth backend
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type TuneInitParameters struct {
+
+	// List of headers to whitelist and allowing
+	// a plugin to include them in the response.
 	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers"`
 
+	// Specifies the list of keys that will
+	// not be HMAC'd by audit devices in the request data object.
 	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys"`
 
+	// Specifies the list of keys that will
+	// not be HMAC'd by audit devices in the response data object.
 	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys"`
 
+	// Specifies the default time-to-live.
+	// If set, this overrides the global default.
+	// Must be a valid duration string
 	DefaultLeaseTTL *string `json:"defaultLeaseTtl,omitempty" tf:"default_lease_ttl"`
 
+	// Specifies whether to show this mount in
+	// the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
 	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility"`
 
+	// Specifies the maximum time-to-live.
+	// If set, this overrides the global default.
+	// Must be a valid duration string
 	MaxLeaseTTL *string `json:"maxLeaseTtl,omitempty" tf:"max_lease_ttl"`
 
+	// List of headers to whitelist and
+	// pass from the request to the backend.
 	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers"`
 
-	// The type of token that should be generated. Can be service,
-	// batch, or default to use the mount's tuned default (which unless changed will be
-	// service tokens). For token store roles, there are two additional possibilities:
-	// default-service and default-batch which specify the type to return unless the client
-	// requests a different type at generation time.
+	// Specifies the type of tokens that should be returned by
+	// the mount. Valid values are "default-service", "default-batch", "service", "batch".
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type"`
 }
 
 type TuneObservation struct {
+
+	// List of headers to whitelist and allowing
+	// a plugin to include them in the response.
 	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
 
+	// Specifies the list of keys that will
+	// not be HMAC'd by audit devices in the request data object.
 	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
 
+	// Specifies the list of keys that will
+	// not be HMAC'd by audit devices in the response data object.
 	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
 
+	// Specifies the default time-to-live.
+	// If set, this overrides the global default.
+	// Must be a valid duration string
 	DefaultLeaseTTL *string `json:"defaultLeaseTtl,omitempty" tf:"default_lease_ttl,omitempty"`
 
+	// Specifies whether to show this mount in
+	// the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
 	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
 
+	// Specifies the maximum time-to-live.
+	// If set, this overrides the global default.
+	// Must be a valid duration string
 	MaxLeaseTTL *string `json:"maxLeaseTtl,omitempty" tf:"max_lease_ttl,omitempty"`
 
+	// List of headers to whitelist and
+	// pass from the request to the backend.
 	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
 
-	// The type of token that should be generated. Can be service,
-	// batch, or default to use the mount's tuned default (which unless changed will be
-	// service tokens). For token store roles, there are two additional possibilities:
-	// default-service and default-batch which specify the type to return unless the client
-	// requests a different type at generation time.
+	// Specifies the type of tokens that should be returned by
+	// the mount. Valid values are "default-service", "default-batch", "service", "batch".
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 }
 
 type TuneParameters struct {
 
+	// List of headers to whitelist and allowing
+	// a plugin to include them in the response.
 	// +kubebuilder:validation:Optional
 	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers"`
 
+	// Specifies the list of keys that will
+	// not be HMAC'd by audit devices in the request data object.
 	// +kubebuilder:validation:Optional
 	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys"`
 
+	// Specifies the list of keys that will
+	// not be HMAC'd by audit devices in the response data object.
 	// +kubebuilder:validation:Optional
 	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys"`
 
+	// Specifies the default time-to-live.
+	// If set, this overrides the global default.
+	// Must be a valid duration string
 	// +kubebuilder:validation:Optional
 	DefaultLeaseTTL *string `json:"defaultLeaseTtl,omitempty" tf:"default_lease_ttl"`
 
+	// Specifies whether to show this mount in
+	// the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
 	// +kubebuilder:validation:Optional
 	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility"`
 
+	// Specifies the maximum time-to-live.
+	// If set, this overrides the global default.
+	// Must be a valid duration string
 	// +kubebuilder:validation:Optional
 	MaxLeaseTTL *string `json:"maxLeaseTtl,omitempty" tf:"max_lease_ttl"`
 
+	// List of headers to whitelist and
+	// pass from the request to the backend.
 	// +kubebuilder:validation:Optional
 	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers"`
 
-	// The type of token that should be generated. Can be service,
-	// batch, or default to use the mount's tuned default (which unless changed will be
-	// service tokens). For token store roles, there are two additional possibilities:
-	// default-service and default-batch which specify the type to return unless the client
-	// requests a different type at generation time.
+	// Specifies the type of tokens that should be returned by
+	// the mount. Valid values are "default-service", "default-batch", "service", "batch".
 	// +kubebuilder:validation:Optional
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type"`
 }
@@ -221,7 +284,7 @@ type BackendStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// Backend is the Schema for the Backends API. Managing roles in an Cert auth backend in Vault
+// Backend is the Schema for the Backends API. Writes auth methods for Vault
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

@@ -54,6 +54,16 @@ type SecretBackendKeyInitParameters struct {
 	// Enables keys to be exportable. This allows for all the valid keys in the key ring to be exported. Once set, this cannot be disabled.
 	Exportable *bool `json:"exportable,omitempty" tf:"exportable,omitempty"`
 
+	// The elliptic curve algorithm to use for hybrid signatures.
+	// Supported key types are ecdsa-p256, ecdsa-p384, ecdsa-p521, and ed25519.
+	// The elliptic curve algorithm to use for hybrid signatures. Supported key types are `ecdsa-p256`, `ecdsa-p384`, `ecdsa-p521`, and `ed25519`.
+	HybridKeyTypeEc *string `json:"hybridKeyTypeEc,omitempty" tf:"hybrid_key_type_ec,omitempty"`
+
+	// The post-quantum algorithm to use for hybrid signatures.
+	// Currently, ML-DSA is the only supported key type.
+	// The post-quantum algorithm to use for hybrid signatures. Currently, ML-DSA is the only supported key type.
+	HybridKeyTypePqc *string `json:"hybridKeyTypePqc,omitempty" tf:"hybrid_key_type_pqc,omitempty"`
+
 	// The key size in bytes for algorithms that allow variable key sizes. Currently only applicable to HMAC, where it must be between 32 and 512 bytes.
 	// The key size in bytes for algorithms that allow variable key sizes. Currently only applicable to HMAC; this value must be between 32 and 512.
 	KeySize *float64 `json:"keySize,omitempty" tf:"key_size,omitempty"`
@@ -76,6 +86,11 @@ type SecretBackendKeyInitParameters struct {
 	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The parameter set to use for ML-DSA. Required for
+	// ML-DSA and hybrid keys. Valid values are 44, 65, and 87.
+	// The parameter set to use for ML-DSA. Required for ML-DSA and hybrid keys. Valid values are 44, 65, and 87.
+	ParameterSet *string `json:"parameterSet,omitempty" tf:"parameter_set,omitempty"`
 
 	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96 (default), chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, hmac, rsa-2048, rsa-3072 and rsa-4096.
 	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96, chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, hmac, rsa-2048, rsa-3072, rsa-4096
@@ -113,6 +128,16 @@ type SecretBackendKeyObservation struct {
 	// Enables keys to be exportable. This allows for all the valid keys in the key ring to be exported. Once set, this cannot be disabled.
 	Exportable *bool `json:"exportable,omitempty" tf:"exportable,omitempty"`
 
+	// The elliptic curve algorithm to use for hybrid signatures.
+	// Supported key types are ecdsa-p256, ecdsa-p384, ecdsa-p521, and ed25519.
+	// The elliptic curve algorithm to use for hybrid signatures. Supported key types are `ecdsa-p256`, `ecdsa-p384`, `ecdsa-p521`, and `ed25519`.
+	HybridKeyTypeEc *string `json:"hybridKeyTypeEc,omitempty" tf:"hybrid_key_type_ec,omitempty"`
+
+	// The post-quantum algorithm to use for hybrid signatures.
+	// Currently, ML-DSA is the only supported key type.
+	// The post-quantum algorithm to use for hybrid signatures. Currently, ML-DSA is the only supported key type.
+	HybridKeyTypePqc *string `json:"hybridKeyTypePqc,omitempty" tf:"hybrid_key_type_pqc,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The key size in bytes for algorithms that allow variable key sizes. Currently only applicable to HMAC, where it must be between 32 and 512 bytes.
@@ -149,6 +174,11 @@ type SecretBackendKeyObservation struct {
 	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The parameter set to use for ML-DSA. Required for
+	// ML-DSA and hybrid keys. Valid values are 44, 65, and 87.
+	// The parameter set to use for ML-DSA. Required for ML-DSA and hybrid keys. Valid values are 44, 65, and 87.
+	ParameterSet *string `json:"parameterSet,omitempty" tf:"parameter_set,omitempty"`
 
 	// Whether or not the key supports decryption, based on key type.
 	// Whether or not the key supports decryption, based on key type.
@@ -219,6 +249,18 @@ type SecretBackendKeyParameters struct {
 	// +kubebuilder:validation:Optional
 	Exportable *bool `json:"exportable,omitempty" tf:"exportable,omitempty"`
 
+	// The elliptic curve algorithm to use for hybrid signatures.
+	// Supported key types are ecdsa-p256, ecdsa-p384, ecdsa-p521, and ed25519.
+	// The elliptic curve algorithm to use for hybrid signatures. Supported key types are `ecdsa-p256`, `ecdsa-p384`, `ecdsa-p521`, and `ed25519`.
+	// +kubebuilder:validation:Optional
+	HybridKeyTypeEc *string `json:"hybridKeyTypeEc,omitempty" tf:"hybrid_key_type_ec,omitempty"`
+
+	// The post-quantum algorithm to use for hybrid signatures.
+	// Currently, ML-DSA is the only supported key type.
+	// The post-quantum algorithm to use for hybrid signatures. Currently, ML-DSA is the only supported key type.
+	// +kubebuilder:validation:Optional
+	HybridKeyTypePqc *string `json:"hybridKeyTypePqc,omitempty" tf:"hybrid_key_type_pqc,omitempty"`
+
 	// The key size in bytes for algorithms that allow variable key sizes. Currently only applicable to HMAC, where it must be between 32 and 512 bytes.
 	// The key size in bytes for algorithms that allow variable key sizes. Currently only applicable to HMAC; this value must be between 32 and 512.
 	// +kubebuilder:validation:Optional
@@ -246,6 +288,12 @@ type SecretBackendKeyParameters struct {
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// The parameter set to use for ML-DSA. Required for
+	// ML-DSA and hybrid keys. Valid values are 44, 65, and 87.
+	// The parameter set to use for ML-DSA. Required for ML-DSA and hybrid keys. Valid values are 44, 65, and 87.
+	// +kubebuilder:validation:Optional
+	ParameterSet *string `json:"parameterSet,omitempty" tf:"parameter_set,omitempty"`
 
 	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96 (default), chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, hmac, rsa-2048, rsa-3072 and rsa-4096.
 	// Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96, chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, hmac, rsa-2048, rsa-3072, rsa-4096

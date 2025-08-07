@@ -70,6 +70,11 @@ func (in *AuthBackendInitParameters) DeepCopyInto(out *AuthBackendInitParameters
 		*out = new(string)
 		**out = **in
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableRemount != nil {
 		in, out := &in.DisableRemount, &out.DisableRemount
 		*out = new(bool)
@@ -113,6 +118,21 @@ func (in *AuthBackendInitParameters) DeepCopyInto(out *AuthBackendInitParameters
 	if in.ProjectID != nil {
 		in, out := &in.ProjectID, &out.ProjectID
 		*out = new(string)
+		**out = **in
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServiceAccountEmail != nil {
@@ -201,6 +221,11 @@ func (in *AuthBackendObservation) DeepCopyInto(out *AuthBackendObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableRemount != nil {
 		in, out := &in.DisableRemount, &out.DisableRemount
 		*out = new(bool)
@@ -249,6 +274,21 @@ func (in *AuthBackendObservation) DeepCopyInto(out *AuthBackendObservation) {
 	if in.ProjectID != nil {
 		in, out := &in.ProjectID, &out.ProjectID
 		*out = new(string)
+		**out = **in
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServiceAccountEmail != nil {
@@ -305,6 +345,11 @@ func (in *AuthBackendParameters) DeepCopyInto(out *AuthBackendParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DisableRemount != nil {
 		in, out := &in.DisableRemount, &out.DisableRemount
 		*out = new(bool)
@@ -348,6 +393,21 @@ func (in *AuthBackendParameters) DeepCopyInto(out *AuthBackendParameters) {
 	if in.ProjectID != nil {
 		in, out := &in.ProjectID, &out.ProjectID
 		*out = new(string)
+		**out = **in
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServiceAccountEmail != nil {
@@ -1280,6 +1340,16 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.CredentialsWoSecretRef != nil {
+		in, out := &in.CredentialsWoSecretRef, &out.CredentialsWoSecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.CredentialsWoVersion != nil {
+		in, out := &in.CredentialsWoVersion, &out.CredentialsWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.DefaultLeaseTTLSeconds != nil {
 		in, out := &in.DefaultLeaseTTLSeconds, &out.DefaultLeaseTTLSeconds
 		*out = new(float64)
@@ -1288,6 +1358,11 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
+		**out = **in
+	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
 		**out = **in
 	}
 	if in.DisableRemount != nil {
@@ -1328,6 +1403,21 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
 		*out = new(string)
+		**out = **in
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServiceAccountEmail != nil {
@@ -1387,6 +1477,11 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.CredentialsWoVersion != nil {
+		in, out := &in.CredentialsWoVersion, &out.CredentialsWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.DefaultLeaseTTLSeconds != nil {
 		in, out := &in.DefaultLeaseTTLSeconds, &out.DefaultLeaseTTLSeconds
 		*out = new(float64)
@@ -1395,6 +1490,11 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
+		**out = **in
+	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
 		**out = **in
 	}
 	if in.DisableRemount != nil {
@@ -1442,6 +1542,21 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
+		**out = **in
+	}
 	if in.ServiceAccountEmail != nil {
 		in, out := &in.ServiceAccountEmail, &out.ServiceAccountEmail
 		*out = new(string)
@@ -1467,6 +1582,16 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.CredentialsWoSecretRef != nil {
+		in, out := &in.CredentialsWoSecretRef, &out.CredentialsWoSecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.CredentialsWoVersion != nil {
+		in, out := &in.CredentialsWoVersion, &out.CredentialsWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.DefaultLeaseTTLSeconds != nil {
 		in, out := &in.DefaultLeaseTTLSeconds, &out.DefaultLeaseTTLSeconds
 		*out = new(float64)
@@ -1475,6 +1600,11 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
+		**out = **in
+	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
 		**out = **in
 	}
 	if in.DisableRemount != nil {
@@ -1515,6 +1645,21 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
 		*out = new(string)
+		**out = **in
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
 		**out = **in
 	}
 	if in.ServiceAccountEmail != nil {
@@ -1629,6 +1774,11 @@ func (in *SecretImpersonatedAccountInitParameters) DeepCopyInto(out *SecretImper
 		*out = new(string)
 		**out = **in
 	}
+	if in.TTL != nil {
+		in, out := &in.TTL, &out.TTL
+		*out = new(string)
+		**out = **in
+	}
 	if in.TokenScopes != nil {
 		in, out := &in.TokenScopes, &out.TokenScopes
 		*out = make([]*string, len(*in))
@@ -1717,6 +1867,11 @@ func (in *SecretImpersonatedAccountObservation) DeepCopyInto(out *SecretImperson
 		*out = new(string)
 		**out = **in
 	}
+	if in.TTL != nil {
+		in, out := &in.TTL, &out.TTL
+		*out = new(string)
+		**out = **in
+	}
 	if in.TokenScopes != nil {
 		in, out := &in.TokenScopes, &out.TokenScopes
 		*out = make([]*string, len(*in))
@@ -1770,6 +1925,11 @@ func (in *SecretImpersonatedAccountParameters) DeepCopyInto(out *SecretImpersona
 	}
 	if in.ServiceAccountEmail != nil {
 		in, out := &in.ServiceAccountEmail, &out.ServiceAccountEmail
+		*out = new(string)
+		**out = **in
+	}
+	if in.TTL != nil {
+		in, out := &in.TTL, &out.TTL
 		*out = new(string)
 		**out = **in
 	}

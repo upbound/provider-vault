@@ -46,6 +46,9 @@ type AuthBackendRoleSecretIDInitParameters struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The number of uses for the secret-id.
+	NumUses *float64 `json:"numUses,omitempty" tf:"num_uses,omitempty"`
+
 	// The name of the role to create the SecretID for.
 	// Name of the role.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/approle/v1alpha1.AuthBackendRole
@@ -64,6 +67,9 @@ type AuthBackendRoleSecretIDInitParameters struct {
 	// mode.  Defaults to Vault auto-generating SecretIDs.
 	// The SecretID to be managed. If not specified, Vault auto-generates one.
 	SecretIDSecretRef *v1.SecretKeySelector `json:"secretIdSecretRef,omitempty" tf:"-"`
+
+	// The TTL duration of the SecretID.
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
 	// Set to true to use the wrapped secret-id accessor as the resource ID.
 	// If false (default value), a fresh secret ID will be regenerated whenever the wrapping token is expired or
@@ -108,9 +114,15 @@ type AuthBackendRoleSecretIDObservation struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The number of uses for the secret-id.
+	NumUses *float64 `json:"numUses,omitempty" tf:"num_uses,omitempty"`
+
 	// The name of the role to create the SecretID for.
 	// Name of the role.
 	RoleName *string `json:"roleName,omitempty" tf:"role_name,omitempty"`
+
+	// The TTL duration of the SecretID.
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
 	// Set to true to use the wrapped secret-id accessor as the resource ID.
 	// If false (default value), a fresh secret ID will be regenerated whenever the wrapping token is expired or
@@ -168,6 +180,10 @@ type AuthBackendRoleSecretIDParameters struct {
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The number of uses for the secret-id.
+	// +kubebuilder:validation:Optional
+	NumUses *float64 `json:"numUses,omitempty" tf:"num_uses,omitempty"`
+
 	// The name of the role to create the SecretID for.
 	// Name of the role.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/approle/v1alpha1.AuthBackendRole
@@ -188,6 +204,10 @@ type AuthBackendRoleSecretIDParameters struct {
 	// The SecretID to be managed. If not specified, Vault auto-generates one.
 	// +kubebuilder:validation:Optional
 	SecretIDSecretRef *v1.SecretKeySelector `json:"secretIdSecretRef,omitempty" tf:"-"`
+
+	// The TTL duration of the SecretID.
+	// +kubebuilder:validation:Optional
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
 	// Set to true to use the wrapped secret-id accessor as the resource ID.
 	// If false (default value), a fresh secret ID will be regenerated whenever the wrapping token is expired or

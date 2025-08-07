@@ -88,6 +88,16 @@ func (in *SecretBackendKeyInitParameters) DeepCopyInto(out *SecretBackendKeyInit
 		*out = new(bool)
 		**out = **in
 	}
+	if in.HybridKeyTypeEc != nil {
+		in, out := &in.HybridKeyTypeEc, &out.HybridKeyTypeEc
+		*out = new(string)
+		**out = **in
+	}
+	if in.HybridKeyTypePqc != nil {
+		in, out := &in.HybridKeyTypePqc, &out.HybridKeyTypePqc
+		*out = new(string)
+		**out = **in
+	}
 	if in.KeySize != nil {
 		in, out := &in.KeySize, &out.KeySize
 		*out = new(float64)
@@ -110,6 +120,11 @@ func (in *SecretBackendKeyInitParameters) DeepCopyInto(out *SecretBackendKeyInit
 	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	if in.ParameterSet != nil {
+		in, out := &in.ParameterSet, &out.ParameterSet
 		*out = new(string)
 		**out = **in
 	}
@@ -200,6 +215,16 @@ func (in *SecretBackendKeyObservation) DeepCopyInto(out *SecretBackendKeyObserva
 		*out = new(bool)
 		**out = **in
 	}
+	if in.HybridKeyTypeEc != nil {
+		in, out := &in.HybridKeyTypeEc, &out.HybridKeyTypeEc
+		*out = new(string)
+		**out = **in
+	}
+	if in.HybridKeyTypePqc != nil {
+		in, out := &in.HybridKeyTypePqc, &out.HybridKeyTypePqc
+		*out = new(string)
+		**out = **in
+	}
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
 		*out = new(string)
@@ -259,6 +284,11 @@ func (in *SecretBackendKeyObservation) DeepCopyInto(out *SecretBackendKeyObserva
 	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	if in.ParameterSet != nil {
+		in, out := &in.ParameterSet, &out.ParameterSet
 		*out = new(string)
 		**out = **in
 	}
@@ -347,6 +377,16 @@ func (in *SecretBackendKeyParameters) DeepCopyInto(out *SecretBackendKeyParamete
 		*out = new(bool)
 		**out = **in
 	}
+	if in.HybridKeyTypeEc != nil {
+		in, out := &in.HybridKeyTypeEc, &out.HybridKeyTypeEc
+		*out = new(string)
+		**out = **in
+	}
+	if in.HybridKeyTypePqc != nil {
+		in, out := &in.HybridKeyTypePqc, &out.HybridKeyTypePqc
+		*out = new(string)
+		**out = **in
+	}
 	if in.KeySize != nil {
 		in, out := &in.KeySize, &out.KeySize
 		*out = new(float64)
@@ -369,6 +409,11 @@ func (in *SecretBackendKeyParameters) DeepCopyInto(out *SecretBackendKeyParamete
 	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	if in.ParameterSet != nil {
+		in, out := &in.ParameterSet, &out.ParameterSet
 		*out = new(string)
 		**out = **in
 	}

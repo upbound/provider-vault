@@ -34,6 +34,10 @@ type AuthBackendStsRoleInitParameters struct {
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
+	// External ID expected by the STS role. The associated STS role must be configured to require the external ID. Requires Vault 1.17+.
+	// External ID expected by the STS role.
+	ExternalID *string `json:"externalId,omitempty" tf:"external_id,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -57,6 +61,10 @@ type AuthBackendStsRoleObservation struct {
 	// mounted at.  Defaults to aws.
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// External ID expected by the STS role. The associated STS role must be configured to require the external ID. Requires Vault 1.17+.
+	// External ID expected by the STS role.
+	ExternalID *string `json:"externalId,omitempty" tf:"external_id,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -95,6 +103,11 @@ type AuthBackendStsRoleParameters struct {
 	// Selector for a Backend in auth to populate backend.
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
+
+	// External ID expected by the STS role. The associated STS role must be configured to require the external ID. Requires Vault 1.17+.
+	// External ID expected by the STS role.
+	// +kubebuilder:validation:Optional
+	ExternalID *string `json:"externalId,omitempty" tf:"external_id,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.

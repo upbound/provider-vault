@@ -99,10 +99,6 @@ spec:
                           x-kubernetes-list-type: set
                       type: object
                     type: array
-                  maxTtl:
-                    description: Maximum duration after which authentication will
-                      be expired
-                    type: string
                   namespace:
                     description: Target namespace. (requires Enterprise)
                     type: string
@@ -167,9 +163,6 @@ spec:
                     type: number
                   tokenType:
                     description: The type of token to generate, service or batch
-                    type: string
-                  ttl:
-                    description: Duration after which authentication will be expired
                     type: string
                   user:
                     items:
@@ -229,10 +222,6 @@ spec:
                           x-kubernetes-list-type: set
                       type: object
                     type: array
-                  maxTtl:
-                    description: Maximum duration after which authentication will
-                      be expired
-                    type: string
                   namespace:
                     description: Target namespace. (requires Enterprise)
                     type: string
@@ -297,9 +286,6 @@ spec:
                     type: number
                   tokenType:
                     description: The type of token to generate, service or batch
-                    type: string
-                  ttl:
-                    description: Duration after which authentication will be expired
                     type: string
                   user:
                     items:
@@ -528,10 +514,6 @@ spec:
                     type: array
                   id:
                     type: string
-                  maxTtl:
-                    description: Maximum duration after which authentication will
-                      be expired
-                    type: string
                   namespace:
                     description: Target namespace. (requires Enterprise)
                     type: string
@@ -577,9 +559,6 @@ spec:
                     type: number
                   tokenType:
                     description: The type of token to generate, service or batch
-                    type: string
-                  ttl:
-                    description: Duration after which authentication will be expired
                     type: string
                   user:
                     items:

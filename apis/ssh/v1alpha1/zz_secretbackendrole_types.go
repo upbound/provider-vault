@@ -77,6 +77,11 @@ type SecretBackendRoleInitParameters struct {
 	// Specifies if host certificates that are requested are allowed to use the base domains listed in allowed_domains.
 	AllowBareDomains *bool `json:"allowBareDomains,omitempty" tf:"allow_bare_domains,omitempty"`
 
+	// Allow signing certificates with no
+	// valid principals (e.g. any valid principal). For backwards compatibility
+	// only. The default of false is highly recommended.
+	AllowEmptyPrincipals *bool `json:"allowEmptyPrincipals,omitempty" tf:"allow_empty_principals,omitempty"`
+
 	// Specifies if certificates are allowed to be signed for use as a 'host'.
 	AllowHostCertificates *bool `json:"allowHostCertificates,omitempty" tf:"allow_host_certificates,omitempty"`
 
@@ -181,6 +186,11 @@ type SecretBackendRoleObservation struct {
 	// Specifies if host certificates that are requested are allowed to use the base domains listed in allowed_domains.
 	AllowBareDomains *bool `json:"allowBareDomains,omitempty" tf:"allow_bare_domains,omitempty"`
 
+	// Allow signing certificates with no
+	// valid principals (e.g. any valid principal). For backwards compatibility
+	// only. The default of false is highly recommended.
+	AllowEmptyPrincipals *bool `json:"allowEmptyPrincipals,omitempty" tf:"allow_empty_principals,omitempty"`
+
 	// Specifies if certificates are allowed to be signed for use as a 'host'.
 	AllowHostCertificates *bool `json:"allowHostCertificates,omitempty" tf:"allow_host_certificates,omitempty"`
 
@@ -278,6 +288,12 @@ type SecretBackendRoleParameters struct {
 	// Specifies if host certificates that are requested are allowed to use the base domains listed in allowed_domains.
 	// +kubebuilder:validation:Optional
 	AllowBareDomains *bool `json:"allowBareDomains,omitempty" tf:"allow_bare_domains,omitempty"`
+
+	// Allow signing certificates with no
+	// valid principals (e.g. any valid principal). For backwards compatibility
+	// only. The default of false is highly recommended.
+	// +kubebuilder:validation:Optional
+	AllowEmptyPrincipals *bool `json:"allowEmptyPrincipals,omitempty" tf:"allow_empty_principals,omitempty"`
 
 	// Specifies if certificates are allowed to be signed for use as a 'host'.
 	// +kubebuilder:validation:Optional

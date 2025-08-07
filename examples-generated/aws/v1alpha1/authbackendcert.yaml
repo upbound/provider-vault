@@ -8,9 +8,15 @@ metadata:
   name: cert
 spec:
   forProvider:
+    awsPublicCert: |-
+      ${file("${path.module}/aws_public_key.crt)"
+        type            = "pkcs7"
+      }
+      }
     backendSelector:
       matchLabels:
         testing.upbound.io/example-name: aws
+    certName: my-cert
 
 ---
 

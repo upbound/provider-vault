@@ -295,6 +295,11 @@ func (in *AuthBackendInitParameters) DeepCopyInto(out *AuthBackendInitParameters
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.ConnectionTimeout != nil {
+		in, out := &in.ConnectionTimeout, &out.ConnectionTimeout
+		*out = new(float64)
+		**out = **in
+	}
 	if in.DenyNullBind != nil {
 		in, out := &in.DenyNullBind, &out.DenyNullBind
 		*out = new(bool)
@@ -303,6 +308,11 @@ func (in *AuthBackendInitParameters) DeepCopyInto(out *AuthBackendInitParameters
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
+		**out = **in
+	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
 		**out = **in
 	}
 	if in.DisableRemount != nil {
@@ -353,6 +363,21 @@ func (in *AuthBackendInitParameters) DeepCopyInto(out *AuthBackendInitParameters
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
 		*out = new(string)
+		**out = **in
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Starttls != nil {
@@ -534,6 +559,11 @@ func (in *AuthBackendObservation) DeepCopyInto(out *AuthBackendObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ConnectionTimeout != nil {
+		in, out := &in.ConnectionTimeout, &out.ConnectionTimeout
+		*out = new(float64)
+		**out = **in
+	}
 	if in.DenyNullBind != nil {
 		in, out := &in.DenyNullBind, &out.DenyNullBind
 		*out = new(bool)
@@ -542,6 +572,11 @@ func (in *AuthBackendObservation) DeepCopyInto(out *AuthBackendObservation) {
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
+		**out = **in
+	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
 		**out = **in
 	}
 	if in.DisableRemount != nil {
@@ -597,6 +632,21 @@ func (in *AuthBackendObservation) DeepCopyInto(out *AuthBackendObservation) {
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
 		*out = new(string)
+		**out = **in
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Starttls != nil {
@@ -751,6 +801,11 @@ func (in *AuthBackendParameters) DeepCopyInto(out *AuthBackendParameters) {
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.ConnectionTimeout != nil {
+		in, out := &in.ConnectionTimeout, &out.ConnectionTimeout
+		*out = new(float64)
+		**out = **in
+	}
 	if in.DenyNullBind != nil {
 		in, out := &in.DenyNullBind, &out.DenyNullBind
 		*out = new(bool)
@@ -759,6 +814,11 @@ func (in *AuthBackendParameters) DeepCopyInto(out *AuthBackendParameters) {
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
+		**out = **in
+	}
+	if in.DisableAutomatedRotation != nil {
+		in, out := &in.DisableAutomatedRotation, &out.DisableAutomatedRotation
+		*out = new(bool)
 		**out = **in
 	}
 	if in.DisableRemount != nil {
@@ -809,6 +869,21 @@ func (in *AuthBackendParameters) DeepCopyInto(out *AuthBackendParameters) {
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
 		*out = new(string)
+		**out = **in
+	}
+	if in.RotationPeriod != nil {
+		in, out := &in.RotationPeriod, &out.RotationPeriod
+		*out = new(float64)
+		**out = **in
+	}
+	if in.RotationSchedule != nil {
+		in, out := &in.RotationSchedule, &out.RotationSchedule
+		*out = new(string)
+		**out = **in
+	}
+	if in.RotationWindow != nil {
+		in, out := &in.RotationWindow, &out.RotationWindow
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Starttls != nil {

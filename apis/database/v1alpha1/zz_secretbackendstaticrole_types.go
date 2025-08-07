@@ -29,6 +29,13 @@ type SecretBackendStaticRoleInitParameters struct {
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
+	// The configuration for the credential type.Full documentation for the allowed values can be found under "https://developer.hashicorp.com/vault/api-docs/secret/databases#credential_config".
+	// +mapType=granular
+	CredentialConfig map[string]*string `json:"credentialConfig,omitempty" tf:"credential_config,omitempty"`
+
+	// The credential type for the user, can be one of "password", "rsa_private_key" or "client_certificate".The configuration can be done in `credential_config`.
+	CredentialType *string `json:"credentialType,omitempty" tf:"credential_type,omitempty"`
+
 	// The unique name of the database connection to use for the static role.
 	// Database connection to use for this role.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/database/v1alpha1.SecretBackendConnection
@@ -73,6 +80,17 @@ type SecretBackendStaticRoleInitParameters struct {
 	// The amount of time in seconds in which the rotations are allowed to occur starting from a given rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// The password corresponding to the username in the database.
+	// Required when using the Rootless Password Rotation workflow for static roles. Only enabled for
+	// select DB engines (Postgres). Requires Vault 1.18+ Enterprise.
+	// The password corresponding to the username in the database. Required when using the Rootless Password Rotation workflow for static roles.
+	SelfManagedPasswordSecretRef *v1.SecretKeySelector `json:"selfManagedPasswordSecretRef,omitempty" tf:"-"`
+
+	// If set to true, Vault will skip the
+	// initial secret rotation on import. Requires Vault 1.18+ Enterprise.
+	// Skip rotation of the password on import.
+	SkipImportRotation *bool `json:"skipImportRotation,omitempty" tf:"skip_import_rotation,omitempty"`
+
 	// The database username that this static role corresponds to.
 	// The database username that this role corresponds to.
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -83,6 +101,13 @@ type SecretBackendStaticRoleObservation struct {
 	// The unique name of the Vault mount to configure.
 	// The path of the Database Secret Backend the role belongs to.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// The configuration for the credential type.Full documentation for the allowed values can be found under "https://developer.hashicorp.com/vault/api-docs/secret/databases#credential_config".
+	// +mapType=granular
+	CredentialConfig map[string]*string `json:"credentialConfig,omitempty" tf:"credential_config,omitempty"`
+
+	// The credential type for the user, can be one of "password", "rsa_private_key" or "client_certificate".The configuration can be done in `credential_config`.
+	CredentialType *string `json:"credentialType,omitempty" tf:"credential_type,omitempty"`
 
 	// The unique name of the database connection to use for the static role.
 	// Database connection to use for this role.
@@ -120,6 +145,11 @@ type SecretBackendStaticRoleObservation struct {
 	// The amount of time in seconds in which the rotations are allowed to occur starting from a given rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// If set to true, Vault will skip the
+	// initial secret rotation on import. Requires Vault 1.18+ Enterprise.
+	// Skip rotation of the password on import.
+	SkipImportRotation *bool `json:"skipImportRotation,omitempty" tf:"skip_import_rotation,omitempty"`
+
 	// The database username that this static role corresponds to.
 	// The database username that this role corresponds to.
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -141,6 +171,15 @@ type SecretBackendStaticRoleParameters struct {
 	// Selector for a Mount in vault to populate backend.
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
+
+	// The configuration for the credential type.Full documentation for the allowed values can be found under "https://developer.hashicorp.com/vault/api-docs/secret/databases#credential_config".
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	CredentialConfig map[string]*string `json:"credentialConfig,omitempty" tf:"credential_config,omitempty"`
+
+	// The credential type for the user, can be one of "password", "rsa_private_key" or "client_certificate".The configuration can be done in `credential_config`.
+	// +kubebuilder:validation:Optional
+	CredentialType *string `json:"credentialType,omitempty" tf:"credential_type,omitempty"`
 
 	// The unique name of the database connection to use for the static role.
 	// Database connection to use for this role.
@@ -192,6 +231,19 @@ type SecretBackendStaticRoleParameters struct {
 	// The amount of time in seconds in which the rotations are allowed to occur starting from a given rotation_schedule.
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// The password corresponding to the username in the database.
+	// Required when using the Rootless Password Rotation workflow for static roles. Only enabled for
+	// select DB engines (Postgres). Requires Vault 1.18+ Enterprise.
+	// The password corresponding to the username in the database. Required when using the Rootless Password Rotation workflow for static roles.
+	// +kubebuilder:validation:Optional
+	SelfManagedPasswordSecretRef *v1.SecretKeySelector `json:"selfManagedPasswordSecretRef,omitempty" tf:"-"`
+
+	// If set to true, Vault will skip the
+	// initial secret rotation on import. Requires Vault 1.18+ Enterprise.
+	// Skip rotation of the password on import.
+	// +kubebuilder:validation:Optional
+	SkipImportRotation *bool `json:"skipImportRotation,omitempty" tf:"skip_import_rotation,omitempty"`
 
 	// The database username that this static role corresponds to.
 	// The database username that this role corresponds to.

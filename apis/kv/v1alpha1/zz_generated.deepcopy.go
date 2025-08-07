@@ -608,7 +608,21 @@ func (in *SecretV2InitParameters) DeepCopyInto(out *SecretV2InitParameters) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	out.DataJSONSecretRef = in.DataJSONSecretRef
+	if in.DataJSONSecretRef != nil {
+		in, out := &in.DataJSONSecretRef, &out.DataJSONSecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.DataJSONWo != nil {
+		in, out := &in.DataJSONWo, &out.DataJSONWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.DataJSONWoVersion != nil {
+		in, out := &in.DataJSONWoVersion, &out.DataJSONWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.DeleteAllVersions != nil {
 		in, out := &in.DeleteAllVersions, &out.DeleteAllVersions
 		*out = new(bool)
@@ -719,6 +733,16 @@ func (in *SecretV2Observation) DeepCopyInto(out *SecretV2Observation) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.DataJSONWo != nil {
+		in, out := &in.DataJSONWo, &out.DataJSONWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.DataJSONWoVersion != nil {
+		in, out := &in.DataJSONWoVersion, &out.DataJSONWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.DeleteAllVersions != nil {
 		in, out := &in.DeleteAllVersions, &out.DeleteAllVersions
 		*out = new(bool)
@@ -813,7 +837,21 @@ func (in *SecretV2Parameters) DeepCopyInto(out *SecretV2Parameters) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	out.DataJSONSecretRef = in.DataJSONSecretRef
+	if in.DataJSONSecretRef != nil {
+		in, out := &in.DataJSONSecretRef, &out.DataJSONSecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.DataJSONWo != nil {
+		in, out := &in.DataJSONWo, &out.DataJSONWo
+		*out = new(string)
+		**out = **in
+	}
+	if in.DataJSONWoVersion != nil {
+		in, out := &in.DataJSONWoVersion, &out.DataJSONWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.DeleteAllVersions != nil {
 		in, out := &in.DeleteAllVersions, &out.DeleteAllVersions
 		*out = new(bool)

@@ -9,6 +9,7 @@ Copyright 2022 Upbound Inc.
 package v1alpha1
 
 import (
+	"github.com/crossplane/crossplane-runtime/apis/common/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -112,6 +113,16 @@ func (in *AuthBackendRoleInitParameters) DeepCopyInto(out *AuthBackendRoleInitPa
 		in, out := &in.Backend, &out.Backend
 		*out = new(string)
 		**out = **in
+	}
+	if in.BackendRef != nil {
+		in, out := &in.BackendRef, &out.BackendRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.BackendSelector != nil {
+		in, out := &in.BackendSelector, &out.BackendSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Certificate != nil {
 		in, out := &in.Certificate, &out.Certificate
@@ -559,6 +570,16 @@ func (in *AuthBackendRoleParameters) DeepCopyInto(out *AuthBackendRoleParameters
 		in, out := &in.Backend, &out.Backend
 		*out = new(string)
 		**out = **in
+	}
+	if in.BackendRef != nil {
+		in, out := &in.BackendRef, &out.BackendRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.BackendSelector != nil {
+		in, out := &in.BackendSelector, &out.BackendSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Certificate != nil {
 		in, out := &in.Certificate, &out.Certificate

@@ -33,6 +33,18 @@ type SecretBackendRootSignIntermediateInitParameters struct {
 	// Flag to exclude CN from SANs.
 	ExcludeCnFromSans *bool `json:"excludeCnFromSans,omitempty" tf:"exclude_cn_from_sans,omitempty"`
 
+	// List of domains for which certificates are not allowed to be issued.
+	ExcludedDNSDomains []*string `json:"excludedDnsDomains,omitempty" tf:"excluded_dns_domains,omitempty"`
+
+	// List of email addresses for which certificates are not allowed to be issued.
+	ExcludedEmailAddresses []*string `json:"excludedEmailAddresses,omitempty" tf:"excluded_email_addresses,omitempty"`
+
+	// List of IP ranges for which certificates are NOT allowed to be issued.
+	ExcludedIPRanges []*string `json:"excludedIpRanges,omitempty" tf:"excluded_ip_ranges,omitempty"`
+
+	// List of URI domains for which certificates are not allowed to be issued.
+	ExcludedURIDomains []*string `json:"excludedUriDomains,omitempty" tf:"excluded_uri_domains,omitempty"`
+
 	// The format of data.
 	Format *string `json:"format,omitempty" tf:"format,omitempty"`
 
@@ -42,6 +54,9 @@ type SecretBackendRootSignIntermediateInitParameters struct {
 	// Specifies the default issuer of this request.
 	IssuerRef *string `json:"issuerRef,omitempty" tf:"issuer_ref,omitempty"`
 
+	// Specify the key usages to be added to the existing set of key usages ("CRL", "CertSign") on the generated certificate.
+	KeyUsage []*string `json:"keyUsage,omitempty" tf:"key_usage,omitempty"`
+
 	// The locality.
 	Locality *string `json:"locality,omitempty" tf:"locality,omitempty"`
 
@@ -50,6 +65,12 @@ type SecretBackendRootSignIntermediateInitParameters struct {
 
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
+	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
+
+	// Specifies the duration by which to backdate the NotBefore property.
+	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
 
 	// The organization.
 	Organization *string `json:"organization,omitempty" tf:"organization,omitempty"`
@@ -63,6 +84,15 @@ type SecretBackendRootSignIntermediateInitParameters struct {
 	// List of domains for which certificates are allowed to be issued.
 	PermittedDNSDomains []*string `json:"permittedDnsDomains,omitempty" tf:"permitted_dns_domains,omitempty"`
 
+	// List of email addresses for which certificates are allowed to be issued.
+	PermittedEmailAddresses []*string `json:"permittedEmailAddresses,omitempty" tf:"permitted_email_addresses,omitempty"`
+
+	// List of IP ranges for which certificates are allowed to be issued.
+	PermittedIPRanges []*string `json:"permittedIpRanges,omitempty" tf:"permitted_ip_ranges,omitempty"`
+
+	// List of URI domains for which certificates are allowed to be issued.
+	PermittedURIDomains []*string `json:"permittedUriDomains,omitempty" tf:"permitted_uri_domains,omitempty"`
+
 	// The postal code.
 	PostalCode *string `json:"postalCode,omitempty" tf:"postal_code,omitempty"`
 
@@ -71,6 +101,13 @@ type SecretBackendRootSignIntermediateInitParameters struct {
 
 	// Revoke the certificate upon resource destruction.
 	Revoke *bool `json:"revoke,omitempty" tf:"revoke,omitempty"`
+
+	// The number of bits to use in the signature algorithm.
+	SignatureBits *float64 `json:"signatureBits,omitempty" tf:"signature_bits,omitempty"`
+
+	// Value for the Subject Key Identifier field
+	// (RFC 5280 Section 4.2.1.2). Specified as a string in hex format.
+	Skid *string `json:"skid,omitempty" tf:"skid,omitempty"`
 
 	// The street address.
 	StreetAddress *string `json:"streetAddress,omitempty" tf:"street_address,omitempty"`
@@ -83,6 +120,10 @@ type SecretBackendRootSignIntermediateInitParameters struct {
 
 	// Preserve CSR values.
 	UseCsrValues *bool `json:"useCsrValues,omitempty" tf:"use_csr_values,omitempty"`
+
+	// Specifies whether or not to use PSS signatures
+	// over PKCS#1v1.5 signatures when a RSA-type issuer is used.
+	UsePss *bool `json:"usePss,omitempty" tf:"use_pss,omitempty"`
 }
 
 type SecretBackendRootSignIntermediateObservation struct {
@@ -114,6 +155,18 @@ type SecretBackendRootSignIntermediateObservation struct {
 	// Flag to exclude CN from SANs.
 	ExcludeCnFromSans *bool `json:"excludeCnFromSans,omitempty" tf:"exclude_cn_from_sans,omitempty"`
 
+	// List of domains for which certificates are not allowed to be issued.
+	ExcludedDNSDomains []*string `json:"excludedDnsDomains,omitempty" tf:"excluded_dns_domains,omitempty"`
+
+	// List of email addresses for which certificates are not allowed to be issued.
+	ExcludedEmailAddresses []*string `json:"excludedEmailAddresses,omitempty" tf:"excluded_email_addresses,omitempty"`
+
+	// List of IP ranges for which certificates are NOT allowed to be issued.
+	ExcludedIPRanges []*string `json:"excludedIpRanges,omitempty" tf:"excluded_ip_ranges,omitempty"`
+
+	// List of URI domains for which certificates are not allowed to be issued.
+	ExcludedURIDomains []*string `json:"excludedUriDomains,omitempty" tf:"excluded_uri_domains,omitempty"`
+
 	// The format of data.
 	Format *string `json:"format,omitempty" tf:"format,omitempty"`
 
@@ -128,6 +181,9 @@ type SecretBackendRootSignIntermediateObservation struct {
 	// The issuing CA certificate.
 	IssuingCA *string `json:"issuingCa,omitempty" tf:"issuing_ca,omitempty"`
 
+	// Specify the key usages to be added to the existing set of key usages ("CRL", "CertSign") on the generated certificate.
+	KeyUsage []*string `json:"keyUsage,omitempty" tf:"key_usage,omitempty"`
+
 	// The locality.
 	Locality *string `json:"locality,omitempty" tf:"locality,omitempty"`
 
@@ -136,6 +192,12 @@ type SecretBackendRootSignIntermediateObservation struct {
 
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
+	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
+
+	// Specifies the duration by which to backdate the NotBefore property.
+	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
 
 	// The organization.
 	Organization *string `json:"organization,omitempty" tf:"organization,omitempty"`
@@ -149,6 +211,15 @@ type SecretBackendRootSignIntermediateObservation struct {
 	// List of domains for which certificates are allowed to be issued.
 	PermittedDNSDomains []*string `json:"permittedDnsDomains,omitempty" tf:"permitted_dns_domains,omitempty"`
 
+	// List of email addresses for which certificates are allowed to be issued.
+	PermittedEmailAddresses []*string `json:"permittedEmailAddresses,omitempty" tf:"permitted_email_addresses,omitempty"`
+
+	// List of IP ranges for which certificates are allowed to be issued.
+	PermittedIPRanges []*string `json:"permittedIpRanges,omitempty" tf:"permitted_ip_ranges,omitempty"`
+
+	// List of URI domains for which certificates are allowed to be issued.
+	PermittedURIDomains []*string `json:"permittedUriDomains,omitempty" tf:"permitted_uri_domains,omitempty"`
+
 	// The postal code.
 	PostalCode *string `json:"postalCode,omitempty" tf:"postal_code,omitempty"`
 
@@ -161,6 +232,13 @@ type SecretBackendRootSignIntermediateObservation struct {
 	// The certificate's serial number, hex formatted.
 	SerialNumber *string `json:"serialNumber,omitempty" tf:"serial_number,omitempty"`
 
+	// The number of bits to use in the signature algorithm.
+	SignatureBits *float64 `json:"signatureBits,omitempty" tf:"signature_bits,omitempty"`
+
+	// Value for the Subject Key Identifier field
+	// (RFC 5280 Section 4.2.1.2). Specified as a string in hex format.
+	Skid *string `json:"skid,omitempty" tf:"skid,omitempty"`
+
 	// The street address.
 	StreetAddress *string `json:"streetAddress,omitempty" tf:"street_address,omitempty"`
 
@@ -172,6 +250,10 @@ type SecretBackendRootSignIntermediateObservation struct {
 
 	// Preserve CSR values.
 	UseCsrValues *bool `json:"useCsrValues,omitempty" tf:"use_csr_values,omitempty"`
+
+	// Specifies whether or not to use PSS signatures
+	// over PKCS#1v1.5 signatures when a RSA-type issuer is used.
+	UsePss *bool `json:"usePss,omitempty" tf:"use_pss,omitempty"`
 }
 
 type SecretBackendRootSignIntermediateParameters struct {
@@ -200,6 +282,22 @@ type SecretBackendRootSignIntermediateParameters struct {
 	// +kubebuilder:validation:Optional
 	ExcludeCnFromSans *bool `json:"excludeCnFromSans,omitempty" tf:"exclude_cn_from_sans,omitempty"`
 
+	// List of domains for which certificates are not allowed to be issued.
+	// +kubebuilder:validation:Optional
+	ExcludedDNSDomains []*string `json:"excludedDnsDomains,omitempty" tf:"excluded_dns_domains,omitempty"`
+
+	// List of email addresses for which certificates are not allowed to be issued.
+	// +kubebuilder:validation:Optional
+	ExcludedEmailAddresses []*string `json:"excludedEmailAddresses,omitempty" tf:"excluded_email_addresses,omitempty"`
+
+	// List of IP ranges for which certificates are NOT allowed to be issued.
+	// +kubebuilder:validation:Optional
+	ExcludedIPRanges []*string `json:"excludedIpRanges,omitempty" tf:"excluded_ip_ranges,omitempty"`
+
+	// List of URI domains for which certificates are not allowed to be issued.
+	// +kubebuilder:validation:Optional
+	ExcludedURIDomains []*string `json:"excludedUriDomains,omitempty" tf:"excluded_uri_domains,omitempty"`
+
 	// The format of data.
 	// +kubebuilder:validation:Optional
 	Format *string `json:"format,omitempty" tf:"format,omitempty"`
@@ -212,6 +310,10 @@ type SecretBackendRootSignIntermediateParameters struct {
 	// +kubebuilder:validation:Optional
 	IssuerRef *string `json:"issuerRef,omitempty" tf:"issuer_ref,omitempty"`
 
+	// Specify the key usages to be added to the existing set of key usages ("CRL", "CertSign") on the generated certificate.
+	// +kubebuilder:validation:Optional
+	KeyUsage []*string `json:"keyUsage,omitempty" tf:"key_usage,omitempty"`
+
 	// The locality.
 	// +kubebuilder:validation:Optional
 	Locality *string `json:"locality,omitempty" tf:"locality,omitempty"`
@@ -223,6 +325,14 @@ type SecretBackendRootSignIntermediateParameters struct {
 	// Target namespace. (requires Enterprise)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
+
+	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
+	// +kubebuilder:validation:Optional
+	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
+
+	// Specifies the duration by which to backdate the NotBefore property.
+	// +kubebuilder:validation:Optional
+	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
 
 	// The organization.
 	// +kubebuilder:validation:Optional
@@ -240,6 +350,18 @@ type SecretBackendRootSignIntermediateParameters struct {
 	// +kubebuilder:validation:Optional
 	PermittedDNSDomains []*string `json:"permittedDnsDomains,omitempty" tf:"permitted_dns_domains,omitempty"`
 
+	// List of email addresses for which certificates are allowed to be issued.
+	// +kubebuilder:validation:Optional
+	PermittedEmailAddresses []*string `json:"permittedEmailAddresses,omitempty" tf:"permitted_email_addresses,omitempty"`
+
+	// List of IP ranges for which certificates are allowed to be issued.
+	// +kubebuilder:validation:Optional
+	PermittedIPRanges []*string `json:"permittedIpRanges,omitempty" tf:"permitted_ip_ranges,omitempty"`
+
+	// List of URI domains for which certificates are allowed to be issued.
+	// +kubebuilder:validation:Optional
+	PermittedURIDomains []*string `json:"permittedUriDomains,omitempty" tf:"permitted_uri_domains,omitempty"`
+
 	// The postal code.
 	// +kubebuilder:validation:Optional
 	PostalCode *string `json:"postalCode,omitempty" tf:"postal_code,omitempty"`
@@ -251,6 +373,15 @@ type SecretBackendRootSignIntermediateParameters struct {
 	// Revoke the certificate upon resource destruction.
 	// +kubebuilder:validation:Optional
 	Revoke *bool `json:"revoke,omitempty" tf:"revoke,omitempty"`
+
+	// The number of bits to use in the signature algorithm.
+	// +kubebuilder:validation:Optional
+	SignatureBits *float64 `json:"signatureBits,omitempty" tf:"signature_bits,omitempty"`
+
+	// Value for the Subject Key Identifier field
+	// (RFC 5280 Section 4.2.1.2). Specified as a string in hex format.
+	// +kubebuilder:validation:Optional
+	Skid *string `json:"skid,omitempty" tf:"skid,omitempty"`
 
 	// The street address.
 	// +kubebuilder:validation:Optional
@@ -267,6 +398,11 @@ type SecretBackendRootSignIntermediateParameters struct {
 	// Preserve CSR values.
 	// +kubebuilder:validation:Optional
 	UseCsrValues *bool `json:"useCsrValues,omitempty" tf:"use_csr_values,omitempty"`
+
+	// Specifies whether or not to use PSS signatures
+	// over PKCS#1v1.5 signatures when a RSA-type issuer is used.
+	// +kubebuilder:validation:Optional
+	UsePss *bool `json:"usePss,omitempty" tf:"use_pss,omitempty"`
 }
 
 // SecretBackendRootSignIntermediateSpec defines the desired state of SecretBackendRootSignIntermediate

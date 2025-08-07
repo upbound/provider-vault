@@ -29,6 +29,10 @@ type SecretBackendInitParameters struct {
 	// Human-friendly description of the mount for the backend.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// If set, opts out of mount migration on path updates.
 	// See here for more info on Mount Migration
 	// If set, opts out of mount migration on path updates.
@@ -79,6 +83,22 @@ type SecretBackendInitParameters struct {
 	// Role ARN to assume for plugin identity token federation.
 	RoleArn *string `json:"roleArn,omitempty" tf:"role_arn,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// The AWS Secret Key this backend should use to
 	// issue new credentials. Vault uses the official AWS SDK to authenticate, and thus can also use standard AWS environment credentials, shared file credentials or IAM role/ECS task credentials.
 	// The AWS Secret Access Key to use when generating new credentials.
@@ -87,6 +107,18 @@ type SecretBackendInitParameters struct {
 	// Specifies a custom HTTP STS endpoint to use.
 	// Specifies a custom HTTP STS endpoint to use.
 	StsEndpoint *string `json:"stsEndpoint,omitempty" tf:"sts_endpoint,omitempty"`
+
+	// Ordered list of sts_endpoints to try if the defined one fails. Requires Vault 1.19+
+	// Specifies a list of custom STS fallback endpoints to use (in order).
+	StsFallbackEndpoints []*string `json:"stsFallbackEndpoints,omitempty" tf:"sts_fallback_endpoints,omitempty"`
+
+	// Ordered list of sts_regions matching the fallback endpoints. Should correspond in order with those endpoints. Requires Vault 1.19+
+	// Specifies a list of custom STS fallback regions to use (in order).
+	StsFallbackRegions []*string `json:"stsFallbackRegions,omitempty" tf:"sts_fallback_regions,omitempty"`
+
+	// Specifies the region of the STS endpoint. Should be included if sts_endpoint is supplied. Requires Vault 1.19+
+	// Specifies a custom STS region to use.
+	StsRegion *string `json:"stsRegion,omitempty" tf:"sts_region,omitempty"`
 
 	// Template describing how dynamic usernames are generated. The username template is used to generate both IAM usernames (capped at 64 characters) and STS usernames (capped at 32 characters). If no template is provided the field defaults to the template:
 	// Template describing how dynamic usernames are generated.
@@ -103,6 +135,10 @@ type SecretBackendObservation struct {
 	// A human-friendly description for this backend.
 	// Human-friendly description of the mount for the backend.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// If set, opts out of mount migration on path updates.
 	// See here for more info on Mount Migration
@@ -156,9 +192,37 @@ type SecretBackendObservation struct {
 	// Role ARN to assume for plugin identity token federation.
 	RoleArn *string `json:"roleArn,omitempty" tf:"role_arn,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// Specifies a custom HTTP STS endpoint to use.
 	// Specifies a custom HTTP STS endpoint to use.
 	StsEndpoint *string `json:"stsEndpoint,omitempty" tf:"sts_endpoint,omitempty"`
+
+	// Ordered list of sts_endpoints to try if the defined one fails. Requires Vault 1.19+
+	// Specifies a list of custom STS fallback endpoints to use (in order).
+	StsFallbackEndpoints []*string `json:"stsFallbackEndpoints,omitempty" tf:"sts_fallback_endpoints,omitempty"`
+
+	// Ordered list of sts_regions matching the fallback endpoints. Should correspond in order with those endpoints. Requires Vault 1.19+
+	// Specifies a list of custom STS fallback regions to use (in order).
+	StsFallbackRegions []*string `json:"stsFallbackRegions,omitempty" tf:"sts_fallback_regions,omitempty"`
+
+	// Specifies the region of the STS endpoint. Should be included if sts_endpoint is supplied. Requires Vault 1.19+
+	// Specifies a custom STS region to use.
+	StsRegion *string `json:"stsRegion,omitempty" tf:"sts_region,omitempty"`
 
 	// Template describing how dynamic usernames are generated. The username template is used to generate both IAM usernames (capped at 64 characters) and STS usernames (capped at 32 characters). If no template is provided the field defaults to the template:
 	// Template describing how dynamic usernames are generated.
@@ -183,6 +247,11 @@ type SecretBackendParameters struct {
 	// Human-friendly description of the mount for the backend.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// If set, opts out of mount migration on path updates.
 	// See here for more info on Mount Migration
@@ -245,6 +314,25 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	RoleArn *string `json:"roleArn,omitempty" tf:"role_arn,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// The AWS Secret Key this backend should use to
 	// issue new credentials. Vault uses the official AWS SDK to authenticate, and thus can also use standard AWS environment credentials, shared file credentials or IAM role/ECS task credentials.
 	// The AWS Secret Access Key to use when generating new credentials.
@@ -255,6 +343,21 @@ type SecretBackendParameters struct {
 	// Specifies a custom HTTP STS endpoint to use.
 	// +kubebuilder:validation:Optional
 	StsEndpoint *string `json:"stsEndpoint,omitempty" tf:"sts_endpoint,omitempty"`
+
+	// Ordered list of sts_endpoints to try if the defined one fails. Requires Vault 1.19+
+	// Specifies a list of custom STS fallback endpoints to use (in order).
+	// +kubebuilder:validation:Optional
+	StsFallbackEndpoints []*string `json:"stsFallbackEndpoints,omitempty" tf:"sts_fallback_endpoints,omitempty"`
+
+	// Ordered list of sts_regions matching the fallback endpoints. Should correspond in order with those endpoints. Requires Vault 1.19+
+	// Specifies a list of custom STS fallback regions to use (in order).
+	// +kubebuilder:validation:Optional
+	StsFallbackRegions []*string `json:"stsFallbackRegions,omitempty" tf:"sts_fallback_regions,omitempty"`
+
+	// Specifies the region of the STS endpoint. Should be included if sts_endpoint is supplied. Requires Vault 1.19+
+	// Specifies a custom STS region to use.
+	// +kubebuilder:validation:Optional
+	StsRegion *string `json:"stsRegion,omitempty" tf:"sts_region,omitempty"`
 
 	// Template describing how dynamic usernames are generated. The username template is used to generate both IAM usernames (capped at 64 characters) and STS usernames (capped at 32 characters). If no template is provided the field defaults to the template:
 	// Template describing how dynamic usernames are generated.

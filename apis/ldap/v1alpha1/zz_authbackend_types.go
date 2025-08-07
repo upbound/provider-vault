@@ -26,9 +26,14 @@ type AuthBackendInitParameters struct {
 
 	ClientTLSKeySecretRef *v1.SecretKeySelector `json:"clientTlsKeySecretRef,omitempty" tf:"-"`
 
+	ConnectionTimeout *float64 `json:"connectionTimeout,omitempty" tf:"connection_timeout,omitempty"`
+
 	DenyNullBind *bool `json:"denyNullBind,omitempty" tf:"deny_null_bind,omitempty"`
 
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// If set, opts out of mount migration on path updates.
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
@@ -52,6 +57,15 @@ type AuthBackendInitParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	Starttls *bool `json:"starttls,omitempty" tf:"starttls,omitempty"`
 
@@ -117,9 +131,14 @@ type AuthBackendObservation struct {
 
 	ClientTLSCert *string `json:"clientTlsCert,omitempty" tf:"client_tls_cert,omitempty"`
 
+	ConnectionTimeout *float64 `json:"connectionTimeout,omitempty" tf:"connection_timeout,omitempty"`
+
 	DenyNullBind *bool `json:"denyNullBind,omitempty" tf:"deny_null_bind,omitempty"`
 
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// If set, opts out of mount migration on path updates.
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
@@ -145,6 +164,15 @@ type AuthBackendObservation struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	Starttls *bool `json:"starttls,omitempty" tf:"starttls,omitempty"`
 
@@ -218,10 +246,17 @@ type AuthBackendParameters struct {
 	ClientTLSKeySecretRef *v1.SecretKeySelector `json:"clientTlsKeySecretRef,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
+	ConnectionTimeout *float64 `json:"connectionTimeout,omitempty" tf:"connection_timeout,omitempty"`
+
+	// +kubebuilder:validation:Optional
 	DenyNullBind *bool `json:"denyNullBind,omitempty" tf:"deny_null_bind,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// If set, opts out of mount migration on path updates.
 	// +kubebuilder:validation:Optional
@@ -255,6 +290,18 @@ type AuthBackendParameters struct {
 
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Starttls *bool `json:"starttls,omitempty" tf:"starttls,omitempty"`

@@ -35,6 +35,10 @@ type AuthBackendClientInitParameters struct {
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Override the URL Vault uses when making EC2 API
 	// calls.
 	// URL to override the default generated endpoint for making AWS EC2 API calls.
@@ -78,6 +82,22 @@ type AuthBackendClientInitParameters struct {
 	// Role ARN to assume for plugin identity token federation.
 	RoleArn *string `json:"roleArn,omitempty" tf:"role_arn,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// The AWS secret key that Vault should use for the
 	// auth backend.
 	// AWS Secret key with permissions to query AWS APIs.
@@ -108,6 +128,10 @@ type AuthBackendClientObservation struct {
 	// mounted at.  Defaults to aws.
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// Override the URL Vault uses when making EC2 API
 	// calls.
@@ -154,6 +178,22 @@ type AuthBackendClientObservation struct {
 	// Role ARN to assume for plugin identity token federation.
 	RoleArn *string `json:"roleArn,omitempty" tf:"role_arn,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// Override the URL Vault uses when making STS API
 	// calls.
 	// URL to override the default generated endpoint for making AWS STS API calls.
@@ -196,6 +236,11 @@ type AuthBackendClientParameters struct {
 	// Selector for a Backend in auth to populate backend.
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// Override the URL Vault uses when making EC2 API
 	// calls.
@@ -247,6 +292,25 @@ type AuthBackendClientParameters struct {
 	// Role ARN to assume for plugin identity token federation.
 	// +kubebuilder:validation:Optional
 	RoleArn *string `json:"roleArn,omitempty" tf:"role_arn,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The AWS secret key that Vault should use for the
 	// auth backend.

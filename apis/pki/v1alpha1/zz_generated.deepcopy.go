@@ -164,6 +164,11 @@ func (in *SecretBackendCertInitParameters) DeepCopyInto(out *SecretBackendCertIn
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.CertMetadata != nil {
+		in, out := &in.CertMetadata, &out.CertMetadata
+		*out = new(string)
+		**out = **in
+	}
 	if in.CommonName != nil {
 		in, out := &in.CommonName, &out.CommonName
 		*out = new(string)
@@ -220,6 +225,11 @@ func (in *SecretBackendCertInitParameters) DeepCopyInto(out *SecretBackendCertIn
 		*out = new(string)
 		**out = **in
 	}
+	if in.NotAfter != nil {
+		in, out := &in.NotAfter, &out.NotAfter
+		*out = new(string)
+		**out = **in
+	}
 	if in.OtherSans != nil {
 		in, out := &in.OtherSans, &out.OtherSans
 		*out = make([]*string, len(*in))
@@ -238,6 +248,11 @@ func (in *SecretBackendCertInitParameters) DeepCopyInto(out *SecretBackendCertIn
 	}
 	if in.Revoke != nil {
 		in, out := &in.Revoke, &out.Revoke
+		*out = new(bool)
+		**out = **in
+	}
+	if in.RevokeWithKey != nil {
+		in, out := &in.RevokeWithKey, &out.RevokeWithKey
 		*out = new(bool)
 		**out = **in
 	}
@@ -341,6 +356,11 @@ func (in *SecretBackendCertObservation) DeepCopyInto(out *SecretBackendCertObser
 		*out = new(string)
 		**out = **in
 	}
+	if in.CertMetadata != nil {
+		in, out := &in.CertMetadata, &out.CertMetadata
+		*out = new(string)
+		**out = **in
+	}
 	if in.Certificate != nil {
 		in, out := &in.Certificate, &out.Certificate
 		*out = new(string)
@@ -407,6 +427,11 @@ func (in *SecretBackendCertObservation) DeepCopyInto(out *SecretBackendCertObser
 		*out = new(string)
 		**out = **in
 	}
+	if in.NotAfter != nil {
+		in, out := &in.NotAfter, &out.NotAfter
+		*out = new(string)
+		**out = **in
+	}
 	if in.OtherSans != nil {
 		in, out := &in.OtherSans, &out.OtherSans
 		*out = make([]*string, len(*in))
@@ -435,6 +460,11 @@ func (in *SecretBackendCertObservation) DeepCopyInto(out *SecretBackendCertObser
 	}
 	if in.Revoke != nil {
 		in, out := &in.Revoke, &out.Revoke
+		*out = new(bool)
+		**out = **in
+	}
+	if in.RevokeWithKey != nil {
+		in, out := &in.RevokeWithKey, &out.RevokeWithKey
 		*out = new(bool)
 		**out = **in
 	}
@@ -516,6 +546,11 @@ func (in *SecretBackendCertParameters) DeepCopyInto(out *SecretBackendCertParame
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.CertMetadata != nil {
+		in, out := &in.CertMetadata, &out.CertMetadata
+		*out = new(string)
+		**out = **in
+	}
 	if in.CommonName != nil {
 		in, out := &in.CommonName, &out.CommonName
 		*out = new(string)
@@ -572,6 +607,11 @@ func (in *SecretBackendCertParameters) DeepCopyInto(out *SecretBackendCertParame
 		*out = new(string)
 		**out = **in
 	}
+	if in.NotAfter != nil {
+		in, out := &in.NotAfter, &out.NotAfter
+		*out = new(string)
+		**out = **in
+	}
 	if in.OtherSans != nil {
 		in, out := &in.OtherSans, &out.OtherSans
 		*out = make([]*string, len(*in))
@@ -590,6 +630,11 @@ func (in *SecretBackendCertParameters) DeepCopyInto(out *SecretBackendCertParame
 	}
 	if in.Revoke != nil {
 		in, out := &in.Revoke, &out.Revoke
+		*out = new(bool)
+		**out = **in
+	}
+	if in.RevokeWithKey != nil {
+		in, out := &in.RevokeWithKey, &out.RevokeWithKey
 		*out = new(bool)
 		**out = **in
 	}
@@ -1251,6 +1296,11 @@ func (in *SecretBackendCrlConfigInitParameters) DeepCopyInto(out *SecretBackendC
 		*out = new(string)
 		**out = **in
 	}
+	if in.MaxCrlEntries != nil {
+		in, out := &in.MaxCrlEntries, &out.MaxCrlEntries
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -1368,6 +1418,11 @@ func (in *SecretBackendCrlConfigObservation) DeepCopyInto(out *SecretBackendCrlC
 		*out = new(string)
 		**out = **in
 	}
+	if in.MaxCrlEntries != nil {
+		in, out := &in.MaxCrlEntries, &out.MaxCrlEntries
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -1456,6 +1511,11 @@ func (in *SecretBackendCrlConfigParameters) DeepCopyInto(out *SecretBackendCrlCo
 	if in.Expiry != nil {
 		in, out := &in.Expiry, &out.Expiry
 		*out = new(string)
+		**out = **in
+	}
+	if in.MaxCrlEntries != nil {
+		in, out := &in.MaxCrlEntries, &out.MaxCrlEntries
+		*out = new(float64)
 		**out = **in
 	}
 	if in.Namespace != nil {
@@ -1642,6 +1702,17 @@ func (in *SecretBackendIntermediateCertRequestInitParameters) DeepCopyInto(out *
 		*out = new(string)
 		**out = **in
 	}
+	if in.KeyUsage != nil {
+		in, out := &in.KeyUsage, &out.KeyUsage
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Locality != nil {
 		in, out := &in.Locality, &out.Locality
 		*out = new(string)
@@ -1696,6 +1767,16 @@ func (in *SecretBackendIntermediateCertRequestInitParameters) DeepCopyInto(out *
 	if in.Province != nil {
 		in, out := &in.Province, &out.Province
 		*out = new(string)
+		**out = **in
+	}
+	if in.SerialNumber != nil {
+		in, out := &in.SerialNumber, &out.SerialNumber
+		*out = new(string)
+		**out = **in
+	}
+	if in.SignatureBits != nil {
+		in, out := &in.SignatureBits, &out.SignatureBits
+		*out = new(float64)
 		**out = **in
 	}
 	if in.StreetAddress != nil {
@@ -1853,6 +1934,17 @@ func (in *SecretBackendIntermediateCertRequestObservation) DeepCopyInto(out *Sec
 		*out = new(string)
 		**out = **in
 	}
+	if in.KeyUsage != nil {
+		in, out := &in.KeyUsage, &out.KeyUsage
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Locality != nil {
 		in, out := &in.Locality, &out.Locality
 		*out = new(string)
@@ -1912,6 +2004,16 @@ func (in *SecretBackendIntermediateCertRequestObservation) DeepCopyInto(out *Sec
 	if in.Province != nil {
 		in, out := &in.Province, &out.Province
 		*out = new(string)
+		**out = **in
+	}
+	if in.SerialNumber != nil {
+		in, out := &in.SerialNumber, &out.SerialNumber
+		*out = new(string)
+		**out = **in
+	}
+	if in.SignatureBits != nil {
+		in, out := &in.SignatureBits, &out.SignatureBits
+		*out = new(float64)
 		**out = **in
 	}
 	if in.StreetAddress != nil {
@@ -2032,6 +2134,17 @@ func (in *SecretBackendIntermediateCertRequestParameters) DeepCopyInto(out *Secr
 		*out = new(string)
 		**out = **in
 	}
+	if in.KeyUsage != nil {
+		in, out := &in.KeyUsage, &out.KeyUsage
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Locality != nil {
 		in, out := &in.Locality, &out.Locality
 		*out = new(string)
@@ -2086,6 +2199,16 @@ func (in *SecretBackendIntermediateCertRequestParameters) DeepCopyInto(out *Secr
 	if in.Province != nil {
 		in, out := &in.Province, &out.Province
 		*out = new(string)
+		**out = **in
+	}
+	if in.SerialNumber != nil {
+		in, out := &in.SerialNumber, &out.SerialNumber
+		*out = new(string)
+		**out = **in
+	}
+	if in.SignatureBits != nil {
+		in, out := &in.SignatureBits, &out.SignatureBits
+		*out = new(float64)
 		**out = **in
 	}
 	if in.StreetAddress != nil {
@@ -2562,6 +2685,17 @@ func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleIn
 		*out = new(bool)
 		**out = **in
 	}
+	if in.CnValidations != nil {
+		in, out := &in.CnValidations, &out.CnValidations
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.CodeSigningFlag != nil {
 		in, out := &in.CodeSigningFlag, &out.CodeSigningFlag
 		*out = new(bool)
@@ -2672,6 +2806,16 @@ func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleIn
 		*out = new(bool)
 		**out = **in
 	}
+	if in.NoStoreMetadata != nil {
+		in, out := &in.NoStoreMetadata, &out.NoStoreMetadata
+		*out = new(bool)
+		**out = **in
+	}
+	if in.NotAfter != nil {
+		in, out := &in.NotAfter, &out.NotAfter
+		*out = new(string)
+		**out = **in
+	}
 	if in.NotBeforeDuration != nil {
 		in, out := &in.NotBeforeDuration, &out.NotBeforeDuration
 		*out = new(string)
@@ -2744,9 +2888,19 @@ func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleIn
 		*out = new(bool)
 		**out = **in
 	}
+	if in.SerialNumberSource != nil {
+		in, out := &in.SerialNumberSource, &out.SerialNumberSource
+		*out = new(string)
+		**out = **in
+	}
 	if in.ServerFlag != nil {
 		in, out := &in.ServerFlag, &out.ServerFlag
 		*out = new(bool)
+		**out = **in
+	}
+	if in.SignatureBits != nil {
+		in, out := &in.SignatureBits, &out.SignatureBits
+		*out = new(float64)
 		**out = **in
 	}
 	if in.StreetAddress != nil {
@@ -2772,6 +2926,11 @@ func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleIn
 	}
 	if in.UseCsrSans != nil {
 		in, out := &in.UseCsrSans, &out.UseCsrSans
+		*out = new(bool)
+		**out = **in
+	}
+	if in.UsePss != nil {
+		in, out := &in.UsePss, &out.UsePss
 		*out = new(bool)
 		**out = **in
 	}
@@ -2937,6 +3096,17 @@ func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObser
 		*out = new(bool)
 		**out = **in
 	}
+	if in.CnValidations != nil {
+		in, out := &in.CnValidations, &out.CnValidations
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.CodeSigningFlag != nil {
 		in, out := &in.CodeSigningFlag, &out.CodeSigningFlag
 		*out = new(bool)
@@ -3052,6 +3222,16 @@ func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObser
 		*out = new(bool)
 		**out = **in
 	}
+	if in.NoStoreMetadata != nil {
+		in, out := &in.NoStoreMetadata, &out.NoStoreMetadata
+		*out = new(bool)
+		**out = **in
+	}
+	if in.NotAfter != nil {
+		in, out := &in.NotAfter, &out.NotAfter
+		*out = new(string)
+		**out = **in
+	}
 	if in.NotBeforeDuration != nil {
 		in, out := &in.NotBeforeDuration, &out.NotBeforeDuration
 		*out = new(string)
@@ -3124,9 +3304,19 @@ func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObser
 		*out = new(bool)
 		**out = **in
 	}
+	if in.SerialNumberSource != nil {
+		in, out := &in.SerialNumberSource, &out.SerialNumberSource
+		*out = new(string)
+		**out = **in
+	}
 	if in.ServerFlag != nil {
 		in, out := &in.ServerFlag, &out.ServerFlag
 		*out = new(bool)
+		**out = **in
+	}
+	if in.SignatureBits != nil {
+		in, out := &in.SignatureBits, &out.SignatureBits
+		*out = new(float64)
 		**out = **in
 	}
 	if in.StreetAddress != nil {
@@ -3152,6 +3342,11 @@ func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObser
 	}
 	if in.UseCsrSans != nil {
 		in, out := &in.UseCsrSans, &out.UseCsrSans
+		*out = new(bool)
+		**out = **in
+	}
+	if in.UsePss != nil {
+		in, out := &in.UsePss, &out.UsePss
 		*out = new(bool)
 		**out = **in
 	}
@@ -3295,6 +3490,17 @@ func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParame
 		*out = new(bool)
 		**out = **in
 	}
+	if in.CnValidations != nil {
+		in, out := &in.CnValidations, &out.CnValidations
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.CodeSigningFlag != nil {
 		in, out := &in.CodeSigningFlag, &out.CodeSigningFlag
 		*out = new(bool)
@@ -3405,6 +3611,16 @@ func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParame
 		*out = new(bool)
 		**out = **in
 	}
+	if in.NoStoreMetadata != nil {
+		in, out := &in.NoStoreMetadata, &out.NoStoreMetadata
+		*out = new(bool)
+		**out = **in
+	}
+	if in.NotAfter != nil {
+		in, out := &in.NotAfter, &out.NotAfter
+		*out = new(string)
+		**out = **in
+	}
 	if in.NotBeforeDuration != nil {
 		in, out := &in.NotBeforeDuration, &out.NotBeforeDuration
 		*out = new(string)
@@ -3477,9 +3693,19 @@ func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParame
 		*out = new(bool)
 		**out = **in
 	}
+	if in.SerialNumberSource != nil {
+		in, out := &in.SerialNumberSource, &out.SerialNumberSource
+		*out = new(string)
+		**out = **in
+	}
 	if in.ServerFlag != nil {
 		in, out := &in.ServerFlag, &out.ServerFlag
 		*out = new(bool)
+		**out = **in
+	}
+	if in.SignatureBits != nil {
+		in, out := &in.SignatureBits, &out.SignatureBits
+		*out = new(float64)
 		**out = **in
 	}
 	if in.StreetAddress != nil {
@@ -3505,6 +3731,11 @@ func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParame
 	}
 	if in.UseCsrSans != nil {
 		in, out := &in.UseCsrSans, &out.UseCsrSans
+		*out = new(bool)
+		**out = **in
+	}
+	if in.UsePss != nil {
+		in, out := &in.UsePss, &out.UsePss
 		*out = new(bool)
 		**out = **in
 	}
@@ -3626,6 +3857,50 @@ func (in *SecretBackendRootCertInitParameters) DeepCopyInto(out *SecretBackendRo
 		*out = new(bool)
 		**out = **in
 	}
+	if in.ExcludedDNSDomains != nil {
+		in, out := &in.ExcludedDNSDomains, &out.ExcludedDNSDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedEmailAddresses != nil {
+		in, out := &in.ExcludedEmailAddresses, &out.ExcludedEmailAddresses
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedIPRanges != nil {
+		in, out := &in.ExcludedIPRanges, &out.ExcludedIPRanges
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedURIDomains != nil {
+		in, out := &in.ExcludedURIDomains, &out.ExcludedURIDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Format != nil {
 		in, out := &in.Format, &out.Format
 		*out = new(string)
@@ -3692,6 +3967,11 @@ func (in *SecretBackendRootCertInitParameters) DeepCopyInto(out *SecretBackendRo
 		*out = new(string)
 		**out = **in
 	}
+	if in.NotAfter != nil {
+		in, out := &in.NotAfter, &out.NotAfter
+		*out = new(string)
+		**out = **in
+	}
 	if in.Organization != nil {
 		in, out := &in.Organization, &out.Organization
 		*out = new(string)
@@ -3724,6 +4004,39 @@ func (in *SecretBackendRootCertInitParameters) DeepCopyInto(out *SecretBackendRo
 			}
 		}
 	}
+	if in.PermittedEmailAddresses != nil {
+		in, out := &in.PermittedEmailAddresses, &out.PermittedEmailAddresses
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.PermittedIPRanges != nil {
+		in, out := &in.PermittedIPRanges, &out.PermittedIPRanges
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.PermittedURIDomains != nil {
+		in, out := &in.PermittedURIDomains, &out.PermittedURIDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.PostalCode != nil {
 		in, out := &in.PostalCode, &out.PostalCode
 		*out = new(string)
@@ -3737,6 +4050,11 @@ func (in *SecretBackendRootCertInitParameters) DeepCopyInto(out *SecretBackendRo
 	if in.Province != nil {
 		in, out := &in.Province, &out.Province
 		*out = new(string)
+		**out = **in
+	}
+	if in.SignatureBits != nil {
+		in, out := &in.SignatureBits, &out.SignatureBits
+		*out = new(float64)
 		**out = **in
 	}
 	if in.StreetAddress != nil {
@@ -3848,6 +4166,50 @@ func (in *SecretBackendRootCertObservation) DeepCopyInto(out *SecretBackendRootC
 		*out = new(bool)
 		**out = **in
 	}
+	if in.ExcludedDNSDomains != nil {
+		in, out := &in.ExcludedDNSDomains, &out.ExcludedDNSDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedEmailAddresses != nil {
+		in, out := &in.ExcludedEmailAddresses, &out.ExcludedEmailAddresses
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedIPRanges != nil {
+		in, out := &in.ExcludedIPRanges, &out.ExcludedIPRanges
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedURIDomains != nil {
+		in, out := &in.ExcludedURIDomains, &out.ExcludedURIDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Format != nil {
 		in, out := &in.Format, &out.Format
 		*out = new(string)
@@ -3934,6 +4296,11 @@ func (in *SecretBackendRootCertObservation) DeepCopyInto(out *SecretBackendRootC
 		*out = new(string)
 		**out = **in
 	}
+	if in.NotAfter != nil {
+		in, out := &in.NotAfter, &out.NotAfter
+		*out = new(string)
+		**out = **in
+	}
 	if in.Organization != nil {
 		in, out := &in.Organization, &out.Organization
 		*out = new(string)
@@ -3966,6 +4333,39 @@ func (in *SecretBackendRootCertObservation) DeepCopyInto(out *SecretBackendRootC
 			}
 		}
 	}
+	if in.PermittedEmailAddresses != nil {
+		in, out := &in.PermittedEmailAddresses, &out.PermittedEmailAddresses
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.PermittedIPRanges != nil {
+		in, out := &in.PermittedIPRanges, &out.PermittedIPRanges
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.PermittedURIDomains != nil {
+		in, out := &in.PermittedURIDomains, &out.PermittedURIDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.PostalCode != nil {
 		in, out := &in.PostalCode, &out.PostalCode
 		*out = new(string)
@@ -3984,6 +4384,11 @@ func (in *SecretBackendRootCertObservation) DeepCopyInto(out *SecretBackendRootC
 	if in.SerialNumber != nil {
 		in, out := &in.SerialNumber, &out.SerialNumber
 		*out = new(string)
+		**out = **in
+	}
+	if in.SignatureBits != nil {
+		in, out := &in.SignatureBits, &out.SignatureBits
+		*out = new(float64)
 		**out = **in
 	}
 	if in.StreetAddress != nil {
@@ -4068,6 +4473,50 @@ func (in *SecretBackendRootCertParameters) DeepCopyInto(out *SecretBackendRootCe
 		*out = new(bool)
 		**out = **in
 	}
+	if in.ExcludedDNSDomains != nil {
+		in, out := &in.ExcludedDNSDomains, &out.ExcludedDNSDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedEmailAddresses != nil {
+		in, out := &in.ExcludedEmailAddresses, &out.ExcludedEmailAddresses
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedIPRanges != nil {
+		in, out := &in.ExcludedIPRanges, &out.ExcludedIPRanges
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedURIDomains != nil {
+		in, out := &in.ExcludedURIDomains, &out.ExcludedURIDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Format != nil {
 		in, out := &in.Format, &out.Format
 		*out = new(string)
@@ -4134,6 +4583,11 @@ func (in *SecretBackendRootCertParameters) DeepCopyInto(out *SecretBackendRootCe
 		*out = new(string)
 		**out = **in
 	}
+	if in.NotAfter != nil {
+		in, out := &in.NotAfter, &out.NotAfter
+		*out = new(string)
+		**out = **in
+	}
 	if in.Organization != nil {
 		in, out := &in.Organization, &out.Organization
 		*out = new(string)
@@ -4166,6 +4620,39 @@ func (in *SecretBackendRootCertParameters) DeepCopyInto(out *SecretBackendRootCe
 			}
 		}
 	}
+	if in.PermittedEmailAddresses != nil {
+		in, out := &in.PermittedEmailAddresses, &out.PermittedEmailAddresses
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.PermittedIPRanges != nil {
+		in, out := &in.PermittedIPRanges, &out.PermittedIPRanges
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.PermittedURIDomains != nil {
+		in, out := &in.PermittedURIDomains, &out.PermittedURIDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.PostalCode != nil {
 		in, out := &in.PostalCode, &out.PostalCode
 		*out = new(string)
@@ -4179,6 +4666,11 @@ func (in *SecretBackendRootCertParameters) DeepCopyInto(out *SecretBackendRootCe
 	if in.Province != nil {
 		in, out := &in.Province, &out.Province
 		*out = new(string)
+		**out = **in
+	}
+	if in.SignatureBits != nil {
+		in, out := &in.SignatureBits, &out.SignatureBits
+		*out = new(float64)
 		**out = **in
 	}
 	if in.StreetAddress != nil {
@@ -4320,6 +4812,50 @@ func (in *SecretBackendRootSignIntermediateInitParameters) DeepCopyInto(out *Sec
 		*out = new(bool)
 		**out = **in
 	}
+	if in.ExcludedDNSDomains != nil {
+		in, out := &in.ExcludedDNSDomains, &out.ExcludedDNSDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedEmailAddresses != nil {
+		in, out := &in.ExcludedEmailAddresses, &out.ExcludedEmailAddresses
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedIPRanges != nil {
+		in, out := &in.ExcludedIPRanges, &out.ExcludedIPRanges
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedURIDomains != nil {
+		in, out := &in.ExcludedURIDomains, &out.ExcludedURIDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Format != nil {
 		in, out := &in.Format, &out.Format
 		*out = new(string)
@@ -4341,6 +4877,17 @@ func (in *SecretBackendRootSignIntermediateInitParameters) DeepCopyInto(out *Sec
 		*out = new(string)
 		**out = **in
 	}
+	if in.KeyUsage != nil {
+		in, out := &in.KeyUsage, &out.KeyUsage
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Locality != nil {
 		in, out := &in.Locality, &out.Locality
 		*out = new(string)
@@ -4353,6 +4900,16 @@ func (in *SecretBackendRootSignIntermediateInitParameters) DeepCopyInto(out *Sec
 	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	if in.NotAfter != nil {
+		in, out := &in.NotAfter, &out.NotAfter
+		*out = new(string)
+		**out = **in
+	}
+	if in.NotBeforeDuration != nil {
+		in, out := &in.NotBeforeDuration, &out.NotBeforeDuration
 		*out = new(string)
 		**out = **in
 	}
@@ -4388,6 +4945,39 @@ func (in *SecretBackendRootSignIntermediateInitParameters) DeepCopyInto(out *Sec
 			}
 		}
 	}
+	if in.PermittedEmailAddresses != nil {
+		in, out := &in.PermittedEmailAddresses, &out.PermittedEmailAddresses
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.PermittedIPRanges != nil {
+		in, out := &in.PermittedIPRanges, &out.PermittedIPRanges
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.PermittedURIDomains != nil {
+		in, out := &in.PermittedURIDomains, &out.PermittedURIDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.PostalCode != nil {
 		in, out := &in.PostalCode, &out.PostalCode
 		*out = new(string)
@@ -4401,6 +4991,16 @@ func (in *SecretBackendRootSignIntermediateInitParameters) DeepCopyInto(out *Sec
 	if in.Revoke != nil {
 		in, out := &in.Revoke, &out.Revoke
 		*out = new(bool)
+		**out = **in
+	}
+	if in.SignatureBits != nil {
+		in, out := &in.SignatureBits, &out.SignatureBits
+		*out = new(float64)
+		**out = **in
+	}
+	if in.Skid != nil {
+		in, out := &in.Skid, &out.Skid
+		*out = new(string)
 		**out = **in
 	}
 	if in.StreetAddress != nil {
@@ -4426,6 +5026,11 @@ func (in *SecretBackendRootSignIntermediateInitParameters) DeepCopyInto(out *Sec
 	}
 	if in.UseCsrValues != nil {
 		in, out := &in.UseCsrValues, &out.UseCsrValues
+		*out = new(bool)
+		**out = **in
+	}
+	if in.UsePss != nil {
+		in, out := &in.UsePss, &out.UsePss
 		*out = new(bool)
 		**out = **in
 	}
@@ -4533,6 +5138,50 @@ func (in *SecretBackendRootSignIntermediateObservation) DeepCopyInto(out *Secret
 		*out = new(bool)
 		**out = **in
 	}
+	if in.ExcludedDNSDomains != nil {
+		in, out := &in.ExcludedDNSDomains, &out.ExcludedDNSDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedEmailAddresses != nil {
+		in, out := &in.ExcludedEmailAddresses, &out.ExcludedEmailAddresses
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedIPRanges != nil {
+		in, out := &in.ExcludedIPRanges, &out.ExcludedIPRanges
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedURIDomains != nil {
+		in, out := &in.ExcludedURIDomains, &out.ExcludedURIDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Format != nil {
 		in, out := &in.Format, &out.Format
 		*out = new(string)
@@ -4564,6 +5213,17 @@ func (in *SecretBackendRootSignIntermediateObservation) DeepCopyInto(out *Secret
 		*out = new(string)
 		**out = **in
 	}
+	if in.KeyUsage != nil {
+		in, out := &in.KeyUsage, &out.KeyUsage
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Locality != nil {
 		in, out := &in.Locality, &out.Locality
 		*out = new(string)
@@ -4576,6 +5236,16 @@ func (in *SecretBackendRootSignIntermediateObservation) DeepCopyInto(out *Secret
 	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	if in.NotAfter != nil {
+		in, out := &in.NotAfter, &out.NotAfter
+		*out = new(string)
+		**out = **in
+	}
+	if in.NotBeforeDuration != nil {
+		in, out := &in.NotBeforeDuration, &out.NotBeforeDuration
 		*out = new(string)
 		**out = **in
 	}
@@ -4611,6 +5281,39 @@ func (in *SecretBackendRootSignIntermediateObservation) DeepCopyInto(out *Secret
 			}
 		}
 	}
+	if in.PermittedEmailAddresses != nil {
+		in, out := &in.PermittedEmailAddresses, &out.PermittedEmailAddresses
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.PermittedIPRanges != nil {
+		in, out := &in.PermittedIPRanges, &out.PermittedIPRanges
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.PermittedURIDomains != nil {
+		in, out := &in.PermittedURIDomains, &out.PermittedURIDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.PostalCode != nil {
 		in, out := &in.PostalCode, &out.PostalCode
 		*out = new(string)
@@ -4628,6 +5331,16 @@ func (in *SecretBackendRootSignIntermediateObservation) DeepCopyInto(out *Secret
 	}
 	if in.SerialNumber != nil {
 		in, out := &in.SerialNumber, &out.SerialNumber
+		*out = new(string)
+		**out = **in
+	}
+	if in.SignatureBits != nil {
+		in, out := &in.SignatureBits, &out.SignatureBits
+		*out = new(float64)
+		**out = **in
+	}
+	if in.Skid != nil {
+		in, out := &in.Skid, &out.Skid
 		*out = new(string)
 		**out = **in
 	}
@@ -4654,6 +5367,11 @@ func (in *SecretBackendRootSignIntermediateObservation) DeepCopyInto(out *Secret
 	}
 	if in.UseCsrValues != nil {
 		in, out := &in.UseCsrValues, &out.UseCsrValues
+		*out = new(bool)
+		**out = **in
+	}
+	if in.UsePss != nil {
+		in, out := &in.UsePss, &out.UsePss
 		*out = new(bool)
 		**out = **in
 	}
@@ -4708,6 +5426,50 @@ func (in *SecretBackendRootSignIntermediateParameters) DeepCopyInto(out *SecretB
 		*out = new(bool)
 		**out = **in
 	}
+	if in.ExcludedDNSDomains != nil {
+		in, out := &in.ExcludedDNSDomains, &out.ExcludedDNSDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedEmailAddresses != nil {
+		in, out := &in.ExcludedEmailAddresses, &out.ExcludedEmailAddresses
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedIPRanges != nil {
+		in, out := &in.ExcludedIPRanges, &out.ExcludedIPRanges
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ExcludedURIDomains != nil {
+		in, out := &in.ExcludedURIDomains, &out.ExcludedURIDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Format != nil {
 		in, out := &in.Format, &out.Format
 		*out = new(string)
@@ -4729,6 +5491,17 @@ func (in *SecretBackendRootSignIntermediateParameters) DeepCopyInto(out *SecretB
 		*out = new(string)
 		**out = **in
 	}
+	if in.KeyUsage != nil {
+		in, out := &in.KeyUsage, &out.KeyUsage
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Locality != nil {
 		in, out := &in.Locality, &out.Locality
 		*out = new(string)
@@ -4741,6 +5514,16 @@ func (in *SecretBackendRootSignIntermediateParameters) DeepCopyInto(out *SecretB
 	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	if in.NotAfter != nil {
+		in, out := &in.NotAfter, &out.NotAfter
+		*out = new(string)
+		**out = **in
+	}
+	if in.NotBeforeDuration != nil {
+		in, out := &in.NotBeforeDuration, &out.NotBeforeDuration
 		*out = new(string)
 		**out = **in
 	}
@@ -4776,6 +5559,39 @@ func (in *SecretBackendRootSignIntermediateParameters) DeepCopyInto(out *SecretB
 			}
 		}
 	}
+	if in.PermittedEmailAddresses != nil {
+		in, out := &in.PermittedEmailAddresses, &out.PermittedEmailAddresses
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.PermittedIPRanges != nil {
+		in, out := &in.PermittedIPRanges, &out.PermittedIPRanges
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.PermittedURIDomains != nil {
+		in, out := &in.PermittedURIDomains, &out.PermittedURIDomains
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.PostalCode != nil {
 		in, out := &in.PostalCode, &out.PostalCode
 		*out = new(string)
@@ -4789,6 +5605,16 @@ func (in *SecretBackendRootSignIntermediateParameters) DeepCopyInto(out *SecretB
 	if in.Revoke != nil {
 		in, out := &in.Revoke, &out.Revoke
 		*out = new(bool)
+		**out = **in
+	}
+	if in.SignatureBits != nil {
+		in, out := &in.SignatureBits, &out.SignatureBits
+		*out = new(float64)
+		**out = **in
+	}
+	if in.Skid != nil {
+		in, out := &in.Skid, &out.Skid
+		*out = new(string)
 		**out = **in
 	}
 	if in.StreetAddress != nil {
@@ -4814,6 +5640,11 @@ func (in *SecretBackendRootSignIntermediateParameters) DeepCopyInto(out *SecretB
 	}
 	if in.UseCsrValues != nil {
 		in, out := &in.UseCsrValues, &out.UseCsrValues
+		*out = new(bool)
+		**out = **in
+	}
+	if in.UsePss != nil {
+		in, out := &in.UsePss, &out.UsePss
 		*out = new(bool)
 		**out = **in
 	}
@@ -4925,6 +5756,11 @@ func (in *SecretBackendSignInitParameters) DeepCopyInto(out *SecretBackendSignIn
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.CertMetadata != nil {
+		in, out := &in.CertMetadata, &out.CertMetadata
+		*out = new(string)
+		**out = **in
+	}
 	if in.CommonName != nil {
 		in, out := &in.CommonName, &out.CommonName
 		*out = new(string)
@@ -4983,6 +5819,11 @@ func (in *SecretBackendSignInitParameters) DeepCopyInto(out *SecretBackendSignIn
 	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	if in.NotAfter != nil {
+		in, out := &in.NotAfter, &out.NotAfter
 		*out = new(string)
 		**out = **in
 	}
@@ -5092,6 +5933,11 @@ func (in *SecretBackendSignObservation) DeepCopyInto(out *SecretBackendSignObser
 			}
 		}
 	}
+	if in.CertMetadata != nil {
+		in, out := &in.CertMetadata, &out.CertMetadata
+		*out = new(string)
+		**out = **in
+	}
 	if in.Certificate != nil {
 		in, out := &in.Certificate, &out.Certificate
 		*out = new(string)
@@ -5160,6 +6006,11 @@ func (in *SecretBackendSignObservation) DeepCopyInto(out *SecretBackendSignObser
 	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	if in.NotAfter != nil {
+		in, out := &in.NotAfter, &out.NotAfter
 		*out = new(string)
 		**out = **in
 	}
@@ -5246,6 +6097,11 @@ func (in *SecretBackendSignParameters) DeepCopyInto(out *SecretBackendSignParame
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.CertMetadata != nil {
+		in, out := &in.CertMetadata, &out.CertMetadata
+		*out = new(string)
+		**out = **in
+	}
 	if in.CommonName != nil {
 		in, out := &in.CommonName, &out.CommonName
 		*out = new(string)
@@ -5304,6 +6160,11 @@ func (in *SecretBackendSignParameters) DeepCopyInto(out *SecretBackendSignParame
 	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	if in.NotAfter != nil {
+		in, out := &in.NotAfter, &out.NotAfter
 		*out = new(string)
 		**out = **in
 	}

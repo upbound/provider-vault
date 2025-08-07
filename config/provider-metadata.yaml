@@ -17,6 +17,10 @@ resources:
             country: '- (Optional) The country'
             csr: '- (Required) The CSR'
             exclude_cn_from_sans: '- (Optional) Flag to exclude CN from SANs'
+            excluded_dns_domains: '- (Optional) List of domains for which certificates are not allowed to be issued. Requires Vault version 1.19+.'
+            excluded_email_addresses: '- (Optional) List of email addresses for which certificates are not allowed to be issued. Requires Vault version 1.19+.'
+            excluded_ip_ranges: '- (Optional) List of IP ranges for which certificates are not allowed to be issued. Requires Vault version 1.19+.'
+            excluded_uri_domains: '- (Optional) List of URI domains for which certificates are not allowed to be issued. Requires Vault version 1.19+.'
             format: '- (Optional) The format of data'
             ip_sans: '- (Optional) List of alternative IPs'
             issuer_ref: |-
@@ -25,6 +29,7 @@ resources:
                 the /pki/issuer/:issuer_ref/{issue,sign}/:name paths to prevent users
                 overriding the role's issuer_ref value.
             issuing_ca: '- The issuing CA certificate in the format specified.'
+            key_usage: '- (Optional) Specify the key usages to be added to the existing set of key usages ("CRL", "CertSign") on the generated certificate.'
             locality: '- (Optional) The locality'
             max_path_length: '- (Optional) The maximum path length to encode in the generated certificate'
             namespace: |-
@@ -32,18 +37,29 @@ resources:
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
+            not_after: |-
+                - (Optional) Set the Not After field of the certificate with specified date value.
+                The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date
+                for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
+            not_before_duration: '- (Optional) Specifies the duration by which to backdate the NotBefore property.'
             organization: '- (Optional) The organization'
             other_sans: '- (Optional) List of other SANs'
             ou: '- (Optional) The organization unit'
             permitted_dns_domains: '- (Optional) List of domains for which certificates are allowed to be issued'
+            permitted_email_addresses: '- (Optional) List of email addresses for which certificates are allowed to be issued. Requires Vault version 1.19+.'
+            permitted_ip_ranges: '- (Optional)  List of IP ranges for which certificates are allowed to be issued. Requires Vault version 1.19+.'
+            permitted_uri_domains: '- (Optional) List of URI domains for which certificates are allowed to be issued. Requires Vault version 1.19+.'
             postal_code: '- (Optional) The postal code'
             province: '- (Optional) The province'
             revoke: '- If set to true, the certificate will be revoked on resource destruction.'
             serial_number: '- The certificate''s serial number, hex formatted.'
+            signature_bits: '- (Optional) The number of bits to use in the signature algorithm'
+            skid: '- (Optional) Value for the Subject Key Identifier field (see https://tools.ietf.org/html/rfc5280#section-4.2.1.2). Specified as a string in hex format.'
             street_address: '- (Optional) The street address'
             ttl: '- (Optional) Time to live'
             uri_sans: '- (Optional) List of alternative URIs'
             use_csr_values: '- (Optional) Preserve CSR values'
+            use_pss: '- (Optional) Specifies whether or not to use PSS signatures over PKCS#1v1.5 signatures when a RSA-type issuer is used. Ignored for ECDSA/Ed25519 issuers.'
         importStatements: []
     vault_ad_secret_backend:
         subCategory: ""
@@ -541,108 +557,62 @@ resources:
         importStatements: []
     vault_auth_backend:
         subCategory: ""
-        description: Managing roles in an Cert auth backend in Vault
+        description: Writes auth methods for Vault
         name: vault_auth_backend
         title: vault_auth_backend resource
         examples:
-            - name: cert
+            - name: example
               manifest: |-
                 {
-                  "path": "cert",
-                  "type": "cert"
-                }
-              dependencies:
-                vault_cert_auth_backend_role.cert: |-
+                  "tune": [
                     {
-                      "allowed_names": [
-                        "foo.example.org",
-                        "baz.example.org"
-                      ],
-                      "backend": "${vault_auth_backend.cert.path}",
-                      "certificate": "${file(\"/path/to/certs/ca-cert.pem\")}",
-                      "name": "foo",
-                      "token_max_ttl": 600,
-                      "token_policies": [
-                        "foo"
-                      ],
-                      "token_ttl": 300
+                      "listing_visibility": "unauth",
+                      "max_lease_ttl": "90000s"
                     }
+                  ],
+                  "type": "github"
+                }
         argumentDocs:
-            allowed_common_names: '- (Optional array: []) Allowed the common names for authenticated client certificates'
-            allowed_dns_sans: '- (Optional array: []) Allowed alternative dns names for authenticated client certificates'
-            allowed_email_sans: '- (Optional array: []) Allowed emails for authenticated client certificates'
-            allowed_names: '- (Optional string) DEPRECATED: Please use the individual allowed_X_sans parameters instead. Allowed subject names for authenticated client certificates'
-            allowed_organizational_units: '- (Optional array: []) Allowed organization units for authenticated client certificates.'
-            allowed_uri_sans: '- (Optional array: []) Allowed URIs for authenticated client certificates'
-            backend: '- (Optional string: "cert") Path to the mounted Cert auth backend'
-            certificate: '- (Required string) CA certificate used to validate client certificates'
-            display_name: '- (Optional string: "") The name to display on tokens issued under this role.'
-            name: '- (Required string) Name of the role'
+            accessor: '- The accessor for this auth method'
+            description: '- (Optional) A description of the auth method.'
+            disable_remount: |-
+                - (Optional) If set, opts out of mount migration on path updates.
+                See here for more info on Mount Migration
+            local: '- (Optional) Specifies if the auth method is local only.'
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
-            ocsp_ca_certificates: |-
-                (Optional string: "") Any additional CA certificates
-                needed to verify OCSP responses. Provided as base64 encoded PEM data.
-                Requires Vault version 1.13+.
-            ocsp_enabled: |-
-                (Optional bool: false) - If enabled, validate certificates'
-                revocation status using OCSP. Requires Vault version 1.13+.
-            ocsp_fail_open: |-
-                (Optional bool: false) - If true and an OCSP response cannot
-                be fetched or is of an unknown status, the login will proceed as if the
-                certificate has not been revoked.
-                Requires Vault version 1.13+.
-            ocsp_query_all_servers: |-
-                (Optional bool: false) - If set to true, rather than
-                accepting the first successful OCSP response, query all servers and consider
-                the certificate valid only if all servers agree.
-                Requires Vault version 1.13+.
-            ocsp_servers_override: |-
-                (Optional array: []): A comma-separated list of OCSP
-                server addresses. If unset, the OCSP server is determined from the
-                AuthorityInformationAccess extension on the certificate being inspected.
-                Requires Vault version 1.13+.
-            required_extensions: |-
-                - (Optional array: []) TLS extensions required on
-                client certificates
-            token_bound_cidrs: |-
-                - (Optional) List of CIDR blocks; if set, specifies blocks of IP
-                addresses which can authenticate successfully, and ties the resulting token to these blocks
-                as well.
-            token_explicit_max_ttl: |-
-                - (Optional) If set, will encode an
-                explicit max TTL
-                onto the token in number of seconds. This is a hard cap even if token_ttl and
-                token_max_ttl would otherwise allow a renewal.
-            token_max_ttl: |-
-                - (Optional) The maximum lifetime for generated tokens in number of seconds.
-                Its current value will be referenced at renewal time.
-            token_no_default_policy: |-
-                - (Optional) If set, the default policy will not be set on
-                generated tokens; otherwise it will be added to the policies set in token_policies.
-            token_num_uses: |-
-                - (Optional) The maximum number
-                of times a generated token may be used (within its lifetime); 0 means unlimited.
-            token_period: |-
-                - (Optional) If set, indicates that the
-                token generated using this role should never expire. The token should be renewed within the
-                duration specified by this value. At each renewal, the token's TTL will be set to the
-                value of this field. Specified in seconds.
-            token_policies: |-
-                - (Optional) List of policies to encode onto generated tokens. Depending
-                on the auth method, this list may be supplemented by user/group/other values.
-            token_ttl: |-
-                - (Optional) The incremental lifetime for generated tokens in number of seconds.
-                Its current value will be referenced at renewal time.
-            token_type: |-
-                - (Optional) The type of token that should be generated. Can be service,
-                batch, or default to use the mount's tuned default (which unless changed will be
-                service tokens). For token store roles, there are two additional possibilities:
-                default-service and default-batch which specify the type to return unless the client
-                requests a different type at generation time.
+            path: '- (Optional) The path to mount the auth method — this defaults to the name of the type.'
+            tune: '- (Optional) Extra configuration block. Structure is documented below.'
+            tune.allowed_response_headers: |-
+                - (Optional) List of headers to whitelist and allowing
+                a plugin to include them in the response.
+            tune.audit_non_hmac_request_keys: |-
+                - (Optional) Specifies the list of keys that will
+                not be HMAC'd by audit devices in the request data object.
+            tune.audit_non_hmac_response_keys: |-
+                - (Optional) Specifies the list of keys that will
+                not be HMAC'd by audit devices in the response data object.
+            tune.default_lease_ttl: |-
+                - (Optional) Specifies the default time-to-live.
+                If set, this overrides the global default.
+                Must be a valid duration string
+            tune.listing_visibility: |-
+                - (Optional) Specifies whether to show this mount in
+                the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
+            tune.max_lease_ttl: |-
+                - (Optional) Specifies the maximum time-to-live.
+                If set, this overrides the global default.
+                Must be a valid duration string
+            tune.passthrough_request_headers: |-
+                - (Optional) List of headers to whitelist and
+                pass from the request to the backend.
+            tune.token_type: |-
+                - (Optional) Specifies the type of tokens that should be returned by
+                the mount. Valid values are "default-service", "default-batch", "service", "batch".
+            type: '- (Required) The name of the auth method type.'
         importStatements: []
     vault_auth_backend resource:
         subCategory: ""
@@ -662,9 +632,6 @@ resources:
                 See below for more details.
             group_name: '- (Required) Name of the group within the Okta'
             groups: '- (Optional) List of Okta groups to associate with this user'
-            max_ttl: |-
-                - (Optional) Maximum duration after which authentication will be expired
-                See the documentation for info on valid duration formats.
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
                 The value should not contain leading or trailing forward slashes.
@@ -711,9 +678,6 @@ resources:
                 service tokens). For token store roles, there are two additional possibilities:
                 default-service and default-batch which specify the type to return unless the client
                 requests a different type at generation time.
-            ttl: |-
-                - (Optional) Duration after which authentication will be expired.
-                See the documentation for info on valid duration formats.
             user: |-
                 - (Optional) Associate Okta users with groups or policies within Vault.
                 See below for more details.
@@ -759,7 +723,9 @@ resources:
             - name: cert
               manifest: |-
                 {
-                  "backend": "${vault_auth_backend.aws.path}"
+                  "aws_public_cert": "${file(\"${path.module}/aws_public_key.crt)\"\n  type            = \"pkcs7\"\n}\n}",
+                  "backend": "${vault_auth_backend.aws.path}",
+                  "cert_name": "my-cert"
                 }
               references:
                 backend: vault_auth_backend.aws.path
@@ -799,7 +765,9 @@ resources:
                 {
                   "identity_token_audience": "\u003cTOKEN_AUDIENCE\u003e",
                   "identity_token_ttl": "\u003cTOKEN_TTL\u003e",
-                  "role_arn": "\u003cAWS_ROLE_ARN\u003e"
+                  "role_arn": "\u003cAWS_ROLE_ARN\u003e",
+                  "rotation_schedule": "0 * * * SAT",
+                  "rotation_window": 3600
                 }
               dependencies:
                 vault_auth_backend.example: |-
@@ -811,6 +779,8 @@ resources:
                 {
                   "access_key": "INSERT_AWS_ACCESS_KEY",
                   "backend": "${vault_auth_backend.example.path}",
+                  "rotation_schedule": "0 * * * SAT",
+                  "rotation_window": 3600,
                   "secret_key": "INSERT_AWS_SECRET_KEY"
                 }
               references:
@@ -827,6 +797,7 @@ resources:
             backend: |-
                 - (Optional) The path the AWS auth backend being configured was
                 mounted at.  Defaults to aws.
+            disable_automated_rotation: '- (Optional) Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.'
             ec2_endpoint: |-
                 - (Optional) Override the URL Vault uses when making EC2 API
                 calls.
@@ -854,6 +825,16 @@ resources:
             role_arn: |-
                 - (Optional) Role ARN to assume for plugin identity token federation. Requires Vault 1.17+.
                 Available only for Vault Enterprise
+            rotation_period: |-
+                - (Optional) The amount of time in seconds Vault should wait before rotating the root credential.
+                A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+            rotation_schedule: |-
+                - (Optional) The schedule, in cron-style time format,
+                defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+            rotation_window: |-
+                - (Optional) The maximum amount of time in seconds allowed to complete
+                a rotation when a scheduled token rotation occurs. The default rotation window is
+                unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
             secret_key: |-
                 - (Optional) The AWS secret key that Vault should use for the
                 auth backend.
@@ -1349,6 +1330,7 @@ resources:
             backend: |-
                 - (Optional) The path the AWS auth backend being configured was
                 mounted at.  Defaults to aws.
+            external_id: '- (Optional) External ID expected by the STS role. The associated STS role must be configured to require the external ID. Requires Vault 1.17+.'
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
                 The value should not contain leading or trailing forward slashes.
@@ -1368,6 +1350,8 @@ resources:
               manifest: |-
                 {
                   "access_key": "AKIA.....",
+                  "rotation_schedule": "0 * * * SAT",
+                  "rotation_window": 3600,
                   "secret_key": "AWS secret key"
                 }
             - name: aws
@@ -1375,7 +1359,9 @@ resources:
                 {
                   "identity_token_audience": "\u003cTOKEN_AUDIENCE\u003e",
                   "identity_token_ttl": "\u003cTOKEN_TTL\u003e",
-                  "role_arn": "\u003cAWS_ROLE_ARN\u003e"
+                  "role_arn": "\u003cAWS_ROLE_ARN\u003e",
+                  "rotation_schedule": "0 * * * SAT",
+                  "rotation_window": 3600
                 }
         argumentDocs:
             access_key: |-
@@ -1385,6 +1371,7 @@ resources:
                 - (Optional) The default TTL for credentials
                 issued by this backend.
             description: '- (Optional) A human-friendly description for this backend.'
+            disable_automated_rotation: '- (Optional) Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.'
             disable_remount: |-
                 - (Optional) If set, opts out of mount migration on path updates.
                 See here for more info on Mount Migration
@@ -1406,10 +1393,23 @@ resources:
                 not begin or end with a /. Defaults to aws.
             region: '- (Optional) The AWS region for API calls. Defaults to us-east-1.'
             role_arn: '- (Optional) Role ARN to assume for plugin identity token federation. Requires Vault 1.16+.'
+            rotation_period: |-
+                - (Optional) The amount of time in seconds Vault should wait before rotating the root credential.
+                A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+            rotation_schedule: |-
+                - (Optional) The schedule, in cron-style time format,
+                defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+            rotation_window: |-
+                - (Optional) The maximum amount of time in seconds allowed to complete
+                a rotation when a scheduled token rotation occurs. The default rotation window is
+                unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
             secret_key: |-
                 - (Optional) The AWS Secret Key this backend should use to
                 issue new credentials. Vault uses the official AWS SDK to authenticate, and thus can also use standard AWS environment credentials, shared file credentials or IAM role/ECS task credentials.
             sts_endpoint: '- (Optional) Specifies a custom HTTP STS endpoint to use.'
+            sts_fallback_endpoints: '- (Optional) Ordered list of sts_endpoints to try if the defined one fails. Requires Vault 1.19+'
+            sts_fallback_regions: '- (Optional) Ordered list of sts_regions matching the fallback endpoints. Should correspond in order with those endpoints. Requires Vault 1.19+'
+            sts_region: '- (Optional) Specifies the region of the STS endpoint. Should be included if sts_endpoint is supplied. Requires Vault 1.19+'
             username_template: '- (Optional)  Template describing how dynamic usernames are generated. The username template is used to generate both IAM usernames (capped at 64 characters) and STS usernames (capped at 32 characters). If no template is provided the field defaults to the template:'
         importStatements: []
     vault_aws_secret_backend_role:
@@ -1526,10 +1526,41 @@ resources:
                       "description": "Obtain AWS credentials.",
                       "path": "my-aws"
                     }
+            - name: assume-role
+              manifest: |-
+                {
+                  "assume_role_arn": "arn:aws:iam::123456789012:role/assume-role",
+                  "assume_role_session_name": "assume-role-session",
+                  "backend": "${vault_aws_secret_backend.aws.path}",
+                  "external_id": "test-id",
+                  "name": "assume-role-test",
+                  "rotation_period": "3600",
+                  "username": "my-assume-role-user"
+                }
+              references:
+                backend: vault_aws_secret_backend.aws.path
+              dependencies:
+                vault_aws_secret_backend.aws: |-
+                    {
+                      "description": "Obtain AWS credentials.",
+                      "path": "my-aws"
+                    }
         argumentDocs:
+            assume_role_arn: |-
+                - (Optional) Specifies the ARN of the role that Vault should assume.
+                When provided, Vault will use AWS STS to assume this role and generate temporary credentials.
+                If assume_role_arn is provided, assume_role_session_name must also be provided.
+                Requires Vault 1.19+. Available only for Vault Enterprise.
+            assume_role_session_name: |-
+                - (Optional) Specifies the session name to use when assuming the role.
+                If assume_role_session_name is provided, assume_role_arn must also be provided.
+                Requires Vault 1.19+. Available only for Vault Enterprise.
             backend: |-
                 - (Optional) The unique path this backend should be mounted at. Must
                 not begin or end with a /. Defaults to aws
+            external_id: |-
+                - (Optional) Specifies the external ID to use when assuming the role.
+                Requires Vault 1.19+. Available only for Vault Enterprise.
             name: |-
                 - (Required) The name to identify this role within the backend.
                 Must be unique within the backend.
@@ -1554,6 +1585,8 @@ resources:
                   "client_id": "11111111-2222-3333-4444-555555555555",
                   "identity_token_audience": "\u003cTOKEN_AUDIENCE\u003e",
                   "identity_token_ttl": "\u003cTOKEN_TTL\u003e",
+                  "rotation_schedule": "0 * * * SAT",
+                  "rotation_window": 3600,
                   "tenant_id": "11111111-2222-3333-4444-555555555555"
                 }
               references:
@@ -1571,6 +1604,8 @@ resources:
                   "client_id": "11111111-2222-3333-4444-555555555555",
                   "client_secret": "01234567890123456789",
                   "resource": "https://vault.hashicorp.com",
+                  "rotation_schedule": "0 * * * SAT",
+                  "rotation_window": 3600,
                   "tenant_id": "11111111-2222-3333-4444-555555555555"
                 }
               references:
@@ -1590,6 +1625,9 @@ resources:
             client_secret: |-
                 - (Optional) The client secret for credentials to query the
                 Azure APIs.
+            disable_automated_rotation: |-
+                - (Optional) Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+                Available only for Vault Enterprise
             environment: |-
                 - (Optional) The Azure cloud environment. Valid values:
                 AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud,
@@ -1609,6 +1647,19 @@ resources:
             resource: |-
                 - (Required) The configured URL for the application registered in
                 Azure Active Directory.
+            rotation_period: |-
+                - (Optional) The amount of time in seconds Vault should wait before rotating the root credential.
+                A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+                Available only for Vault Enterprise
+            rotation_schedule: |-
+                - (Optional) The schedule, in cron-style time format,
+                defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+                Available only for Vault Enterprise
+            rotation_window: |-
+                - (Optional) The maximum amount of time in seconds allowed to complete
+                a rotation when a scheduled token rotation occurs. The default rotation window is
+                unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+                Available only for Vault Enterprise
             tenant_id: |-
                 - (Required) The tenant id for the Azure Active Directory
                 organization.
@@ -1724,6 +1775,8 @@ resources:
                   "client_id": "11111111-2222-3333-4444-333333333333",
                   "identity_token_audience": "\u003cTOKEN_AUDIENCE\u003e",
                   "identity_token_ttl": "\u003cTOKEN_TTL\u003e",
+                  "rotation_schedule": "0 * * * SAT",
+                  "rotation_window": 3600,
                   "subscription_id": "11111111-2222-3333-4444-111111111111",
                   "tenant_id": "11111111-2222-3333-4444-222222222222"
                 }
@@ -1733,23 +1786,17 @@ resources:
                   "client_id": "11111111-2222-3333-4444-333333333333",
                   "client_secret": "12345678901234567890",
                   "environment": "AzurePublicCloud",
+                  "rotation_schedule": "0 * * * SAT",
+                  "rotation_window": 3600,
                   "subscription_id": "11111111-2222-3333-4444-111111111111",
-                  "tenant_id": "11111111-2222-3333-4444-222222222222",
-                  "use_microsoft_graph_api": true
-                }
-            - name: azure
-              manifest: |-
-                {
-                  "client_id": "11111111-2222-3333-4444-333333333333",
-                  "client_secret": "12345678901234567890",
-                  "environment": "AzurePublicCloud",
-                  "subscription_id": "11111111-2222-3333-4444-111111111111",
-                  "tenant_id": "11111111-2222-3333-4444-222222222222",
-                  "use_microsoft_graph_api": false
+                  "tenant_id": "11111111-2222-3333-4444-222222222222"
                 }
         argumentDocs:
             client_id: (string:"") - The OAuth2 client id to connect to Azure.
             client_secret: (string:"") - The OAuth2 client secret to connect to Azure.
+            disable_automated_rotation: |-
+                - (Optional) Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+                Available only for Vault Enterprise
             disable_remount: |-
                 - (Optional) If set, opts out of mount migration on path updates.
                 See here for more info on Mount Migration
@@ -1769,12 +1816,20 @@ resources:
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
             path: '(string: <optional>) - The unique path this backend should be mounted at. Defaults to azure.'
+            rotation_period: |-
+                - (Optional) The amount of time in seconds Vault should wait before rotating the root credential.
+                A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+                Available only for Vault Enterprise
+            rotation_schedule: |-
+                - (Optional) The schedule, in cron-style time format,
+                defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+                Available only for Vault Enterprise
+            rotation_window: |-
+                - (Optional) The maximum amount of time in seconds allowed to complete
+                a rotation when a scheduled token rotation occurs. The default rotation window is
+                unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+. Available only for Vault Enterprise
             subscription_id: '(string: <required>) - The subscription id for the Azure Active Directory.'
             tenant_id: '(string: <required>) - The tenant id for the Azure Active Directory.'
-            use_microsoft_graph_api: |-
-                (bool: <optional>) - Indicates whether the secrets engine should use
-                the Microsoft Graph API. This parameter has been deprecated and will be ignored in vault-1.12+.
-                For more information, please refer to the Vault docs
         importStatements: []
     vault_azure_secret_backend_role:
         subCategory: ""
@@ -1837,6 +1892,7 @@ resources:
             azure_groups: '- (Optional) List of Azure groups to be assigned to the generated service principal.'
             azure_roles: '- (Optional) List of Azure roles to be assigned to the generated service principal.'
             backend: '- (Optional) Path to the mounted Azure auth backend'
+            explicit_max_ttl: '- (Optional) Specifies the explicit maximum lifetime of the lease and service principal generated using this role. If not set or set to 0, will use the system default (10 years). Requires Vault 1.18+.'
             max_ttl: |-
                 – (Optional) Specifies the maximum TTL for service principals generated using this role. Accepts time
                 suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine max TTL time.
@@ -1857,6 +1913,113 @@ resources:
                 – (Optional) Specifies the default TTL for service principals generated using this role.
                 Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
         importStatements: []
+    vault_cert_auth_backend_role:
+        subCategory: ""
+        description: Managing roles in an Cert auth backend in Vault
+        name: vault_cert_auth_backend_role
+        title: vault_cert_auth_backend_role resource
+        examples:
+            - name: cert
+              manifest: |-
+                {
+                  "allowed_names": [
+                    "foo.example.org",
+                    "baz.example.org"
+                  ],
+                  "backend": "${vault_auth_backend.cert.path}",
+                  "certificate": "${file(\"/path/to/certs/ca-cert.pem\")}",
+                  "name": "foo",
+                  "token_max_ttl": 600,
+                  "token_policies": [
+                    "foo"
+                  ],
+                  "token_ttl": 300
+                }
+              references:
+                backend: vault_auth_backend.cert.path
+              dependencies:
+                vault_auth_backend.cert: |-
+                    {
+                      "path": "cert",
+                      "type": "cert"
+                    }
+        argumentDocs:
+            allowed_common_names: '- (Optional array: []) Allowed the common names for authenticated client certificates'
+            allowed_dns_sans: '- (Optional array: []) Allowed alternative dns names for authenticated client certificates'
+            allowed_email_sans: '- (Optional array: []) Allowed emails for authenticated client certificates'
+            allowed_names: '- (Optional string) DEPRECATED: Please use the individual allowed_X_sans parameters instead. Allowed subject names for authenticated client certificates'
+            allowed_organizational_units: '- (Optional array: []) Allowed organization units for authenticated client certificates.'
+            allowed_uri_sans: '- (Optional array: []) Allowed URIs for authenticated client certificates'
+            backend: '- (Optional string: "cert") Path to the mounted Cert auth backend'
+            certificate: '- (Required string) CA certificate used to validate client certificates'
+            display_name: '- (Optional string: "") The name to display on tokens issued under this role.'
+            name: '- (Required string) Name of the role'
+            namespace: |-
+                - (Optional) The namespace to provision the resource in.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+                Available only for Vault Enterprise.
+            ocsp_ca_certificates: |-
+                (Optional string: "") Any additional CA certificates
+                needed to verify OCSP responses. Provided as base64 encoded PEM data.
+                Requires Vault version 1.13+.
+            ocsp_enabled: |-
+                (Optional bool: false) - If enabled, validate certificates'
+                revocation status using OCSP. Requires Vault version 1.13+.
+            ocsp_fail_open: |-
+                (Optional bool: false) - If true and an OCSP response cannot
+                be fetched or is of an unknown status, the login will proceed as if the
+                certificate has not been revoked.
+                Requires Vault version 1.13+.
+            ocsp_query_all_servers: |-
+                (Optional bool: false) - If set to true, rather than
+                accepting the first successful OCSP response, query all servers and consider
+                the certificate valid only if all servers agree.
+                Requires Vault version 1.13+.
+            ocsp_servers_override: |-
+                (Optional array: []): A comma-separated list of OCSP
+                server addresses. If unset, the OCSP server is determined from the
+                AuthorityInformationAccess extension on the certificate being inspected.
+                Requires Vault version 1.13+.
+            required_extensions: |-
+                - (Optional array: []) TLS extensions required on
+                client certificates
+            token_bound_cidrs: |-
+                - (Optional) List of CIDR blocks; if set, specifies blocks of IP
+                addresses which can authenticate successfully, and ties the resulting token to these blocks
+                as well.
+            token_explicit_max_ttl: |-
+                - (Optional) If set, will encode an
+                explicit max TTL
+                onto the token in number of seconds. This is a hard cap even if token_ttl and
+                token_max_ttl would otherwise allow a renewal.
+            token_max_ttl: |-
+                - (Optional) The maximum lifetime for generated tokens in number of seconds.
+                Its current value will be referenced at renewal time.
+            token_no_default_policy: |-
+                - (Optional) If set, the default policy will not be set on
+                generated tokens; otherwise it will be added to the policies set in token_policies.
+            token_num_uses: |-
+                - (Optional) The maximum number
+                of times a generated token may be used (within its lifetime); 0 means unlimited.
+            token_period: |-
+                - (Optional) If set, indicates that the
+                token generated using this role should never expire. The token should be renewed within the
+                duration specified by this value. At each renewal, the token's TTL will be set to the
+                value of this field. Specified in seconds.
+            token_policies: |-
+                - (Optional) List of policies to encode onto generated tokens. Depending
+                on the auth method, this list may be supplemented by user/group/other values.
+            token_ttl: |-
+                - (Optional) The incremental lifetime for generated tokens in number of seconds.
+                Its current value will be referenced at renewal time.
+            token_type: |-
+                - (Optional) The type of token that should be generated. Can be service,
+                batch, or default to use the mount's tuned default (which unless changed will be
+                service tokens). For token store roles, there are two additional possibilities:
+                default-service and default-batch which specify the type to return unless the client
+                requests a different type at generation time.
+        importStatements: []
     vault_config_ui_custom_message:
         subCategory: ""
         description: Manages a UI custom message in Vault.
@@ -1868,7 +2031,7 @@ resources:
                 {
                   "authenticated": true,
                   "end_time": "2024-02-01T05:00:00.000Z",
-                  "message": "${base64encode(\"Vault will be offline for planned maintenance on February 1st, 2024 from 05:00Z to 08:00Z\")}",
+                  "message_base64": "${base64encode(\"Vault will be offline for planned maintenance on February 1st, 2024 from 05:00Z to 08:00Z\")}",
                   "start_time": "2024-01-01T00:00:00.000Z",
                   "title": "Upcoming maintenance",
                   "type": "banner"
@@ -1880,7 +2043,7 @@ resources:
             end_time: '- (Optional) The time when the custom message expires. If this value is not specified, the custom message never expires.'
             href: '- (Required) The URL set in the hyperlink''s href attribute.'
             link: '- (Optional) A hyperlink to be included with the message. See below for more details.'
-            message: '- (Required) The base64-encoded content of the custom message.'
+            message_base64: '- (Required) The base64-encoded content of the custom message.'
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
                 The value should not contain leading or trailing forward slashes.
@@ -2023,7 +2186,9 @@ resources:
                     {
                       "connection_url": "postgres://username:password@host:port/database"
                     }
-                  ]
+                  ],
+                  "rotation_schedule": "0 * * * SAT",
+                  "rotation_window": 3600
                 }
               references:
                 backend: vault_mount.db.path
@@ -2061,6 +2226,7 @@ resources:
                 docs
             couchbase: '- (Optional) A nested block containing configuration options for Couchbase connections.'
             data: '- (Optional) A map of sensitive data to pass to the endpoint. Useful for templated connection strings.'
+            disable_automated_rotation: '- (Optional) Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.'
             disable_escaping: '- (Optional) Disable special character escaping in username and password.'
             disconnect_sessions: '- (Optional) Enable the built-in session disconnect mechanism.'
             elasticsearch: '- (Optional) A nested block containing configuration options for Elasticsearch connections.'
@@ -2096,6 +2262,14 @@ resources:
                 Available only for Vault Enterprise.
             oracle: '- (Optional) A nested block containing configuration options for Oracle connections.'
             password: '- (Required) The password to authenticate with.'
+            password_authentication: |-
+                - (Optional) When set to scram-sha-256, passwords will be
+                hashed by Vault before being sent to PostgreSQL. See the Vault docs
+                for an example. Requires Vault 1.14+.
+            password_wo: |-
+                - (Optional) The password for the user. Can be updated.
+                Note: This property is write-only and will not be read from the API.
+            password_wo_version: '- (Optional)  The version of the password_wo. For more info see updating write-only attributes.'
             pem_bundle: |-
                 - (Optional) Concatenated PEM blocks configuring the certificate
                 chain.
@@ -2106,6 +2280,10 @@ resources:
                 part of the host.
             postgresql: '- (Optional) A nested block containing configuration options for PostgreSQL connections.'
             private_key: '- (Required) The Private Programmatic API Key used to connect with MongoDB Atlas API.'
+            private_key_wo: |-
+                - (Optional) The private key associated with the Snowflake user.
+                Note: This property is write-only and will not be read from the API.
+            private_key_wo_version: '- (Optional)  The version of the private_key_wo. For more info see updating write-only attributes.'
             project_id: '- (Required) The Project ID the Database User should be created within.'
             protocol_version: '- (Optional) The CQL protocol version to use.'
             public_key: '- (Required) The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.'
@@ -2113,11 +2291,31 @@ resources:
             redis_elasticache: '- (Optional) A nested block containing configuration options for Redis ElastiCache connections.'
             region: '- (Optional) The region where the ElastiCache cluster is hosted. If omitted Vault tries to infer from the environment instead.'
             root_rotation_statements: '- (Optional) A list of database statements to be executed to rotate the root user''s credentials.'
+            rotation_period: |-
+                - (Optional) The amount of time in seconds Vault should wait before rotating the root credential.
+                A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+            rotation_schedule: |-
+                - (Optional) The schedule, in cron-style time format,
+                defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+            rotation_window: |-
+                - (Optional) The maximum amount of time in seconds allowed to complete
+                a rotation when a scheduled token rotation occurs. The default rotation window is
+                unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+            self_managed: |-
+                - (Optional)  If set, allows onboarding static roles with a rootless
+                connection configuration. Mutually exclusive with username and password.
+                If set, will force verify_connection to be false. Requires Vault 1.18+ Enterprise.
             service_account_json: '- (Optional) JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.'
+            skip_verification: |-
+                - (Optional) Skip permissions checks when a connection to Cassandra is first created.
+                These checks ensure that Vault is able to create roles, but can be resource intensive in clusters with many roles.
             snowflake: '- (Optional) A nested block containing configuration options for Snowflake connections.'
             split_statements: '- (Optional) Enable spliting statements after semi-colons.'
             tls: '- (Optional) Whether to use TLS when connecting to Cassandra.'
             tls_ca: '- (Optional) x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.'
+            tls_certificate: |-
+                - (Optional) The x509 client certificate for connecting to
+                the database. Must be PEM encoded.
             tls_certificate_key: '- (Optional) x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.'
             tls_server_name: '- (Optional) This, if set, is used to set the SNI host when connecting via TLS.'
             url: '- (Required) The url to connect to including the port; e.g. master.my-cluster.xxxxxx.use1.cache.amazonaws.com:6379.'
@@ -2319,6 +2517,13 @@ resources:
             rotation_window: |-
                 - (Optional) The amount of time, in seconds, in which rotations are allowed to occur starting
                 from a given rotation_schedule.
+            self_managed_password: |-
+                - (Optional) The password corresponding to the username in the database.
+                Required when using the Rootless Password Rotation workflow for static roles. Only enabled for
+                select DB engines (Postgres). Requires Vault 1.18+ Enterprise.
+            skip_import_rotation: |-
+                - (Optional) If set to true, Vault will skip the
+                initial secret rotation on import. Requires Vault 1.18+ Enterprise.
             username: '- (Required) The database username that this static role corresponds to.'
         importStatements: []
     vault_database_secrets_mount:
@@ -2338,6 +2543,8 @@ resources:
                       "connection_url": "sqlserver://{{username}}:{{password}}@127.0.0.1:1433",
                       "name": "db1",
                       "password": "super_secret_1",
+                      "rotation_schedule": "0 * * * SAT",
+                      "rotation_window": 3600,
                       "username": "sa"
                     }
                   ],
@@ -2350,6 +2557,8 @@ resources:
                       "connection_url": "postgresql://{{username}}:{{password}}@127.0.0.1:5432/postgres",
                       "name": "db2",
                       "password": "super_secret_2",
+                      "rotation_schedule": "0 * * * SAT",
+                      "rotation_window": 3600,
                       "username": "postgres",
                       "verify_connection": true
                     }
@@ -2409,6 +2618,7 @@ resources:
             data: '- (Optional) A map of sensitive data to pass to the endpoint. Useful for templated connection strings.'
             default_lease_ttl_seconds: '- (Optional) Default lease duration for tokens and secrets in seconds'
             description: '- (Optional) Human-friendly description of the mount'
+            disable_automated_rotation: '- (Optional) Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.'
             disable_escaping: '- (Optional) Disable special character escaping in username and password.'
             elasticsearch: |-
                 - (Optional) A nested block containing configuration options for Elasticsearch connections.
@@ -2465,6 +2675,10 @@ resources:
                 - (Optional) A nested block containing configuration options for Oracle connections.
                 See
             password: '- (Required) The password to authenticate with.'
+            password_wo: |-
+                - (Optional) The password for the user. Can be updated.
+                Note: This property is write-only and will not be read from the API.
+            password_wo_version: '- (Optional)  The version of the password_wo. For more info see updating write-only attributes.'
             path: '- (Required) Where the secret backend will be mounted'
             pem_bundle: |-
                 - (Optional) Concatenated PEM blocks configuring the certificate
@@ -2494,6 +2708,16 @@ resources:
                 - (Optional) The AWS region where the ElastiCache cluster is hosted.
                 If omitted the plugin tries to infer the region from the environment.
             root_rotation_statements: '- (Optional) A list of database statements to be executed to rotate the root user''s credentials.'
+            rotation_period: |-
+                - (Optional) The amount of time in seconds Vault should wait before rotating the root credential.
+                A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+            rotation_schedule: |-
+                - (Optional) The schedule, in cron-style time format,
+                defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+            rotation_window: |-
+                - (Optional) The maximum amount of time in seconds allowed to complete
+                a rotation when a scheduled token rotation occurs. The default rotation window is
+                unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
             seal_wrap: '- (Optional) Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal''s encryption capability'
             snowflake: |-
                 - (Optional) A nested block containing configuration options for Snowflake connections.
@@ -2637,20 +2861,31 @@ resources:
                   "identity_token_audience": "\u003cTOKEN_AUDIENCE\u003e",
                   "identity_token_key": "example-key",
                   "identity_token_ttl": 1800,
+                  "rotation_schedule": "0 * * * SAT",
+                  "rotation_window": 3600,
                   "service_account_email": "\u003cSERVICE_ACCOUNT_EMAIL\u003e"
                 }
             - name: gcp
               manifest: |-
                 {
-                  "credentials": "${file(\"credentials.json\")}"
+                  "credentials": "${file(\"credentials.json\")}",
+                  "rotation_schedule": "0 * * * SAT",
+                  "rotation_window": 3600
                 }
         argumentDocs:
             accessor: '- The accessor of the created GCP mount.'
             credentials: '- (Optional) The GCP service account credentials in JSON format.'
+            credentials_wo: |-
+                - (Optional) The GCP service account credentials in JSON format. Can be updated.
+                Note: This property is write-only and will not be read from the API.
+            credentials_wo_version: '- (Optional)  The version of the credentials_wo. For more info see updating write-only attributes.'
             default_lease_ttl_seconds: |-
                 - (Optional) The default TTL for credentials
                 issued by this backend. Defaults to '0'.
             description: '- (Optional) A human-friendly description for this backend.'
+            disable_automated_rotation: |-
+                - (Optional) Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+                Available only for Vault Enterprise.
             disable_remount: |-
                 - (Optional) If set, opts out of mount migration on path updates.
                 See here for more info on Mount Migration
@@ -2677,6 +2912,17 @@ resources:
             path: |-
                 - (Optional) The unique path this backend should be mounted at. Must
                 not begin or end with a /. Defaults to gcp.
+            rotation_period: |-
+                - (Optional) The amount of time in seconds Vault should wait before rotating the root credential.
+                A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+                Available only for Vault Enterprise.
+            rotation_schedule: |-
+                - (Optional) The schedule, in cron-style time format,
+                defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+. Available only for Vault Enterprise.
+            rotation_window: |-
+                - (Optional) The maximum amount of time in seconds allowed to complete
+                a rotation when a scheduled token rotation occurs. The default rotation window is
+                unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+. Available only for Vault Enterprise.
             service_account_email: |-
                 – (Optional) Service Account to impersonate for plugin workload identity federation.
                 Required with identity_token_audience. Requires Vault 1.17+. Available only for Vault Enterprise.
@@ -2716,6 +2962,9 @@ resources:
             service_account_email: '- (Required, Forces new resource) Email of the GCP service account to impersonate.'
             service_account_project: '- Project the service account belongs to.'
             token_scopes: '- (Required) List of OAuth scopes to assign to access tokens generated under this impersonated account.'
+            ttl: |-
+                - (Optional) Specifies the default TTL for service principals generated using this role.
+                Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
         importStatements: []
     vault_gcp_secret_roleset:
         subCategory: ""
@@ -4631,6 +4880,7 @@ resources:
                 Available only for Vault Enterprise.
             pem_keys: '- (Optional) List of PEM-formatted public keys or certificates used to verify the signatures of Kubernetes service account JWTs. If a certificate is given, its public key will be extracted. Not every installation of Kubernetes exposes these keys.'
             token_reviewer_jwt: '- (Optional) A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.'
+            use_annotations_as_alias_metadata: '- (Optional) Use annotations from the client token''s associated service account as alias metadata for the Vault entity. Requires Vault v1.16+ or Vault auth kubernetes plugin v0.18.0+'
         importStatements: []
     vault_kubernetes_auth_backend_role:
         subCategory: ""
@@ -5035,6 +5285,10 @@ resources:
             data_json: |-
                 - (Required) JSON-encoded string that will be
                 written as the secret data at the given path.
+            data_json_wo: |-
+                - (Optional) JSON-encoded secret data to write to Vault. Can be updated.
+                Note: This property is write-only and will not be read from the API.
+            data_json_wo_version: '- (Optional) The version of the data_json_wo. For more info see updating write-only attributes.'
             delete_all_versions: |-
                 - (Optional) If set to true, permanently deletes all
                 versions for the specified key.
@@ -5059,6 +5313,9 @@ resources:
                 Available only for Vault Enterprise.
             options: '- (Optional) An object that holds option settings.'
             path: '- Full path where the KV-V2 secret will be written.'
+            vault_kv_secret_v2: |-
+                to read back
+                secret data from Vault
         importStatements: []
     vault_ldap_secret_backend:
         subCategory: ""
@@ -5073,6 +5330,8 @@ resources:
                   "bindpass": "SuperSecretPassw0rd",
                   "insecure_tls": "true",
                   "path": "my-custom-ldap",
+                  "rotation_schedule": "0 * * * SAT",
+                  "rotation_window": 3600,
                   "url": "ldaps://localhost",
                   "userdn": "CN=Users,DC=corp,DC=example,DC=net"
                 }
@@ -5089,6 +5348,7 @@ resources:
                 the next URL in the configuration.
             default_lease_ttl_seconds: '- (Optional) Default lease duration for secrets in seconds.'
             description: '- (Optional) Human-friendly description of the mount for the Active Directory backend.'
+            disable_automated_rotation: '- (Optional) Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.'
             insecure_tls: |-
                 - (Optional) Skip LDAP server SSL Certificate verification. This is not recommended for production.
                 Defaults to false.
@@ -5108,6 +5368,16 @@ resources:
             request_timeout: |-
                 - (Optional) Timeout, in seconds, for the connection when making requests against the server
                 before returning back an error.
+            rotation_period: |-
+                - (Optional) The amount of time in seconds Vault should wait before rotating the root credential.
+                A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+            rotation_schedule: |-
+                - (Optional) The schedule, in cron-style time format,
+                defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+            rotation_window: |-
+                - (Optional) The maximum amount of time in seconds allowed to complete
+                a rotation when a scheduled token rotation occurs. The default rotation window is
+                unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
             schema: '- (Optional)  The LDAP schema to use when storing entry passwords. Valid schemas include openldap, ad, and racf. Default is openldap.'
             skip_static_role_import_rotation: |-
                 - (Optional) If set to true, static roles will not be rotated during import.
@@ -5939,6 +6209,43 @@ resources:
                 Available only for Vault Enterprise.
             policy: '- (Required) String containing a password policy.'
         importStatements: []
+    vault_pki_secret_backend_acme_eab:
+        subCategory: ""
+        description: Creates ACME EAB tokens within the PKI Secret Backend for Vault.
+        name: vault_pki_secret_backend_acme_eab
+        title: vault_pki_secret_backend_acme_eab resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "backend": "${vault_mount.test.path}"
+                }
+              references:
+                backend: vault_mount.test.path
+              dependencies:
+                vault_mount.test: |-
+                    {
+                      "description": "PKI secret engine mount",
+                      "path": "pki",
+                      "type": "pki"
+                    }
+        argumentDocs:
+            acme_directory: '- The ACME directory to which the key belongs'
+            backend: |-
+                - (Required) The path to the PKI secret backend to
+                create the EAB token within, with no leading or trailing /s.
+            created_on: '- An RFC3339 formatted date time when the EAB token was created'
+            eab_id: '- The identifier of a specific ACME EAB token'
+            issuer: '- (Optional) Create an EAB token that is specific to an issuer''s ACME directory.'
+            key: '- The EAB token'
+            key_type: '- The key type of the EAB key'
+            namespace: |-
+                - (Optional) The namespace of the target resource.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+                Available only for Vault Enterprise.
+            role: '- (Optional) Create an EAB token that is specific to a role''s ACME directory.'
+        importStatements: []
     vault_pki_secret_backend_cert:
         subCategory: ""
         description: Generate an PKI certificate.
@@ -5963,6 +6270,7 @@ resources:
             auto_renew: '- (Optional) If set to true, certs will be renewed if the expiration is within min_seconds_remaining. Default false'
             backend: '- (Required) The PKI secret backend the resource belongs to.'
             ca_chain: '- The CA chain'
+            cert_metadata: (Optional) - A base 64 encoded value or an empty string to associate with the certificate's serial number. The role's no_store_metadata must be set to false, otherwise an error is returned when specified.
             certificate: '- The certificate'
             common_name: '- (Required) CN of certificate to create'
             exclude_cn_from_sans: '- (Optional) Flag to exclude CN from SANs'
@@ -5977,16 +6285,163 @@ resources:
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
+            not_after: (Optional) - Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
             other_sans: '- (Optional) List of other SANs'
             private_key: '- The private key'
             private_key_format: '- (Optional) The private key format'
             private_key_type: '- The private key type'
             renew_pending: '- true if the current time (during refresh) is after the start of the early renewal window declared by min_seconds_remaining, and false otherwise; if auto_renew is set to true then the provider will plan to replace the certificate once renewal is pending.'
-            revoke: '- If set to true, the certificate will be revoked on resource destruction.'
+            revoke: '- If set to true, the certificate will be revoked on resource destruction using the revoke PKI API. Conflicts with revoke_with_key. Default false.'
+            revoke_with_key: '- If set to true, the certificate will be revoked on resource destruction using the revoke-with-key PKI API. Conflicts with revoke. Default false'
             serial_number: '- The serial number'
             ttl: '- (Optional) Time to live'
             uri_sans: '- (Optional) List of alternative URIs'
             user_ids: '- (Optional) List of Subject User IDs'
+        importStatements: []
+    vault_pki_secret_backend_config_acme:
+        subCategory: ""
+        description: Sets the ACME configuration on a PKI Secret Backend for Vault.
+        name: vault_pki_secret_backend_config_acme
+        title: vault_pki_secret_backend_config_acme resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "allow_role_ext_key_usage": false,
+                  "allowed_issuers": [
+                    "*"
+                  ],
+                  "allowed_roles": [
+                    "*"
+                  ],
+                  "backend": "${vault_mount.pki.path}",
+                  "default_directory_policy": "sign-verbatim",
+                  "dns_resolver": "",
+                  "eab_policy": "not-required",
+                  "enabled": true
+                }
+              references:
+                backend: vault_mount.pki.path
+              dependencies:
+                vault_mount.pki: |-
+                    {
+                      "default_lease_ttl_seconds": 3600,
+                      "max_lease_ttl_seconds": 86400,
+                      "path": "pki",
+                      "type": "pki"
+                    }
+                vault_pki_secret_backend_config_cluster.pki_config_cluster: |-
+                    {
+                      "aia_path": "http://127.0.0.1:8200/v1/pki",
+                      "backend": "${vault_mount.pki.path}",
+                      "path": "http://127.0.0.1:8200/v1/pki"
+                    }
+        argumentDocs:
+            allow_role_ext_key_usage: '- (Optional) Specifies whether the ExtKeyUsage field from a role is used. Vault 1.14.1+'
+            allowed_issuers: '- (Optional) Specifies which issuers are allowed for use with ACME.'
+            allowed_roles: '- (Optional) Specifies which roles are allowed for use with ACME.'
+            backend: '- (Required) The path the PKI secret backend is mounted at, with no leading or trailing /s.'
+            default_directory_policy: |-
+                - (Optional) Specifies the policy to be used for non-role-qualified ACME requests.
+                Allowed values are forbid, sign-verbatim, role:<role_name>, external-policy or external-policy:<policy>.
+            dns_resolver: |-
+                - (Optional) DNS resolver to use for domain resolution on this mount.
+                Must be in the format <host>:<port>, with both parts mandatory.
+            eab_policy: |-
+                - (Optional) Specifies the policy to use for external account binding behaviour.
+                Allowed values are not-required, new-account-required or always-required.
+            enabled: '- (Required) Specifies whether ACME is enabled.'
+            max_ttl: '- (Optional) The maximum TTL in seconds for certificates issued by ACME. Vault 1.17.0+'
+            namespace: |-
+                - (Optional) The namespace to provision the resource in.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+                Available only for Vault Enterprise.
+        importStatements: []
+    vault_pki_secret_backend_config_auto_tidy:
+        subCategory: ""
+        description: Sets the Auto Tidy configuration on a PKI Secret Backend for Vault.
+        name: vault_pki_secret_backend_config_auto_tidy
+        title: vault_pki_secret_backend_config_auto_tidy resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "backend": "${vault_mount.pki.path}",
+                  "enabled": true,
+                  "interval_duration": "1h",
+                  "tidy_cert_store": true
+                }
+              references:
+                backend: vault_mount.pki.path
+              dependencies:
+                vault_mount.pki: |-
+                    {
+                      "default_lease_ttl_seconds": 3600,
+                      "max_lease_ttl_seconds": 86400,
+                      "path": "pki",
+                      "type": "pki"
+                    }
+        argumentDocs:
+            backend: |-
+                - (Required) The path to the PKI secret backend to
+                read the configuration from, with no leading or trailing /s.
+            enabled: '- (Optional) Specifies whether automatic tidy is enabled or not.'
+            interval_duration: |-
+                - (Optional) Interval at which to run an auto-tidy operation. This is the time
+                between tidy invocations (after one finishes to the start of the next).
+            issuer_safety_buffer: |-
+                - (Optional) The amount of extra time that must have passed beyond issuer's
+                expiration before it is removed from the backend storage.
+            maintain_stored_certificate_counts: |-
+                - (Optional) This configures whether stored certificate are
+                counted upon initialization of the backend, and whether during normal operation, a running count
+                of certificates stored is maintained.
+            max_startup_backoff_duration: |-
+                - (Optional) The maximum amount of time auto-tidy will be delayed
+                after startup.
+            min_startup_backoff_duration: |-
+                - (Optional) The minimum amount of time auto-tidy will be delayed
+                after startup.
+            namespace: |-
+                - (Optional) The namespace of the target resource.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+                Available only for Vault Enterprise.
+            pause_duration: '- (Optional) The amount of time to wait between processing certificates.'
+            publish_stored_certificate_count_metrics: |-
+                - (Optional) This configures whether the stored
+                certificate count is published to the metrics consumer.
+            revocation_queue_safety_buffer: |-
+                - (Optional) The amount of time that must pass from the
+                cross-cluster revocation request being initiated to when it will be slated for removal.
+            safety_buffer: |-
+                - (Optional) The amount of extra time that must have passed beyond certificate
+                expiration before it is removed from the backend storage and/or revocation list.
+            tidy_acme: '- (Optional) Set to true to enable tidying ACME accounts, orders and authorizations.'
+            tidy_cert_metadata: '- (Optional) Set to true to enable tidying up certificate metadata.'
+            tidy_cert_store: '- (Optional) Set to true to enable tidying up the certificate store'
+            tidy_cmpv2_nonce_store: '- (Optional) Set to true to enable tidying up the CMPv2 nonce store.'
+            tidy_cross_cluster_revoked_certs: |-
+                - (Optional) Set to true to enable tidying up the cross-cluster
+                revoked certificate store.
+            tidy_expired_issuers: |-
+                - (Optional) Set to true to automatically remove expired issuers past the
+                issuer_safety_buffer. No keys will be removed as part of this operation.
+            tidy_move_legacy_ca_bundle: |-
+                - (Optional) Set to true to move the legacy ca_bundle from
+                /config/ca_bundle to /config/ca_bundle.bak.
+            tidy_revocation_queue: |-
+                - (Optional) Set to true to remove stale revocation queue entries that
+                haven't been confirmed by any active cluster.
+            tidy_revoked_cert_issuer_associations: |-
+                - (Optional) Set to true to validate issuer associations
+                on revocation entries. This helps increase the performance of CRL building and OCSP responses.
+            tidy_revoked_certs: |-
+                - (Optional) Set to true to remove all invalid and expired certificates from
+                storage. A revoked storage entry is considered invalid if the entry is empty, or the value within
+                the entry is empty. If a certificate is removed due to expiry, the entry will also be removed from
+                the CRL, and the CRL will be rotated.
         importStatements: []
     vault_pki_secret_backend_config_ca:
         subCategory: ""
@@ -6047,6 +6502,96 @@ resources:
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
             path: '- (Required) Specifies the path to this performance replication cluster''s API mount path.'
+        importStatements: []
+    vault_pki_secret_backend_config_cmpv2:
+        subCategory: ""
+        description: Sets the CMPv2 configuration on a PKI Secret Backend for Vault.
+        name: vault_pki_secret_backend_config_cmpv2
+        title: vault_pki_secret_backend_config_cmpv2 resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "audit_fields": [
+                    "csr",
+                    "common_name",
+                    "alt_names",
+                    "ip_sans",
+                    "uri_sans",
+                    "other_sans",
+                    "signature_bits",
+                    "exclude_cn_from_sans",
+                    "ou",
+                    "organization",
+                    "country",
+                    "locality",
+                    "province",
+                    "street_address",
+                    "postal_code",
+                    "serial_number",
+                    "use_pss",
+                    "key_type",
+                    "key_bits",
+                    "add_basic_constraints"
+                  ],
+                  "authenticators": [
+                    {
+                      "cert": {
+                        "accessor": "test",
+                        "cert_role": "cert-auth-role"
+                      }
+                    }
+                  ],
+                  "backend": "${vault_mount.pki.path}",
+                  "default_path_policy": "${format(\"role:%s\", vault_pki_secret_backend_role.cmpv2_role.name)}",
+                  "disabled_validations": [
+                    "DisableMatchingKeyIdValidation"
+                  ],
+                  "enable_sentinel_parsing": true,
+                  "enabled": true
+                }
+              references:
+                backend: vault_mount.pki.path
+              dependencies:
+                vault_mount.pki: |-
+                    {
+                      "description": "PKI secret engine mount",
+                      "path": "pki-root",
+                      "type": "pki"
+                    }
+                vault_pki_secret_backend_role.cmpv2_role: |-
+                    {
+                      "backend": "${vault_mount.pki.path}",
+                      "key_bits": "256",
+                      "key_type": "ec",
+                      "name": "cmpv2-role",
+                      "ttl": 3600
+                    }
+                vault_pki_secret_backend_role.cmpv2_role_2: |-
+                    {
+                      "backend": "${vault_mount.pki.path}",
+                      "key_bits": "256",
+                      "key_type": "ec",
+                      "name": "cmpv2-role-2",
+                      "ttl": 3600
+                    }
+        argumentDocs:
+            audit_fields: '- (Optional) Fields parsed from the CSR that appear in the audit and can be used by sentinel policies.'
+            authenticators: '- (Optional) Lists the mount accessors CMPv2 should delegate authentication requests towards (see below for nested schema).'
+            backend: |-
+                - (Required) The path to the PKI secret backend to
+                read the CMPv2 configuration from, with no leading or trailing /s.
+            cert: '- "The accessor (required) and cert_role (optional) properties for cert auth backends".'
+            default_path_policy: '- (Optional) Specifies the behavior for requests using the non-role-qualified CMPv2 requests. Can be sign-verbatim or a role given by role:<role_name>.'
+            disabled_validations: '- (Optional) A comma-separated list of validations not to perform on CMPv2 messages.'
+            enable_sentinel_parsing: '- (Optional) If set, parse out fields from the provided CSR making them available for Sentinel policies.'
+            enabled: '- (Optional) Specifies whether CMPv2 is enabled.'
+            last_updated: '- A read-only timestamp representing the last time the configuration was updated.'
+            namespace: |-
+                - (Optional) The namespace of the target resource.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+                Available only for Vault Enterprise.
         importStatements: []
     vault_pki_secret_backend_config_est:
         subCategory: ""
@@ -6131,7 +6676,7 @@ resources:
             backend: |-
                 - (Required) The path to the PKI secret backend to
                 read the EST configuration from, with no leading or trailing /s.
-            cert: '- "The accessor (required) and cert_role (optional) properties for cert auth backends".'
+            cert: '- The accessor (required) and cert_role (optional) properties for cert auth backends.'
             default_mount: '- (Optional) If set, this mount will register the default .well-known/est URL path. Only a single mount can enable this across a Vault cluster.'
             default_path_policy: '- (Optional) Required to be set if default_mount is enabled. Specifies the behavior for requests using the default EST label. Can be sign-verbatim or a role given by role:<role_name>.'
             enable_sentinel_parsing: '- (Optional) If set, parse out fields from the provided CSR making them available for Sentinel policies.'
@@ -6143,7 +6688,7 @@ resources:
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
-            userpass: '- "The accessor (required) property for user pass auth backends".'
+            userpass: '- The accessor (required) property for user pass auth backends.'
         importStatements: []
     vault_pki_secret_backend_config_issuers:
         subCategory: ""
@@ -6198,6 +6743,71 @@ resources:
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
+        importStatements: []
+    vault_pki_secret_backend_config_scep:
+        subCategory: ""
+        description: Sets the SCEP configuration on a PKI Secret Backend for Vault.
+        name: vault_pki_secret_backend_config_scep
+        title: vault_pki_secret_backend_config_scep resource
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "authenticators": [
+                    {
+                      "scep": {
+                        "accessor": "${vault_auth_backend.scep.accessor}",
+                        "scep_role": "${vault_scep_auth_backend_role.scep_challenge.name}"
+                      }
+                    }
+                  ],
+                  "backend": "${vault_mount.pki.path}",
+                  "default_path_policy": "sign-verbatim",
+                  "enabled": true,
+                  "restrict_ca_chain_to_issuer": true
+                }
+              references:
+                backend: vault_mount.pki.path
+              dependencies:
+                vault_auth_backend.scep: |-
+                    {
+                      "path": "scep-auth",
+                      "type": "scep"
+                    }
+                vault_mount.pki: |-
+                    {
+                      "description": "PKI secret engine mount",
+                      "path": "pki_scep",
+                      "type": "pki"
+                    }
+                vault_scep_auth_backend_role.scep_challenge: |-
+                    {
+                      "auth_type": "static-challenge",
+                      "backend": "${vault_auth_backend.scep.id}",
+                      "challenge": "ac7e4ada-c8ef-4393-9098-d69d08736833",
+                      "display_name": "Static challenge for SCEP clients",
+                      "name": "scep-auth"
+                    }
+        argumentDocs:
+            allowed_digest_algorithms: '- (Optional) List of allowed digest algorithms for SCEP requests.'
+            allowed_encryption_algorithms: '- (Optional) List of allowed encryption algorithms for SCEP requests.'
+            authenticators: '- (Optional) Lists the mount accessors SCEP should delegate authentication requests towards (see below for nested schema).'
+            backend: |-
+                - (Required) The path to the PKI secret backend to
+                read the SCEP configuration from, with no leading or trailing /s.
+            cert: '- The accessor (required) and cert_role (optional) properties for cert auth backends.'
+            default_path_policy: '- (Optional) Specifies the policy to be used for non-role-qualified SCEP requests; valid values are ''sign-verbatim'', or "role:<role_name>" to specify a role to use as this policy.'
+            enabled: '- (Optional) Specifies whether SCEP is enabled.'
+            external_validation: '- (Optional) Lists the 3rd party validation of SCEP requests (see below for nested schema).'
+            intune: '- The tenant_id, client_id, client_secret and environment properties for Microsoft Intune validation of SCEP requests.'
+            last_updated: '- A read-only timestamp representing the last time the configuration was updated.'
+            namespace: |-
+                - (Optional) The namespace of the target resource.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+                Available only for Vault Enterprise.
+            restrict_ca_chain_to_issuer: '- (Optional) If true, only return the issuer CA, otherwise the entire CA certificate chain will be returned if available from the PKI mount.'
+            scep: '- The accessor (required) property for scep auth backends.'
         importStatements: []
     vault_pki_secret_backend_config_urls:
         subCategory: ""
@@ -6270,6 +6880,9 @@ resources:
                 - (Optional) Enables building of delta CRLs with up-to-date revocation information,
                 augmenting the last complete CRL.  Vault 1.12+
             expiry: '- (Optional) Specifies the time until expiration.'
+            max_crl_entries: |-
+                - (Optional) The maximum number of entries a CRL can contain. This option exists to prevent
+                accidental runaway issuance/revocation from overloading Vault. If set to -1, the limit is disabled. Vault 1.19
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
                 The value should not contain leading or trailing forward slashes.
@@ -6324,6 +6937,7 @@ resources:
                 - (Optional) Specifies the key (either default, by name, or by identifier) to use
                 for generating this request. Only suitable for type=existing requests.
             key_type: '- (Optional) The desired key type'
+            key_usage: '- (Optional) Specifies key_usage to encode in the generated certificate.'
             locality: '- (Optional) The locality'
             managed_key_id: |-
                 - (Optional) The ID of the previously configured managed key. This field is
@@ -6344,7 +6958,8 @@ resources:
             private_key_format: '- (Optional) The private key format'
             private_key_type: '- The private key type'
             province: '- (Optional) The province'
-            serial_number: '- The serial number'
+            serial_number: '- (Optional) The requested Subject''s named Serial Number'
+            signature_bits: '- (Optional) The number of bits to use in the signature algorithm'
             street_address: '- (Optional) The street address'
             type: |-
                 - (Required) Type of intermediate to create. Must be either "exported" or "internal"
@@ -6473,6 +7088,25 @@ resources:
             crl_distribution_points: |-
                 - (Optional) Specifies the URL values for the CRL
                 Distribution Points field.
+            disable_critical_extension_checks: |-
+                - (Optional) This determines whether this
+                issuer is able to issue certificates where the chain of trust (including the
+                issued certificate) contain critical extensions not processed by Vault.
+            disable_name_checks: |-
+                - (Optional) This determines whether this issuer is able
+                to issue certificates where the chain of trust (including the final issued
+                certificate) contains a link in which the subject of the issuing certificate
+                does not match the named issuer of the certificate it signed.
+            disable_name_constraint_checks: |-
+                - (Optional) This determines whether this
+                issuer is able to issue certificates where the chain of trust (including the
+                final issued certificate) violates the name constraints critical extension of
+                one of the issuer certificates in the chain.
+            disable_path_length_checks: |-
+                - (Optional) This determines whether this issuer
+                is able to issue certificates where the chain of trust (including the final
+                issued certificate) is longer than allowed by a certificate authority in that
+                chain.
             enable_aia_url_templating: |-
                 - (Optional) Specifies that the AIA URL values should
                 be templated.
@@ -6629,6 +7263,7 @@ resources:
             backend: '- (Required) The path the PKI secret backend is mounted at, with no leading or trailing /s.'
             basic_constraints_valid_for_non_ca: '- (Optional) Flag to mark basic constraints valid when issuing non-CA certificates'
             client_flag: '- (Optional) Flag to specify certificates for client use'
+            cn_validations: '- (Optional) Validations to run on the Common Name field of the certificate, choices: email, hostname, disabled'
             code_signing_flag: '- (Optional) Flag to specify certificates for code signing use'
             country: '- (Optional) The country of generated certificates'
             email_protection_flag: '- (Optional) Flag to specify certificates for email protection use'
@@ -6658,6 +7293,8 @@ resources:
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
             no_store: '- (Optional) Flag to not store certificates in the storage backend'
+            no_store_metadata: '- (Optional) Allows metadata to be stored keyed on the certificate''s serial number. The field is independent of no_store, allowing metadata storage regardless of whether certificates are stored. If true, metadata is not stored and an error is returned if the metadata field is specified on issuance APIs'
+            not_after: '- (Optional) Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.'
             not_before_duration: '- (Optional) Specifies the duration by which to backdate the NotBefore property.'
             organization: '- (Optional) The organization of generated certificates'
             ou: '- (Optional) The organization unit of generated certificates'
@@ -6669,11 +7306,14 @@ resources:
             postal_code: '- (Optional) The postal code of generated certificates'
             province: '- (Optional) The province of generated certificates'
             require_cn: '- (Optional) Flag to force CN usage'
+            serial_number_source: '- (Optional) Specifies the source of the subject serial number. Valid values are json-csr (default) or json. When set to json-csr, the subject serial number is taken from the serial_number parameter and falls back to the serial number in the CSR. When set to json, the subject serial number is taken from the serial_number parameter but will ignore any value in the CSR. For backwards compatibility an empty value for this field will default to the json-csr behavior.'
             server_flag: '- (Optional) Flag to specify certificates for server use'
+            signature_bits: '- (Optional) The number of bits to use in the signature algorithm'
             street_address: '- (Optional) The street address of generated certificates'
             ttl: '- (Optional, integer) The TTL, in seconds, for any certificate issued against this role.'
             use_csr_common_name: '- (Optional) Flag to use the CN in the CSR'
             use_csr_sans: '- (Optional) Flag to use the SANs in the CSR'
+            use_pss: '- (Optional) Specifies whether or not to use PSS signatures over PKCS#1v1.5 signatures when a RSA-type issuer is used. Ignored for ECDSA/Ed25519 issuers.'
         importStatements: []
     vault_pki_secret_backend_root_cert:
         subCategory: ""
@@ -6708,6 +7348,10 @@ resources:
             common_name: '- (Required) CN of intermediate to create'
             country: '- (Optional) The country'
             exclude_cn_from_sans: '- (Optional) Flag to exclude CN from SANs'
+            excluded_dns_domains: '- (Optional) List of domains for which certificates are not allowed to be issued. Requires Vault version 1.19+.'
+            excluded_email_addresses: '- (Optional) List of email addresses for which certificates are not allowed to be issued. Requires Vault version 1.19+.'
+            excluded_ip_ranges: '- (Optional) List of IP ranges for which certificates are not allowed to be issued. Requires Vault version 1.19+.'
+            excluded_uri_domains: '- (Optional) List of URI domains for which certificates are not allowed to be issued. Requires Vault version 1.19+.'
             format: '- (Optional) The format of data'
             ip_sans: '- (Optional) List of alternative IPs'
             issuer_id: '- The ID of the generated issuer.'
@@ -6737,14 +7381,19 @@ resources:
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
+            not_after: '- (Optional) Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.'
             organization: '- (Optional) The organization'
             other_sans: '- (Optional) List of other SANs'
             ou: '- (Optional) The organization unit'
             permitted_dns_domains: '- (Optional) List of domains for which certificates are allowed to be issued'
+            permitted_email_addresses: '- (Optional) List of email addresses for which certificates are allowed to be issued. Requires Vault version 1.19+.'
+            permitted_ip_ranges: '- (Optional)  List of IP ranges for which certificates are allowed to be issued. Requires Vault version 1.19+.'
+            permitted_uri_domains: '- (Optional) List of URI domains for which certificates are allowed to be issued. Requires Vault version 1.19+.'
             postal_code: '- (Optional) The postal code'
             private_key_format: '- (Optional) The private key format'
             province: '- (Optional) The province'
             serial_number: '- The certificate''s serial number, hex formatted.'
+            signature_bits: '- (Optional) The number of bits to use in the signature algorithm'
             street_address: '- (Optional) The street address'
             ttl: '- (Optional) Time to live'
             type: |-
@@ -6777,6 +7426,7 @@ resources:
             auto_renew: '- (Optional) If set to true, certs will be renewed if the expiration is within min_seconds_remaining. Default false'
             backend: '- (Required) The PKI secret backend the resource belongs to.'
             ca_chain: '- The CA chain'
+            cert_metadata: (Optional) - A base 64 encoded value or an empty string to associate with the certificate's serial number. The role's no_store_metadata must be set to false, otherwise an error is returned when specified.
             certificate: '- The certificate'
             common_name: '- (Required) CN of certificate to create'
             csr: '- (Required) The CSR'
@@ -6797,6 +7447,7 @@ resources:
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
+            not_after: '- (Optional) Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.'
             other_sans: '- (Optional) List of other SANs'
             renew_pending: '- true if the current time (during refresh) is after the start of the early renewal window declared by min_seconds_remaining, and false otherwise; if auto_renew is set to true then the provider will plan to replace the certificate once renewal is pending.'
             serial_number: '- The certificate''s serial number, hex formatted.'
@@ -6949,6 +7600,14 @@ resources:
             block_interval: |-
                 - (Optional) If set, when a client reaches a rate limit threshold, the client will
                 be prohibited from any further requests until after the 'block_interval' in seconds has elapsed.
+            group_by: |-
+                - (Optional) Attribute used to group requests for rate limiting. Limits are enforced independently for each
+                group. Valid group_by modes are: 1) ip that groups requests by their source IP address (group_by defaults to
+                ip if unset, which is the only supported mode in community edition); 2) none that groups together all requests
+                that match the rate limit quota rule; 3) entity_then_ip that groups requests by their entity ID for authenticated
+                requests that carry one, or by their IP for unauthenticated requests (or requests whose authentication is not
+                connected to an entity); and 4) entity_then_none which also groups requests by their entity ID when available, but
+                the rest is all grouped together (i.e. unauthenticated or with authentication not connected to an entity).
             inheritable: '- (Optional) If set to true on a quota where path is set to a namespace, the same quota will be cumulatively applied to all child namespace. The inheritable parameter cannot be set to true if the path does not specify a namespace. Only the quotas associated with the root namespace are inheritable by default. Requires Vault 1.15+.'
             interval: '- (Optional) The duration in seconds to enforce rate limiting for.'
             name: '- (Required) Name of the rate limit quota'
@@ -6968,6 +7627,10 @@ resources:
                 - (Required) The maximum number of requests at any given second to be allowed by the quota
                 rule. The rate must be positive.
             role: '- (Optional) If set on a quota where path is set to an auth mount with a concept of roles (such as /auth/approle/), this will make the quota restrict login requests to that mount that are made with the specified role.'
+            secondary_rate: |-
+                - (Optional) Can only be set for the group_by modes entity_then_ip or entity_then_none. This is
+                the rate limit applied to the requests that fall under the "ip" or "none" groupings, while the authenticated requests
+                that contain an entity ID are subject to the rate field instead. Defaults to the same value as rate.
         importStatements: []
     vault_rabbitmq_secret_backend:
         subCategory: ""
@@ -7356,6 +8019,80 @@ resources:
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
             path: '- (Required) Path where the auth backend is mounted.'
+            token_bound_cidrs: |-
+                - (Optional) List of CIDR blocks; if set, specifies blocks of IP
+                addresses which can authenticate successfully, and ties the resulting token to these blocks
+                as well.
+            token_explicit_max_ttl: |-
+                - (Optional) If set, will encode an
+                explicit max TTL
+                onto the token in number of seconds. This is a hard cap even if token_ttl and
+                token_max_ttl would otherwise allow a renewal.
+            token_max_ttl: |-
+                - (Optional) The maximum lifetime for generated tokens in number of seconds.
+                Its current value will be referenced at renewal time.
+            token_no_default_policy: |-
+                - (Optional) If set, the default policy will not be set on
+                generated tokens; otherwise it will be added to the policies set in token_policies.
+            token_num_uses: |-
+                - (Optional) The maximum number
+                of times a generated token may be used (within its lifetime); 0 means unlimited.
+            token_period: |-
+                - (Optional) If set, indicates that the
+                token generated using this role should never expire. The token should be renewed within the
+                duration specified by this value. At each renewal, the token's TTL will be set to the
+                value of this field. Specified in seconds.
+            token_policies: |-
+                - (Optional) List of policies to encode onto generated tokens. Depending
+                on the auth method, this list may be supplemented by user/group/other values.
+            token_ttl: |-
+                - (Optional) The incremental lifetime for generated tokens in number of seconds.
+                Its current value will be referenced at renewal time.
+            token_type: |-
+                - (Optional) The type of token that should be generated. Can be service,
+                batch, or default to use the mount's tuned default (which unless changed will be
+                service tokens). For token store roles, there are two additional possibilities:
+                default-service and default-batch which specify the type to return unless the client
+                requests a different type at generation time.
+        importStatements: []
+    vault_scep_auth_backend_role:
+        subCategory: ""
+        description: Managing roles in an SCEP auth backend in Vault
+        name: vault_scep_auth_backend_role
+        title: vault_scep_auth_backend_role resource
+        examples:
+            - name: scep
+              manifest: |-
+                {
+                  "auth_type": "static-challenge",
+                  "backend": "${vault_auth_backend.scep.path}",
+                  "challenge": "well known secret",
+                  "name": "scep_challenge",
+                  "token_max_ttl": 600,
+                  "token_policies": [
+                    "scep-clients"
+                  ],
+                  "token_ttl": 300,
+                  "token_type": "batch"
+                }
+              references:
+                backend: vault_auth_backend.scep.path
+              dependencies:
+                vault_auth_backend.scep: |-
+                    {
+                      "path": "scep",
+                      "type": "scep"
+                    }
+        argumentDocs:
+            auth_type: '- (Required string) The authentication type to use. This can be either "static-challenge" or "intune".'
+            backend: '- (Optional string: "scep") Path to the mounted SCEP auth backend.'
+            challenge: '- (Optional) The static challenge to use if auth_type is "static-challenge", not used for other auth types.'
+            name: '- (Required string) Name of the role.'
+            namespace: |-
+                - (Optional) The namespace to provision the resource in.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+                Available only for Vault Enterprise.
             token_bound_cidrs: |-
                 - (Optional) List of CIDR blocks; if set, specifies blocks of IP
                 addresses which can authenticate successfully, and ties the resulting token to these blocks
@@ -7824,6 +8561,10 @@ resources:
         argumentDocs:
             algorithm_signer: '- (Optional) When supplied, this value specifies a signing algorithm for the key. Possible values: ssh-rsa, rsa-sha2-256, rsa-sha2-512.'
             allow_bare_domains: '- (Optional) Specifies if host certificates that are requested are allowed to use the base domains listed in allowed_domains.'
+            allow_empty_principals: |-
+                - (Optional) Allow signing certificates with no
+                valid principals (e.g. any valid principal). For backwards compatibility
+                only. The default of false is highly recommended.
             allow_host_certificates: '- (Optional) Specifies if certificates are allowed to be signed for use as a ''host''.'
             allow_subdomains: '- (Optional) Specifies if host certificates that are requested are allowed to be subdomains of those listed in allowed_domains.'
             allow_user_certificates: '- (Optional) Specifies if certificates are allowed to be signed for use as a ''user''.'
@@ -7993,7 +8734,7 @@ resources:
                 Available only for Vault Enterprise.
             organization: '- (Optional) The organization name managing your Terraform Cloud instance.'
             team_id: '- (Optional) The id of the team you wish to create a token for in your Terraform Cloud instance.'
-            ttl: '- (Optional) Specifies the TTL for this role.'
+            ttl: '- (Optional) Specifies the TTL for this role, in seconds.'
             user_id: '- (Optional) The user id you wish to create a token for in your Terraform Cloud instance. (Note: this value can not be provided in conjunction with team_id and/or organization)'
         importStatements: []
     vault_token:
@@ -8311,6 +9052,12 @@ resources:
             derived: '- (Optional) Specifies if key derivation is to be used. If enabled, all encrypt/decrypt requests to this key must provide a context which is used for key derivation.'
             ed25519: ', ecdsa-p256, ecdsa-p384, ecdsa-p521, rsa-2048, rsa-3072 and rsa-4096, each key version will be a map of the following:'
             exportable: '- (Optional) Enables keys to be exportable. This allows for all valid private keys in the keyring to be exported. Once set, this cannot be disabled.'
+            hybrid_key_type_ec: |-
+                - (Optional) The elliptic curve algorithm to use for hybrid signatures.
+                Supported key types are ecdsa-p256, ecdsa-p384, ecdsa-p521, and ed25519.
+            hybrid_key_type_pqc: |-
+                - (Optional) The post-quantum algorithm to use for hybrid signatures.
+                Currently, ML-DSA is the only supported key type.
             key_size: '- (Optional) The key size in bytes for algorithms that allow variable key sizes. Currently only applicable to HMAC, where it must be between 32 and 512 bytes.'
             keys: '- List of key versions in the keyring. This attribute is zero-indexed and will contain a map of values depending on the type of the encryption key.'
             latest_version: '- Latest key version available. This value is 1-indexed, so if latest_version is 1, then the key''s information can be referenced from keys by selecting element 0'
@@ -8323,6 +9070,9 @@ resources:
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
+            parameter_set: |-
+                - (Optional) The parameter set to use for ML-DSA. Required for
+                ML-DSA and hybrid keys. Valid values are 44, 65, and 87.
             public_key: '- This is the base64-encoded public key for use outside of Vault.'
             supports_decryption: '- Whether or not the key supports decryption, based on key type.'
             supports_derivation: '- Whether or not the key supports derivation, based on key type.'

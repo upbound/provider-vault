@@ -141,6 +141,10 @@ type SecretBackendRoleInitParameters struct {
 	// Flag to specify certificates for client use.
 	ClientFlag *bool `json:"clientFlag,omitempty" tf:"client_flag,omitempty"`
 
+	// Validations to run on the Common Name field of the certificate, choices: email, hostname, disabled
+	// Specify validations to run on the Common Name field of the certificate.
+	CnValidations []*string `json:"cnValidations,omitempty" tf:"cn_validations,omitempty"`
+
 	// Flag to specify certificates for code signing use
 	// Flag to specify certificates for code signing use.
 	CodeSigningFlag *bool `json:"codeSigningFlag,omitempty" tf:"code_signing_flag,omitempty"`
@@ -214,6 +218,14 @@ type SecretBackendRoleInitParameters struct {
 	// Flag to not store certificates in the storage backend.
 	NoStore *bool `json:"noStore,omitempty" tf:"no_store,omitempty"`
 
+	// Allows metadata to be stored keyed on the certificate's serial number. The field is independent of no_store, allowing metadata storage regardless of whether certificates are stored. If true, metadata is not stored and an error is returned if the metadata field is specified on issuance APIs
+	// Allows metadata to be stored keyed on the certificate's serial number. The field is independent of no_store, allowing metadata storage regardless of whether certificates are stored. If true, metadata is not stored and an error is returned if the metadata field is specified on issuance APIs
+	NoStoreMetadata *bool `json:"noStoreMetadata,omitempty" tf:"no_store_metadata,omitempty"`
+
+	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
+	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
+	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
+
 	// Specifies the duration by which to backdate the NotBefore property.
 	// Specifies the duration by which to backdate the NotBefore property.
 	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
@@ -246,9 +258,17 @@ type SecretBackendRoleInitParameters struct {
 	// Flag to force CN usage.
 	RequireCn *bool `json:"requireCn,omitempty" tf:"require_cn,omitempty"`
 
+	// Specifies the source of the subject serial number. Valid values are json-csr (default) or json. When set to json-csr, the subject serial number is taken from the serial_number parameter and falls back to the serial number in the CSR. When set to json, the subject serial number is taken from the serial_number parameter but will ignore any value in the CSR. For backwards compatibility an empty value for this field will default to the json-csr behavior.
+	// Specifies the source of the subject serial number. Valid values are json-csr (default) or json. When set to json-csr, the subject serial number is taken from the serial_number parameter and falls back to the serial number in the CSR. When set to json, the subject serial number is taken from the serial_number parameter but will ignore any value in the CSR. For backwards compatibility an empty value for this field will default to the json-csr behavior.
+	SerialNumberSource *string `json:"serialNumberSource,omitempty" tf:"serial_number_source,omitempty"`
+
 	// Flag to specify certificates for server use
 	// Flag to specify certificates for server use.
 	ServerFlag *bool `json:"serverFlag,omitempty" tf:"server_flag,omitempty"`
+
+	// The number of bits to use in the signature algorithm
+	// The number of bits to use in the signature algorithm.
+	SignatureBits *float64 `json:"signatureBits,omitempty" tf:"signature_bits,omitempty"`
 
 	// The street address of generated certificates
 	// The street address of generated certificates.
@@ -265,6 +285,10 @@ type SecretBackendRoleInitParameters struct {
 	// Flag to use the SANs in the CSR
 	// Flag to use the SANs in the CSR.
 	UseCsrSans *bool `json:"useCsrSans,omitempty" tf:"use_csr_sans,omitempty"`
+
+	// Specifies whether or not to use PSS signatures over PKCS#1v1.5 signatures when a RSA-type issuer is used. Ignored for ECDSA/Ed25519 issuers.
+	// Specifies whether or not to use PSS signatures over PKCS#1v1.5 signatures when a RSA-type issuer is used. Ignored for ECDSA/Ed25519 issuers.
+	UsePss *bool `json:"usePss,omitempty" tf:"use_pss,omitempty"`
 }
 
 type SecretBackendRoleObservation struct {
@@ -336,6 +360,10 @@ type SecretBackendRoleObservation struct {
 	// Flag to specify certificates for client use
 	// Flag to specify certificates for client use.
 	ClientFlag *bool `json:"clientFlag,omitempty" tf:"client_flag,omitempty"`
+
+	// Validations to run on the Common Name field of the certificate, choices: email, hostname, disabled
+	// Specify validations to run on the Common Name field of the certificate.
+	CnValidations []*string `json:"cnValidations,omitempty" tf:"cn_validations,omitempty"`
 
 	// Flag to specify certificates for code signing use
 	// Flag to specify certificates for code signing use.
@@ -412,6 +440,14 @@ type SecretBackendRoleObservation struct {
 	// Flag to not store certificates in the storage backend.
 	NoStore *bool `json:"noStore,omitempty" tf:"no_store,omitempty"`
 
+	// Allows metadata to be stored keyed on the certificate's serial number. The field is independent of no_store, allowing metadata storage regardless of whether certificates are stored. If true, metadata is not stored and an error is returned if the metadata field is specified on issuance APIs
+	// Allows metadata to be stored keyed on the certificate's serial number. The field is independent of no_store, allowing metadata storage regardless of whether certificates are stored. If true, metadata is not stored and an error is returned if the metadata field is specified on issuance APIs
+	NoStoreMetadata *bool `json:"noStoreMetadata,omitempty" tf:"no_store_metadata,omitempty"`
+
+	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
+	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
+	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
+
 	// Specifies the duration by which to backdate the NotBefore property.
 	// Specifies the duration by which to backdate the NotBefore property.
 	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
@@ -444,9 +480,17 @@ type SecretBackendRoleObservation struct {
 	// Flag to force CN usage.
 	RequireCn *bool `json:"requireCn,omitempty" tf:"require_cn,omitempty"`
 
+	// Specifies the source of the subject serial number. Valid values are json-csr (default) or json. When set to json-csr, the subject serial number is taken from the serial_number parameter and falls back to the serial number in the CSR. When set to json, the subject serial number is taken from the serial_number parameter but will ignore any value in the CSR. For backwards compatibility an empty value for this field will default to the json-csr behavior.
+	// Specifies the source of the subject serial number. Valid values are json-csr (default) or json. When set to json-csr, the subject serial number is taken from the serial_number parameter and falls back to the serial number in the CSR. When set to json, the subject serial number is taken from the serial_number parameter but will ignore any value in the CSR. For backwards compatibility an empty value for this field will default to the json-csr behavior.
+	SerialNumberSource *string `json:"serialNumberSource,omitempty" tf:"serial_number_source,omitempty"`
+
 	// Flag to specify certificates for server use
 	// Flag to specify certificates for server use.
 	ServerFlag *bool `json:"serverFlag,omitempty" tf:"server_flag,omitempty"`
+
+	// The number of bits to use in the signature algorithm
+	// The number of bits to use in the signature algorithm.
+	SignatureBits *float64 `json:"signatureBits,omitempty" tf:"signature_bits,omitempty"`
 
 	// The street address of generated certificates
 	// The street address of generated certificates.
@@ -463,6 +507,10 @@ type SecretBackendRoleObservation struct {
 	// Flag to use the SANs in the CSR
 	// Flag to use the SANs in the CSR.
 	UseCsrSans *bool `json:"useCsrSans,omitempty" tf:"use_csr_sans,omitempty"`
+
+	// Specifies whether or not to use PSS signatures over PKCS#1v1.5 signatures when a RSA-type issuer is used. Ignored for ECDSA/Ed25519 issuers.
+	// Specifies whether or not to use PSS signatures over PKCS#1v1.5 signatures when a RSA-type issuer is used. Ignored for ECDSA/Ed25519 issuers.
+	UsePss *bool `json:"usePss,omitempty" tf:"use_pss,omitempty"`
 }
 
 type SecretBackendRoleParameters struct {
@@ -562,6 +610,11 @@ type SecretBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	ClientFlag *bool `json:"clientFlag,omitempty" tf:"client_flag,omitempty"`
 
+	// Validations to run on the Common Name field of the certificate, choices: email, hostname, disabled
+	// Specify validations to run on the Common Name field of the certificate.
+	// +kubebuilder:validation:Optional
+	CnValidations []*string `json:"cnValidations,omitempty" tf:"cn_validations,omitempty"`
+
 	// Flag to specify certificates for code signing use
 	// Flag to specify certificates for code signing use.
 	// +kubebuilder:validation:Optional
@@ -651,6 +704,16 @@ type SecretBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	NoStore *bool `json:"noStore,omitempty" tf:"no_store,omitempty"`
 
+	// Allows metadata to be stored keyed on the certificate's serial number. The field is independent of no_store, allowing metadata storage regardless of whether certificates are stored. If true, metadata is not stored and an error is returned if the metadata field is specified on issuance APIs
+	// Allows metadata to be stored keyed on the certificate's serial number. The field is independent of no_store, allowing metadata storage regardless of whether certificates are stored. If true, metadata is not stored and an error is returned if the metadata field is specified on issuance APIs
+	// +kubebuilder:validation:Optional
+	NoStoreMetadata *bool `json:"noStoreMetadata,omitempty" tf:"no_store_metadata,omitempty"`
+
+	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
+	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
+	// +kubebuilder:validation:Optional
+	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
+
 	// Specifies the duration by which to backdate the NotBefore property.
 	// Specifies the duration by which to backdate the NotBefore property.
 	// +kubebuilder:validation:Optional
@@ -691,10 +754,20 @@ type SecretBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	RequireCn *bool `json:"requireCn,omitempty" tf:"require_cn,omitempty"`
 
+	// Specifies the source of the subject serial number. Valid values are json-csr (default) or json. When set to json-csr, the subject serial number is taken from the serial_number parameter and falls back to the serial number in the CSR. When set to json, the subject serial number is taken from the serial_number parameter but will ignore any value in the CSR. For backwards compatibility an empty value for this field will default to the json-csr behavior.
+	// Specifies the source of the subject serial number. Valid values are json-csr (default) or json. When set to json-csr, the subject serial number is taken from the serial_number parameter and falls back to the serial number in the CSR. When set to json, the subject serial number is taken from the serial_number parameter but will ignore any value in the CSR. For backwards compatibility an empty value for this field will default to the json-csr behavior.
+	// +kubebuilder:validation:Optional
+	SerialNumberSource *string `json:"serialNumberSource,omitempty" tf:"serial_number_source,omitempty"`
+
 	// Flag to specify certificates for server use
 	// Flag to specify certificates for server use.
 	// +kubebuilder:validation:Optional
 	ServerFlag *bool `json:"serverFlag,omitempty" tf:"server_flag,omitempty"`
+
+	// The number of bits to use in the signature algorithm
+	// The number of bits to use in the signature algorithm.
+	// +kubebuilder:validation:Optional
+	SignatureBits *float64 `json:"signatureBits,omitempty" tf:"signature_bits,omitempty"`
 
 	// The street address of generated certificates
 	// The street address of generated certificates.
@@ -715,6 +788,11 @@ type SecretBackendRoleParameters struct {
 	// Flag to use the SANs in the CSR.
 	// +kubebuilder:validation:Optional
 	UseCsrSans *bool `json:"useCsrSans,omitempty" tf:"use_csr_sans,omitempty"`
+
+	// Specifies whether or not to use PSS signatures over PKCS#1v1.5 signatures when a RSA-type issuer is used. Ignored for ECDSA/Ed25519 issuers.
+	// Specifies whether or not to use PSS signatures over PKCS#1v1.5 signatures when a RSA-type issuer is used. Ignored for ECDSA/Ed25519 issuers.
+	// +kubebuilder:validation:Optional
+	UsePss *bool `json:"usePss,omitempty" tf:"use_pss,omitempty"`
 }
 
 // SecretBackendRoleSpec defines the desired state of SecretBackendRole

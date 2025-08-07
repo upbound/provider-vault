@@ -1,7 +1,6 @@
 apiVersion: vault.vault.upbound.io/v1alpha1
 kind: Token
 metadata:
-metadata:
   annotations:
     meta.upbound.io/example-id: vault/v1alpha1/token
   labels:

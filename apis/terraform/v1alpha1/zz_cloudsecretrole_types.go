@@ -47,7 +47,7 @@ type CloudSecretRoleInitParameters struct {
 	// name of the provider cloud or enterprise organization
 	Organization *string `json:"organization,omitempty" tf:"organization,omitempty"`
 
-	// Specifies the TTL for this role.
+	// Specifies the TTL for this role, in seconds.
 	// Default lease for generated credentials. If not set or set to 0, will use system default.
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
@@ -84,7 +84,7 @@ type CloudSecretRoleObservation struct {
 	// name of the provider cloud or enterprise organization
 	Organization *string `json:"organization,omitempty" tf:"organization,omitempty"`
 
-	// Specifies the TTL for this role.
+	// Specifies the TTL for this role, in seconds.
 	// Default lease for generated credentials. If not set or set to 0, will use system default.
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
@@ -134,7 +134,7 @@ type CloudSecretRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	Organization *string `json:"organization,omitempty" tf:"organization,omitempty"`
 
-	// Specifies the TTL for this role.
+	// Specifies the TTL for this role, in seconds.
 	// Default lease for generated credentials. If not set or set to 0, will use system default.
 	// +kubebuilder:validation:Optional
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`

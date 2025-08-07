@@ -101,7 +101,16 @@ type SecretV2InitParameters struct {
 	// JSON-encoded string that will be
 	// written as the secret data at the given path.
 	// JSON-encoded secret data to write.
-	DataJSONSecretRef v1.SecretKeySelector `json:"dataJsonSecretRef" tf:"-"`
+	DataJSONSecretRef *v1.SecretKeySelector `json:"dataJsonSecretRef,omitempty" tf:"-"`
+
+	// JSON-encoded secret data to write to Vault. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-Only JSON-encoded secret data to write.
+	DataJSONWo *string `json:"dataJsonWo,omitempty" tf:"data_json_wo,omitempty"`
+
+	// The version of the data_json_wo. For more info see updating write-only attributes.
+	// Version counter for write-only secret data.
+	DataJSONWoVersion *float64 `json:"dataJsonWoVersion,omitempty" tf:"data_json_wo_version,omitempty"`
 
 	// If set to true, permanently deletes all
 	// versions for the specified key.
@@ -161,6 +170,15 @@ type SecretV2Observation struct {
 	// Configuration Options for more info.
 	// Custom metadata to be set for the secret.
 	CustomMetadata []CustomMetadataObservation `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
+
+	// JSON-encoded secret data to write to Vault. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-Only JSON-encoded secret data to write.
+	DataJSONWo *string `json:"dataJsonWo,omitempty" tf:"data_json_wo,omitempty"`
+
+	// The version of the data_json_wo. For more info see updating write-only attributes.
+	// Version counter for write-only secret data.
+	DataJSONWoVersion *float64 `json:"dataJsonWoVersion,omitempty" tf:"data_json_wo_version,omitempty"`
 
 	// If set to true, permanently deletes all
 	// versions for the specified key.
@@ -228,7 +246,18 @@ type SecretV2Parameters struct {
 	// written as the secret data at the given path.
 	// JSON-encoded secret data to write.
 	// +kubebuilder:validation:Optional
-	DataJSONSecretRef v1.SecretKeySelector `json:"dataJsonSecretRef" tf:"-"`
+	DataJSONSecretRef *v1.SecretKeySelector `json:"dataJsonSecretRef,omitempty" tf:"-"`
+
+	// JSON-encoded secret data to write to Vault. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-Only JSON-encoded secret data to write.
+	// +kubebuilder:validation:Optional
+	DataJSONWo *string `json:"dataJsonWo,omitempty" tf:"data_json_wo,omitempty"`
+
+	// The version of the data_json_wo. For more info see updating write-only attributes.
+	// Version counter for write-only secret data.
+	// +kubebuilder:validation:Optional
+	DataJSONWoVersion *float64 `json:"dataJsonWoVersion,omitempty" tf:"data_json_wo_version,omitempty"`
 
 	// If set to true, permanently deletes all
 	// versions for the specified key.
@@ -316,7 +345,6 @@ type SecretV2Status struct {
 type SecretV2 struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dataJsonSecretRef)",message="spec.forProvider.dataJsonSecretRef is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   SecretV2Spec   `json:"spec"`
 	Status SecretV2Status `json:"status,omitempty"`

@@ -30,6 +30,10 @@ type SecretsMountCassandraInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The hosts to connect to.
 	// Cassandra hosts to connect to.
 	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
@@ -73,6 +77,25 @@ type SecretsMountCassandraInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Skip permissions checks when a connection to Cassandra is first created. These checks ensure that Vault is able to create roles, but can be resource intensive in clusters with many roles.
+	SkipVerification *bool `json:"skipVerification,omitempty" tf:"skip_verification,omitempty"`
+
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Cassandra.
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
@@ -104,6 +127,10 @@ type SecretsMountCassandraObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The hosts to connect to.
 	// Cassandra hosts to connect to.
 	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
@@ -133,6 +160,25 @@ type SecretsMountCassandraObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Skip permissions checks when a connection to Cassandra is first created. These checks ensure that Vault is able to create roles, but can be resource intensive in clusters with many roles.
+	SkipVerification *bool `json:"skipVerification,omitempty" tf:"skip_verification,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Cassandra.
@@ -167,6 +213,11 @@ type SecretsMountCassandraParameters struct {
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// The hosts to connect to.
 	// Cassandra hosts to connect to.
@@ -221,6 +272,29 @@ type SecretsMountCassandraParameters struct {
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Skip permissions checks when a connection to Cassandra is first created. These checks ensure that Vault is able to create roles, but can be resource intensive in clusters with many roles.
+	// +kubebuilder:validation:Optional
+	SkipVerification *bool `json:"skipVerification,omitempty" tf:"skip_verification,omitempty"`
+
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Cassandra.
 	// +kubebuilder:validation:Optional
@@ -258,6 +332,10 @@ type SecretsMountCouchbaseInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The hosts to connect to.
 	// A set of Couchbase URIs to connect to. Must use `couchbases://` scheme if `tls` is `true`.
 	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
@@ -282,6 +360,22 @@ type SecretsMountCouchbaseInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Couchbase.
@@ -317,6 +411,10 @@ type SecretsMountCouchbaseObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The hosts to connect to.
 	// A set of Couchbase URIs to connect to. Must use `couchbases://` scheme if `tls` is `true`.
 	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
@@ -337,6 +435,22 @@ type SecretsMountCouchbaseObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Couchbase.
@@ -380,6 +494,11 @@ type SecretsMountCouchbaseParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The hosts to connect to.
 	// A set of Couchbase URIs to connect to. Must use `couchbases://` scheme if `tls` is `true`.
 	// +kubebuilder:validation:Optional
@@ -410,6 +529,25 @@ type SecretsMountCouchbaseParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Couchbase.
@@ -461,6 +599,10 @@ type SecretsMountElasticsearchInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Whether to disable certificate verification.
 	// Whether to disable certificate verification
 	Insecure *bool `json:"insecure,omitempty" tf:"insecure,omitempty"`
@@ -480,6 +622,22 @@ type SecretsMountElasticsearchInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// This, if set, is used to set the SNI host when connecting via TLS.
 	// This, if set, is used to set the SNI host when connecting via TLS
@@ -532,6 +690,10 @@ type SecretsMountElasticsearchObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Whether to disable certificate verification.
 	// Whether to disable certificate verification
 	Insecure *bool `json:"insecure,omitempty" tf:"insecure,omitempty"`
@@ -547,6 +709,22 @@ type SecretsMountElasticsearchObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// This, if set, is used to set the SNI host when connecting via TLS.
 	// This, if set, is used to set the SNI host when connecting via TLS
@@ -605,6 +783,11 @@ type SecretsMountElasticsearchParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Whether to disable certificate verification.
 	// Whether to disable certificate verification
 	// +kubebuilder:validation:Optional
@@ -629,6 +812,25 @@ type SecretsMountElasticsearchParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// This, if set, is used to set the SNI host when connecting via TLS.
 	// This, if set, is used to set the SNI host when connecting via TLS
@@ -675,6 +877,10 @@ type SecretsMountHanaInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
@@ -702,6 +908,15 @@ type SecretsMountHanaInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -709,6 +924,22 @@ type SecretsMountHanaInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -737,6 +968,10 @@ type SecretsMountHanaObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
@@ -760,6 +995,15 @@ type SecretsMountHanaObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -767,6 +1011,22 @@ type SecretsMountHanaObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -797,6 +1057,11 @@ type SecretsMountHanaParameters struct {
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
@@ -831,6 +1096,17 @@ type SecretsMountHanaParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
@@ -840,6 +1116,25 @@ type SecretsMountHanaParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -869,6 +1164,10 @@ type SecretsMountInfluxdbInitParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// The host to connect to.
 	// Influxdb host to connect to.
@@ -909,6 +1208,22 @@ type SecretsMountInfluxdbInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Influxdb.
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
@@ -944,6 +1259,10 @@ type SecretsMountInfluxdbObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The host to connect to.
 	// Influxdb host to connect to.
 	Host *string `json:"host,omitempty" tf:"host,omitempty"`
@@ -969,6 +1288,22 @@ type SecretsMountInfluxdbObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Influxdb.
@@ -1007,6 +1342,11 @@ type SecretsMountInfluxdbParameters struct {
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// The host to connect to.
 	// Influxdb host to connect to.
@@ -1055,6 +1395,25 @@ type SecretsMountInfluxdbParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Influxdb.
@@ -1255,6 +1614,10 @@ type SecretsMountMongodbInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -1278,6 +1641,15 @@ type SecretsMountMongodbInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -1285,6 +1657,22 @@ type SecretsMountMongodbInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1317,6 +1705,10 @@ type SecretsMountMongodbObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -1336,6 +1728,15 @@ type SecretsMountMongodbObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -1343,6 +1744,22 @@ type SecretsMountMongodbObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1378,6 +1795,11 @@ type SecretsMountMongodbParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -1406,6 +1828,17 @@ type SecretsMountMongodbParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
@@ -1415,6 +1848,25 @@ type SecretsMountMongodbParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1445,6 +1897,10 @@ type SecretsMountMongodbatlasInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -1469,6 +1925,22 @@ type SecretsMountMongodbatlasInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// Whether the connection should be verified on
 	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
@@ -1486,6 +1958,10 @@ type SecretsMountMongodbatlasObservation struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// for any configured database engine is changed
 	// Name of the database connection.
@@ -1507,6 +1983,22 @@ type SecretsMountMongodbatlasObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// Whether the connection should be verified on
 	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
@@ -1526,6 +2018,11 @@ type SecretsMountMongodbatlasParameters struct {
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// for any configured database engine is changed
 	// Name of the database connection.
@@ -1557,6 +2054,25 @@ type SecretsMountMongodbatlasParameters struct {
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// Whether the connection should be verified on
 	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
@@ -1587,6 +2103,10 @@ type SecretsMountMssqlInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
@@ -1614,6 +2134,15 @@ type SecretsMountMssqlInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -1621,6 +2150,22 @@ type SecretsMountMssqlInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1659,6 +2204,10 @@ type SecretsMountMssqlObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
@@ -1682,6 +2231,15 @@ type SecretsMountMssqlObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -1689,6 +2247,22 @@ type SecretsMountMssqlObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1731,6 +2305,11 @@ type SecretsMountMssqlParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	// +kubebuilder:validation:Optional
@@ -1764,6 +2343,17 @@ type SecretsMountMssqlParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
@@ -1773,6 +2363,25 @@ type SecretsMountMssqlParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1811,6 +2420,10 @@ type SecretsMountMySQLAuroraInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -1834,6 +2447,15 @@ type SecretsMountMySQLAuroraInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -1841,6 +2463,22 @@ type SecretsMountMySQLAuroraInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
@@ -1887,6 +2525,10 @@ type SecretsMountMySQLAuroraObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -1906,6 +2548,15 @@ type SecretsMountMySQLAuroraObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -1913,6 +2564,22 @@ type SecretsMountMySQLAuroraObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -1956,6 +2623,11 @@ type SecretsMountMySQLAuroraParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -1984,6 +2656,17 @@ type SecretsMountMySQLAuroraParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
@@ -1993,6 +2676,25 @@ type SecretsMountMySQLAuroraParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// A JSON encoded credential for use with IAM authorization
 	// +kubebuilder:validation:Optional
@@ -2045,6 +2747,10 @@ type SecretsMountMySQLInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -2068,6 +2774,15 @@ type SecretsMountMySQLInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -2075,6 +2790,22 @@ type SecretsMountMySQLInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
@@ -2121,6 +2852,10 @@ type SecretsMountMySQLLegacyInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -2144,6 +2879,15 @@ type SecretsMountMySQLLegacyInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -2151,6 +2895,22 @@ type SecretsMountMySQLLegacyInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
@@ -2197,6 +2957,10 @@ type SecretsMountMySQLLegacyObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -2216,6 +2980,15 @@ type SecretsMountMySQLLegacyObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -2223,6 +2996,22 @@ type SecretsMountMySQLLegacyObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -2266,6 +3055,11 @@ type SecretsMountMySQLLegacyParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -2294,6 +3088,17 @@ type SecretsMountMySQLLegacyParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
@@ -2303,6 +3108,25 @@ type SecretsMountMySQLLegacyParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// A JSON encoded credential for use with IAM authorization
 	// +kubebuilder:validation:Optional
@@ -2355,6 +3179,10 @@ type SecretsMountMySQLObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -2374,6 +3202,15 @@ type SecretsMountMySQLObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -2381,6 +3218,22 @@ type SecretsMountMySQLObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -2424,6 +3277,11 @@ type SecretsMountMySQLParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -2452,6 +3310,17 @@ type SecretsMountMySQLParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
@@ -2461,6 +3330,25 @@ type SecretsMountMySQLParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// A JSON encoded credential for use with IAM authorization
 	// +kubebuilder:validation:Optional
@@ -2513,6 +3401,10 @@ type SecretsMountMySQLRDSInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -2536,6 +3428,15 @@ type SecretsMountMySQLRDSInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -2543,6 +3444,22 @@ type SecretsMountMySQLRDSInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
@@ -2589,6 +3506,10 @@ type SecretsMountMySQLRDSObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -2608,6 +3529,15 @@ type SecretsMountMySQLRDSObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -2615,6 +3545,22 @@ type SecretsMountMySQLRDSObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -2658,6 +3604,11 @@ type SecretsMountMySQLRDSParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -2686,6 +3637,17 @@ type SecretsMountMySQLRDSParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
@@ -2695,6 +3657,25 @@ type SecretsMountMySQLRDSParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// A JSON encoded credential for use with IAM authorization
 	// +kubebuilder:validation:Optional
@@ -2913,6 +3894,10 @@ type SecretsMountOracleInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Set to true to disconnect any open sessions prior to running the revocation statements.
 	DisconnectSessions *bool `json:"disconnectSessions,omitempty" tf:"disconnect_sessions,omitempty"`
 
@@ -2939,6 +3924,15 @@ type SecretsMountOracleInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -2946,6 +3940,22 @@ type SecretsMountOracleInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// Set to true in order to split statements after semi-colons.
 	SplitStatements *bool `json:"splitStatements,omitempty" tf:"split_statements,omitempty"`
@@ -2981,6 +3991,10 @@ type SecretsMountOracleObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Set to true to disconnect any open sessions prior to running the revocation statements.
 	DisconnectSessions *bool `json:"disconnectSessions,omitempty" tf:"disconnect_sessions,omitempty"`
 
@@ -3003,6 +4017,15 @@ type SecretsMountOracleObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -3010,6 +4033,22 @@ type SecretsMountOracleObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// Set to true in order to split statements after semi-colons.
 	SplitStatements *bool `json:"splitStatements,omitempty" tf:"split_statements,omitempty"`
@@ -3048,6 +4087,11 @@ type SecretsMountOracleParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Set to true to disconnect any open sessions prior to running the revocation statements.
 	// +kubebuilder:validation:Optional
 	DisconnectSessions *bool `json:"disconnectSessions,omitempty" tf:"disconnect_sessions,omitempty"`
@@ -3080,6 +4124,17 @@ type SecretsMountOracleParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
@@ -3089,6 +4144,25 @@ type SecretsMountOracleParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// Set to true in order to split statements after semi-colons.
 	// +kubebuilder:validation:Optional
@@ -3327,6 +4401,10 @@ type SecretsMountPostgresqlInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
@@ -3350,20 +4428,62 @@ type SecretsMountPostgresqlInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// When set to `scram-sha-256`, passwords will be hashed by Vault before being sent to PostgreSQL.
+	PasswordAuthentication *string `json:"passwordAuthentication,omitempty" tf:"password_authentication,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
+	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
+	// The secret key used for the x509 client certificate. Must be PEM encoded.
+	PrivateKeySecretRef *v1.SecretKeySelector `json:"privateKeySecretRef,omitempty" tf:"-"`
+
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// If set, allows onboarding static roles with a rootless connection configuration.
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
+
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The x509 CA file for validating the certificate presented by the PostgreSQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// The x509 client certificate for connecting to the database. Must be PEM encoded.
+	TLSCertificate *string `json:"tlsCertificate,omitempty" tf:"tls_certificate,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -3399,6 +4519,10 @@ type SecretsMountPostgresqlObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
@@ -3422,6 +4546,18 @@ type SecretsMountPostgresqlObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// When set to `scram-sha-256`, passwords will be hashed by Vault before being sent to PostgreSQL.
+	PasswordAuthentication *string `json:"passwordAuthentication,omitempty" tf:"password_authentication,omitempty"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -3429,6 +4565,32 @@ type SecretsMountPostgresqlObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// If set, allows onboarding static roles with a rootless connection configuration.
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The x509 CA file for validating the certificate presented by the PostgreSQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// The x509 client certificate for connecting to the database. Must be PEM encoded.
+	TLSCertificate *string `json:"tlsCertificate,omitempty" tf:"tls_certificate,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -3468,6 +4630,11 @@ type SecretsMountPostgresqlParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	// +kubebuilder:validation:Optional
@@ -3496,24 +4663,76 @@ type SecretsMountPostgresqlParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// When set to `scram-sha-256`, passwords will be hashed by Vault before being sent to PostgreSQL.
+	// +kubebuilder:validation:Optional
+	PasswordAuthentication *string `json:"passwordAuthentication,omitempty" tf:"password_authentication,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
+	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
+	// The secret key used for the x509 client certificate. Must be PEM encoded.
+	// +kubebuilder:validation:Optional
+	PrivateKeySecretRef *v1.SecretKeySelector `json:"privateKeySecretRef,omitempty" tf:"-"`
+
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// If set, allows onboarding static roles with a rootless connection configuration.
+	// +kubebuilder:validation:Optional
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
+
 	// A JSON encoded credential for use with IAM authorization
 	// +kubebuilder:validation:Optional
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The x509 CA file for validating the certificate presented by the PostgreSQL server. Must be PEM encoded.
+	// +kubebuilder:validation:Optional
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// The x509 client certificate for connecting to the database. Must be PEM encoded.
+	// +kubebuilder:validation:Optional
+	TLSCertificate *string `json:"tlsCertificate,omitempty" tf:"tls_certificate,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -3544,6 +4763,10 @@ type SecretsMountRedisElasticacheInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -3564,6 +4787,22 @@ type SecretsMountRedisElasticacheInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The URL for Elasticsearch's API. https requires certificate
 	// by trusted CA if used.
@@ -3592,6 +4831,10 @@ type SecretsMountRedisElasticacheObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -3608,6 +4851,22 @@ type SecretsMountRedisElasticacheObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The URL for Elasticsearch's API. https requires certificate
 	// by trusted CA if used.
@@ -3634,6 +4893,11 @@ type SecretsMountRedisElasticacheParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
@@ -3659,6 +4923,25 @@ type SecretsMountRedisElasticacheParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The URL for Elasticsearch's API. https requires certificate
 	// by trusted CA if used.
@@ -3694,6 +4977,10 @@ type SecretsMountRedisInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The host to connect to.
 	// Specifies the host to connect to
 	Host *string `json:"host,omitempty" tf:"host,omitempty"`
@@ -3723,6 +5010,22 @@ type SecretsMountRedisInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Redis.
@@ -3754,6 +5057,10 @@ type SecretsMountRedisObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The host to connect to.
 	// Specifies the host to connect to
 	Host *string `json:"host,omitempty" tf:"host,omitempty"`
@@ -3779,6 +5086,22 @@ type SecretsMountRedisObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Redis.
@@ -3812,6 +5135,11 @@ type SecretsMountRedisParameters struct {
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// The host to connect to.
 	// Specifies the host to connect to
@@ -3850,6 +5178,25 @@ type SecretsMountRedisParameters struct {
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Redis.
 	// +kubebuilder:validation:Optional
@@ -3884,6 +5231,10 @@ type SecretsMountRedshiftInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
@@ -3911,6 +5262,15 @@ type SecretsMountRedshiftInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -3918,6 +5278,22 @@ type SecretsMountRedshiftInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -3950,6 +5326,10 @@ type SecretsMountRedshiftObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	DisableEscaping *bool `json:"disableEscaping,omitempty" tf:"disable_escaping,omitempty"`
@@ -3973,6 +5353,15 @@ type SecretsMountRedshiftObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
@@ -3980,6 +5369,22 @@ type SecretsMountRedshiftObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -4015,6 +5420,11 @@ type SecretsMountRedshiftParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// Disable special character escaping in username and password.
 	// Disable special character escaping in username and password
 	// +kubebuilder:validation:Optional
@@ -4048,6 +5458,17 @@ type SecretsMountRedshiftParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
@@ -4057,6 +5478,25 @@ type SecretsMountRedshiftParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -4092,6 +5532,10 @@ type SecretsMountSnowflakeInitParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -4115,13 +5559,44 @@ type SecretsMountSnowflakeInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
+	// The private key configured for the admin user in Snowflake.
+	PrivateKeyWoSecretRef *v1.SecretKeySelector `json:"privateKeyWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for the private key key-pair credentials write-only field
+	PrivateKeyWoVersion *float64 `json:"privateKeyWoVersion,omitempty" tf:"private_key_wo_version,omitempty"`
+
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -4154,6 +5629,10 @@ type SecretsMountSnowflakeObservation struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -4173,13 +5652,41 @@ type SecretsMountSnowflakeObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
+	// Version counter for the private key key-pair credentials write-only field
+	PrivateKeyWoVersion *float64 `json:"privateKeyWoVersion,omitempty" tf:"private_key_wo_version,omitempty"`
+
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -4215,6 +5722,11 @@ type SecretsMountSnowflakeParameters struct {
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
 
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
+
 	// The maximum number of seconds to keep
 	// a connection alive for.
 	// Maximum number of seconds a connection may be reused.
@@ -4243,15 +5755,53 @@ type SecretsMountSnowflakeParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
 
+	// The private key configured for the admin user in Snowflake.
+	// +kubebuilder:validation:Optional
+	PrivateKeyWoSecretRef *v1.SecretKeySelector `json:"privateKeyWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for the private key key-pair credentials write-only field
+	// +kubebuilder:validation:Optional
+	PrivateKeyWoVersion *float64 `json:"privateKeyWoVersion,omitempty" tf:"private_key_wo_version,omitempty"`
+
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
+
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL

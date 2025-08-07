@@ -51,6 +51,11 @@ type CassandraInitParameters struct {
 	// The CQL protocol version to use.
 	ProtocolVersion *float64 `json:"protocolVersion,omitempty" tf:"protocol_version,omitempty"`
 
+	// Skip permissions checks when a connection to Cassandra is first created.
+	// These checks ensure that Vault is able to create roles, but can be resource intensive in clusters with many roles.
+	// Skip permissions checks when a connection to Cassandra is first created. These checks ensure that Vault is able to create roles, but can be resource intensive in clusters with many roles.
+	SkipVerification *bool `json:"skipVerification,omitempty" tf:"skip_verification,omitempty"`
+
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Cassandra.
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
@@ -84,6 +89,11 @@ type CassandraObservation struct {
 	// The CQL protocol version to use.
 	// The CQL protocol version to use.
 	ProtocolVersion *float64 `json:"protocolVersion,omitempty" tf:"protocol_version,omitempty"`
+
+	// Skip permissions checks when a connection to Cassandra is first created.
+	// These checks ensure that Vault is able to create roles, but can be resource intensive in clusters with many roles.
+	// Skip permissions checks when a connection to Cassandra is first created. These checks ensure that Vault is able to create roles, but can be resource intensive in clusters with many roles.
+	SkipVerification *bool `json:"skipVerification,omitempty" tf:"skip_verification,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Cassandra.
@@ -139,6 +149,12 @@ type CassandraParameters struct {
 	// The CQL protocol version to use.
 	// +kubebuilder:validation:Optional
 	ProtocolVersion *float64 `json:"protocolVersion,omitempty" tf:"protocol_version,omitempty"`
+
+	// Skip permissions checks when a connection to Cassandra is first created.
+	// These checks ensure that Vault is able to create roles, but can be resource intensive in clusters with many roles.
+	// Skip permissions checks when a connection to Cassandra is first created. These checks ensure that Vault is able to create roles, but can be resource intensive in clusters with many roles.
+	// +kubebuilder:validation:Optional
+	SkipVerification *bool `json:"skipVerification,omitempty" tf:"skip_verification,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Cassandra.
@@ -426,6 +442,15 @@ type HanaInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -458,6 +483,15 @@ type HanaObservation struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -501,6 +535,17 @@ type HanaParameters struct {
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -674,6 +719,15 @@ type MongodbInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -706,6 +760,15 @@ type MongodbObservation struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -748,6 +811,17 @@ type MongodbParameters struct {
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -843,6 +917,15 @@ type MssqlInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -886,6 +969,15 @@ type MssqlObservation struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -942,6 +1034,17 @@ type MssqlParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
@@ -984,6 +1087,15 @@ type MySQLAuroraInitParameters struct {
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
 	// A JSON encoded credential for use with IAM authorization
@@ -1033,6 +1145,15 @@ type MySQLAuroraObservation struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -1084,6 +1205,17 @@ type MySQLAuroraParameters struct {
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
 	// A JSON encoded credential for use with IAM authorization
@@ -1143,6 +1275,15 @@ type MySQLInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
@@ -1196,6 +1337,15 @@ type MySQLLegacyInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
@@ -1244,6 +1394,15 @@ type MySQLLegacyObservation struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -1295,6 +1454,17 @@ type MySQLLegacyParameters struct {
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
 	// A JSON encoded credential for use with IAM authorization
@@ -1350,6 +1520,15 @@ type MySQLObservation struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
@@ -1400,6 +1579,17 @@ type MySQLParameters struct {
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
 	// A JSON encoded credential for use with IAM authorization
@@ -1459,6 +1649,15 @@ type MySQLRDSInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
@@ -1507,6 +1706,15 @@ type MySQLRDSObservation struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -1558,6 +1766,17 @@ type MySQLRDSParameters struct {
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
 	// A JSON encoded credential for use with IAM authorization
@@ -1617,6 +1836,15 @@ type OracleInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Enable spliting statements after semi-colons.
 	// Set to true in order to split statements after semi-colons.
 	SplitStatements *bool `json:"splitStatements,omitempty" tf:"split_statements,omitempty"`
@@ -1657,6 +1885,15 @@ type OracleObservation struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// Enable spliting statements after semi-colons.
 	// Set to true in order to split statements after semi-colons.
@@ -1709,6 +1946,17 @@ type OracleParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// Enable spliting statements after semi-colons.
 	// Set to true in order to split statements after semi-colons.
 	// +kubebuilder:validation:Optional
@@ -1757,13 +2005,47 @@ type PostgresqlInitParameters struct {
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// When set to scram-sha-256, passwords will be
+	// hashed by Vault before being sent to PostgreSQL. See the Vault docs
+	// for an example. Requires Vault 1.14+.
+	// When set to `scram-sha-256`, passwords will be hashed by Vault before being sent to PostgreSQL.
+	PasswordAuthentication *string `json:"passwordAuthentication,omitempty" tf:"password_authentication,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
+	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
+	// The secret key used for the x509 client certificate. Must be PEM encoded.
+	PrivateKeySecretRef *v1.SecretKeySelector `json:"privateKeySecretRef,omitempty" tf:"-"`
+
+	// If set, allows onboarding static roles with a rootless
+	// connection configuration. Mutually exclusive with username and password.
+	// If set, will force verify_connection to be false. Requires Vault 1.18+ Enterprise.
+	// If set, allows onboarding static roles with a rootless connection configuration.
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
+
 	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The x509 CA file for validating the certificate presented by the PostgreSQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// The x509 client certificate for connecting to
+	// the database. Must be PEM encoded.
+	// The x509 client certificate for connecting to the database. Must be PEM encoded.
+	TLSCertificate *string `json:"tlsCertificate,omitempty" tf:"tls_certificate,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1805,6 +2087,36 @@ type PostgresqlObservation struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// When set to scram-sha-256, passwords will be
+	// hashed by Vault before being sent to PostgreSQL. See the Vault docs
+	// for an example. Requires Vault 1.14+.
+	// When set to `scram-sha-256`, passwords will be hashed by Vault before being sent to PostgreSQL.
+	PasswordAuthentication *string `json:"passwordAuthentication,omitempty" tf:"password_authentication,omitempty"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
+	// If set, allows onboarding static roles with a rootless
+	// connection configuration. Mutually exclusive with username and password.
+	// If set, will force verify_connection to be false. Requires Vault 1.18+ Enterprise.
+	// If set, allows onboarding static roles with a rootless connection configuration.
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The x509 CA file for validating the certificate presented by the PostgreSQL server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// The x509 client certificate for connecting to
+	// the database. Must be PEM encoded.
+	// The x509 client certificate for connecting to the database. Must be PEM encoded.
+	TLSCertificate *string `json:"tlsCertificate,omitempty" tf:"tls_certificate,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -1853,15 +2165,56 @@ type PostgresqlParameters struct {
 	// +kubebuilder:validation:Optional
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
 
+	// When set to scram-sha-256, passwords will be
+	// hashed by Vault before being sent to PostgreSQL. See the Vault docs
+	// for an example. Requires Vault 1.14+.
+	// When set to `scram-sha-256`, passwords will be hashed by Vault before being sent to PostgreSQL.
+	// +kubebuilder:validation:Optional
+	PasswordAuthentication *string `json:"passwordAuthentication,omitempty" tf:"password_authentication,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
+	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
+	// The secret key used for the x509 client certificate. Must be PEM encoded.
+	// +kubebuilder:validation:Optional
+	PrivateKeySecretRef *v1.SecretKeySelector `json:"privateKeySecretRef,omitempty" tf:"-"`
+
+	// If set, allows onboarding static roles with a rootless
+	// connection configuration. Mutually exclusive with username and password.
+	// If set, will force verify_connection to be false. Requires Vault 1.18+ Enterprise.
+	// If set, allows onboarding static roles with a rootless connection configuration.
+	// +kubebuilder:validation:Optional
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
+
 	// JSON encoding of an IAM access key. Requires auth_type to be gcp_iam.
 	// A JSON encoded credential for use with IAM authorization
 	// +kubebuilder:validation:Optional
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The x509 CA file for validating the certificate presented by the PostgreSQL server. Must be PEM encoded.
+	// +kubebuilder:validation:Optional
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// The x509 client certificate for connecting to
+	// the database. Must be PEM encoded.
+	// The x509 client certificate for connecting to the database. Must be PEM encoded.
+	// +kubebuilder:validation:Optional
+	TLSCertificate *string `json:"tlsCertificate,omitempty" tf:"tls_certificate,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2061,6 +2414,15 @@ type RedshiftInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -2097,6 +2459,15 @@ type RedshiftObservation struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2145,6 +2516,17 @@ type RedshiftParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
@@ -2189,6 +2571,10 @@ type SecretBackendConnectionInitParameters struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// A nested block containing configuration options for Elasticsearch connections.
 	// Connection parameters for the elasticsearch-database-plugin.
@@ -2268,6 +2654,22 @@ type SecretBackendConnectionInitParameters struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// A nested block containing configuration options for Snowflake connections.
 	// Connection parameters for the snowflake-database-plugin plugin.
 	Snowflake []SnowflakeInitParameters `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
@@ -2301,6 +2703,10 @@ type SecretBackendConnectionObservation struct {
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// A nested block containing configuration options for Elasticsearch connections.
 	// Connection parameters for the elasticsearch-database-plugin.
@@ -2382,6 +2788,22 @@ type SecretBackendConnectionObservation struct {
 	// A list of database statements to be executed to rotate the root user's credentials.
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// A nested block containing configuration options for Snowflake connections.
 	// Connection parameters for the snowflake-database-plugin plugin.
 	Snowflake []SnowflakeObservation `json:"snowflake,omitempty" tf:"snowflake,omitempty"`
@@ -2430,6 +2852,11 @@ type SecretBackendConnectionParameters struct {
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	Data map[string]*string `json:"data,omitempty" tf:"data,omitempty"`
+
+	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
+	// Stops rotation of the root credential until set to false.
+	// +kubebuilder:validation:Optional
+	DisableAutomatedRotation *bool `json:"disableAutomatedRotation,omitempty" tf:"disable_automated_rotation,omitempty"`
 
 	// A nested block containing configuration options for Elasticsearch connections.
 	// Connection parameters for the elasticsearch-database-plugin.
@@ -2528,6 +2955,25 @@ type SecretBackendConnectionParameters struct {
 	// +kubebuilder:validation:Optional
 	RootRotationStatements []*string `json:"rootRotationStatements,omitempty" tf:"root_rotation_statements,omitempty"`
 
+	// The amount of time in seconds Vault should wait before rotating the root credential.
+	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
+	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
+
+	// The schedule, in cron-style time format,
+	// defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
+	// The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+	// +kubebuilder:validation:Optional
+	RotationSchedule *string `json:"rotationSchedule,omitempty" tf:"rotation_schedule,omitempty"`
+
+	// The maximum amount of time in seconds allowed to complete
+	// a rotation when a scheduled token rotation occurs. The default rotation window is
+	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+	// +kubebuilder:validation:Optional
+	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
 	// A nested block containing configuration options for Snowflake connections.
 	// Connection parameters for the snowflake-database-plugin plugin.
 	// +kubebuilder:validation:Optional
@@ -2568,6 +3014,24 @@ type SnowflakeInitParameters struct {
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
+	// The private key associated with the Snowflake user.
+	// Note: This property is write-only and will not be read from the API.
+	// The private key configured for the admin user in Snowflake.
+	PrivateKeyWoSecretRef *v1.SecretKeySelector `json:"privateKeyWoSecretRef,omitempty" tf:"-"`
+
+	// The version of the private_key_wo. For more info see updating write-only attributes.
+	// Version counter for the private key key-pair credentials write-only field
+	PrivateKeyWoVersion *float64 `json:"privateKeyWoVersion,omitempty" tf:"private_key_wo_version,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -2600,6 +3064,19 @@ type SnowflakeObservation struct {
 	// use.
 	// Maximum number of open connections to the database.
 	MaxOpenConnections *float64 `json:"maxOpenConnections,omitempty" tf:"max_open_connections,omitempty"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
+	// The version of the private_key_wo. For more info see updating write-only attributes.
+	// Version counter for the private key key-pair credentials write-only field
+	PrivateKeyWoVersion *float64 `json:"privateKeyWoVersion,omitempty" tf:"private_key_wo_version,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2642,6 +3119,28 @@ type SnowflakeParameters struct {
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// The password for the user. Can be updated.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only field for the root credential password used in the connection URL
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo. For more info see updating write-only attributes.
+	// Version counter for root credential password write-only field
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
+	// The private key associated with the Snowflake user.
+	// Note: This property is write-only and will not be read from the API.
+	// The private key configured for the admin user in Snowflake.
+	// +kubebuilder:validation:Optional
+	PrivateKeyWoSecretRef *v1.SecretKeySelector `json:"privateKeyWoSecretRef,omitempty" tf:"-"`
+
+	// The version of the private_key_wo. For more info see updating write-only attributes.
+	// Version counter for the private key key-pair credentials write-only field
+	// +kubebuilder:validation:Optional
+	PrivateKeyWoVersion *float64 `json:"privateKeyWoVersion,omitempty" tf:"private_key_wo_version,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL

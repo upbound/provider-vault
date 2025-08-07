@@ -40,6 +40,11 @@ type SecretImpersonatedAccountInitParameters struct {
 	// Email of the GCP service account.
 	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
 
+	// Specifies the default TTL for service principals generated using this role.
+	// Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
+	// Time to live.
+	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
 	// List of OAuth scopes to assign to access tokens generated under this impersonated account.
 	// List of OAuth scopes to assign to `access_token` secrets generated under this impersonated account (`access_token` impersonated accounts only)
 	// +listType=set
@@ -68,6 +73,11 @@ type SecretImpersonatedAccountObservation struct {
 	// Project the service account belongs to.
 	// Project of the GCP Service Account managed by this impersonated account
 	ServiceAccountProject *string `json:"serviceAccountProject,omitempty" tf:"service_account_project,omitempty"`
+
+	// Specifies the default TTL for service principals generated using this role.
+	// Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
+	// Time to live.
+	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
 	// List of OAuth scopes to assign to access tokens generated under this impersonated account.
 	// List of OAuth scopes to assign to `access_token` secrets generated under this impersonated account (`access_token` impersonated accounts only)
@@ -105,6 +115,12 @@ type SecretImpersonatedAccountParameters struct {
 	// Email of the GCP service account.
 	// +kubebuilder:validation:Optional
 	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
+
+	// Specifies the default TTL for service principals generated using this role.
+	// Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
+	// Time to live.
+	// +kubebuilder:validation:Optional
+	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
 	// List of OAuth scopes to assign to access tokens generated under this impersonated account.
 	// List of OAuth scopes to assign to `access_token` secrets generated under this impersonated account (`access_token` impersonated accounts only)

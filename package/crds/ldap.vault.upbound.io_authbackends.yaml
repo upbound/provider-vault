@@ -116,10 +116,16 @@ spec:
                     - name
                     - namespace
                     type: object
+                  connectionTimeout:
+                    type: number
                   denyNullBind:
                     type: boolean
                   description:
                     type: string
+                  disableAutomatedRotation:
+                    description: Stops rotation of the root credential until set to
+                      false.
+                    type: boolean
                   disableRemount:
                     description: If set, opts out of mount migration on path updates.
                     type: boolean
@@ -143,6 +149,19 @@ spec:
                     type: string
                   path:
                     type: string
+                  rotationPeriod:
+                    description: The period of time in seconds between each rotation
+                      of the root credential. Cannot be used with rotation_schedule.
+                    type: number
+                  rotationSchedule:
+                    description: The cron-style schedule for the root credential to
+                      be rotated on. Cannot be used with rotation_period.
+                    type: string
+                  rotationWindow:
+                    description: The maximum amount of time in seconds Vault is allowed
+                      to complete a rotation once a scheduled rotation is triggered.
+                      Can only be used with rotation_schedule.
+                    type: number
                   starttls:
                     type: boolean
                   tlsMaxVersion:
@@ -259,10 +278,16 @@ spec:
                     - name
                     - namespace
                     type: object
+                  connectionTimeout:
+                    type: number
                   denyNullBind:
                     type: boolean
                   description:
                     type: string
+                  disableAutomatedRotation:
+                    description: Stops rotation of the root credential until set to
+                      false.
+                    type: boolean
                   disableRemount:
                     description: If set, opts out of mount migration on path updates.
                     type: boolean
@@ -286,6 +311,19 @@ spec:
                     type: string
                   path:
                     type: string
+                  rotationPeriod:
+                    description: The period of time in seconds between each rotation
+                      of the root credential. Cannot be used with rotation_schedule.
+                    type: number
+                  rotationSchedule:
+                    description: The cron-style schedule for the root credential to
+                      be rotated on. Cannot be used with rotation_period.
+                    type: string
+                  rotationWindow:
+                    description: The maximum amount of time in seconds Vault is allowed
+                      to complete a rotation once a scheduled rotation is triggered.
+                      Can only be used with rotation_schedule.
+                    type: number
                   starttls:
                     type: boolean
                   tlsMaxVersion:
@@ -533,10 +571,16 @@ spec:
                     type: string
                   clientTlsCert:
                     type: string
+                  connectionTimeout:
+                    type: number
                   denyNullBind:
                     type: boolean
                   description:
                     type: string
+                  disableAutomatedRotation:
+                    description: Stops rotation of the root credential until set to
+                      false.
+                    type: boolean
                   disableRemount:
                     description: If set, opts out of mount migration on path updates.
                     type: boolean
@@ -562,6 +606,19 @@ spec:
                     type: string
                   path:
                     type: string
+                  rotationPeriod:
+                    description: The period of time in seconds between each rotation
+                      of the root credential. Cannot be used with rotation_schedule.
+                    type: number
+                  rotationSchedule:
+                    description: The cron-style schedule for the root credential to
+                      be rotated on. Cannot be used with rotation_period.
+                    type: string
+                  rotationWindow:
+                    description: The maximum amount of time in seconds Vault is allowed
+                      to complete a rotation once a scheduled rotation is triggered.
+                      Can only be used with rotation_schedule.
+                    type: number
                   starttls:
                     type: boolean
                   tlsMaxVersion:

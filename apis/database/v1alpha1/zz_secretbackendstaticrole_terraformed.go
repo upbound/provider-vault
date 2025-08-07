@@ -21,7 +21,7 @@ func (mg *SecretBackendStaticRole) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this SecretBackendStaticRole
 func (tr *SecretBackendStaticRole) GetConnectionDetailsMapping() map[string]string {
-	return nil
+	return map[string]string{"self_managed_password": "selfManagedPasswordSecretRef"}
 }
 
 // GetObservation of this SecretBackendStaticRole

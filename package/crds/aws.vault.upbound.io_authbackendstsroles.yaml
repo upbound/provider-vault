@@ -158,6 +158,11 @@ spec:
                             type: string
                         type: object
                     type: object
+                  externalId:
+                    description: |-
+                      External ID expected by the STS role. The associated STS role must be configured to require the external ID. Requires Vault 1.17+.
+                      External ID expected by the STS role.
+                    type: string
                   namespace:
                     description: |-
                       The namespace to provision the resource in.
@@ -271,6 +276,11 @@ spec:
                             type: string
                         type: object
                     type: object
+                  externalId:
+                    description: |-
+                      External ID expected by the STS role. The associated STS role must be configured to require the external ID. Requires Vault 1.17+.
+                      External ID expected by the STS role.
+                    type: string
                   namespace:
                     description: |-
                       The namespace to provision the resource in.
@@ -477,6 +487,11 @@ spec:
                       The path the AWS auth backend being configured was
                       mounted at.  Defaults to aws.
                       Unique name of the auth backend to configure.
+                    type: string
+                  externalId:
+                    description: |-
+                      External ID expected by the STS role. The associated STS role must be configured to require the external ID. Requires Vault 1.17+.
+                      External ID expected by the STS role.
                     type: string
                   id:
                     type: string
