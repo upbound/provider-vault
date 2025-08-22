@@ -2517,12 +2517,65 @@
                 "optional": true,
                 "sensitive": true
               },
+              "accessor": {
+                "type": "string",
+                "description": "Accessor of the mount",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "allowed_managed_keys": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of managed key registry entry names that the mount in question is allowed to access",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "allowed_response_headers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "audit_non_hmac_request_keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "audit_non_hmac_response_keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "default_lease_ttl_seconds": {
                 "type": "number",
                 "description": "Default lease duration for secrets in seconds",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "delegated_auth_accessors": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
               },
               "description": {
                 "type": "string",
@@ -2541,6 +2594,19 @@
                 "description": "If set, opts out of mount migration on path updates.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "external_entropy_access": {
+                "type": "bool",
+                "description": "Enable the secrets engine to access Vault's external entropy source",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_no_cache": {
+                "type": "bool",
+                "description": "If set to true, disables caching.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "iam_endpoint": {
                 "type": "string",
@@ -2573,6 +2639,12 @@
                 "optional": true,
                 "computed": true
               },
+              "listing_visibility": {
+                "type": "string",
+                "description": "Specifies whether to show this mount in the UI-specific listing endpoint",
+                "description_kind": "plain",
+                "optional": true
+              },
               "local": {
                 "type": "bool",
                 "description": "Specifies if the secret backend is local only",
@@ -2592,9 +2664,33 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "options": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Specifies mount type specific options that are passed to the backend",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "passthrough_request_headers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
               "path": {
                 "type": "string",
                 "description": "Path to mount the backend at.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "plugin_version": {
+                "type": "string",
+                "description": "Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -2628,6 +2724,13 @@
                 "description": "The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "seal_wrap": {
+                "type": "bool",
+                "description": "Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "secret_key": {
                 "type": "string",
@@ -3106,6 +3209,50 @@
           "version": 1,
           "block": {
             "attributes": {
+              "accessor": {
+                "type": "string",
+                "description": "Accessor of the mount",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "allowed_managed_keys": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of managed key registry entry names that the mount in question is allowed to access",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "allowed_response_headers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "audit_non_hmac_request_keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "audit_non_hmac_response_keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "client_id": {
                 "type": "string",
                 "description": "The client id for credentials to query the Azure APIs. Currently read permissions to query compute resources are required.",
@@ -3119,6 +3266,22 @@
                 "description_kind": "plain",
                 "optional": true,
                 "sensitive": true
+              },
+              "default_lease_ttl_seconds": {
+                "type": "number",
+                "description": "Default lease duration for tokens and secrets in seconds",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "delegated_auth_accessors": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
               },
               "description": {
                 "type": "string",
@@ -3143,6 +3306,19 @@
                 "description": "The Azure cloud environment. Valid values: AzurePublicCloud, AzureUSGovernmentCloud, AzureChinaCloud, AzureGermanCloud.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "external_entropy_access": {
+                "type": "bool",
+                "description": "Enable the secrets engine to access Vault's external entropy source",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_no_cache": {
+                "type": "bool",
+                "description": "If set to true, disables caching.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "id": {
                 "type": "string",
@@ -3169,9 +3345,46 @@
                 "optional": true,
                 "computed": true
               },
+              "listing_visibility": {
+                "type": "string",
+                "description": "Specifies whether to show this mount in the UI-specific listing endpoint",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "local": {
+                "type": "bool",
+                "description": "Local mount flag that can be explicitly set to true to enforce local mount in HA environment",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_lease_ttl_seconds": {
+                "type": "number",
+                "description": "Maximum possible lease duration for tokens and secrets in seconds",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "namespace": {
                 "type": "string",
                 "description": "Target namespace. (requires Enterprise)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "options": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Specifies mount type specific options that are passed to the backend",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "passthrough_request_headers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -3180,6 +3393,19 @@
                 "description": "Path to mount the backend at.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "plugin_version": {
+                "type": "string",
+                "description": "Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "root_password_ttl": {
+                "type": "number",
+                "description": "The TTL in seconds of the root password in Azure when rotate-root generates a new client secret",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "rotation_period": {
                 "type": "number",
@@ -3198,6 +3424,13 @@
                 "description": "The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "seal_wrap": {
+                "type": "bool",
+                "description": "Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "subscription_id": {
                 "type": "string",
@@ -3638,11 +3871,55 @@
           "version": 1,
           "block": {
             "attributes": {
+              "accessor": {
+                "type": "string",
+                "description": "Accessor of the mount",
+                "description_kind": "plain",
+                "computed": true
+              },
               "address": {
                 "type": "string",
                 "description": "Specifies the address of the Consul instance, provided as \"host:port\" like \"127.0.0.1:8500\".",
                 "description_kind": "plain",
                 "required": true
+              },
+              "allowed_managed_keys": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of managed key registry entry names that the mount in question is allowed to access",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "allowed_response_headers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "audit_non_hmac_request_keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "audit_non_hmac_response_keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "bootstrap": {
                 "type": "bool",
@@ -3676,6 +3953,15 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "delegated_auth_accessors": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
               "description": {
                 "type": "string",
                 "description": "Human-friendly description of the mount for the backend.",
@@ -3688,11 +3974,36 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "external_entropy_access": {
+                "type": "bool",
+                "description": "Enable the secrets engine to access Vault's external entropy source",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_no_cache": {
+                "type": "bool",
+                "description": "If set to true, disables caching.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "identity_token_key": {
+                "type": "string",
+                "description": "The key to use for signing plugin workload identity tokens",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "listing_visibility": {
+                "type": "string",
+                "description": "Specifies whether to show this mount in the UI-specific listing endpoint",
+                "description_kind": "plain",
+                "optional": true
               },
               "local": {
                 "type": "bool",
@@ -3712,9 +4023,33 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "options": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Specifies mount type specific options that are passed to the backend",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "passthrough_request_headers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
               "path": {
                 "type": "string",
                 "description": "Unique name of the Vault Consul mount to configure",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "plugin_version": {
+                "type": "string",
+                "description": "Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -3723,6 +4058,13 @@
                 "description": "Specifies the URL scheme to use. Defaults to \"http\".",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "seal_wrap": {
+                "type": "bool",
+                "description": "Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "token": {
                 "type": "string",
@@ -5545,6 +5887,13 @@
                 "description": "Enable the secrets engine to access Vault's external entropy source",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "force_no_cache": {
+                "type": "bool",
+                "description": "If set to true, disables caching.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "id": {
                 "type": "string",
@@ -8606,6 +8955,44 @@
                 "description_kind": "plain",
                 "computed": true
               },
+              "allowed_managed_keys": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of managed key registry entry names that the mount in question is allowed to access",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "allowed_response_headers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "audit_non_hmac_request_keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "audit_non_hmac_response_keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "credentials": {
                 "type": "string",
                 "description": "JSON-encoded credentials to use to connect to GCP",
@@ -8632,6 +9019,15 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "delegated_auth_accessors": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
               "description": {
                 "type": "string",
                 "description": "Human-friendly description of the mount for the backend.",
@@ -8649,6 +9045,19 @@
                 "description": "If set, opts out of mount migration on path updates.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "external_entropy_access": {
+                "type": "bool",
+                "description": "Enable the secrets engine to access Vault's external entropy source",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_no_cache": {
+                "type": "bool",
+                "description": "If set to true, disables caching.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "id": {
                 "type": "string",
@@ -8674,6 +9083,12 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "listing_visibility": {
+                "type": "string",
+                "description": "Specifies whether to show this mount in the UI-specific listing endpoint",
+                "description_kind": "plain",
+                "optional": true
+              },
               "local": {
                 "type": "bool",
                 "description": "Local mount flag that can be explicitly set to true to enforce local mount in HA environment",
@@ -8692,9 +9107,33 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "options": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Specifies mount type specific options that are passed to the backend",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "passthrough_request_headers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
               "path": {
                 "type": "string",
                 "description": "Path to mount the backend at.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "plugin_version": {
+                "type": "string",
+                "description": "Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -8715,6 +9154,13 @@
                 "description": "The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "seal_wrap": {
+                "type": "bool",
+                "description": "Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "service_account_email": {
                 "type": "string",
@@ -10666,6 +11112,18 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "jwks_pairs": {
+                "type": [
+                  "list",
+                  [
+                    "map",
+                    "string"
+                  ]
+                ],
+                "description": "List of JWKS URL and optional CA certificate pairs. Cannot be used with 'jwks_url' or 'jwks_ca_pem'. Requires Vault 1.16+.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "jwks_url": {
                 "type": "string",
                 "description": "JWKS URL to use to authenticate signatures. Cannot be used with 'oidc_discovery_url' or 'jwt_validation_pubkeys'.",
@@ -11021,6 +11479,57 @@
           "version": 1,
           "block": {
             "attributes": {
+              "accessor": {
+                "type": "string",
+                "description": "Accessor of the mount",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "allowed_managed_keys": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of managed key registry entry names that the mount in question is allowed to access",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "allowed_response_headers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "audit_non_hmac_request_keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "audit_non_hmac_response_keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "default_lease_ttl_seconds": {
+                "type": "number",
+                "description": "Default lease duration for tokens and secrets in seconds",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "default_tls_client_key_bits": {
                 "type": "number",
                 "description": "Client certificate key bits, valid values depend on key type",
@@ -11042,6 +11551,15 @@
                 "optional": true,
                 "computed": true
               },
+              "delegated_auth_accessors": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
               "description": {
                 "type": "string",
                 "description": "Human-friendly description of the mount for the backend",
@@ -11054,11 +11572,30 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "external_entropy_access": {
+                "type": "bool",
+                "description": "Enable the secrets engine to access Vault's external entropy source",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_no_cache": {
+                "type": "bool",
+                "description": "If set to true, disables caching.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "identity_token_key": {
+                "type": "string",
+                "description": "The key to use for signing plugin workload identity tokens",
+                "description_kind": "plain",
+                "optional": true
               },
               "listen_addrs": {
                 "type": [
@@ -11070,9 +11607,46 @@
                 "optional": true,
                 "computed": true
               },
+              "listing_visibility": {
+                "type": "string",
+                "description": "Specifies whether to show this mount in the UI-specific listing endpoint",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "local": {
+                "type": "bool",
+                "description": "Local mount flag that can be explicitly set to true to enforce local mount in HA environment",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "max_lease_ttl_seconds": {
+                "type": "number",
+                "description": "Maximum possible lease duration for tokens and secrets in seconds",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "namespace": {
                 "type": "string",
                 "description": "Target namespace. (requires Enterprise)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "options": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Specifies mount type specific options that are passed to the backend",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "passthrough_request_headers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -11081,6 +11655,19 @@
                 "description": "Path where KMIP secret backend will be mounted",
                 "description_kind": "plain",
                 "required": true
+              },
+              "plugin_version": {
+                "type": "string",
+                "description": "Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "seal_wrap": {
+                "type": "bool",
+                "description": "Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "server_hostnames": {
                 "type": [
@@ -11605,6 +12192,13 @@
                 "description": "Enable the secrets engine to access Vault's external entropy source",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "force_no_cache": {
+                "type": "bool",
+                "description": "If set to true, disables caching.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "id": {
                 "type": "string",
@@ -12533,6 +13127,13 @@
                 "description": "Enable the secrets engine to access Vault's external entropy source",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "force_no_cache": {
+                "type": "bool",
+                "description": "If set to true, disables caching.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "id": {
                 "type": "string",
@@ -13711,6 +14312,13 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "force_no_cache": {
+                "type": "bool",
+                "description": "If set to true, disables caching.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
@@ -13848,11 +14456,55 @@
           "version": 1,
           "block": {
             "attributes": {
+              "accessor": {
+                "type": "string",
+                "description": "Accessor of the mount",
+                "description_kind": "plain",
+                "computed": true
+              },
               "address": {
                 "type": "string",
                 "description": "Specifies the address of the Nomad instance, provided as \"protocol://host:port\" like \"http://127.0.0.1:4646\".",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "allowed_managed_keys": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of managed key registry entry names that the mount in question is allowed to access",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "allowed_response_headers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "audit_non_hmac_request_keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "audit_non_hmac_response_keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "backend": {
                 "type": "string",
@@ -13887,6 +14539,15 @@
                 "optional": true,
                 "computed": true
               },
+              "delegated_auth_accessors": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
               "description": {
                 "type": "string",
                 "description": "Human-friendly description of the mount for the backend.",
@@ -13899,11 +14560,36 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "external_entropy_access": {
+                "type": "bool",
+                "description": "Enable the secrets engine to access Vault's external entropy source",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_no_cache": {
+                "type": "bool",
+                "description": "If set to true, disables caching.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "identity_token_key": {
+                "type": "string",
+                "description": "The key to use for signing plugin workload identity tokens",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "listing_visibility": {
+                "type": "string",
+                "description": "Specifies whether to show this mount in the UI-specific listing endpoint",
+                "description_kind": "plain",
+                "optional": true
               },
               "local": {
                 "type": "bool",
@@ -13937,6 +14623,37 @@
                 "description": "Target namespace. (requires Enterprise)",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "options": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Specifies mount type specific options that are passed to the backend",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "passthrough_request_headers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "plugin_version": {
+                "type": "string",
+                "description": "Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "seal_wrap": {
+                "type": "bool",
+                "description": "Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "token": {
                 "type": "string",
@@ -14007,6 +14724,214 @@
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vault_oci_auth_backend": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "accessor": {
+                "type": "string",
+                "description": "The accessor of the auth backend",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "description": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "disable_automated_rotation": {
+                "type": "bool",
+                "description": "Stops rotation of the root credential until set to false.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "disable_remount": {
+                "type": "bool",
+                "description": "If set, opts out of mount migration on path updates.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "home_tenancy_id": {
+                "type": "string",
+                "description": " The Tenancy OCID of your OCI account.",
+                "description_kind": "plain",
+                "required": true,
+                "sensitive": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Target namespace. (requires Enterprise)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "path": {
+                "type": "string",
+                "description": "Unique name of the auth backend to configure.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "rotation_period": {
+                "type": "number",
+                "description": "The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "rotation_schedule": {
+                "type": "string",
+                "description": "The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "rotation_window": {
+                "type": "number",
+                "description": "The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "tune": {
+                "type": [
+                  "set",
+                  [
+                    "object",
+                    {
+                      "allowed_response_headers": [
+                        "list",
+                        "string"
+                      ],
+                      "audit_non_hmac_request_keys": [
+                        "list",
+                        "string"
+                      ],
+                      "audit_non_hmac_response_keys": [
+                        "list",
+                        "string"
+                      ],
+                      "default_lease_ttl": "string",
+                      "listing_visibility": "string",
+                      "max_lease_ttl": "string",
+                      "passthrough_request_headers": [
+                        "list",
+                        "string"
+                      ],
+                      "token_type": "string"
+                    }
+                  ]
+                ],
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              }
+            },
+            "description_kind": "plain"
+          }
+        },
+        "vault_oci_auth_backend_role": {
+          "version": 1,
+          "block": {
+            "attributes": {
+              "backend": {
+                "type": "string",
+                "description": "Unique name of the auth backend to configure.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "id": {
+                "type": "string",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the role.",
+                "description_kind": "plain",
+                "required": true
+              },
+              "namespace": {
+                "type": "string",
+                "description": "Target namespace. (requires Enterprise)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "ocid_list": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "A list of Group or Dynamic Group OCIDs that can take this role.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "token_bound_cidrs": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Specifies the blocks of IP addresses which are allowed to use the generated token",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "token_explicit_max_ttl": {
+                "type": "number",
+                "description": "Generated Token's Explicit Maximum TTL in seconds",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "token_max_ttl": {
+                "type": "number",
+                "description": "The maximum lifetime of the generated token",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "token_no_default_policy": {
+                "type": "bool",
+                "description": "If true, the 'default' policy will not automatically be added to generated tokens",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "token_num_uses": {
+                "type": "number",
+                "description": "The maximum number of times a token may be used, a value of zero means unlimited",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "token_period": {
+                "type": "number",
+                "description": "Generated Token's Period",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "token_policies": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "Generated Token's Policies",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "token_ttl": {
+                "type": "number",
+                "description": "The initial ttl of the token to generate in seconds",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "token_type": {
+                "type": "string",
+                "description": "The type of token to generate, service or batch",
+                "description_kind": "plain",
+                "optional": true
               }
             },
             "description_kind": "plain"
@@ -15173,6 +16098,13 @@
                 "type": "string",
                 "description": "A read-only timestamp representing the last time the configuration was updated",
                 "description_kind": "plain",
+                "computed": true
+              },
+              "log_level": {
+                "type": "string",
+                "description": "The level of logging verbosity, affects only SCEP logs on this mount",
+                "description_kind": "plain",
+                "optional": true,
                 "computed": true
               },
               "namespace": {
@@ -17335,6 +18267,50 @@
           "version": 1,
           "block": {
             "attributes": {
+              "accessor": {
+                "type": "string",
+                "description": "Accessor of the mount",
+                "description_kind": "plain",
+                "computed": true
+              },
+              "allowed_managed_keys": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of managed key registry entry names that the mount in question is allowed to access",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "allowed_response_headers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "audit_non_hmac_request_keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "audit_non_hmac_response_keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "connection_uri": {
                 "type": "string",
                 "description": "Specifies the RabbitMQ connection URI.",
@@ -17348,6 +18324,15 @@
                 "optional": true,
                 "computed": true
               },
+              "delegated_auth_accessors": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
               "description": {
                 "type": "string",
                 "description": "Human-friendly description of the mount for the backend.",
@@ -17360,11 +18345,42 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "external_entropy_access": {
+                "type": "bool",
+                "description": "Enable the secrets engine to access Vault's external entropy source",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_no_cache": {
+                "type": "bool",
+                "description": "If set to true, disables caching.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "identity_token_key": {
+                "type": "string",
+                "description": "The key to use for signing plugin workload identity tokens",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "listing_visibility": {
+                "type": "string",
+                "description": "Specifies whether to show this mount in the UI-specific listing endpoint",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "local": {
+                "type": "bool",
+                "description": "Local mount flag that can be explicitly set to true to enforce local mount in HA environment",
+                "description_kind": "plain",
+                "optional": true
               },
               "max_lease_ttl_seconds": {
                 "type": "number",
@@ -17376,6 +18392,24 @@
               "namespace": {
                 "type": "string",
                 "description": "Target namespace. (requires Enterprise)",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "options": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Specifies mount type specific options that are passed to the backend",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "passthrough_request_headers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -17397,6 +18431,19 @@
                 "description": "The path of the RabbitMQ Secret Backend where the connection should be configured",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "plugin_version": {
+                "type": "string",
+                "description": "Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "seal_wrap": {
+                "type": "bool",
+                "description": "Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "username": {
                 "type": "string",
@@ -18697,6 +19744,18 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "managed_key_id": {
+                "type": "string",
+                "description": "The id of the managed key to use. When using a managed key, this field or managed_key_name is required.",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "managed_key_name": {
+                "type": "string",
+                "description": "The name of the managed key to use. When using a managed key, this field or managed_key_id is required.",
+                "description_kind": "plain",
+                "optional": true
+              },
               "namespace": {
                 "type": "string",
                 "description": "Target namespace. (requires Enterprise)",
@@ -18910,11 +19969,55 @@
           "version": 1,
           "block": {
             "attributes": {
+              "accessor": {
+                "type": "string",
+                "description": "Accessor of the mount",
+                "description_kind": "plain",
+                "computed": true
+              },
               "address": {
                 "type": "string",
                 "description": "Specifies the address of the Terraform Cloud instance, provided as \"host:port\" like \"127.0.0.1:8500\".",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "allowed_managed_keys": {
+                "type": [
+                  "set",
+                  "string"
+                ],
+                "description": "List of managed key registry entry names that the mount in question is allowed to access",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "allowed_response_headers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "audit_non_hmac_request_keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
+              "audit_non_hmac_response_keys": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "backend": {
                 "type": "string",
@@ -18934,6 +20037,15 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "delegated_auth_accessors": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
               "description": {
                 "type": "string",
                 "description": "Human-friendly description of the mount for the backend.",
@@ -18946,11 +20058,42 @@
                 "description_kind": "plain",
                 "optional": true
               },
+              "external_entropy_access": {
+                "type": "bool",
+                "description": "Enable the secrets engine to access Vault's external entropy source",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "force_no_cache": {
+                "type": "bool",
+                "description": "If set to true, disables caching.",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
+              },
               "id": {
                 "type": "string",
                 "description_kind": "plain",
                 "optional": true,
                 "computed": true
+              },
+              "identity_token_key": {
+                "type": "string",
+                "description": "The key to use for signing plugin workload identity tokens",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "listing_visibility": {
+                "type": "string",
+                "description": "Specifies whether to show this mount in the UI-specific listing endpoint",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "local": {
+                "type": "bool",
+                "description": "Local mount flag that can be explicitly set to true to enforce local mount in HA environment",
+                "description_kind": "plain",
+                "optional": true
               },
               "max_lease_ttl_seconds": {
                 "type": "number",
@@ -18963,6 +20106,37 @@
                 "description": "Target namespace. (requires Enterprise)",
                 "description_kind": "plain",
                 "optional": true
+              },
+              "options": {
+                "type": [
+                  "map",
+                  "string"
+                ],
+                "description": "Specifies mount type specific options that are passed to the backend",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "passthrough_request_headers": {
+                "type": [
+                  "list",
+                  "string"
+                ],
+                "description": "List of headers to allow and pass from the request to the plugin",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "plugin_version": {
+                "type": "string",
+                "description": "Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'",
+                "description_kind": "plain",
+                "optional": true
+              },
+              "seal_wrap": {
+                "type": "bool",
+                "description": "Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability",
+                "description_kind": "plain",
+                "optional": true,
+                "computed": true
               },
               "token": {
                 "type": "string",
@@ -19742,7 +20916,7 @@
               },
               "parameter_set": {
                 "type": "string",
-                "description": "The parameter set to use for ML-DSA. Required for ML-DSA and hybrid keys. Valid values are 44, 65, and 87.",
+                "description": "The parameter set to use for ML-DSA. Required for ML-DSA and hybrid keys.  Valid values for ML-DSA are `44`, `65`, and `87`. Valid values for SLH-DSA are `slh-dsa-sha2-128s`, `slh-dsa-shake-128s`, `slh-dsa-sha2-128f`, `slh-dsa-shake-128`, `slh-dsa-sha2-192s`, `slh-dsa-shake-192s`, `slh-dsa-sha2-192f`, `slh-dsa-shake-192f`, `slh-dsa-sha2-256s`, `slh-dsa-shake-256s`, `slh-dsa-sha2-256f`, and `slh-dsa-shake-256f`.",
                 "description_kind": "plain",
                 "optional": true
               },
@@ -19772,7 +20946,7 @@
               },
               "type": {
                 "type": "string",
-                "description": "Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96, chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, hmac, rsa-2048, rsa-3072, rsa-4096",
+                "description": "Specifies the type of key to create. The currently-supported types are: `aes128-gcm96`, `aes256-gcm96` (default), `chacha20-poly1305`, `ed25519`, `ecdsa-p256`, `ecdsa-p384`, `ecdsa-p521`, `hmac`, `rsa-2048`, `rsa-3072`, `rsa-4096`, `managed_key`, `aes128-cmac`, `aes192-cmac`, `aes256-cmac`, `ml-dsa`, `hybrid`, and `slh-dsa`.",
                 "description_kind": "plain",
                 "optional": true
               }
@@ -22225,6 +23399,12 @@
                 "description": "A read-only timestamp representing the last time the configuration was updated",
                 "description_kind": "plain",
                 "computed": true
+              },
+              "log_level": {
+                "type": "string",
+                "description": "The level of logging verbosity, affects only SCEP logs on this mount",
+                "description_kind": "plain",
+                "optional": true
               },
               "namespace": {
                 "type": "string",
