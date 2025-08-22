@@ -48,11 +48,9 @@ GO_SUBDIRS += cmd internal apis generate
 # Setup Kubernetes tools
 
 KIND_VERSION = v0.29.0
-UP_VERSION = v0.40.0-0.rc.3
+UP_VERSION = v0.40.3
 UP_CHANNEL = alpha
-UPTEST_VERSION = v0.13.0
-UPTEST_LOCAL_VERSION = v0.13.0
-UPTEST_LOCAL_CHANNEL = stable
+UPTEST_VERSION = v1.4.0
 YQ_VERSION = v4.40.5
 CROSSPLANE_VERSION = 1.20.0
 RELDIR = "examples/release"
@@ -180,9 +178,9 @@ CROSSPLANE_NAMESPACE = upbound-system
 # - UPTEST_CLOUD_CREDENTIALS, cloud credentials
 #   for the provider being tested, e.g. export
 #   UPTEST_CLOUD_CREDENTIALS=$(cat ~/.aws/credentials)
-uptest: $(UPTEST) $(KUBECTL) $(KUTTL)
+uptest: $(UPTEST) $(KUBECTL) $(KUTTL) $(CHAINSAW)
 	@$(INFO) running automated tests
-	@KUBECTL=$(KUBECTL) KUTTL=$(KUTTL) $(UPTEST) e2e ${UPTEST_EXAMPLE_LIST} --setup-script=cluster/test/setup.sh --default-timeout=2400 || $(FAIL)
+	@KUBECTL=$(KUBECTL) KUTTL=$(KUTTL) CHAINSAW=$(CHAINSAW) $(UPTEST) e2e ${UPTEST_EXAMPLE_LIST} --setup-script=cluster/test/setup.sh --default-timeout=2400s || $(FAIL)
 	@$(OK) running automated tests
 
 local-deploy: build controlplane.up local.xpkg.deploy.provider.$(PROJECT_NAME)
