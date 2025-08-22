@@ -17,6 +17,7 @@ import (
 	conversiontfjson "github.com/crossplane/upjet/v2/pkg/types/conversion/tfjson"
 
 	tfjson "github.com/hashicorp/terraform-json"
+	"github.com/hashicorp/terraform-plugin-framework/provider"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
 	"github.com/upbound/provider-vault/config/vault"
@@ -55,7 +56,7 @@ func getProviderSchema(s string) (*tfschema.Provider, error) {
 }
 
 // GetProvider returns provider configuration
-func GetProvider(_ context.Context, sdkProvider *tfschema.Provider, generationProvider bool) (*ujconfig.Provider, error) {
+func GetProvider(_ context.Context, sdkProvider *tfschema.Provider, fwProvider provider.Provider, generationProvider bool) (*ujconfig.Provider, error) {
 	if generationProvider {
 		p, err := getProviderSchema(providerSchema)
 		if err != nil {
@@ -77,9 +78,11 @@ func GetProvider(_ context.Context, sdkProvider *tfschema.Provider, generationPr
 		),
 		ujconfig.WithIncludeList([]string{}),
 		ujconfig.WithTerraformPluginSDKIncludeList(ResourcesWithExternalNameConfig()),
+		ujconfig.WithTerraformPluginFrameworkIncludeList(TerraformPluginFrameworkResourceList()),
 		ujconfig.WithReferenceInjectors([]ujconfig.ReferenceInjector{reference.NewInjector(modulePath)}),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithTerraformProvider(sdkProvider),
+		ujconfig.WithTerraformPluginFrameworkProvider(fwProvider),
 	)
 
 	for _, configure := range []func(provider *ujconfig.Provider){
@@ -93,7 +96,7 @@ func GetProvider(_ context.Context, sdkProvider *tfschema.Provider, generationPr
 	return pc, nil
 }
 
-func GetProviderNamespaced(_ context.Context, sdkProvider *tfschema.Provider, generationProvider bool) (*ujconfig.Provider, error) {
+func GetProviderNamespaced(_ context.Context, sdkProvider *tfschema.Provider, fwProvider provider.Provider, generationProvider bool) (*ujconfig.Provider, error) {
 	if generationProvider {
 		p, err := getProviderSchema(providerSchema)
 		if err != nil {
@@ -117,9 +120,11 @@ func GetProviderNamespaced(_ context.Context, sdkProvider *tfschema.Provider, ge
 		ujconfig.WithShortName("vault"),
 		ujconfig.WithIncludeList([]string{}),
 		ujconfig.WithTerraformPluginSDKIncludeList(ResourcesWithExternalNameConfig()),
+		ujconfig.WithTerraformPluginFrameworkIncludeList(TerraformPluginFrameworkResourceList()),
 		ujconfig.WithReferenceInjectors([]ujconfig.ReferenceInjector{reference.NewInjector(modulePath)}),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithTerraformProvider(sdkProvider),
+		ujconfig.WithTerraformPluginFrameworkProvider(fwProvider),
 	)
 
 	for _, configure := range []func(provider *ujconfig.Provider){
@@ -140,6 +145,17 @@ func ResourcesWithExternalNameConfig() []string {
 	i := 0
 	for name := range ExternalNameConfigs {
 		// Expected format is regex and we'd like to have exact matches.
+		l[i] = name + "$"
+		i++
+	}
+	return l
+}
+
+func TerraformPluginFrameworkResourceList() []string {
+	l := make([]string, len(TerraformPluginFrameworkExternalNameConfigs))
+	i := 0
+	for name := range TerraformPluginFrameworkExternalNameConfigs {
+		// Expected format is regex, and we'd like to have exact matches.
 		l[i] = name + "$"
 		i++
 	}

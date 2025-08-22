@@ -26,6 +26,7 @@ import (
 	tjcontroller "github.com/crossplane/upjet/v2/pkg/controller"
 	tfvaultschema "github.com/hashicorp/terraform-provider-vault/schema"
 	tfvault "github.com/hashicorp/terraform-provider-vault/vault"
+	"github.com/hashicorp/terraform-provider-vault/xpprovider"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	authv1 "k8s.io/api/authorization/v1"
@@ -178,9 +179,10 @@ func main() {
 
 	ctx := context.Background()
 	sdkProvider := tfvaultschema.NewProvider(tfvault.Provider()).SchemaProvider()
-	providerCluster, err := config.GetProvider(ctx, sdkProvider, false)
+	fwProvider := xpprovider.FrameworkProvider(sdkProvider)
+	providerCluster, err := config.GetProvider(ctx, sdkProvider, fwProvider, false)
 	kingpin.FatalIfError(err, "Cannot initialize the cluster provider configuration")
-	providerNamespaced, err := config.GetProvider(ctx, sdkProvider, false)
+	providerNamespaced, err := config.GetProviderNamespaced(ctx, sdkProvider, fwProvider, false)
 	kingpin.FatalIfError(err, "Cannot initialize the namespaced provider configuration")
 	featureFlags := &feature.Flags{}
 	optsCluster := tjcontroller.Options{

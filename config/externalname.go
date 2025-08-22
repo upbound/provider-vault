@@ -104,7 +104,6 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"vault_okta_auth_backend":                            config.IdentifierFromProvider,
 	"vault_okta_auth_backend_group":                      config.IdentifierFromProvider,
 	"vault_okta_auth_backend_user":                       config.IdentifierFromProvider,
-	"vault_password_policy":                              config.IdentifierFromProvider,
 	"vault_pki_secret_backend_cert":                      config.IdentifierFromProvider,
 	"vault_pki_secret_backend_config_ca":                 config.IdentifierFromProvider,
 	"vault_pki_secret_backend_config_urls":               config.IdentifierFromProvider,
@@ -138,13 +137,25 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"vault_transit_secret_backend_key":                   config.IdentifierFromProvider,
 }
 
+var TerraformPluginFrameworkExternalNameConfigs = map[string]config.ExternalName{
+	"vault_password_policy": config.IdentifierFromProvider,
+}
+
 // ExternalNameConfigurations applies all external name configs listed in the
 // table ExternalNameConfigs and sets the version of those resources to v1beta1
 // assuming they will be tested.
 func ExternalNameConfigurations() config.ResourceOption {
 	return func(r *config.Resource) {
-		if e, ok := ExternalNameConfigs[r.Name]; ok {
-			r.ExternalName = e
+		// If an external name is configured for multiple architectures,
+		// Terraform Plugin Framework takes precedence over Terraform
+		// Plugin SDKv2
+		e, configured := TerraformPluginFrameworkExternalNameConfigs[r.Name]
+		if !configured {
+			e, configured = ExternalNameConfigs[r.Name]
 		}
+		if !configured {
+			return
+		}
+		r.ExternalName = e
 	}
 }
