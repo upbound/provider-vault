@@ -10,3 +10,6 @@ metadata:
       Provider Vault is a Crossplane provider for Hashicorp Vault.
     meta.crossplane.io/readme: |
       Provider Vault is a Crossplane provider for Hashicorp Vault.
+spec:
+  capabilities:
+    - SafeStart
