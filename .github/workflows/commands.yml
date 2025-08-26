@@ -9,7 +9,7 @@ jobs:
     steps:
     - name: Extract Command
       id: command
-      uses: xt0rted/slash-command-action@v1
+      uses: xt0rted/slash-command-action@v2
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         command: backport
@@ -24,7 +24,7 @@ jobs:
         fetch-depth: 0
 
     - name: Open Backport PR
-      uses: zeebe-io/backport-action@v0.0.4
+      uses: zeebe-io/backport-action@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         github_workspace: ${{ github.workspace }}
