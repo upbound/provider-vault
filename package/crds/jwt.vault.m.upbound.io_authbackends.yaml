@@ -86,9 +86,9 @@ spec:
                       The CA certificate or chain of certificates, in PEM format, to use to validate connections to the JWKS URL. If not set, system certificates are used.
                     type: string
                   jwksPairs:
-                    description: List of JWKS URL and optional CA certificate pairs.
-                      Cannot be used with 'jwks_url' or 'jwks_ca_pem'. Requires Vault
-                      1.16+.
+                    description: |-
+                      List of JWKS URL and optional CA certificate pairs. Cannot be used with jwks_url or jwks_ca_pem. Requires Vault 1.16+.
+                      List of JWKS URL and optional CA certificate pairs. Cannot be used with 'jwks_url' or 'jwks_ca_pem'. Requires Vault 1.16+.
                     items:
                       additionalProperties:
                         type: string
@@ -286,9 +286,9 @@ spec:
                       The CA certificate or chain of certificates, in PEM format, to use to validate connections to the JWKS URL. If not set, system certificates are used.
                     type: string
                   jwksPairs:
-                    description: List of JWKS URL and optional CA certificate pairs.
-                      Cannot be used with 'jwks_url' or 'jwks_ca_pem'. Requires Vault
-                      1.16+.
+                    description: |-
+                      List of JWKS URL and optional CA certificate pairs. Cannot be used with jwks_url or jwks_ca_pem. Requires Vault 1.16+.
+                      List of JWKS URL and optional CA certificate pairs. Cannot be used with 'jwks_url' or 'jwks_ca_pem'. Requires Vault 1.16+.
                     items:
                       additionalProperties:
                         type: string
@@ -543,9 +543,9 @@ spec:
                       The CA certificate or chain of certificates, in PEM format, to use to validate connections to the JWKS URL. If not set, system certificates are used.
                     type: string
                   jwksPairs:
-                    description: List of JWKS URL and optional CA certificate pairs.
-                      Cannot be used with 'jwks_url' or 'jwks_ca_pem'. Requires Vault
-                      1.16+.
+                    description: |-
+                      List of JWKS URL and optional CA certificate pairs. Cannot be used with jwks_url or jwks_ca_pem. Requires Vault 1.16+.
+                      List of JWKS URL and optional CA certificate pairs. Cannot be used with 'jwks_url' or 'jwks_ca_pem'. Requires Vault 1.16+.
                     items:
                       additionalProperties:
                         type: string

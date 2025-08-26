@@ -20,28 +20,34 @@ type SecretBackendInitParameters struct {
 	// The AWS Access Key ID to use when generating new credentials.
 	AccessKeySecretRef *v1.SecretKeySelector `json:"accessKeySecretRef,omitempty" tf:"-"`
 
+	// Set of managed key registry entry names that the mount in question is allowed to access
 	// List of managed key registry entry names that the mount in question is allowed to access
 	// +listType=set
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
 
+	// List of headers to allow, allowing a plugin to include
+	// them in the response.
 	// List of headers to allow and pass from the request to the plugin
 	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
 
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
 	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
 
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
 	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
 
-	// The default TTL for credentials
-	// issued by this backend.
+	// Default lease duration for tokens and secrets in seconds
 	// Default lease duration for secrets in seconds
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
 
+	// List of allowed authentication mount accessors the
+	// backend can request delegated authentication for.
 	// List of headers to allow and pass from the request to the plugin
 	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
 
-	// A human-friendly description for this backend.
+	// Human-friendly description of the mount
 	// Human-friendly description of the mount for the backend.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
@@ -54,6 +60,7 @@ type SecretBackendInitParameters struct {
 	// If set, opts out of mount migration on path updates.
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
+	// Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault's external entropy source
 	// Enable the secrets engine to access Vault's external entropy source
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
 
@@ -68,7 +75,8 @@ type SecretBackendInitParameters struct {
 	// The audience claim value.
 	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
 
-	// The key to use for signing identity tokens. Requires Vault 1.16+.
+	// The key to use for signing plugin workload identity tokens. If
+	// not provided, this will default to Vault's OIDC default key. Requires Vault Enterprise 1.16+.
 	// The key to use for signing identity tokens.
 	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
 
@@ -76,15 +84,16 @@ type SecretBackendInitParameters struct {
 	// The TTL of generated identity tokens in seconds.
 	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
+	// Specifies whether to show this mount in the UI-specific
+	// listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
 	// Specifies whether to show this mount in the UI-specific listing endpoint
 	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
 
-	// Specifies whether the secrets mount will be marked as local. Local mounts are not replicated to performance replicas.
+	// Boolean flag that can be explicitly set to true to enforce local mount in HA environment
 	// Specifies if the secret backend is local only
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
-	// The maximum TTL that can be requested
-	// for credentials issued by this backend.
+	// Maximum possible lease duration for tokens and secrets in seconds
 	// Maximum possible lease duration for secrets in seconds
 	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
 
@@ -96,9 +105,12 @@ type SecretBackendInitParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Specifies mount type specific options that are passed to the backend
+	// Specifies mount type specific options that are passed to the backend
 	// +mapType=granular
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 
+	// List of headers to allow and pass from the request to
+	// the plugin.
 	// List of headers to allow and pass from the request to the plugin
 	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
 
@@ -107,6 +119,9 @@ type SecretBackendInitParameters struct {
 	// Path to mount the backend at.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
+	// If unspecified, the server will select any matching unversioned plugin that may have been
+	// registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
 	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
 	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
@@ -134,6 +149,7 @@ type SecretBackendInitParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
 
@@ -168,28 +184,34 @@ type SecretBackendObservation struct {
 	// Accessor of the mount
 	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
 
+	// Set of managed key registry entry names that the mount in question is allowed to access
 	// List of managed key registry entry names that the mount in question is allowed to access
 	// +listType=set
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
 
+	// List of headers to allow, allowing a plugin to include
+	// them in the response.
 	// List of headers to allow and pass from the request to the plugin
 	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
 
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
 	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
 
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
 	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
 
-	// The default TTL for credentials
-	// issued by this backend.
+	// Default lease duration for tokens and secrets in seconds
 	// Default lease duration for secrets in seconds
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
 
+	// List of allowed authentication mount accessors the
+	// backend can request delegated authentication for.
 	// List of headers to allow and pass from the request to the plugin
 	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
 
-	// A human-friendly description for this backend.
+	// Human-friendly description of the mount
 	// Human-friendly description of the mount for the backend.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
@@ -202,6 +224,7 @@ type SecretBackendObservation struct {
 	// If set, opts out of mount migration on path updates.
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
+	// Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault's external entropy source
 	// Enable the secrets engine to access Vault's external entropy source
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
 
@@ -218,7 +241,8 @@ type SecretBackendObservation struct {
 	// The audience claim value.
 	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
 
-	// The key to use for signing identity tokens. Requires Vault 1.16+.
+	// The key to use for signing plugin workload identity tokens. If
+	// not provided, this will default to Vault's OIDC default key. Requires Vault Enterprise 1.16+.
 	// The key to use for signing identity tokens.
 	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
 
@@ -226,15 +250,16 @@ type SecretBackendObservation struct {
 	// The TTL of generated identity tokens in seconds.
 	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
+	// Specifies whether to show this mount in the UI-specific
+	// listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
 	// Specifies whether to show this mount in the UI-specific listing endpoint
 	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
 
-	// Specifies whether the secrets mount will be marked as local. Local mounts are not replicated to performance replicas.
+	// Boolean flag that can be explicitly set to true to enforce local mount in HA environment
 	// Specifies if the secret backend is local only
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
-	// The maximum TTL that can be requested
-	// for credentials issued by this backend.
+	// Maximum possible lease duration for tokens and secrets in seconds
 	// Maximum possible lease duration for secrets in seconds
 	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
 
@@ -246,9 +271,12 @@ type SecretBackendObservation struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Specifies mount type specific options that are passed to the backend
+	// Specifies mount type specific options that are passed to the backend
 	// +mapType=granular
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 
+	// List of headers to allow and pass from the request to
+	// the plugin.
 	// List of headers to allow and pass from the request to the plugin
 	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
 
@@ -257,6 +285,9 @@ type SecretBackendObservation struct {
 	// Path to mount the backend at.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
+	// If unspecified, the server will select any matching unversioned plugin that may have been
+	// registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
 	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
 	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
@@ -284,6 +315,7 @@ type SecretBackendObservation struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
 
@@ -316,34 +348,40 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	AccessKeySecretRef *v1.SecretKeySelector `json:"accessKeySecretRef,omitempty" tf:"-"`
 
+	// Set of managed key registry entry names that the mount in question is allowed to access
 	// List of managed key registry entry names that the mount in question is allowed to access
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	AllowedManagedKeys []*string `json:"allowedManagedKeys,omitempty" tf:"allowed_managed_keys,omitempty"`
 
+	// List of headers to allow, allowing a plugin to include
+	// them in the response.
 	// List of headers to allow and pass from the request to the plugin
 	// +kubebuilder:validation:Optional
 	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
 
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the request data object.
 	// +kubebuilder:validation:Optional
 	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
 
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
+	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
 	// +kubebuilder:validation:Optional
 	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
 
-	// The default TTL for credentials
-	// issued by this backend.
+	// Default lease duration for tokens and secrets in seconds
 	// Default lease duration for secrets in seconds
 	// +kubebuilder:validation:Optional
 	DefaultLeaseTTLSeconds *float64 `json:"defaultLeaseTtlSeconds,omitempty" tf:"default_lease_ttl_seconds,omitempty"`
 
+	// List of allowed authentication mount accessors the
+	// backend can request delegated authentication for.
 	// List of headers to allow and pass from the request to the plugin
 	// +kubebuilder:validation:Optional
 	DelegatedAuthAccessors []*string `json:"delegatedAuthAccessors,omitempty" tf:"delegated_auth_accessors,omitempty"`
 
-	// A human-friendly description for this backend.
+	// Human-friendly description of the mount
 	// Human-friendly description of the mount for the backend.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -359,6 +397,7 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
+	// Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault's external entropy source
 	// Enable the secrets engine to access Vault's external entropy source
 	// +kubebuilder:validation:Optional
 	ExternalEntropyAccess *bool `json:"externalEntropyAccess,omitempty" tf:"external_entropy_access,omitempty"`
@@ -377,7 +416,8 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
 
-	// The key to use for signing identity tokens. Requires Vault 1.16+.
+	// The key to use for signing plugin workload identity tokens. If
+	// not provided, this will default to Vault's OIDC default key. Requires Vault Enterprise 1.16+.
 	// The key to use for signing identity tokens.
 	// +kubebuilder:validation:Optional
 	IdentityTokenKey *string `json:"identityTokenKey,omitempty" tf:"identity_token_key,omitempty"`
@@ -387,17 +427,18 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
+	// Specifies whether to show this mount in the UI-specific
+	// listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
 	// Specifies whether to show this mount in the UI-specific listing endpoint
 	// +kubebuilder:validation:Optional
 	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
 
-	// Specifies whether the secrets mount will be marked as local. Local mounts are not replicated to performance replicas.
+	// Boolean flag that can be explicitly set to true to enforce local mount in HA environment
 	// Specifies if the secret backend is local only
 	// +kubebuilder:validation:Optional
 	Local *bool `json:"local,omitempty" tf:"local,omitempty"`
 
-	// The maximum TTL that can be requested
-	// for credentials issued by this backend.
+	// Maximum possible lease duration for tokens and secrets in seconds
 	// Maximum possible lease duration for secrets in seconds
 	// +kubebuilder:validation:Optional
 	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
@@ -411,10 +452,13 @@ type SecretBackendParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Specifies mount type specific options that are passed to the backend
+	// Specifies mount type specific options that are passed to the backend
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	Options map[string]*string `json:"options,omitempty" tf:"options,omitempty"`
 
+	// List of headers to allow and pass from the request to
+	// the plugin.
 	// List of headers to allow and pass from the request to the plugin
 	// +kubebuilder:validation:Optional
 	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
@@ -425,6 +469,9 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
+	// If unspecified, the server will select any matching unversioned plugin that may have been
+	// registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
 	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
 	// +kubebuilder:validation:Optional
 	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
@@ -458,6 +505,7 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	// +kubebuilder:validation:Optional
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`

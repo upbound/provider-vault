@@ -42,9 +42,11 @@ type SecretBackendCAInitParameters struct {
 	// Specifies the desired key type for the generated SSH CA key when `generate_signing_key` is set to `true`.
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
+	// The ID of the managed key to use. When using a managed key, this field or managed_key_name is required.
 	// The id of the managed key to use. When using a managed key, this field or managed_key_name is required.
 	ManagedKeyID *string `json:"managedKeyId,omitempty" tf:"managed_key_id,omitempty"`
 
+	// The name of the managed key to use. When using a managed key, this field or managed_key_id is required.
 	// The name of the managed key to use. When using a managed key, this field or managed_key_id is required.
 	ManagedKeyName *string `json:"managedKeyName,omitempty" tf:"managed_key_name,omitempty"`
 
@@ -84,9 +86,11 @@ type SecretBackendCAObservation struct {
 	// Specifies the desired key type for the generated SSH CA key when `generate_signing_key` is set to `true`.
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
+	// The ID of the managed key to use. When using a managed key, this field or managed_key_name is required.
 	// The id of the managed key to use. When using a managed key, this field or managed_key_name is required.
 	ManagedKeyID *string `json:"managedKeyId,omitempty" tf:"managed_key_id,omitempty"`
 
+	// The name of the managed key to use. When using a managed key, this field or managed_key_id is required.
 	// The name of the managed key to use. When using a managed key, this field or managed_key_id is required.
 	ManagedKeyName *string `json:"managedKeyName,omitempty" tf:"managed_key_name,omitempty"`
 
@@ -134,10 +138,12 @@ type SecretBackendCAParameters struct {
 	// +kubebuilder:validation:Optional
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
+	// The ID of the managed key to use. When using a managed key, this field or managed_key_name is required.
 	// The id of the managed key to use. When using a managed key, this field or managed_key_name is required.
 	// +kubebuilder:validation:Optional
 	ManagedKeyID *string `json:"managedKeyId,omitempty" tf:"managed_key_id,omitempty"`
 
+	// The name of the managed key to use. When using a managed key, this field or managed_key_id is required.
 	// The name of the managed key to use. When using a managed key, this field or managed_key_id is required.
 	// +kubebuilder:validation:Optional
 	ManagedKeyName *string `json:"managedKeyName,omitempty" tf:"managed_key_name,omitempty"`

@@ -1367,30 +1367,49 @@ resources:
             access_key: |-
                 - (Optional) The AWS Access Key ID this backend should use to
                 issue new credentials. Vault uses the official AWS SDK to authenticate, and thus can also use standard AWS environment credentials, shared file credentials or IAM role/ECS task credentials.
-            default_lease_ttl_seconds: |-
-                - (Optional) The default TTL for credentials
-                issued by this backend.
-            description: '- (Optional) A human-friendly description for this backend.'
+            allowed_managed_keys: '- (Optional) Set of managed key registry entry names that the mount in question is allowed to access'
+            allowed_response_headers: |-
+                - (Optional) List of headers to allow, allowing a plugin to include
+                them in the response.
+            audit_non_hmac_request_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the request data object.'
+            audit_non_hmac_response_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the response data object.'
+            default_lease_ttl_seconds: '- (Optional) Default lease duration for tokens and secrets in seconds'
+            delegated_auth_accessors: |-
+                - (Optional)  List of allowed authentication mount accessors the
+                backend can request delegated authentication for.
+            description: '- (Optional) Human-friendly description of the mount'
             disable_automated_rotation: '- (Optional) Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.'
             disable_remount: |-
                 - (Optional) If set, opts out of mount migration on path updates.
                 See here for more info on Mount Migration
+            external_entropy_access: '- (Optional) Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault''s external entropy source'
             iam_endpoint: '- (Optional) Specifies a custom HTTP IAM endpoint to use.'
             identity_token_audience: '- (Optional) The audience claim value. Requires Vault 1.16+.'
-            identity_token_key: '- (Optional) The key to use for signing identity tokens. Requires Vault 1.16+.'
+            identity_token_key: |-
+                - (Optional)  The key to use for signing plugin workload identity tokens. If
+                not provided, this will default to Vault's OIDC default key. Requires Vault Enterprise 1.16+.
             identity_token_ttl: '- (Optional) The TTL of generated identity tokens in seconds. Requires Vault 1.16+.'
-            local: '- (Optional) Specifies whether the secrets mount will be marked as local. Local mounts are not replicated to performance replicas.'
-            max_lease_ttl_seconds: |-
-                - (Optional) The maximum TTL that can be requested
-                for credentials issued by this backend.
+            listing_visibility: |-
+                - (Optional) Specifies whether to show this mount in the UI-specific
+                listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
+            local: '- (Optional) Boolean flag that can be explicitly set to true to enforce local mount in HA environment'
+            max_lease_ttl_seconds: '- (Optional) Maximum possible lease duration for tokens and secrets in seconds'
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
+            options: '- (Optional) Specifies mount type specific options that are passed to the backend'
+            passthrough_request_headers: |-
+                - (Optional) List of headers to allow and pass from the request to
+                the plugin.
             path: |-
                 - (Optional) The unique path this backend should be mounted at. Must
                 not begin or end with a /. Defaults to aws.
+            plugin_version: |-
+                - (Optional) Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
+                If unspecified, the server will select any matching unversioned plugin that may have been
+                registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
             region: '- (Optional) The AWS region for API calls. Defaults to us-east-1.'
             role_arn: '- (Optional) Role ARN to assume for plugin identity token federation. Requires Vault 1.16+.'
             rotation_period: |-
@@ -1403,6 +1422,7 @@ resources:
                 - (Optional) The maximum amount of time in seconds allowed to complete
                 a rotation when a scheduled token rotation occurs. The default rotation window is
                 unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
+            seal_wrap: '- (Optional) Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal''s encryption capability'
             secret_key: |-
                 - (Optional) The AWS Secret Key this backend should use to
                 issue new credentials. Vault uses the official AWS SDK to authenticate, and thus can also use standard AWS environment credentials, shared file credentials or IAM role/ECS task credentials.
@@ -1792,8 +1812,19 @@ resources:
                   "tenant_id": "11111111-2222-3333-4444-222222222222"
                 }
         argumentDocs:
+            allowed_managed_keys: '- (Optional) Set of managed key registry entry names that the mount in question is allowed to access'
+            allowed_response_headers: |-
+                - (Optional) List of headers to allow, allowing a plugin to include
+                them in the response.
+            audit_non_hmac_request_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the request data object.'
+            audit_non_hmac_response_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the response data object.'
             client_id: (string:"") - The OAuth2 client id to connect to Azure.
             client_secret: (string:"") - The OAuth2 client secret to connect to Azure.
+            default_lease_ttl_seconds: '- (Optional) Default lease duration for tokens and secrets in seconds'
+            delegated_auth_accessors: |-
+                - (Optional)  List of allowed authentication mount accessors the
+                backend can request delegated authentication for.
+            description: '- (Optional) Human-friendly description of the mount'
             disable_automated_rotation: |-
                 - (Optional) Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
                 Available only for Vault Enterprise
@@ -1801,21 +1832,35 @@ resources:
                 - (Optional) If set, opts out of mount migration on path updates.
                 See here for more info on Mount Migration
             environment: (string:"") - The Azure environment.
+            external_entropy_access: '- (Optional) Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault''s external entropy source'
             identity_token_audience: |-
                 - (Optional) The audience claim value. Requires Vault 1.17+.
                 Available only for Vault Enterprise
             identity_token_key: |-
-                - (Optional) The key to use for signing identity tokens. Requires Vault 1.17+.
-                Available only for Vault Enterprise
+                - (Optional)  The key to use for signing plugin workload identity tokens. If
+                not provided, this will default to Vault's OIDC default key. Requires Vault Enterprise 1.16+.
             identity_token_ttl: |-
                 - (Optional) The TTL of generated identity tokens in seconds. Requires Vault 1.17+.
                 Available only for Vault Enterprise
+            listing_visibility: |-
+                - (Optional) Specifies whether to show this mount in the UI-specific
+                listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
+            local: '- (Optional) Boolean flag that can be explicitly set to true to enforce local mount in HA environment'
+            max_lease_ttl_seconds: '- (Optional) Maximum possible lease duration for tokens and secrets in seconds'
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
+            options: '- (Optional) Specifies mount type specific options that are passed to the backend'
+            passthrough_request_headers: |-
+                - (Optional) List of headers to allow and pass from the request to
+                the plugin.
             path: '(string: <optional>) - The unique path this backend should be mounted at. Defaults to azure.'
+            plugin_version: |-
+                - (Optional) Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
+                If unspecified, the server will select any matching unversioned plugin that may have been
+                registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
             rotation_period: |-
                 - (Optional) The amount of time in seconds Vault should wait before rotating the root credential.
                 A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
@@ -1828,6 +1873,7 @@ resources:
                 - (Optional) The maximum amount of time in seconds allowed to complete
                 a rotation when a scheduled token rotation occurs. The default rotation window is
                 unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+. Available only for Vault Enterprise
+            seal_wrap: '- (Optional) Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal''s encryption capability'
             subscription_id: '(string: <required>) - The subscription id for the Azure Active Directory.'
             tenant_id: '(string: <required>) - The tenant id for the Azure Active Directory.'
         importStatements: []
@@ -1905,6 +1951,7 @@ resources:
                 - (Optional) Indicates whether the applications and service principals created by Vault will be permanently
                 deleted when the corresponding leases expire. Defaults to false. For Vault v1.12+.
             role: '- (Required) Name of the Azure role'
+            root_password_ttl: '- (Optional) Specifies the TTL of the root password when rotate-root generates a new client secret. Requires Vault 1.15+.'
             sign_in_audience: |-
                 - (Optional) Specifies the security principal types that are allowed to sign in to the application.
                 Valid values are: AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, PersonalMicrosoftAccount. Requires Vault 1.16+.
@@ -2080,6 +2127,12 @@ resources:
                 }
         argumentDocs:
             address: '- (Required) Specifies the address of the Consul instance, provided as "host:port" like "127.0.0.1:8500".'
+            allowed_managed_keys: '- (Optional) Set of managed key registry entry names that the mount in question is allowed to access'
+            allowed_response_headers: |-
+                - (Optional) List of headers to allow, allowing a plugin to include
+                them in the response.
+            audit_non_hmac_request_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the request data object.'
+            audit_non_hmac_response_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the response data object.'
             bootstrap: '- (Optional) Denotes that the resource is used to bootstrap the Consul ACL system.'
             ca_cert: '- (Optional) CA certificate to use when verifying Consul server certificate, must be x509 PEM encoded.'
             client_cert: |-
@@ -2088,24 +2141,41 @@ resources:
             client_key: |-
                 - (Optional) Client key used for Consul's TLS communication, must be x509 PEM encoded and if this is set
                 you need to also set client_cert.
-            default_lease_ttl_seconds: '- (Optional) The default TTL for credentials issued by this backend.'
+            default_lease_ttl_seconds: '- (Optional) Default lease duration for tokens and secrets in seconds'
+            delegated_auth_accessors: |-
+                - (Optional)  List of allowed authentication mount accessors the
+                backend can request delegated authentication for.
             description: '- (Optional) A human-friendly description for this backend.'
             disable_remount: |-
                 - (Optional) If set, opts out of mount migration on path updates.
                 See here for more info on Mount Migration
-            local: '- (Optional) Specifies if the secret backend is local only.'
-            max_lease_ttl_seconds: |-
-                - (Optional) The maximum TTL that can be requested
-                for credentials issued by this backend.
+            external_entropy_access: '- (Optional) Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault''s external entropy source'
+            identity_token_key: |-
+                - (Optional)  The key to use for signing plugin workload identity tokens. If
+                not provided, this will default to Vault's OIDC default key. Requires Vault Enterprise 1.16+.
+            listing_visibility: |-
+                - (Optional) Specifies whether to show this mount in the UI-specific
+                listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
+            local: '- (Optional) Boolean flag that can be explicitly set to true to enforce local mount in HA environment'
+            max_lease_ttl_seconds: '- (Optional) Maximum possible lease duration for tokens and secrets in seconds'
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
+            options: '- (Optional) Specifies mount type specific options that are passed to the backend'
+            passthrough_request_headers: |-
+                - (Optional) List of headers to allow and pass from the request to
+                the plugin.
             path: |-
                 - (Optional) The unique location this backend should be mounted at. Must not begin or end with a /. Defaults
                 to consul.
+            plugin_version: |-
+                - (Optional) Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
+                If unspecified, the server will select any matching unversioned plugin that may have been
+                registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
             scheme: '- (Optional) Specifies the URL scheme to use. Defaults to http.'
+            seal_wrap: '- (Optional) Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal''s encryption capability'
             token: |-
                 - (Optional) The Consul management token this backend should use to issue new tokens. This field is required
                 when bootstrap is false.
@@ -2874,44 +2944,61 @@ resources:
                 }
         argumentDocs:
             accessor: '- The accessor of the created GCP mount.'
+            allowed_managed_keys: '- (Optional) Set of managed key registry entry names that the mount in question is allowed to access'
+            allowed_response_headers: |-
+                - (Optional) List of headers to allow, allowing a plugin to include
+                them in the response.
+            audit_non_hmac_request_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the request data object.'
+            audit_non_hmac_response_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the response data object.'
             credentials: '- (Optional) The GCP service account credentials in JSON format.'
             credentials_wo: |-
                 - (Optional) The GCP service account credentials in JSON format. Can be updated.
                 Note: This property is write-only and will not be read from the API.
             credentials_wo_version: '- (Optional)  The version of the credentials_wo. For more info see updating write-only attributes.'
-            default_lease_ttl_seconds: |-
-                - (Optional) The default TTL for credentials
-                issued by this backend. Defaults to '0'.
-            description: '- (Optional) A human-friendly description for this backend.'
+            default_lease_ttl_seconds: '- (Optional) Default lease duration for tokens and secrets in seconds'
+            delegated_auth_accessors: |-
+                - (Optional)  List of allowed authentication mount accessors the
+                backend can request delegated authentication for.
+            description: '- (Optional) Human-friendly description of the mount'
             disable_automated_rotation: |-
                 - (Optional) Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
                 Available only for Vault Enterprise.
             disable_remount: |-
                 - (Optional) If set, opts out of mount migration on path updates.
                 See here for more info on Mount Migration
+            external_entropy_access: '- (Optional) Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault''s external entropy source'
             identity_token_audience: |-
                 - (Optional) The audience claim value for plugin identity
                 tokens. Must match an allowed audience configured for the target Workload Identity Pool.
                 Mutually exclusive with credentials.  Requires Vault 1.17+. Available only for Vault Enterprise.
             identity_token_key: |-
-                - (Optional) The key to use for signing plugin identity
-                tokens. Requires Vault 1.17+. Available only for Vault Enterprise.
+                - (Optional)  The key to use for signing plugin workload identity tokens. If
+                not provided, this will default to Vault's OIDC default key. Requires Vault Enterprise 1.16+.
             identity_token_ttl: |-
                 - (Optional) The TTL of generated tokens. Defaults to
                 1 hour. Uses duration format strings.
                 Requires Vault 1.17+. Available only for Vault Enterprise.
+            listing_visibility: |-
+                - (Optional) Specifies whether to show this mount in the UI-specific
+                listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
             local: '- (Optional) Boolean flag that can be explicitly set to true to enforce local mount in HA environment'
-            max_lease_ttl_seconds: |-
-                - (Optional) The maximum TTL that can be requested
-                for credentials issued by this backend. Defaults to '0'.
+            max_lease_ttl_seconds: '- (Optional) Maximum possible lease duration for tokens and secrets in seconds'
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
+            options: '- (Optional) Specifies mount type specific options that are passed to the backend'
+            passthrough_request_headers: |-
+                - (Optional) List of headers to allow and pass from the request to
+                the plugin.
             path: |-
                 - (Optional) The unique path this backend should be mounted at. Must
                 not begin or end with a /. Defaults to gcp.
+            plugin_version: |-
+                - (Optional) Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
+                If unspecified, the server will select any matching unversioned plugin that may have been
+                registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
             rotation_period: |-
                 - (Optional) The amount of time in seconds Vault should wait before rotating the root credential.
                 A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
@@ -2923,6 +3010,7 @@ resources:
                 - (Optional) The maximum amount of time in seconds allowed to complete
                 a rotation when a scheduled token rotation occurs. The default rotation window is
                 unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+. Available only for Vault Enterprise.
+            seal_wrap: '- (Optional) Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal''s encryption capability'
             service_account_email: |-
                 – (Optional) Service Account to impersonate for plugin workload identity federation.
                 Required with identity_token_audience. Requires Vault 1.17+. Available only for Vault Enterprise.
@@ -4499,6 +4587,7 @@ resources:
                 - (Optional) If set, opts out of mount migration on path updates.
                 See here for more info on Mount Migration
             jwks_ca_pem: '- (Optional) The CA certificate or chain of certificates, in PEM format, to use to validate connections to the JWKS URL. If not set, system certificates are used.'
+            jwks_pairs: '- (Optional) List of JWKS URL and optional CA certificate pairs. Cannot be used with jwks_url or jwks_ca_pem. Requires Vault 1.16+.'
             jwks_url: '- (Optional) JWKS URL to use to authenticate signatures. Cannot be used with "oidc_discovery_url" or "jwt_validation_pubkeys".'
             jwt_supported_algs: '- (Optional) A list of supported signing algorithms. Vault 1.1.0 defaults to [RS256] but future or past versions of Vault may differ'
             jwt_validation_pubkeys: '- (Optional) A list of PEM-encoded public keys to use to authenticate signatures locally. Cannot be used in combination with oidc_discovery_url'
@@ -4726,21 +4815,49 @@ resources:
                   "tls_ca_key_type": "rsa"
                 }
         argumentDocs:
+            allowed_managed_keys: '- (Optional) Set of managed key registry entry names that the mount in question is allowed to access'
+            allowed_response_headers: |-
+                - (Optional) List of headers to allow, allowing a plugin to include
+                them in the response.
+            audit_non_hmac_request_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the request data object.'
+            audit_non_hmac_response_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the response data object.'
+            default_lease_ttl_seconds: '- (Optional) Default lease duration for tokens and secrets in seconds'
             default_tls_client_key_bits: '- (Optional) Client certificate key bits, valid values depend on key type.'
             default_tls_client_key_type: '- (Optional) Client certificate key type, rsa or ec.'
-            description: '- (Optional) A human-friendly description for this backend.'
+            delegated_auth_accessors: |-
+                - (Optional)  List of allowed authentication mount accessors the
+                backend can request delegated authentication for.
+            description: '- (Optional) Human-friendly description of the mount'
             disable_remount: |-
                 - (Optional) If set, opts out of mount migration on path updates.
                 See here for more info on Mount Migration
+            external_entropy_access: '- (Optional) Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault''s external entropy source'
+            identity_token_key: |-
+                - (Optional)  The key to use for signing plugin workload identity tokens. If
+                not provided, this will default to Vault's OIDC default key. Requires Vault Enterprise 1.16+.
             listen_addrs: '- (Optional) Addresses the KMIP server should listen on (host:port).'
+            listing_visibility: |-
+                - (Optional) Specifies whether to show this mount in the UI-specific
+                listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
+            local: '- (Optional) Boolean flag that can be explicitly set to true to enforce local mount in HA environment'
+            max_lease_ttl_seconds: '- (Optional) Maximum possible lease duration for tokens and secrets in seconds'
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
+            options: '- (Optional) Specifies mount type specific options that are passed to the backend'
+            passthrough_request_headers: |-
+                - (Optional) List of headers to allow and pass from the request to
+                the plugin.
             path: |-
                 - (Required) The unique path this backend should be mounted at. Must
                 not begin or end with a /. Defaults to kmip.
+            plugin_version: |-
+                - (Optional) Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
+                If unspecified, the server will select any matching unversioned plugin that may have been
+                registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
+            seal_wrap: '- (Optional) Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal''s encryption capability'
             server_hostnames: '- (Optional) Hostnames to include in the server''s TLS certificate as SAN DNS names. The first will be used as the common name (CN).'
             server_ips: '- (Optional) IPs to include in the server''s TLS certificate as SAN IP addresses.'
             tls_ca_key_bits: '- (Optional) CA key bits, valid values depend on key type.'
@@ -4980,9 +5097,24 @@ resources:
                   "service_account_jwt": "${file(\"/path/to/token\")}"
                 }
         argumentDocs:
+            allowed_managed_keys: '- (Optional) Set of managed key registry entry names that the mount in question is allowed to access'
+            allowed_response_headers: |-
+                - (Optional) List of headers to allow, allowing a plugin to include
+                them in the response.
+            audit_non_hmac_request_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the request data object.'
+            audit_non_hmac_response_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the response data object.'
+            default_lease_ttl_seconds: '- (Optional) Default lease duration for tokens and secrets in seconds'
+            delegated_auth_accessors: |-
+                - (Optional)  List of allowed authentication mount accessors the
+                backend can request delegated authentication for.
+            description: '- (Optional) Human-friendly description of the mount'
             disable_local_ca_jwt: |-
                 - (Optional) Disable defaulting to the local CA certificate and
                 service account JWT when Vault is running in a Kubernetes pod.
+            external_entropy_access: '- (Optional) Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault''s external entropy source'
+            identity_token_key: |-
+                - (Optional)  The key to use for signing plugin workload identity tokens. If
+                not provided, this will default to Vault's OIDC default key. Requires Vault Enterprise 1.16+.
             kubernetes_ca_cert: |-
                 - (Optional) A PEM-encoded CA certificate used by the
                 secrets engine to verify the Kubernetes API server certificate. Defaults to the local
@@ -4992,11 +5124,25 @@ resources:
                 - (Optional) The Kubernetes API URL to connect to. Required if the
                 standard pod environment variables KUBERNETES_SERVICE_HOST or KUBERNETES_SERVICE_PORT
                 are not set on the host that Vault is running on.
+            listing_visibility: |-
+                - (Optional) Specifies whether to show this mount in the UI-specific
+                listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
+            local: '- (Optional) Boolean flag that can be explicitly set to true to enforce local mount in HA environment'
+            max_lease_ttl_seconds: '- (Optional) Maximum possible lease duration for tokens and secrets in seconds'
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
+            options: '- (Optional) Specifies mount type specific options that are passed to the backend'
+            passthrough_request_headers: |-
+                - (Optional) List of headers to allow and pass from the request to
+                the plugin.
+            plugin_version: |-
+                - (Optional) Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
+                If unspecified, the server will select any matching unversioned plugin that may have been
+                registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
+            seal_wrap: '- (Optional) Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal''s encryption capability'
             service_account_jwt: |-
                 - (Optional) The JSON web token of the service account used by the
                 secrets engine to manage Kubernetes credentials. Defaults to the local pod’s JWT if Vault
@@ -5336,6 +5482,12 @@ resources:
                   "userdn": "CN=Users,DC=corp,DC=example,DC=net"
                 }
         argumentDocs:
+            allowed_managed_keys: '- (Optional) Set of managed key registry entry names that the mount in question is allowed to access'
+            allowed_response_headers: |-
+                - (Optional) List of headers to allow, allowing a plugin to include
+                them in the response.
+            audit_non_hmac_request_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the request data object.'
+            audit_non_hmac_response_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the response data object.'
             binddn: '- (Required) Distinguished name of object to bind when performing user and group search.'
             bindpass: '- (Required) Password to use along with binddn when performing user search.'
             certificate: |-
@@ -5346,25 +5498,41 @@ resources:
             connection_timeout: |-
                 - (Optional) Timeout, in seconds, when attempting to connect to the LDAP server before trying
                 the next URL in the configuration.
-            default_lease_ttl_seconds: '- (Optional) Default lease duration for secrets in seconds.'
-            description: '- (Optional) Human-friendly description of the mount for the Active Directory backend.'
+            default_lease_ttl_seconds: '- (Optional) Default lease duration for tokens and secrets in seconds'
+            delegated_auth_accessors: |-
+                - (Optional)  List of allowed authentication mount accessors the
+                backend can request delegated authentication for.
+            description: '- (Optional) Human-friendly description of the mount'
             disable_automated_rotation: '- (Optional) Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.'
+            external_entropy_access: '- (Optional) Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault''s external entropy source'
+            identity_token_key: |-
+                - (Optional)  The key to use for signing plugin workload identity tokens. If
+                not provided, this will default to Vault's OIDC default key. Requires Vault Enterprise 1.16+.
             insecure_tls: |-
                 - (Optional) Skip LDAP server SSL Certificate verification. This is not recommended for production.
                 Defaults to false.
-            local: |-
-                - (Optional) Mark the secrets engine as local-only. Local engines are not replicated or removed by
-                replication.Tolerance duration to use when checking the last rotation time.
-            max_lease_ttl_seconds: '- (Optional) Maximum possible lease duration for secrets in seconds.'
+            listing_visibility: |-
+                - (Optional) Specifies whether to show this mount in the UI-specific
+                listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
+            local: '- (Optional) Boolean flag that can be explicitly set to true to enforce local mount in HA environment'
+            max_lease_ttl_seconds: '- (Optional) Maximum possible lease duration for tokens and secrets in seconds'
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
+            options: '- (Optional) Specifies mount type specific options that are passed to the backend'
+            passthrough_request_headers: |-
+                - (Optional) List of headers to allow and pass from the request to
+                the plugin.
             password_policy: '- (Optional) Name of the password policy to use to generate passwords.'
             path: |-
                 - (Optional) The unique path this backend should be mounted at. Must
                 not begin or end with a /. Defaults to ldap.
+            plugin_version: |-
+                - (Optional) Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
+                If unspecified, the server will select any matching unversioned plugin that may have been
+                registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
             request_timeout: |-
                 - (Optional) Timeout, in seconds, for the connection when making requests against the server
                 before returning back an error.
@@ -5379,6 +5547,7 @@ resources:
                 a rotation when a scheduled token rotation occurs. The default rotation window is
                 unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
             schema: '- (Optional)  The LDAP schema to use when storing entry passwords. Valid schemas include openldap, ad, and racf. Default is openldap.'
+            seal_wrap: '- (Optional) Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal''s encryption capability'
             skip_static_role_import_rotation: |-
                 - (Optional) If set to true, static roles will not be rotated during import.
                 Defaults to false. Requires Vault 1.16 or above.
@@ -6111,6 +6280,12 @@ resources:
             address: |-
                 - (Optional) Specifies the address of the Nomad instance, provided
                 as "protocol://host:port" like "http://127.0.0.1:4646".
+            allowed_managed_keys: '- (Optional) Set of managed key registry entry names that the mount in question is allowed to access'
+            allowed_response_headers: |-
+                - (Optional) List of headers to allow, allowing a plugin to include
+                them in the response.
+            audit_non_hmac_request_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the request data object.'
+            audit_non_hmac_response_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the response data object.'
             backend: |-
                 - (Optional) The unique path this backend should be mounted at. Must
                 not begin or end with a /. Defaults to nomad.
@@ -6119,14 +6294,23 @@ resources:
                 x509 PEM encoded.
             client_cert: '- (Optional) Client certificate to provide to the Nomad server, must be x509 PEM encoded.'
             client_key: '- (Optional) Client certificate key to provide to the Nomad server, must be x509 PEM encoded.'
-            default_lease_ttl_seconds: '- (Optional) Default lease duration for secrets in seconds.'
-            description: '- (Optional) Human-friendly description of the mount for the Active Directory backend.'
+            default_lease_ttl_seconds: '- (Optional) Default lease duration for tokens and secrets in seconds'
+            delegated_auth_accessors: |-
+                - (Optional)  List of allowed authentication mount accessors the
+                backend can request delegated authentication for.
+            description: '- (Optional) Human-friendly description of the mount'
             disable_remount: |-
                 - (Optional) If set, opts out of mount migration on path updates.
                 See here for more info on Mount Migration
-            local: |-
-                - (Optional) Mark the secrets engine as local-only. Local engines are not replicated or removed by
-                replication.Tolerance duration to use when checking the last rotation time.
+            external_entropy_access: '- (Optional) Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault''s external entropy source'
+            identity_token_key: |-
+                - (Optional)  The key to use for signing plugin workload identity tokens. If
+                not provided, this will default to Vault's OIDC default key. Requires Vault Enterprise 1.16+.
+            listing_visibility: |-
+                - (Optional) Specifies whether to show this mount in the UI-specific
+                listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
+            local: '- (Optional) Boolean flag that can be explicitly set to true to enforce local mount in HA environment'
+            max_lease_ttl_seconds: '- (Optional) Maximum possible lease duration for tokens and secrets in seconds'
             max_token_name_length: |-
                 - (Optional) Specifies the maximum length to use for the name of the Nomad token
                 generated with Generate Credential. If omitted, 0 is used and ignored, defaulting to the max value allowed
@@ -6137,6 +6321,15 @@ resources:
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
+            options: '- (Optional) Specifies mount type specific options that are passed to the backend'
+            passthrough_request_headers: |-
+                - (Optional) List of headers to allow and pass from the request to
+                the plugin.
+            plugin_version: |-
+                - (Optional) Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
+                If unspecified, the server will select any matching unversioned plugin that may have been
+                registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
+            seal_wrap: '- (Optional) Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal''s encryption capability'
             token: '- (Optional) Specifies the Nomad Management token to use.'
             ttl: '- (Optional) Specifies the ttl of the lease for the generated token.'
         importStatements: []
@@ -6187,6 +6380,131 @@ resources:
             type: |-
                 - (Optional)  Specifies the type of token to create when using this role. Valid
                 settings are 'client' and 'management'. Defaults to 'client'.
+        importStatements: []
+    vault_oci_auth_backend:
+        subCategory: ""
+        description: Configures the OCI (Oracle Cloud Infrastructure) Auth Backend in Vault.
+        name: vault_oci_auth_backend
+        title: vault_oci_auth_backend resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "home_tenancy_id": "ocid1.tenancy.oc1..aaaaaaaah7zkvaffv26pzyauoe2zbnionqvhvsexamplee557wakiofi4ysgqq",
+                  "path": "${vault_auth_backend.example.path}"
+                }
+              references:
+                path: vault_auth_backend.example.path
+        argumentDocs:
+            description: '- (Optional) A description of the auth backend.'
+            home_tenancy_id: '- (Required) The Tenancy OCID of your OCI account.'
+            namespace: |-
+                - (Optional) The namespace to provision the resource in.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+                Available only for Vault Enterprise.
+            tune: '- (Optional) Extra configuration block. Structure is documented below.'
+            tune.allowed_response_headers: |-
+                - (Optional) List of headers to whitelist and allowing
+                a plugin to include them in the response.
+            tune.audit_non_hmac_request_keys: |-
+                - (Optional) Specifies the list of keys that will
+                not be HMAC'd by audit devices in the request data object.
+            tune.audit_non_hmac_response_keys: |-
+                - (Optional) Specifies the list of keys that will
+                not be HMAC'd by audit devices in the response data object.
+            tune.default_lease_ttl: |-
+                - (Optional) Specifies the default time-to-live.
+                If set, this overrides the global default.
+                Must be a valid duration string
+            tune.listing_visibility: |-
+                - (Optional) Specifies whether to show this mount in
+                the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
+            tune.max_lease_ttl: |-
+                - (Optional) Specifies the maximum time-to-live.
+                If set, this overrides the global default.
+                Must be a valid duration string
+            tune.passthrough_request_headers: |-
+                - (Optional) List of headers to whitelist and
+                pass from the request to the backend.
+            tune.token_type: |-
+                - (Optional) Specifies the type of tokens that should be returned by
+                the mount. Valid values are "default-service", "default-batch", "service", "batch".
+        importStatements: []
+    vault_oci_auth_backend_role:
+        subCategory: ""
+        description: Manages OCI (Oracle Cloud Infrastructure) auth backend roles in Vault.
+        name: vault_oci_auth_backend_role
+        title: vault_oci_auth_backend_role resource
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "backend": "${vault_oci_auth_backend.oci.path}",
+                  "name": "test-role",
+                  "ocid_list": [
+                    "ocid1.group.oc1..aaaaaaaabmyiinfq32y5aha3r2yo4exampleo4yg3fjk2sbne4567tropaa",
+                    "ocid1.dynamicgroup.oc1..aaaaaaaabvfwct33xri5examplegov4zyjp3rd5d7sk9jjdggxijhco56hrq"
+                  ],
+                  "token_max_ttl": 120,
+                  "token_policies": [
+                    "default",
+                    "dev",
+                    "prod"
+                  ],
+                  "token_ttl": 60
+                }
+              references:
+                backend: vault_oci_auth_backend.oci.path
+              dependencies:
+                vault_oci_auth_backend.oci: |-
+                    {
+                      "home_tenancy_id": "ocid1.tenancy.oc1..aaaaaaaah7zkvaffv26pzyauoe2zbnionqvhvsexamplee557wakiofi4ysgqq",
+                      "path": "oci"
+                    }
+        argumentDocs:
+            name: '- (Required) The name of the role.'
+            namespace: |-
+                - (Optional) The namespace to provision the resource in.
+                The value should not contain leading or trailing forward slashes.
+                The namespace is always relative to the provider's configured namespace.
+                Available only for Vault Enterprise.
+            ocid_list: '- (Required) The list of Group or Dynamic Group OCIDs that can take this role.'
+            token_bound_cidrs: |-
+                - (Optional) List of CIDR blocks; if set, specifies blocks of IP
+                addresses which can authenticate successfully, and ties the resulting token to these blocks
+                as well.
+            token_explicit_max_ttl: |-
+                - (Optional) If set, will encode an
+                explicit max TTL
+                onto the token in number of seconds. This is a hard cap even if token_ttl and
+                token_max_ttl would otherwise allow a renewal.
+            token_max_ttl: |-
+                - (Optional) The maximum lifetime for generated tokens in number of seconds.
+                Its current value will be referenced at renewal time.
+            token_no_default_policy: |-
+                - (Optional) If set, the default policy will not be set on
+                generated tokens; otherwise it will be added to the policies set in token_policies.
+            token_num_uses: |-
+                - (Optional) The maximum number
+                of times a generated token may be used (within its lifetime); 0 means unlimited.
+            token_period: |-
+                - (Optional) If set, indicates that the
+                token generated using this role should never expire. The token should be renewed within the
+                duration specified by this value. At each renewal, the token's TTL will be set to the
+                value of this field. Specified in seconds.
+            token_policies: |-
+                - (Optional) List of policies to encode onto generated tokens. Depending
+                on the auth method, this list may be supplemented by user/group/other values.
+            token_ttl: |-
+                - (Optional) The incremental lifetime for generated tokens in number of seconds.
+                Its current value will be referenced at renewal time.
+            token_type: |-
+                - (Optional) The type of token that should be generated. Can be service,
+                batch, or default to use the mount's tuned default (which unless changed will be
+                service tokens). For token store roles, there are two additional possibilities:
+                default-service and default-batch which specify the type to return unless the client
+                requests a different type at generation time.
         importStatements: []
     vault_password_policy:
         subCategory: ""
@@ -6801,6 +7119,7 @@ resources:
             external_validation: '- (Optional) Lists the 3rd party validation of SCEP requests (see below for nested schema).'
             intune: '- The tenant_id, client_id, client_secret and environment properties for Microsoft Intune validation of SCEP requests.'
             last_updated: '- A read-only timestamp representing the last time the configuration was updated.'
+            log_level: '- (Optional) The level of logging verbosity, affects only SCEP logs on this mount.'
             namespace: |-
                 - (Optional) The namespace of the target resource.
                 The value should not contain leading or trailing forward slashes.
@@ -7646,27 +7965,49 @@ resources:
                   "username": "user"
                 }
         argumentDocs:
+            allowed_managed_keys: '- (Optional) Set of managed key registry entry names that the mount in question is allowed to access'
+            allowed_response_headers: |-
+                - (Optional) List of headers to allow, allowing a plugin to include
+                them in the response.
+            audit_non_hmac_request_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the request data object.'
+            audit_non_hmac_response_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the response data object.'
             connection_uri: '- (Required)  Specifies the RabbitMQ connection URI.'
-            default_lease_ttl_seconds: |-
-                - (Optional) The default TTL for credentials
-                issued by this backend.
-            description: '- (Optional) A human-friendly description for this backend.'
+            default_lease_ttl_seconds: '- (Optional) Default lease duration for tokens and secrets in seconds'
+            delegated_auth_accessors: |-
+                - (Optional)  List of allowed authentication mount accessors the
+                backend can request delegated authentication for.
+            description: '- (Optional) Human-friendly description of the mount'
             disable_remount: |-
                 - (Optional) If set, opts out of mount migration on path updates.
                 See here for more info on Mount Migration
-            max_lease_ttl_seconds: |-
-                - (Optional) The maximum TTL that can be requested
-                for credentials issued by this backend.
+            external_entropy_access: '- (Optional) Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault''s external entropy source'
+            identity_token_key: |-
+                - (Optional)  The key to use for signing plugin workload identity tokens. If
+                not provided, this will default to Vault's OIDC default key. Requires Vault Enterprise 1.16+.
+            listing_visibility: |-
+                - (Optional) Specifies whether to show this mount in the UI-specific
+                listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
+            local: '- (Optional) Boolean flag that can be explicitly set to true to enforce local mount in HA environment'
+            max_lease_ttl_seconds: '- (Optional) Maximum possible lease duration for tokens and secrets in seconds'
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
+            options: '- (Optional) Specifies mount type specific options that are passed to the backend'
+            passthrough_request_headers: |-
+                - (Optional) List of headers to allow and pass from the request to
+                the plugin.
             password: '- (Required) Specifies the RabbitMQ management administrator password.'
             password_policy: '- (Optional) Specifies a password policy to use when creating dynamic credentials. Defaults to generating an alphanumeric password if not set.'
             path: |-
                 - (Optional) The unique path this backend should be mounted at. Must
                 not begin or end with a /. Defaults to rabbitmq.
+            plugin_version: |-
+                - (Optional) Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
+                If unspecified, the server will select any matching unversioned plugin that may have been
+                registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
+            seal_wrap: '- (Optional) Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal''s encryption capability'
             username: '- (Required) Specifies the RabbitMQ management administrator username.'
             username_template: '- (Optional) Template describing how dynamic usernames are generated.'
             verify_connection: |-
@@ -8512,6 +8853,8 @@ resources:
             generate_signing_key: '- (Optional) Whether Vault should generate the signing key pair internally. Defaults to true'
             key_bits: '- (Optional) Specifies the desired key bits for the generated SSH CA key when generate_signing_key is set to true.'
             key_type: '- (Optional) Specifies the desired key type for the generated SSH CA key when generate_signing_key is set to true.'
+            managed_key_id: '- (Optional) The ID of the managed key to use. When using a managed key, this field or managed_key_name is required.'
+            managed_key_name: '- (Optional) The name of the managed key to use. When using a managed key, this field or managed_key_id is required.'
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
                 The value should not contain leading or trailing forward slashes.
@@ -8629,20 +8972,44 @@ resources:
                 - (Optional) The address of the Terraform Cloud server, if using
                 Terraform Enterprise, provided as "protocol://host:port". The default is
                 https://app.terraform.io for Terraform Cloud.
+            allowed_managed_keys: '- (Optional) Set of managed key registry entry names that the mount in question is allowed to access'
+            allowed_response_headers: |-
+                - (Optional) List of headers to allow, allowing a plugin to include
+                them in the response.
+            audit_non_hmac_request_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the request data object.'
+            audit_non_hmac_response_keys: '- (Optional) Specifies the list of keys that will not be HMAC''d by audit devices in the response data object.'
             backend: '- (Optional) The unique location this backend should be mounted at. Must not begin or end with a /. Defaults to terraform.'
-            default_lease_ttl_seconds: '- (Optional) The default TTL for credentials issued by this backend.'
-            description: '- (Optional) A human-friendly description for this backend.'
+            default_lease_ttl_seconds: '- (Optional) Default lease duration for tokens and secrets in seconds'
+            delegated_auth_accessors: |-
+                - (Optional)  List of allowed authentication mount accessors the
+                backend can request delegated authentication for.
+            description: '- (Optional) Human-friendly description of the mount'
             disable_remount: |-
                 - (Optional) If set, opts out of mount migration on path updates.
                 See here for more info on Mount Migration
-            max_lease_ttl_seconds: |-
-                - (Optional) The maximum TTL that can be requested
-                for credentials issued by this backend.
+            external_entropy_access: '- (Optional) Boolean flag that can be explicitly set to true to enable the secrets engine to access Vault''s external entropy source'
+            identity_token_key: |-
+                - (Optional)  The key to use for signing plugin workload identity tokens. If
+                not provided, this will default to Vault's OIDC default key. Requires Vault Enterprise 1.16+.
+            listing_visibility: |-
+                - (Optional) Specifies whether to show this mount in the UI-specific
+                listing endpoint. Valid values are unauth or hidden. If not set, behaves like hidden.
+            local: '- (Optional) Boolean flag that can be explicitly set to true to enforce local mount in HA environment'
+            max_lease_ttl_seconds: '- (Optional) Maximum possible lease duration for tokens and secrets in seconds'
             namespace: |-
                 - (Optional) The namespace to provision the resource in.
                 The value should not contain leading or trailing forward slashes.
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
+            options: '- (Optional) Specifies mount type specific options that are passed to the backend'
+            passthrough_request_headers: |-
+                - (Optional) List of headers to allow and pass from the request to
+                the plugin.
+            plugin_version: |-
+                - (Optional) Specifies the semantic version of the plugin to use, e.g. "v1.0.0".
+                If unspecified, the server will select any matching unversioned plugin that may have been
+                registered, the latest versioned plugin registered, or a built-in plugin in that order of precedence.
+            seal_wrap: '- (Optional) Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal''s encryption capability'
             token: |-
                 - (Required) The Terraform Cloud management token this backend should
                 use to issue new tokens.
@@ -9071,14 +9438,18 @@ resources:
                 The namespace is always relative to the provider's configured namespace.
                 Available only for Vault Enterprise.
             parameter_set: |-
-                - (Optional) The parameter set to use for ML-DSA. Required for
-                ML-DSA and hybrid keys. Valid values are 44, 65, and 87.
+                - (Optional) The parameter set to use for ML-DSA or SLH-DSA. Required for
+                ML-DSA, hybrid, and SLH-DSA keys.
+                Valid values for ML-DSA are 44, 65, and 87.
+                Valid values for SLH-DSA are slh-dsa-sha2-128s, slh-dsa-shake-128s, slh-dsa-sha2-128f, slh-dsa-shake-128, slh-dsa-sha2-192s,
+                slh-dsa-shake-192s, slh-dsa-sha2-192f, slh-dsa-shake-192f, slh-dsa-sha2-256s, slh-dsa-shake-256s,
+                slh-dsa-sha2-256f, and slh-dsa-shake-256f.
             public_key: '- This is the base64-encoded public key for use outside of Vault.'
             supports_decryption: '- Whether or not the key supports decryption, based on key type.'
             supports_derivation: '- Whether or not the key supports derivation, based on key type.'
             supports_encryption: '- Whether or not the key supports encryption, based on key type.'
             supports_signing: '- Whether or not the key supports signing, based on key type.'
-            type: '- (Optional) Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96 (default), chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, hmac, rsa-2048, rsa-3072 and rsa-4096.'
+            type: '- (Optional) Specifies the type of key to create. The currently-supported types are: aes128-gcm96, aes256-gcm96 (default), chacha20-poly1305, ed25519, ecdsa-p256, ecdsa-p384, ecdsa-p521, hmac, rsa-2048, rsa-3072, rsa-4096, managed_key, aes128-cmac, aes192-cmac, aes256-cmac, ml-dsa, hybrid, and slh-dsa.'
         importStatements: []
     vault_transit_secret_cache_config:
         subCategory: ""

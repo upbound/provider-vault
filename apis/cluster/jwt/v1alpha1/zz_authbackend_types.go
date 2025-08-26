@@ -36,6 +36,7 @@ type AuthBackendInitParameters struct {
 	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the JWKS URL. If not set, system certificates are used.
 	JwksCAPem *string `json:"jwksCaPem,omitempty" tf:"jwks_ca_pem,omitempty"`
 
+	// List of JWKS URL and optional CA certificate pairs. Cannot be used with jwks_url or jwks_ca_pem. Requires Vault 1.16+.
 	// List of JWKS URL and optional CA certificate pairs. Cannot be used with 'jwks_url' or 'jwks_ca_pem'. Requires Vault 1.16+.
 	JwksPairs []map[string]*string `json:"jwksPairs,omitempty" tf:"jwks_pairs,omitempty"`
 
@@ -135,6 +136,7 @@ type AuthBackendObservation struct {
 	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the JWKS URL. If not set, system certificates are used.
 	JwksCAPem *string `json:"jwksCaPem,omitempty" tf:"jwks_ca_pem,omitempty"`
 
+	// List of JWKS URL and optional CA certificate pairs. Cannot be used with jwks_url or jwks_ca_pem. Requires Vault 1.16+.
 	// List of JWKS URL and optional CA certificate pairs. Cannot be used with 'jwks_url' or 'jwks_ca_pem'. Requires Vault 1.16+.
 	JwksPairs []map[string]*string `json:"jwksPairs,omitempty" tf:"jwks_pairs,omitempty"`
 
@@ -229,6 +231,7 @@ type AuthBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	JwksCAPem *string `json:"jwksCaPem,omitempty" tf:"jwks_ca_pem,omitempty"`
 
+	// List of JWKS URL and optional CA certificate pairs. Cannot be used with jwks_url or jwks_ca_pem. Requires Vault 1.16+.
 	// List of JWKS URL and optional CA certificate pairs. Cannot be used with 'jwks_url' or 'jwks_ca_pem'. Requires Vault 1.16+.
 	// +kubebuilder:validation:Optional
 	JwksPairs []map[string]*string `json:"jwksPairs,omitempty" tf:"jwks_pairs,omitempty"`
