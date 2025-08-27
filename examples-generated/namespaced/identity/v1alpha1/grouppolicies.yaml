@@ -1,0 +1,37 @@
+apiVersion: identity.vault.m.upbound.io/v1alpha1
+kind: GroupPolicies
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/grouppolicies
+  labels:
+    testing.upbound.io/example-name: policies
+  name: policies
+  namespace: upbound-system
+spec:
+  forProvider:
+    exclusive: true
+    groupIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: internal
+    policies:
+    - default
+    - test
+
+---
+
+apiVersion: identity.vault.m.upbound.io/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/grouppolicies
+  labels:
+    testing.upbound.io/example-name: internal
+  name: internal
+  namespace: upbound-system
+spec:
+  forProvider:
+    externalPolicies: true
+    metadata:
+      version: "2"
+    name: internal
+    type: internal

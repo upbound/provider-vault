@@ -1,0 +1,14 @@
+apiVersion: vault.vault.m.upbound.io/v1alpha1
+kind: Audit
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vault/v1alpha1/audit
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+  namespace: upbound-system
+spec:
+  forProvider:
+    options:
+      file_path: C:/temp/audit.txt
+    type: file

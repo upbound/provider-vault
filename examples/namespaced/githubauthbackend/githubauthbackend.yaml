@@ -1,0 +1,17 @@
+apiVersion: github.vault.m.upbound.io/v1alpha1
+kind: AuthBackend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: github/v1alpha1/authbackend
+  labels:
+    testing.upbound.io/example-name: github-specific-auth-backend
+  name: github-specific-auth-backend
+  namespace: vault
+spec:
+  forProvider:
+    description: "GitHub specific auth backend for UXP managed Vault"
+    path: "auth/github-specific"
+    organization: default-org-test
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: vault-provider-config

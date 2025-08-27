@@ -1,0 +1,12 @@
+apiVersion: vault.m.upbound.io/v1beta1
+kind: ClusterProviderConfig
+metadata:
+  name: vault-provider-config
+spec:
+  address: http://127.0.0.1:8200
+  credentials:
+    source: Secret
+    secretRef:
+      name: vault-creds
+      namespace: vault
+      key: credentials

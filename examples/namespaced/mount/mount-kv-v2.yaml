@@ -1,0 +1,16 @@
+apiVersion: vault.vault.m.upbound.io/v1alpha1
+kind: Mount
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vault/v1alpha1/mount
+  labels:
+    testing.upbound.io/example-name: kv-v2
+  name: kv-v2
+  namespace: vault
+spec:
+  forProvider:
+    path: "kvv2"
+    type: "kv-v2"
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: vault-provider-config

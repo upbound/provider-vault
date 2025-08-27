@@ -1,0 +1,12 @@
+apiVersion: auth.vault.m.upbound.io/v1alpha1
+kind: Backend
+metadata:
+  name: github-generic-auth-backend
+  namespace: vault
+spec:
+  forProvider:
+    description: "GitHub generic auth backend for UXP managed Vault"
+    type: "github"
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: vault-provider-config

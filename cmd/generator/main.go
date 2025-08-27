@@ -10,7 +10,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/crossplane/upjet/pkg/pipeline"
+	"github.com/crossplane/upjet/v2/pkg/pipeline"
+	tfvaultschema "github.com/hashicorp/terraform-provider-vault/schema"
+	tfvault "github.com/hashicorp/terraform-provider-vault/vault"
+	tfvaultxpprovider "github.com/hashicorp/terraform-provider-vault/xpprovider"
 
 	"github.com/upbound/provider-vault/config"
 )
@@ -24,9 +27,15 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("cannot calculate the absolute path with %s", rootDir))
 	}
-	p, err := config.GetProvider(context.Background(), true)
+	sdkProvider := tfvaultschema.NewProvider(tfvault.Provider()).SchemaProvider()
+	fwProvider := tfvaultxpprovider.FrameworkProvider(tfvault.Provider())
+	pc, err := config.GetProvider(context.Background(), sdkProvider, fwProvider, true)
 	if err != nil {
-		panic(fmt.Sprintf("cannot get provider configuration: %v", err))
+		panic(fmt.Sprintf("cannot get cluster provider configuration: %v", err))
 	}
-	pipeline.Run(p, absRootDir)
+	pns, err := config.GetProviderNamespaced(context.Background(), sdkProvider, fwProvider, true)
+	if err != nil {
+		panic(fmt.Sprintf("cannot get namespaced provider configuration: %v", err))
+	}
+	pipeline.Run(pc, pns, absRootDir)
 }

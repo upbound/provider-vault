@@ -11,15 +11,13 @@ import (
 
 	"github.com/pkg/errors"
 
-	ujconfig "github.com/crossplane/upjet/pkg/config"
-	"github.com/crossplane/upjet/pkg/registry/reference"
-	"github.com/crossplane/upjet/pkg/schema/traverser"
-	conversiontfjson "github.com/crossplane/upjet/pkg/types/conversion/tfjson"
-
-	tfvaultschema "github.com/hashicorp/terraform-provider-vault/schema"
-	tfvault "github.com/hashicorp/terraform-provider-vault/vault"
+	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
+	"github.com/crossplane/upjet/v2/pkg/registry/reference"
+	"github.com/crossplane/upjet/v2/pkg/schema/traverser"
+	conversiontfjson "github.com/crossplane/upjet/v2/pkg/types/conversion/tfjson"
 
 	tfjson "github.com/hashicorp/terraform-json"
+	"github.com/hashicorp/terraform-plugin-framework/provider"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
 	"github.com/upbound/provider-vault/config/vault"
@@ -58,9 +56,7 @@ func getProviderSchema(s string) (*tfschema.Provider, error) {
 }
 
 // GetProvider returns provider configuration
-func GetProvider(_ context.Context, generationProvider bool) (*ujconfig.Provider, error) {
-	sdkProvider := tfvaultschema.NewProvider(tfvault.Provider()).SchemaProvider()
-
+func GetProvider(_ context.Context, sdkProvider *tfschema.Provider, fwProvider provider.Provider, generationProvider bool) (*ujconfig.Provider, error) {
 	if generationProvider {
 		p, err := getProviderSchema(providerSchema)
 		if err != nil {
@@ -82,9 +78,53 @@ func GetProvider(_ context.Context, generationProvider bool) (*ujconfig.Provider
 		),
 		ujconfig.WithIncludeList([]string{}),
 		ujconfig.WithTerraformPluginSDKIncludeList(ResourcesWithExternalNameConfig()),
+		ujconfig.WithTerraformPluginFrameworkIncludeList(TerraformPluginFrameworkResourceList()),
 		ujconfig.WithReferenceInjectors([]ujconfig.ReferenceInjector{reference.NewInjector(modulePath)}),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithTerraformProvider(sdkProvider),
+		ujconfig.WithTerraformPluginFrameworkProvider(fwProvider),
+	)
+
+	for _, configure := range []func(provider *ujconfig.Provider){
+		// add custom config functions
+		vault.Configure,
+	} {
+		configure(pc)
+	}
+
+	pc.ConfigureResources()
+	return pc, nil
+}
+
+func GetProviderNamespaced(_ context.Context, sdkProvider *tfschema.Provider, fwProvider provider.Provider, generationProvider bool) (*ujconfig.Provider, error) {
+	if generationProvider {
+		p, err := getProviderSchema(providerSchema)
+		if err != nil {
+			return nil, errors.Wrap(err, "cannot read the Terraform SDK provider from the JSON schema for code generation")
+		}
+		if err := traverser.TFResourceSchema(sdkProvider.ResourcesMap).Traverse(traverser.NewMaxItemsSync(p.ResourcesMap)); err != nil {
+			return nil, errors.Wrap(err, "cannot sync the MaxItems constraints between the Go schema and the JSON schema")
+		}
+		// use the JSON schema to temporarily prevent float64->int64
+		// conversions in the CRD APIs.
+		// We would like to convert to int64s with the next major release of
+		// the provider.
+		sdkProvider = p
+	}
+
+	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
+		ujconfig.WithDefaultResourceOptions(
+			ExternalNameConfigurations(),
+		),
+		ujconfig.WithRootGroup("vault.m.upbound.io"),
+		ujconfig.WithShortName("vault"),
+		ujconfig.WithIncludeList([]string{}),
+		ujconfig.WithTerraformPluginSDKIncludeList(ResourcesWithExternalNameConfig()),
+		ujconfig.WithTerraformPluginFrameworkIncludeList(TerraformPluginFrameworkResourceList()),
+		ujconfig.WithReferenceInjectors([]ujconfig.ReferenceInjector{reference.NewInjector(modulePath)}),
+		ujconfig.WithFeaturesPackage("internal/features"),
+		ujconfig.WithTerraformProvider(sdkProvider),
+		ujconfig.WithTerraformPluginFrameworkProvider(fwProvider),
 	)
 
 	for _, configure := range []func(provider *ujconfig.Provider){
@@ -105,6 +145,17 @@ func ResourcesWithExternalNameConfig() []string {
 	i := 0
 	for name := range ExternalNameConfigs {
 		// Expected format is regex and we'd like to have exact matches.
+		l[i] = name + "$"
+		i++
+	}
+	return l
+}
+
+func TerraformPluginFrameworkResourceList() []string {
+	l := make([]string, len(TerraformPluginFrameworkExternalNameConfigs))
+	i := 0
+	for name := range TerraformPluginFrameworkExternalNameConfigs {
+		// Expected format is regex, and we'd like to have exact matches.
 		l[i] = name + "$"
 		i++
 	}

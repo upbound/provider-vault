@@ -9,17 +9,18 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/crossplane/crossplane-runtime/pkg/resource"
-	"github.com/crossplane/upjet/pkg/terraform"
+	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
+	"github.com/crossplane/upjet/v2/pkg/terraform"
 	"github.com/pkg/errors"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	tfsdk "github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
-	"github.com/upbound/provider-vault/apis/v1beta1"
+	clusterv1beta1 "github.com/upbound/provider-vault/apis/cluster/v1beta1"
+	namespacedv1beta1 "github.com/upbound/provider-vault/apis/namespaced/v1beta1"
 )
 
 const (
@@ -82,54 +83,45 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 	return func(ctx context.Context, client client.Client, mg resource.Managed) (terraform.Setup, error) {
 		ps := terraform.Setup{}
 
-		configRef := mg.GetProviderConfigReference()
-		if configRef == nil {
-			return ps, errors.New(errNoProviderConfig)
-		}
-		pc := &v1beta1.ProviderConfig{}
-		if err := client.Get(ctx, types.NamespacedName{Name: configRef.Name}, pc); err != nil {
-			return ps, errors.Wrap(err, errGetProviderConfig)
-		}
-
-		t := resource.NewProviderConfigUsageTracker(client, &v1beta1.ProviderConfigUsage{})
-		if err := t.Track(ctx, mg); err != nil {
-			return ps, errors.Wrap(err, errTrackUsage)
+		pcSpec, err := resolveProviderConfig(ctx, client, mg)
+		if err != nil {
+			return terraform.Setup{}, err
 		}
 
 		// set provider configuration
 		ps.Configuration = map[string]any{}
 
 		// Assign mandatory address parameter
-		ps.Configuration[keyAddress] = pc.Spec.Address
+		ps.Configuration[keyAddress] = pcSpec.Address
 
 		// Assign optional parameters
-		ps.Configuration[keyAddAddressToEnv] = pc.Spec.AddAddressToEnv
-		ps.Configuration[keySkipTLSVerify] = pc.Spec.SkipTLSVerify
-		if len(pc.Spec.TLSServerName) > 0 {
-			ps.Configuration[keyTLSServerName] = pc.Spec.TLSServerName
+		ps.Configuration[keyAddAddressToEnv] = pcSpec.AddAddressToEnv
+		ps.Configuration[keySkipTLSVerify] = pcSpec.SkipTLSVerify
+		if len(pcSpec.TLSServerName) > 0 {
+			ps.Configuration[keyTLSServerName] = pcSpec.TLSServerName
 		}
-		ps.Configuration[keySkipChildToken] = pc.Spec.SkipChildToken
-		ps.Configuration[keyMaxLeaseTTLSeconds] = pc.Spec.MaxLeaseTTLSeconds
-		ps.Configuration[keyMaxRetries] = pc.Spec.MaxRetries
-		ps.Configuration[keyMaxRetriesCcc] = pc.Spec.MaxRetriesCcc
-		if len(pc.Spec.Namespace) > 0 {
-			ps.Configuration[keyNamespace] = pc.Spec.Namespace
+		ps.Configuration[keySkipChildToken] = pcSpec.SkipChildToken
+		ps.Configuration[keyMaxLeaseTTLSeconds] = pcSpec.MaxLeaseTTLSeconds
+		ps.Configuration[keyMaxRetries] = pcSpec.MaxRetries
+		ps.Configuration[keyMaxRetriesCcc] = pcSpec.MaxRetriesCcc
+		if len(pcSpec.Namespace) > 0 {
+			ps.Configuration[keyNamespace] = pcSpec.Namespace
 		}
-		ps.Configuration[keySkipGetVaultVersion] = pc.Spec.SkipGetVaultVersion
-		if len(pc.Spec.VaultVersionOverride) > 0 {
-			ps.Configuration[keyVaultVersionOverride] = pc.Spec.VaultVersionOverride
+		ps.Configuration[keySkipGetVaultVersion] = pcSpec.SkipGetVaultVersion
+		if len(pcSpec.VaultVersionOverride) > 0 {
+			ps.Configuration[keyVaultVersionOverride] = pcSpec.VaultVersionOverride
 		}
-		if pc.Spec.Headers != (v1beta1.ProviderHeaders{}) {
-			ps.Configuration[keyHeaders] = pc.Spec.Headers
+		if pcSpec.Headers != (namespacedv1beta1.ProviderHeaders{}) {
+			ps.Configuration[keyHeaders] = pcSpec.Headers
 		}
 
-		switch pc.Spec.Credentials.Source { //nolint:exhaustive
+		switch pcSpec.Credentials.Source { //nolint:exhaustive
 		case credentialsSourceKubernetes:
-			if err := kubernetesAuth(pc, &ps); err != nil {
+			if err := kubernetesAuth(pcSpec, &ps); err != nil {
 				return ps, err
 			}
 		default:
-			if err := commonCredentialsAuth(ctx, client, pc, &ps); err != nil {
+			if err := commonCredentialsAuth(ctx, client, pcSpec, &ps); err != nil {
 				return ps, err
 			}
 		}
@@ -141,8 +133,8 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 	}
 }
 
-func commonCredentialsAuth(ctx context.Context, client client.Client, pc *v1beta1.ProviderConfig, ps *terraform.Setup) error {
-	data, err := resource.CommonCredentialExtractor(ctx, pc.Spec.Credentials.Source, client, pc.Spec.Credentials.CommonCredentialSelectors)
+func commonCredentialsAuth(ctx context.Context, client client.Client, pcSpec *namespacedv1beta1.ProviderConfigSpec, ps *terraform.Setup) error {
+	data, err := resource.CommonCredentialExtractor(ctx, pcSpec.Credentials.Source, client, pcSpec.Credentials.CommonCredentialSelectors)
 	if err != nil {
 		return errors.Wrap(err, errExtractCredentials)
 	}
@@ -177,13 +169,13 @@ func commonCredentialsAuth(ctx context.Context, client client.Client, pc *v1beta
 	return nil
 }
 
-func kubernetesAuth(pc *v1beta1.ProviderConfig, ps *terraform.Setup) error {
+func kubernetesAuth(pcSpec *namespacedv1beta1.ProviderConfigSpec, ps *terraform.Setup) error {
 	jwt, err := os.ReadFile(serviceAccountTokenPath)
 	if err != nil {
 		return errors.Wrap(err, errNoServiceAccountToken)
 	}
 
-	if pc.Spec.Role == nil || *pc.Spec.Role == "" {
+	if pcSpec.Role == nil || *pcSpec.Role == "" {
 		return errors.New(errNoRole)
 	}
 
@@ -191,7 +183,7 @@ func kubernetesAuth(pc *v1beta1.ProviderConfig, ps *terraform.Setup) error {
 		map[string]string{
 			"jwt":   string(jwt),
 			"mount": "kubernetes",
-			"role":  *pc.Spec.Role,
+			"role":  *pcSpec.Role,
 		},
 	}
 
@@ -213,4 +205,87 @@ func configureNoForkVaultClient(ctx context.Context, ps *terraform.Setup, p sche
 	}
 	ps.Meta = p.Meta()
 	return nil
+}
+
+func legacyToModernProviderConfigSpec(pc *clusterv1beta1.ProviderConfig) (*namespacedv1beta1.ProviderConfigSpec, error) {
+	// TODO(erhan): this is hacky and potentially lossy, generate or manually implement
+	if pc == nil {
+		return nil, nil
+	}
+	data, err := json.Marshal(pc.Spec)
+	if err != nil {
+		return nil, err
+	}
+
+	var mSpec namespacedv1beta1.ProviderConfigSpec
+	err = json.Unmarshal(data, &mSpec)
+	return &mSpec, err
+}
+
+func resolveProviderConfig(ctx context.Context, crClient client.Client, mg resource.Managed) (*namespacedv1beta1.ProviderConfigSpec, error) {
+	switch managed := mg.(type) {
+	case resource.LegacyManaged:
+		return resolveProviderConfigLegacy(ctx, crClient, managed)
+	case resource.ModernManaged:
+		return resolveProviderConfigModern(ctx, crClient, managed)
+	default:
+		return nil, errors.New("resource is not a managed")
+	}
+}
+
+func resolveProviderConfigLegacy(ctx context.Context, client client.Client, mg resource.LegacyManaged) (*namespacedv1beta1.ProviderConfigSpec, error) {
+	configRef := mg.GetProviderConfigReference()
+	if configRef == nil {
+		return nil, errors.New(errNoProviderConfig)
+	}
+	pc := &clusterv1beta1.ProviderConfig{}
+	if err := client.Get(ctx, types.NamespacedName{Name: configRef.Name}, pc); err != nil {
+		return nil, errors.Wrap(err, errGetProviderConfig)
+	}
+
+	t := resource.NewLegacyProviderConfigUsageTracker(client, &clusterv1beta1.ProviderConfigUsage{})
+	if err := t.Track(ctx, mg); err != nil {
+		return nil, errors.Wrap(err, errTrackUsage)
+	}
+
+	return legacyToModernProviderConfigSpec(pc)
+}
+
+func resolveProviderConfigModern(ctx context.Context, crClient client.Client, mg resource.ModernManaged) (*namespacedv1beta1.ProviderConfigSpec, error) {
+	configRef := mg.GetProviderConfigReference()
+	if configRef == nil {
+		return nil, errors.New(errNoProviderConfig)
+	}
+
+	pcRuntimeObj, err := crClient.Scheme().New(namespacedv1beta1.SchemeGroupVersion.WithKind(configRef.Kind))
+	if err != nil {
+		return nil, errors.Wrapf(err, "referenced provider config kind %q is invalid for %s/%s", configRef.Kind, mg.GetNamespace(), mg.GetName())
+	}
+	pcObj, ok := pcRuntimeObj.(resource.ProviderConfig)
+	if !ok {
+		return nil, errors.Errorf("referenced provider config kind %q is not a provider config type %s/%s", configRef.Kind, mg.GetNamespace(), mg.GetName())
+	}
+
+	// Namespace will be ignored if the PC is a cluster-scoped type
+	if err := crClient.Get(ctx, types.NamespacedName{Name: configRef.Name, Namespace: mg.GetNamespace()}, pcObj); err != nil {
+		return nil, errors.Wrap(err, errGetProviderConfig)
+	}
+
+	var pcSpec namespacedv1beta1.ProviderConfigSpec
+	switch pc := pcObj.(type) {
+	case *namespacedv1beta1.ProviderConfig:
+		pcSpec = pc.Spec
+		if pcSpec.Credentials.CommonCredentialSelectors.SecretRef != nil {
+			pcSpec.Credentials.CommonCredentialSelectors.SecretRef.Namespace = mg.GetNamespace()
+		}
+	case *namespacedv1beta1.ClusterProviderConfig:
+		pcSpec = pc.Spec
+	default:
+		return nil, errors.New("unknown provider config kind")
+	}
+	t := resource.NewProviderConfigUsageTracker(crClient, &namespacedv1beta1.ProviderConfigUsage{})
+	if err := t.Track(ctx, mg); err != nil {
+		return nil, errors.Wrap(err, errTrackUsage)
+	}
+	return &pcSpec, nil
 }

@@ -1,0 +1,429 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.18.0
+  name: endpoints.generic.vault.m.upbound.io
+spec:
+  group: generic.vault.m.upbound.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - vault
+    kind: Endpoint
+    listKind: EndpointList
+    plural: endpoints
+    singular: endpoint
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Endpoint is the Schema for the Endpoints API. Writes arbitrary
+          data to a given path in Vault
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: EndpointSpec defines the desired state of Endpoint
+            properties:
+              forProvider:
+                properties:
+                  dataJsonSecretRef:
+                    description: |-
+                      String containing a JSON-encoded object that will be
+                      written to the given path as the secret data.
+                      JSON-encoded data to write.
+                    properties:
+                      key:
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    type: object
+                  disableDelete:
+                    description: |-
+                      True/false. Set this to true if your
+                      vault authentication is not able to delete the data or if the endpoint
+                      does not support the DELETE method. Defaults to false.
+                      Don't attempt to delete the path from Vault if true
+                    type: boolean
+                  disableRead:
+                    description: |-
+                      True/false. Set this to true if your vault
+                      authentication is not able to read the data or if the endpoint does
+                      not support the GET method. Setting this to true will break drift
+                      detection. You should set this to true for endpoints that are
+                      write-only. Defaults to false.
+                      Don't attempt to read the path from Vault if true; drift won't be detected
+                    type: boolean
+                  ignoreAbsentFields:
+                    description: |-
+                      True/false. If set to true,
+                      ignore any fields present when the endpoint is read but that were not
+                      in data_json. Also, if a field that was written is not returned when
+                      the endpoint is read, treat that field as being up to date. You should
+                      set this to true when writing to endpoint that, when read, returns a
+                      different set of fields from the ones you wrote, as is common with
+                      many configuration endpoints. Defaults to false.
+                      When reading, disregard fields not present in data_json
+                    type: boolean
+                  namespace:
+                    description: |-
+                      The namespace to provision the resource in.
+                      The value should not contain leading or trailing forward slashes.
+                      The namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise.
+                      Target namespace. (requires Enterprise)
+                    type: string
+                  path:
+                    description: |-
+                      The full logical path at which to write the given
+                      data. Consult each backend's documentation to see which endpoints
+                      support the PUT methods and to determine whether they also support
+                      DELETE and GET.
+                      Full path where to the endpoint that will be written
+                    type: string
+                  writeFields:
+                    description: |-
+                      . A list of fields that should be returned
+                      in write_data_json and write_data. If omitted, data returned by
+                      the write operation is not available to the resource or included in
+                      state. This helps to avoid accidental storage of sensitive values in
+                      state. Some endpoints, such as many dynamic secrets endpoints, return
+                      data from writing to an endpoint rather than reading it. You should
+                      use write_fields if you need information returned in this way.
+                      Top-level fields returned by write to persist in state
+                    items:
+                      type: string
+                    type: array
+                type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  dataJsonSecretRef:
+                    description: |-
+                      String containing a JSON-encoded object that will be
+                      written to the given path as the secret data.
+                      JSON-encoded data to write.
+                    properties:
+                      key:
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    type: object
+                  disableDelete:
+                    description: |-
+                      True/false. Set this to true if your
+                      vault authentication is not able to delete the data or if the endpoint
+                      does not support the DELETE method. Defaults to false.
+                      Don't attempt to delete the path from Vault if true
+                    type: boolean
+                  disableRead:
+                    description: |-
+                      True/false. Set this to true if your vault
+                      authentication is not able to read the data or if the endpoint does
+                      not support the GET method. Setting this to true will break drift
+                      detection. You should set this to true for endpoints that are
+                      write-only. Defaults to false.
+                      Don't attempt to read the path from Vault if true; drift won't be detected
+                    type: boolean
+                  ignoreAbsentFields:
+                    description: |-
+                      True/false. If set to true,
+                      ignore any fields present when the endpoint is read but that were not
+                      in data_json. Also, if a field that was written is not returned when
+                      the endpoint is read, treat that field as being up to date. You should
+                      set this to true when writing to endpoint that, when read, returns a
+                      different set of fields from the ones you wrote, as is common with
+                      many configuration endpoints. Defaults to false.
+                      When reading, disregard fields not present in data_json
+                    type: boolean
+                  namespace:
+                    description: |-
+                      The namespace to provision the resource in.
+                      The value should not contain leading or trailing forward slashes.
+                      The namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise.
+                      Target namespace. (requires Enterprise)
+                    type: string
+                  path:
+                    description: |-
+                      The full logical path at which to write the given
+                      data. Consult each backend's documentation to see which endpoints
+                      support the PUT methods and to determine whether they also support
+                      DELETE and GET.
+                      Full path where to the endpoint that will be written
+                    type: string
+                  writeFields:
+                    description: |-
+                      . A list of fields that should be returned
+                      in write_data_json and write_data. If omitted, data returned by
+                      the write operation is not available to the resource or included in
+                      state. This helps to avoid accidental storage of sensitive values in
+                      state. Some endpoints, such as many dynamic secrets endpoints, return
+                      data from writing to an endpoint rather than reading it. You should
+                      use write_fields if you need information returned in this way.
+                      Top-level fields returned by write to persist in state
+                    items:
+                      type: string
+                    type: array
+                required:
+                - dataJsonSecretRef
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  kind: ClusterProviderConfig
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  kind:
+                    description: Kind of the referenced object.
+                    type: string
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - kind
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                required:
+                - name
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.dataJsonSecretRef is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.dataJsonSecretRef)'
+            - message: spec.forProvider.path is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.path)
+                || (has(self.initProvider) && has(self.initProvider.path))'
+          status:
+            description: EndpointStatus defines the observed state of Endpoint.
+            properties:
+              atProvider:
+                properties:
+                  disableDelete:
+                    description: |-
+                      True/false. Set this to true if your
+                      vault authentication is not able to delete the data or if the endpoint
+                      does not support the DELETE method. Defaults to false.
+                      Don't attempt to delete the path from Vault if true
+                    type: boolean
+                  disableRead:
+                    description: |-
+                      True/false. Set this to true if your vault
+                      authentication is not able to read the data or if the endpoint does
+                      not support the GET method. Setting this to true will break drift
+                      detection. You should set this to true for endpoints that are
+                      write-only. Defaults to false.
+                      Don't attempt to read the path from Vault if true; drift won't be detected
+                    type: boolean
+                  id:
+                    type: string
+                  ignoreAbsentFields:
+                    description: |-
+                      True/false. If set to true,
+                      ignore any fields present when the endpoint is read but that were not
+                      in data_json. Also, if a field that was written is not returned when
+                      the endpoint is read, treat that field as being up to date. You should
+                      set this to true when writing to endpoint that, when read, returns a
+                      different set of fields from the ones you wrote, as is common with
+                      many configuration endpoints. Defaults to false.
+                      When reading, disregard fields not present in data_json
+                    type: boolean
+                  namespace:
+                    description: |-
+                      The namespace to provision the resource in.
+                      The value should not contain leading or trailing forward slashes.
+                      The namespace is always relative to the provider's configured namespace.
+                      Available only for Vault Enterprise.
+                      Target namespace. (requires Enterprise)
+                    type: string
+                  path:
+                    description: |-
+                      The full logical path at which to write the given
+                      data. Consult each backend's documentation to see which endpoints
+                      support the PUT methods and to determine whether they also support
+                      DELETE and GET.
+                      Full path where to the endpoint that will be written
+                    type: string
+                  writeData:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      A map whose keys are the top-level data keys
+                      returned from Vault by the write operation and whose values are the
+                      corresponding values. This map can only represent string data, so
+                      any non-string values returned from Vault are serialized as JSON.
+                      Only fields set in write_fields are present in the JSON data.
+                      Map of strings returned by write operation
+                    type: object
+                    x-kubernetes-map-type: granular
+                  writeDataJson:
+                    description: |-
+                      The JSON data returned by the write operation.
+                      Only fields set in write_fields are present in the JSON data.
+                      JSON data returned by write operation
+                    type: string
+                  writeFields:
+                    description: |-
+                      . A list of fields that should be returned
+                      in write_data_json and write_data. If omitted, data returned by
+                      the write operation is not available to the resource or included in
+                      state. This helps to avoid accidental storage of sensitive values in
+                      state. Some endpoints, such as many dynamic secrets endpoints, return
+                      data from writing to an endpoint rather than reading it. You should
+                      use write_fields if you need information returned in this way.
+                      Top-level fields returned by write to persist in state
+                    items:
+                      type: string
+                    type: array
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -1,0 +1,12 @@
+apiVersion: identity.vault.m.upbound.io/v1alpha1
+kind: MfaTotp
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/mfatotp
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    issuer: issuer1

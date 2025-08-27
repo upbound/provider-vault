@@ -1,0 +1,33 @@
+apiVersion: github.vault.m.upbound.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: github/v1alpha1/user
+  labels:
+    testing.upbound.io/example-name: tf_user
+  name: tf-user
+  namespace: upbound-system
+spec:
+  forProvider:
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    policies:
+    - developer
+    - read-only
+    user: john.doe
+
+---
+
+apiVersion: github.vault.m.upbound.io/v1alpha1
+kind: AuthBackend
+metadata:
+  annotations:
+    meta.upbound.io/example-id: github/v1alpha1/user
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    organization: myorg

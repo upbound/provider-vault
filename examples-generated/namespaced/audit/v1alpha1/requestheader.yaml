@@ -1,0 +1,13 @@
+apiVersion: audit.vault.m.upbound.io/v1alpha1
+kind: RequestHeader
+metadata:
+  annotations:
+    meta.upbound.io/example-id: audit/v1alpha1/requestheader
+  labels:
+    testing.upbound.io/example-name: x_forwarded_for
+  name: x-forwarded-for
+  namespace: upbound-system
+spec:
+  forProvider:
+    hmac: false
+    name: X-Forwarded-For

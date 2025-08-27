@@ -8,7 +8,7 @@ export TERRAFORM_VERSION := 1.5.5
 
 export TERRAFORM_PROVIDER_SOURCE ?= hashicorp/vault
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/hashicorp/terraform-provider-vault
-export TERRAFORM_PROVIDER_VERSION ?= 4.4.0
+export TERRAFORM_PROVIDER_VERSION ?= 5.2.1
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-vault
 export TERRAFORM_DOCS_PATH ?= website/docs/r
 
@@ -37,20 +37,22 @@ NPROCS ?= 1
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
-GO_REQUIRED_VERSION ?= 1.23
-GOLANGCILINT_VERSION ?= 1.61.0
+GO_REQUIRED_VERSION ?= 1.24
+GOLANGCILINT_VERSION ?= 1.64.8
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
-GO_SUBDIRS += cmd internal apis
+GO_SUBDIRS += cmd internal apis generate
 -include build/makelib/golang.mk
 
 # ====================================================================================
 # Setup Kubernetes tools
 
-KIND_VERSION = v0.18.0
-UP_VERSION = v0.29.0
-UP_CHANNEL = stable
-UPTEST_VERSION = v0.2.1
+KIND_VERSION = v0.29.0
+UP_VERSION = v0.40.3
+UP_CHANNEL = alpha
+UPTEST_VERSION = v1.4.0
+YQ_VERSION = v4.40.5
+CROSSPLANE_VERSION = 1.20.0
 RELDIR = "examples/release"
 -include build/makelib/k8s_tools.mk
 
@@ -77,7 +79,7 @@ xpkg.build.provider-vault: do.build.images
 
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.
-build.init: $(UP)
+build.init: $(UP) $(CROSSPLANE_CLI)
 
 # ====================================================================================
 # Fallthrough
@@ -94,6 +96,29 @@ fallthrough: submodules
 	@make
 
 # ====================================================================================
+# Setup Terraform for fetching provider schema
+TERRAFORM := $(TOOLS_HOST_DIR)/terraform-$(TERRAFORM_VERSION)
+TERRAFORM_WORKDIR := $(WORK_DIR)/terraform
+TERRAFORM_PROVIDER_SCHEMA := config/schema.json
+
+$(TERRAFORM):
+	@$(INFO) installing terraform $(HOSTOS)-$(HOSTARCH)
+	@mkdir -p $(TOOLS_HOST_DIR)/tmp-terraform
+	@curl -fsSL https://github.com/upbound/terraform/releases/download/v$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(SAFEHOST_PLATFORM).zip -o $(TOOLS_HOST_DIR)/tmp-terraform/terraform.zip
+	@unzip $(TOOLS_HOST_DIR)/tmp-terraform/terraform.zip -d $(TOOLS_HOST_DIR)/tmp-terraform
+	@mv $(TOOLS_HOST_DIR)/tmp-terraform/terraform $(TERRAFORM)
+	@rm -fr $(TOOLS_HOST_DIR)/tmp-terraform
+	@$(OK) installing terraform $(HOSTOS)-$(HOSTARCH)
+
+$(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM) $(YQ)
+	@$(INFO) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
+	@mkdir -p $(TERRAFORM_WORKDIR)
+	@echo '{"terraform":[{"required_providers":[{"provider":{"source":"'"$(TERRAFORM_PROVIDER_SOURCE)"'","version":"'"$(TERRAFORM_PROVIDER_VERSION)"'"}}],"required_version":"'"$(TERRAFORM_VERSION)"'"}]}' > $(TERRAFORM_WORKDIR)/main.tf.json
+	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) init -upgrade > $(TERRAFORM_WORKDIR)/terraform-logs.txt 2>&1
+	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) providers schema -json=true | $(YQ) --output-format json > $(TERRAFORM_PROVIDER_SCHEMA) 2>> $(TERRAFORM_WORKDIR)/terraform-logs.txt
+	@$(OK) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
+
+# ====================================================================================
 # Download provider's documentation
 
 pull-docs:
@@ -103,9 +128,9 @@ pull-docs:
 	fi
 	@git -C "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" sparse-checkout set "$(TERRAFORM_DOCS_PATH)"
 
-generate.init: pull-docs
+generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 
-.PHONY: pull-docs
+.PHONY: pull-docs $(TERRAFORM_PROVIDER_SCHEMA)
 # ====================================================================================
 # Targets
 
@@ -153,9 +178,9 @@ CROSSPLANE_NAMESPACE = upbound-system
 # - UPTEST_CLOUD_CREDENTIALS, cloud credentials
 #   for the provider being tested, e.g. export
 #   UPTEST_CLOUD_CREDENTIALS=$(cat ~/.aws/credentials)
-uptest: $(UPTEST) $(KUBECTL) $(KUTTL)
+uptest: $(UPTEST) $(KUBECTL) $(KUTTL) $(CHAINSAW)
 	@$(INFO) running automated tests
-	@KUBECTL=$(KUBECTL) KUTTL=$(KUTTL) $(UPTEST) e2e ${UPTEST_EXAMPLE_LIST} --setup-script=cluster/test/setup.sh --default-timeout=2400 || $(FAIL)
+	@KUBECTL=$(KUBECTL) KUTTL=$(KUTTL) CHAINSAW=$(CHAINSAW) $(UPTEST) e2e ${UPTEST_EXAMPLE_LIST} --setup-script=cluster/test/setup.sh --default-timeout=2400s || $(FAIL)
 	@$(OK) running automated tests
 
 local-deploy: build controlplane.up local.xpkg.deploy.provider.$(PROJECT_NAME)
@@ -199,3 +224,21 @@ crossplane.help:
 help-special: crossplane.help
 
 .PHONY: crossplane.help help-special
+
+CRDDIFF_VERSION = v0.12.1
+crddiff:
+	@$(INFO) Checking breaking CRD schema changes
+	@for crd in $${MODIFIED_CRD_LIST}; do \
+		if ! git cat-file -e "$${GITHUB_BASE_REF}:$${crd}" 2>/dev/null; then \
+			echo "CRD $${crd} does not exist in the $${GITHUB_BASE_REF} branch. Skipping..." ; \
+			continue ; \
+		fi ; \
+		echo "Checking $${crd} for breaking API changes..." ; \
+		changes_detected=$$(go run github.com/upbound/uptest/cmd/crddiff@$(CRDDIFF_VERSION) revision --enable-upjet-extensions <(git cat-file -p "$${GITHUB_BASE_REF}:$${crd}") "$${crd}" 2>&1) ; \
+		if [[ $$? != 0 ]] ; then \
+			printf "\033[31m"; echo "Breaking change detected!"; printf "\033[0m" ; \
+			echo "$${changes_detected}" ; \
+			echo ; \
+		fi ; \
+	done
+	@$(OK) Checking breaking CRD schema changes

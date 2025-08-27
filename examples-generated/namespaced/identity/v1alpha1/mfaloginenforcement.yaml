@@ -1,0 +1,36 @@
+apiVersion: identity.vault.m.upbound.io/v1alpha1
+kind: MfaLoginEnforcement
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/mfaloginenforcement
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    mfaMethodIdsRefs:
+    - name: example
+    name: default
+
+---
+
+apiVersion: identity.vault.m.upbound.io/v1alpha1
+kind: MfaDuo
+metadata:
+  annotations:
+    meta.upbound.io/example-id: identity/v1alpha1/mfaloginenforcement
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    apiHostname: foo.baz
+    integrationKeySecretRef:
+      key: example-key
+      name: example-secret
+    pushInfo: push-info
+    secretKeySecretRef:
+      key: example-key
+      name: example-secret
