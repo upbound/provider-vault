@@ -1,6 +1,6 @@
 module github.com/upbound/provider-vault
 
-go 1.23.12
+go 1.24.10
 
 require (
 	dario.cat/mergo v1.0.1
