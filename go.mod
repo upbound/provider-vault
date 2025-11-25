@@ -1,13 +1,13 @@
 module github.com/upbound/provider-vault
 
-go 1.24.6
+go 1.24.10
 
 require (
 	dario.cat/mergo v1.0.2
 	github.com/alecthomas/kingpin/v2 v2.4.0
 	github.com/crossplane/crossplane-runtime/v2 v2.0.0
 	github.com/crossplane/crossplane-tools v0.0.0-20250731192036-00d407d8b7ec
-	github.com/crossplane/upjet/v2 v2.0.0
+	github.com/crossplane/upjet/v2 v2.0.1-0.20251009193737-0b7f640373c8
 	github.com/hashicorp/terraform-json v0.25.0
 	github.com/hashicorp/terraform-plugin-framework v1.15.1
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.37.0
