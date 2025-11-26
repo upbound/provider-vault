@@ -38,7 +38,7 @@ type MfaLoginEnforcementInitParameters struct {
 
 	// Set of MFA method UUIDs.
 	// Set of MFA method UUIDs.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/identity/v1alpha1.MfaDuo
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/identity/v1alpha1.MfaDuo
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("method_id",true)
 	// +listType=set
 	MfaMethodIds []*string `json:"mfaMethodIds,omitempty" tf:"mfa_method_ids,omitempty"`
@@ -138,7 +138,7 @@ type MfaLoginEnforcementParameters struct {
 
 	// Set of MFA method UUIDs.
 	// Set of MFA method UUIDs.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/identity/v1alpha1.MfaDuo
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/identity/v1alpha1.MfaDuo
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("method_id",true)
 	// +kubebuilder:validation:Optional
 	// +listType=set

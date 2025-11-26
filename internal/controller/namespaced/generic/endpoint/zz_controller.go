@@ -21,8 +21,8 @@ import (
 	"github.com/pkg/errors"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	v1alpha1 "github.com/upbound/provider-vault/apis/namespaced/generic/v1alpha1"
-	features "github.com/upbound/provider-vault/internal/features"
+	v1alpha1 "github.com/upbound/provider-vault/v3/apis/namespaced/generic/v1alpha1"
+	features "github.com/upbound/provider-vault/v3/internal/features"
 )
 
 // SetupGated adds a controller that reconciles Endpoint managed resources.

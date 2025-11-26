@@ -31,7 +31,7 @@ type SecretBackendRoleInitParameters struct {
 	// The path of the Kubernetes Secrets Engine backend mount to create
 	// the role in.
 	// The mount path for the Kubernetes secrets engine.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/kubernetes/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/kubernetes/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -209,7 +209,7 @@ type SecretBackendRoleParameters struct {
 	// The path of the Kubernetes Secrets Engine backend mount to create
 	// the role in.
 	// The mount path for the Kubernetes secrets engine.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/kubernetes/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/kubernetes/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`

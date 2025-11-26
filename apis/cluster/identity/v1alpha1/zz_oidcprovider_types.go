@@ -18,7 +18,7 @@ type OidcProviderInitParameters struct {
 	// The client IDs that are permitted to use the provider.
 	// If empty, no clients are allowed. If *, all clients are allowed.
 	// The client IDs that are permitted to use the provider. If empty, no clients are allowed. If "*", all clients are allowed.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.OidcClient
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/identity/v1alpha1.OidcClient
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("client_id",true)
 	// +listType=set
 	AllowedClientIds []*string `json:"allowedClientIds,omitempty" tf:"allowed_client_ids,omitempty"`
@@ -52,7 +52,7 @@ type OidcProviderInitParameters struct {
 
 	// The scopes available for requesting on the provider.
 	// The scopes available for requesting on the provider.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.OidcScope
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/identity/v1alpha1.OidcScope
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	// +listType=set
 	ScopesSupported []*string `json:"scopesSupported,omitempty" tf:"scopes_supported,omitempty"`
@@ -112,7 +112,7 @@ type OidcProviderParameters struct {
 	// The client IDs that are permitted to use the provider.
 	// If empty, no clients are allowed. If *, all clients are allowed.
 	// The client IDs that are permitted to use the provider. If empty, no clients are allowed. If "*", all clients are allowed.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.OidcClient
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/identity/v1alpha1.OidcClient
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("client_id",true)
 	// +kubebuilder:validation:Optional
 	// +listType=set
@@ -151,7 +151,7 @@ type OidcProviderParameters struct {
 
 	// The scopes available for requesting on the provider.
 	// The scopes available for requesting on the provider.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.OidcScope
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/identity/v1alpha1.OidcScope
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	// +listType=set

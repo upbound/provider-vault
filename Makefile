@@ -2,7 +2,7 @@
 # Setup Project
 
 PROJECT_NAME ?= provider-vault
-PROJECT_REPO ?= github.com/upbound/$(PROJECT_NAME)
+PROJECT_REPO ?= github.com/upbound/$(PROJECT_NAME)/v3
 
 export TERRAFORM_VERSION := 1.5.5
 

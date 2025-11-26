@@ -121,7 +121,7 @@ type SecretBackendRoleInitParameters struct {
 	AllowedUsersTemplate *bool `json:"allowedUsersTemplate,omitempty" tf:"allowed_users_template,omitempty"`
 
 	// The path where the SSH secret backend is mounted.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/vault/v1alpha1.Mount
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -345,7 +345,7 @@ type SecretBackendRoleParameters struct {
 	AllowedUsersTemplate *bool `json:"allowedUsersTemplate,omitempty" tf:"allowed_users_template,omitempty"`
 
 	// The path where the SSH secret backend is mounted.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/vault/v1alpha1.Mount
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`

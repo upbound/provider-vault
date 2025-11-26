@@ -23,7 +23,7 @@ type GroupMemberEntityIdsInitParameters struct {
 
 	// Group ID to assign member entities to.
 	// ID of the group.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/identity/v1alpha1.Group
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/identity/v1alpha1.Group
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	GroupID *string `json:"groupId,omitempty" tf:"group_id,omitempty"`
 
@@ -37,7 +37,7 @@ type GroupMemberEntityIdsInitParameters struct {
 
 	// List of member entities that belong to the group
 	// Entity IDs to be assigned as group members.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/identity/v1alpha1.Entity
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/identity/v1alpha1.Entity
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +listType=set
 	MemberEntityIds []*string `json:"memberEntityIds,omitempty" tf:"member_entity_ids,omitempty"`
@@ -94,7 +94,7 @@ type GroupMemberEntityIdsParameters struct {
 
 	// Group ID to assign member entities to.
 	// ID of the group.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/identity/v1alpha1.Group
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/identity/v1alpha1.Group
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	GroupID *string `json:"groupId,omitempty" tf:"group_id,omitempty"`
@@ -109,7 +109,7 @@ type GroupMemberEntityIdsParameters struct {
 
 	// List of member entities that belong to the group
 	// Entity IDs to be assigned as group members.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/identity/v1alpha1.Entity
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/identity/v1alpha1.Entity
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	// +listType=set

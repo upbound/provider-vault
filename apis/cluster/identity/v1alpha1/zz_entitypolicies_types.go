@@ -17,7 +17,7 @@ type EntityPoliciesInitParameters struct {
 
 	// Entity ID to assign policies to.
 	// ID of the entity.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.Entity
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/identity/v1alpha1.Entity
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	EntityID *string `json:"entityId,omitempty" tf:"entity_id,omitempty"`
 
@@ -79,7 +79,7 @@ type EntityPoliciesParameters struct {
 
 	// Entity ID to assign policies to.
 	// ID of the entity.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.Entity
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/identity/v1alpha1.Entity
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	EntityID *string `json:"entityId,omitempty" tf:"entity_id,omitempty"`

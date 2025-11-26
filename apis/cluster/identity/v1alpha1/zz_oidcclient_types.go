@@ -21,7 +21,7 @@ type OidcClientInitParameters struct {
 
 	// A list of assignment resources associated with the client.
 	// A list of assignment resources associated with the client.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.OidcAssignment
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/identity/v1alpha1.OidcAssignment
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	// +listType=set
 	Assignments []*string `json:"assignments,omitempty" tf:"assignments,omitempty"`
@@ -130,7 +130,7 @@ type OidcClientParameters struct {
 
 	// A list of assignment resources associated with the client.
 	// A list of assignment resources associated with the client.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/identity/v1alpha1.OidcAssignment
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/identity/v1alpha1.OidcAssignment
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	// +listType=set

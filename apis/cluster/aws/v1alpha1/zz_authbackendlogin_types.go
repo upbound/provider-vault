@@ -18,7 +18,7 @@ type AuthBackendLoginInitParameters struct {
 	// The unique name of the AWS auth backend. Defaults to
 	// 'aws'.
 	// AWS Auth Backend to read the token from.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -78,7 +78,7 @@ type AuthBackendLoginInitParameters struct {
 	// The name of the AWS auth backend role to create tokens
 	// against.
 	// AWS Auth Role to read the token from.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/aws/v1alpha1.AuthBackendRole
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/aws/v1alpha1.AuthBackendRole
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("role",false)
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
@@ -200,7 +200,7 @@ type AuthBackendLoginParameters struct {
 	// The unique name of the AWS auth backend. Defaults to
 	// 'aws'.
 	// AWS Auth Backend to read the token from.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -269,7 +269,7 @@ type AuthBackendLoginParameters struct {
 	// The name of the AWS auth backend role to create tokens
 	// against.
 	// AWS Auth Role to read the token from.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/aws/v1alpha1.AuthBackendRole
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/aws/v1alpha1.AuthBackendRole
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("role",false)
 	// +kubebuilder:validation:Optional
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`

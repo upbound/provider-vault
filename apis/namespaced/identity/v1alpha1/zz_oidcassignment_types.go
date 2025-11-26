@@ -18,7 +18,7 @@ type OidcAssignmentInitParameters struct {
 
 	// A set of Vault entity IDs.
 	// A list of Vault entity IDs.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/identity/v1alpha1.Entity
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/identity/v1alpha1.Entity
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +listType=set
 	EntityIds []*string `json:"entityIds,omitempty" tf:"entity_ids,omitempty"`
@@ -33,7 +33,7 @@ type OidcAssignmentInitParameters struct {
 
 	// A set of Vault group IDs.
 	// A list of Vault group IDs.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/identity/v1alpha1.Group
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/identity/v1alpha1.Group
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +listType=set
 	GroupIds []*string `json:"groupIds,omitempty" tf:"group_ids,omitempty"`
@@ -88,7 +88,7 @@ type OidcAssignmentParameters struct {
 
 	// A set of Vault entity IDs.
 	// A list of Vault entity IDs.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/identity/v1alpha1.Entity
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/identity/v1alpha1.Entity
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	// +listType=set
@@ -104,7 +104,7 @@ type OidcAssignmentParameters struct {
 
 	// A set of Vault group IDs.
 	// A list of Vault group IDs.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/identity/v1alpha1.Group
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/identity/v1alpha1.Group
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	// +listType=set

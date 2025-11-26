@@ -26,7 +26,7 @@ type SecretBackendCrlConfigInitParameters struct {
 
 	// The path the PKI secret backend is mounted at, with no leading or trailing /s.
 	// The path of the PKI secret backend the resource belongs to.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/vault/v1alpha1.Mount
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -172,7 +172,7 @@ type SecretBackendCrlConfigParameters struct {
 
 	// The path the PKI secret backend is mounted at, with no leading or trailing /s.
 	// The path of the PKI secret backend the resource belongs to.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/vault/v1alpha1.Mount
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`

@@ -45,7 +45,7 @@ type TemplateInitParameters struct {
 
 	// Path to where the back-end is mounted within Vault.
 	// The mount path for a back-end, for example, the path given in "$ vault auth enable -path=my-aws aws".
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/transform/v1alpha1.Alphabet
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/transform/v1alpha1.Alphabet
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
@@ -148,7 +148,7 @@ type TemplateParameters struct {
 
 	// Path to where the back-end is mounted within Vault.
 	// The mount path for a back-end, for example, the path given in "$ vault auth enable -path=my-aws aws".
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/transform/v1alpha1.Alphabet
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/transform/v1alpha1.Alphabet
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`

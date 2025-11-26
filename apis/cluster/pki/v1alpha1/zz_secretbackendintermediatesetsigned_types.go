@@ -17,7 +17,7 @@ type SecretBackendIntermediateSetSignedInitParameters struct {
 
 	// The PKI secret backend the resource belongs to.
 	// The PKI secret backend the resource belongs to.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/vault/v1alpha1.Mount
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -33,7 +33,7 @@ type SecretBackendIntermediateSetSignedInitParameters struct {
 	// CA certificates to populate the whole chain, which will then enable returning the full chain from
 	// issue and sign operations.
 	// The certificate.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/pki/v1alpha1.SecretBackendRootSignIntermediate
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/pki/v1alpha1.SecretBackendRootSignIntermediate
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("certificate",true)
 	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
 
@@ -88,7 +88,7 @@ type SecretBackendIntermediateSetSignedParameters struct {
 
 	// The PKI secret backend the resource belongs to.
 	// The PKI secret backend the resource belongs to.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/vault/v1alpha1.Mount
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -105,7 +105,7 @@ type SecretBackendIntermediateSetSignedParameters struct {
 	// CA certificates to populate the whole chain, which will then enable returning the full chain from
 	// issue and sign operations.
 	// The certificate.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/pki/v1alpha1.SecretBackendRootSignIntermediate
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/pki/v1alpha1.SecretBackendRootSignIntermediate
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("certificate",true)
 	// +kubebuilder:validation:Optional
 	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`

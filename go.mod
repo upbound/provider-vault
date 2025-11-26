@@ -1,4 +1,4 @@
-module github.com/upbound/provider-vault
+module github.com/upbound/provider-vault/v3
 
 go 1.24.10
 

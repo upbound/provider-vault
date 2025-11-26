@@ -19,7 +19,7 @@ type CloudSecretCredsInitParameters struct {
 	// the path to the provider cloud secret backend to
 	// read credentials from, with no leading or trailing /s.
 	// provider cloud secret backend to generate tokens from
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/terraform/v1alpha1.CloudSecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/terraform/v1alpha1.CloudSecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("backend",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -39,7 +39,7 @@ type CloudSecretCredsInitParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Name of the role.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/terraform/v1alpha1.CloudSecretRole
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/terraform/v1alpha1.CloudSecretRole
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
@@ -87,7 +87,7 @@ type CloudSecretCredsParameters struct {
 	// the path to the provider cloud secret backend to
 	// read credentials from, with no leading or trailing /s.
 	// provider cloud secret backend to generate tokens from
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/terraform/v1alpha1.CloudSecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/terraform/v1alpha1.CloudSecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("backend",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -109,7 +109,7 @@ type CloudSecretCredsParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Name of the role.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/terraform/v1alpha1.CloudSecretRole
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/terraform/v1alpha1.CloudSecretRole
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
