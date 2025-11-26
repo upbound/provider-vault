@@ -19,8 +19,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	tfsdk "github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
-	clusterv1beta1 "github.com/upbound/provider-vault/apis/cluster/v1beta1"
-	namespacedv1beta1 "github.com/upbound/provider-vault/apis/namespaced/v1beta1"
+	clusterv1beta1 "github.com/upbound/provider-vault/v3/apis/cluster/v1beta1"
+	namespacedv1beta1 "github.com/upbound/provider-vault/v3/apis/namespaced/v1beta1"
 )
 
 const (

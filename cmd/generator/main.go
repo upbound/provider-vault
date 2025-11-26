@@ -15,7 +15,7 @@ import (
 	tfvault "github.com/hashicorp/terraform-provider-vault/vault"
 	tfvaultxpprovider "github.com/hashicorp/terraform-provider-vault/xpprovider"
 
-	"github.com/upbound/provider-vault/config"
+	"github.com/upbound/provider-vault/v3/config"
 )
 
 func main() {
