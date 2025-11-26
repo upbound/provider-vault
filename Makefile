@@ -183,11 +183,12 @@ uptest: $(UPTEST) $(KUBECTL) $(CHAINSAW) $(CROSSPLANE_CLI)
 	@KUBECTL=$(KUBECTL) CHAINSAW=$(CHAINSAW) CROSSPLANE_CLI=$(CROSSPLANE_CLI) CROSSPLANE_NAMESPACE=$(CROSSPLANE_NAMESPACE) $(UPTEST) e2e "${UPTEST_EXAMPLE_LIST}" --data-source="${UPTEST_DATASOURCE_PATH}" --setup-script=cluster/test/setup.sh --default-timeout=2400s || $(FAIL)
 	@$(OK) running automated tests
 
-local-deploy: build controlplane.up local.xpkg.deploy.provider.$(PROJECT_NAME)
-	@$(INFO) running locally built provider
-	@$(KUBECTL) wait provider.pkg $(PROJECT_NAME) --for condition=Healthy --timeout 5m
-	@$(KUBECTL) -n upbound-system wait --for=condition=Available deployment --all --timeout=5m
-	@$(OK) running locally built provider
+local-deploy: build controlplane.up $(YQ)
+	$(MAKE) local.xpkg.deploy.provider.$(PROJECT_NAME) DRC_FILE="./examples/deploymentruntimeconfig.yaml" && \
+	$(INFO) running locally built provider && \
+	$(KUBECTL) wait provider.pkg $(PROJECT_NAME) --for condition=Healthy --timeout 5m && \
+	$(KUBECTL) -n upbound-system wait --for=condition=Available deployment --all --timeout=5m && \
+	$(OK) running locally built provider
 
 e2e: build controlplane.up local-deploy uptest
 
