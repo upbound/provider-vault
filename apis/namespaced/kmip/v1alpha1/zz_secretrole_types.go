@@ -82,7 +82,7 @@ type SecretRoleInitParameters struct {
 	// The unique path this backend should be mounted at. Must
 	// not begin or end with a /. Defaults to kmip.
 	// Path where KMIP backend is mounted
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/kmip/v1alpha1.SecretScope
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/kmip/v1alpha1.SecretScope
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
@@ -100,7 +100,7 @@ type SecretRoleInitParameters struct {
 
 	// Name of the scope.
 	// Name of the scope
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/kmip/v1alpha1.SecretScope
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/kmip/v1alpha1.SecretScope
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("scope",false)
 	Scope *string `json:"scope,omitempty" tf:"scope,omitempty"`
 
@@ -300,7 +300,7 @@ type SecretRoleParameters struct {
 	// The unique path this backend should be mounted at. Must
 	// not begin or end with a /. Defaults to kmip.
 	// Path where KMIP backend is mounted
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/kmip/v1alpha1.SecretScope
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/kmip/v1alpha1.SecretScope
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
@@ -320,7 +320,7 @@ type SecretRoleParameters struct {
 
 	// Name of the scope.
 	// Name of the scope
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/kmip/v1alpha1.SecretScope
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/kmip/v1alpha1.SecretScope
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("scope",false)
 	// +kubebuilder:validation:Optional
 	Scope *string `json:"scope,omitempty" tf:"scope,omitempty"`

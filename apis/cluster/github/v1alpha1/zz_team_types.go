@@ -18,7 +18,7 @@ type TeamInitParameters struct {
 	// Path where the github auth backend is mounted. Defaults to github
 	// if not specified.
 	// Auth backend to which team mapping will be configured.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/github/v1alpha1.AuthBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/github/v1alpha1.AuthBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -76,7 +76,7 @@ type TeamParameters struct {
 	// Path where the github auth backend is mounted. Defaults to github
 	// if not specified.
 	// Auth backend to which team mapping will be configured.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/github/v1alpha1.AuthBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/github/v1alpha1.AuthBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`

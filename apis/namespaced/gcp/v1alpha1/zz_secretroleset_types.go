@@ -56,7 +56,7 @@ type SecretRolesetInitParameters struct {
 
 	// Path where the GCP Secrets Engine is mounted
 	// Path where the GCP secrets engine is mounted.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/gcp/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/gcp/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -140,7 +140,7 @@ type SecretRolesetParameters struct {
 
 	// Path where the GCP Secrets Engine is mounted
 	// Path where the GCP secrets engine is mounted.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/gcp/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/gcp/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`

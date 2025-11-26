@@ -27,7 +27,7 @@ type VaultNamespaceInitParameters struct {
 	// The namespace is always relative to the provider's configured namespace.
 	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/vault/v1alpha1.VaultNamespace
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/vault/v1alpha1.VaultNamespace
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
@@ -95,7 +95,7 @@ type VaultNamespaceParameters struct {
 	// The namespace is always relative to the provider's configured namespace.
 	// Available only for Vault Enterprise.
 	// Target namespace. (requires Enterprise)
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/vault/v1alpha1.VaultNamespace
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/vault/v1alpha1.VaultNamespace
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`

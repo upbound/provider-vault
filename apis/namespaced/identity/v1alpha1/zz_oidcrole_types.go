@@ -24,7 +24,7 @@ type OidcRoleInitParameters struct {
 	// A configured named key, the key must already exist
 	// before tokens can be issued.
 	// A configured named key, the key must already exist.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/identity/v1alpha1.OidcKey
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/identity/v1alpha1.OidcKey
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
@@ -108,7 +108,7 @@ type OidcRoleParameters struct {
 	// A configured named key, the key must already exist
 	// before tokens can be issued.
 	// A configured named key, the key must already exist.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/namespaced/identity/v1alpha1.OidcKey
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/identity/v1alpha1.OidcKey
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`

@@ -16,7 +16,7 @@ import (
 type AuthBackendRoleSecretIDInitParameters struct {
 
 	// Unique name of the auth backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -51,7 +51,7 @@ type AuthBackendRoleSecretIDInitParameters struct {
 
 	// The name of the role to create the SecretID for.
 	// Name of the role.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/approle/v1alpha1.AuthBackendRole
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/approle/v1alpha1.AuthBackendRole
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("role_name",false)
 	RoleName *string `json:"roleName,omitempty" tf:"role_name,omitempty"`
 
@@ -146,7 +146,7 @@ type AuthBackendRoleSecretIDObservation struct {
 type AuthBackendRoleSecretIDParameters struct {
 
 	// Unique name of the auth backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -186,7 +186,7 @@ type AuthBackendRoleSecretIDParameters struct {
 
 	// The name of the role to create the SecretID for.
 	// Name of the role.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/apis/cluster/approle/v1alpha1.AuthBackendRole
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/approle/v1alpha1.AuthBackendRole
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("role_name",false)
 	// +kubebuilder:validation:Optional
 	RoleName *string `json:"roleName,omitempty" tf:"role_name,omitempty"`
