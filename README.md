@@ -82,7 +82,7 @@ kubectl apply -f examples/namespaced/providerconfig/secret.yaml.tmpl
 
 Apply the provider config.
 ```
-kubectl apply -f providerconfig/providerconfig.yaml
+kubectl apply -f examples/namespaced/providerconfig/providerconfig.yaml
 ```
 
 ## Getting Started
@@ -90,7 +90,7 @@ kubectl apply -f providerconfig/providerconfig.yaml
 Install the provider by using the following command after changing the image tag
 to the [latest release](https://marketplace.upbound.io/providers/upbound/provider-vault):
 ```
-up ctp provider install upbound/provider-vault:v0.1.0
+up ctp provider install xpkg.upbound.io/upbound/provider-vault:v3.0.2
 ```
 
 Alternatively, you can use declarative installation:
@@ -101,7 +101,7 @@ kind: Provider
 metadata:
   name: provider-vault
 spec:
-  package: xpkg.upbound.io/upbound/provider-vault:v0.1.0
+  package: xpkg.upbound.io/upbound/provider-vault:v3.0.2
 EOF
 ```
 
