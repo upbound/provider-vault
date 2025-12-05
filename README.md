@@ -64,7 +64,7 @@ From the commandline, forward the vault pod port.
 kubectl port-forward vault-0 -n vault 8200:8200
 ```
 
-Update the examples/providerconfig/secret.yaml.tmpl
+Update the examples/namespaced/providerconfig/secret.yaml.tmpl
 with your root token or an access token that was
 created in Vault for your provider. Note that 
 this token should not be accessible 
@@ -77,7 +77,7 @@ kubectl apply -f package/crds
 
 Apply the secret.
 ```
-kubectl apply -f providerconfig/secret.yaml.tmpl
+kubectl apply -f examples/namespaced/providerconfig/secret.yaml.tmpl
 ```
 
 Apply the provider config.
