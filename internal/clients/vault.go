@@ -180,7 +180,7 @@ func kubernetesAuth(pcSpec *namespacedv1beta1.ProviderConfigSpec, ps *terraform.
 	}
 
 	mount := "kubernetes"
-	if pcSpec.MountPath != nil {
+	if pcSpec.MountPath != nil && *pcSpec.MountPath != "" {
 		mount = *pcSpec.MountPath
 	}
 
