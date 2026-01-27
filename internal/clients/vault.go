@@ -179,10 +179,15 @@ func kubernetesAuth(pcSpec *namespacedv1beta1.ProviderConfigSpec, ps *terraform.
 		return errors.New(errNoRole)
 	}
 
+	mount := "kubernetes"
+	if pcSpec.MountPath != nil {
+		mount = *pcSpec.MountPath
+	}
+
 	ps.Configuration[keyAuthLoginJWT] = []any{
 		map[string]string{
 			"jwt":   string(jwt),
-			"mount": "kubernetes",
+			"mount": mount,
 			"role":  *pcSpec.Role,
 		},
 	}
