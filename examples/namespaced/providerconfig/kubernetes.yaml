@@ -8,3 +8,4 @@ spec:
   credentials:
     source: Kubernetes
   role: vaultRole
+  mount: kubernetes # optional. defaults to "kubernetes"
