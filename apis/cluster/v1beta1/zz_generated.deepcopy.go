@@ -80,6 +80,11 @@ func (in *ProviderConfigSpec) DeepCopyInto(out *ProviderConfigSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Mount != nil {
+		in, out := &in.Mount, &out.Mount
+		*out = new(string)
+		**out = **in
+	}
 	in.Credentials.DeepCopyInto(&out.Credentials)
 }
 

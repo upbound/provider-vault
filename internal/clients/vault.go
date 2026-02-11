@@ -59,7 +59,6 @@ const (
 	keySkipGetVaultVersion  = "skip_get_vault_version"
 	keyVaultVersionOverride = "vault_version_override"
 	keyHeaders              = "headers"
-	keyRole                 = "role"
 
 	// error messages
 	errNoProviderConfig      = "no providerConfigRef provided"
@@ -179,10 +178,15 @@ func kubernetesAuth(pcSpec *namespacedv1beta1.ProviderConfigSpec, ps *terraform.
 		return errors.New(errNoRole)
 	}
 
+	mount := "kubernetes"
+	if pcSpec.Mount != nil && *pcSpec.Mount != "" {
+		mount = *pcSpec.Mount
+	}
+
 	ps.Configuration[keyAuthLoginJWT] = []any{
 		map[string]string{
 			"jwt":   string(jwt),
-			"mount": "kubernetes",
+			"mount": mount,
 			"role":  *pcSpec.Role,
 		},
 	}
