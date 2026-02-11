@@ -81,14 +81,9 @@ type SecretBackendStaticRoleInitParameters struct {
 	// The amount of time in seconds in which the rotations are allowed to occur starting from a given rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
-	// The password corresponding to the username in the database.
-	// Required when using the Rootless Password Rotation workflow for static roles. Only enabled for
-	// select DB engines (Postgres). Requires Vault 1.18+ Enterprise.
 	// The password corresponding to the username in the database. Required when using the Rootless Password Rotation workflow for static roles.
 	SelfManagedPasswordSecretRef *v1.LocalSecretKeySelector `json:"selfManagedPasswordSecretRef,omitempty" tf:"-"`
 
-	// If set to true, Vault will skip the
-	// initial secret rotation on import. Requires Vault 1.18+ Enterprise.
 	// Skip rotation of the password on import.
 	SkipImportRotation *bool `json:"skipImportRotation,omitempty" tf:"skip_import_rotation,omitempty"`
 
@@ -146,8 +141,6 @@ type SecretBackendStaticRoleObservation struct {
 	// The amount of time in seconds in which the rotations are allowed to occur starting from a given rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
-	// If set to true, Vault will skip the
-	// initial secret rotation on import. Requires Vault 1.18+ Enterprise.
 	// Skip rotation of the password on import.
 	SkipImportRotation *bool `json:"skipImportRotation,omitempty" tf:"skip_import_rotation,omitempty"`
 
@@ -233,15 +226,10 @@ type SecretBackendStaticRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
-	// The password corresponding to the username in the database.
-	// Required when using the Rootless Password Rotation workflow for static roles. Only enabled for
-	// select DB engines (Postgres). Requires Vault 1.18+ Enterprise.
 	// The password corresponding to the username in the database. Required when using the Rootless Password Rotation workflow for static roles.
 	// +kubebuilder:validation:Optional
 	SelfManagedPasswordSecretRef *v1.LocalSecretKeySelector `json:"selfManagedPasswordSecretRef,omitempty" tf:"-"`
 
-	// If set to true, Vault will skip the
-	// initial secret rotation on import. Requires Vault 1.18+ Enterprise.
 	// Skip rotation of the password on import.
 	// +kubebuilder:validation:Optional
 	SkipImportRotation *bool `json:"skipImportRotation,omitempty" tf:"skip_import_rotation,omitempty"`

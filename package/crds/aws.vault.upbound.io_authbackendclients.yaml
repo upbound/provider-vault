@@ -174,9 +174,8 @@ spec:
                         type: object
                     type: object
                   disableAutomatedRotation:
-                    description: |-
-                      Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
-                      Stops rotation of the root credential until set to false.
+                    description: Stops rotation of the root credential until set to
+                      false.
                     type: boolean
                   ec2Endpoint:
                     description: |-
@@ -230,23 +229,17 @@ spec:
                       Role ARN to assume for plugin identity token federation.
                     type: string
                   rotationPeriod:
-                    description: |-
-                      The amount of time in seconds Vault should wait before rotating the root credential.
-                      A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
-                      The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+                    description: The period of time in seconds between each rotation
+                      of the root credential. Cannot be used with rotation_schedule.
                     type: number
                   rotationSchedule:
-                    description: |-
-                      The schedule, in cron-style time format,
-                      defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
-                      The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+                    description: The cron-style schedule for the root credential to
+                      be rotated on. Cannot be used with rotation_period.
                     type: string
                   rotationWindow:
-                    description: |-
-                      The maximum amount of time in seconds allowed to complete
-                      a rotation when a scheduled token rotation occurs. The default rotation window is
-                      unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
-                      The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+                    description: The maximum amount of time in seconds Vault is allowed
+                      to complete a rotation once a scheduled rotation is triggered.
+                      Can only be used with rotation_schedule.
                     type: number
                   secretKeySecretRef:
                     description: |-
@@ -404,9 +397,8 @@ spec:
                         type: object
                     type: object
                   disableAutomatedRotation:
-                    description: |-
-                      Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
-                      Stops rotation of the root credential until set to false.
+                    description: Stops rotation of the root credential until set to
+                      false.
                     type: boolean
                   ec2Endpoint:
                     description: |-
@@ -460,23 +452,17 @@ spec:
                       Role ARN to assume for plugin identity token federation.
                     type: string
                   rotationPeriod:
-                    description: |-
-                      The amount of time in seconds Vault should wait before rotating the root credential.
-                      A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
-                      The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+                    description: The period of time in seconds between each rotation
+                      of the root credential. Cannot be used with rotation_schedule.
                     type: number
                   rotationSchedule:
-                    description: |-
-                      The schedule, in cron-style time format,
-                      defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
-                      The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+                    description: The cron-style schedule for the root credential to
+                      be rotated on. Cannot be used with rotation_period.
                     type: string
                   rotationWindow:
-                    description: |-
-                      The maximum amount of time in seconds allowed to complete
-                      a rotation when a scheduled token rotation occurs. The default rotation window is
-                      unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
-                      The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+                    description: The maximum amount of time in seconds Vault is allowed
+                      to complete a rotation once a scheduled rotation is triggered.
+                      Can only be used with rotation_schedule.
                     type: number
                   secretKeySecretRef:
                     description: |-
@@ -618,9 +604,8 @@ spec:
                       Unique name of the auth backend to configure.
                     type: string
                   disableAutomatedRotation:
-                    description: |-
-                      Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
-                      Stops rotation of the root credential until set to false.
+                    description: Stops rotation of the root credential until set to
+                      false.
                     type: boolean
                   ec2Endpoint:
                     description: |-
@@ -676,23 +661,17 @@ spec:
                       Role ARN to assume for plugin identity token federation.
                     type: string
                   rotationPeriod:
-                    description: |-
-                      The amount of time in seconds Vault should wait before rotating the root credential.
-                      A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
-                      The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
+                    description: The period of time in seconds between each rotation
+                      of the root credential. Cannot be used with rotation_schedule.
                     type: number
                   rotationSchedule:
-                    description: |-
-                      The schedule, in cron-style time format,
-                      defining the schedule on which Vault should rotate the root token. Requires Vault Enterprise 1.19+.
-                      The cron-style schedule for the root credential to be rotated on. Cannot be used with rotation_period.
+                    description: The cron-style schedule for the root credential to
+                      be rotated on. Cannot be used with rotation_period.
                     type: string
                   rotationWindow:
-                    description: |-
-                      The maximum amount of time in seconds allowed to complete
-                      a rotation when a scheduled token rotation occurs. The default rotation window is
-                      unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
-                      The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+                    description: The maximum amount of time in seconds Vault is allowed
+                      to complete a rotation once a scheduled rotation is triggered.
+                      Can only be used with rotation_schedule.
                     type: number
                   stsEndpoint:
                     description: |-

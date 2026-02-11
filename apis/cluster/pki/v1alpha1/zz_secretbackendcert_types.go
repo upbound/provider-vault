@@ -38,7 +38,6 @@ type SecretBackendCertInitParameters struct {
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
 	// A base 64 encoded value or an empty string to associate with the certificate's serial number. The role's no_store_metadata must be set to false, otherwise an error is returned when specified.
-	// A base 64 encoded value or an empty string to associate with the certificate's serial number. The role's no_store_metadata must be set to false, otherwise an error is returned when specified.
 	CertMetadata *string `json:"certMetadata,omitempty" tf:"cert_metadata,omitempty"`
 
 	// CN of certificate to create
@@ -86,7 +85,6 @@ type SecretBackendCertInitParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
-	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
 	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
 
 	// List of other SANs
@@ -97,11 +95,10 @@ type SecretBackendCertInitParameters struct {
 	// The private key format.
 	PrivateKeyFormat *string `json:"privateKeyFormat,omitempty" tf:"private_key_format,omitempty"`
 
-	// If set to true, the certificate will be revoked on resource destruction using the revoke PKI API. Conflicts with revoke_with_key. Default false.
+	// If set to true, the certificate will be revoked on resource destruction.
 	// Revoke the certificate upon resource destruction.
 	Revoke *bool `json:"revoke,omitempty" tf:"revoke,omitempty"`
 
-	// If set to true, the certificate will be revoked on resource destruction using the revoke-with-key PKI API. Conflicts with revoke. Default false
 	// Revoke the certificate with private key method upon resource destruction.
 	RevokeWithKey *bool `json:"revokeWithKey,omitempty" tf:"revoke_with_key,omitempty"`
 
@@ -136,7 +133,6 @@ type SecretBackendCertObservation struct {
 	// The CA chain.
 	CAChain *string `json:"caChain,omitempty" tf:"ca_chain,omitempty"`
 
-	// A base 64 encoded value or an empty string to associate with the certificate's serial number. The role's no_store_metadata must be set to false, otherwise an error is returned when specified.
 	// A base 64 encoded value or an empty string to associate with the certificate's serial number. The role's no_store_metadata must be set to false, otherwise an error is returned when specified.
 	CertMetadata *string `json:"certMetadata,omitempty" tf:"cert_metadata,omitempty"`
 
@@ -189,7 +185,6 @@ type SecretBackendCertObservation struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
-	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
 	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
 
 	// List of other SANs
@@ -208,11 +203,10 @@ type SecretBackendCertObservation struct {
 	// Initially false, and then set to true during refresh once the expiration is less than min_seconds_remaining in the future.
 	RenewPending *bool `json:"renewPending,omitempty" tf:"renew_pending,omitempty"`
 
-	// If set to true, the certificate will be revoked on resource destruction using the revoke PKI API. Conflicts with revoke_with_key. Default false.
+	// If set to true, the certificate will be revoked on resource destruction.
 	// Revoke the certificate upon resource destruction.
 	Revoke *bool `json:"revoke,omitempty" tf:"revoke,omitempty"`
 
-	// If set to true, the certificate will be revoked on resource destruction using the revoke-with-key PKI API. Conflicts with revoke. Default false
 	// Revoke the certificate with private key method upon resource destruction.
 	RevokeWithKey *bool `json:"revokeWithKey,omitempty" tf:"revoke_with_key,omitempty"`
 
@@ -260,7 +254,6 @@ type SecretBackendCertParameters struct {
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
-	// A base 64 encoded value or an empty string to associate with the certificate's serial number. The role's no_store_metadata must be set to false, otherwise an error is returned when specified.
 	// A base 64 encoded value or an empty string to associate with the certificate's serial number. The role's no_store_metadata must be set to false, otherwise an error is returned when specified.
 	// +kubebuilder:validation:Optional
 	CertMetadata *string `json:"certMetadata,omitempty" tf:"cert_metadata,omitempty"`
@@ -318,7 +311,6 @@ type SecretBackendCertParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
-	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
 	// +kubebuilder:validation:Optional
 	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
 
@@ -332,12 +324,11 @@ type SecretBackendCertParameters struct {
 	// +kubebuilder:validation:Optional
 	PrivateKeyFormat *string `json:"privateKeyFormat,omitempty" tf:"private_key_format,omitempty"`
 
-	// If set to true, the certificate will be revoked on resource destruction using the revoke PKI API. Conflicts with revoke_with_key. Default false.
+	// If set to true, the certificate will be revoked on resource destruction.
 	// Revoke the certificate upon resource destruction.
 	// +kubebuilder:validation:Optional
 	Revoke *bool `json:"revoke,omitempty" tf:"revoke,omitempty"`
 
-	// If set to true, the certificate will be revoked on resource destruction using the revoke-with-key PKI API. Conflicts with revoke. Default false
 	// Revoke the certificate with private key method upon resource destruction.
 	// +kubebuilder:validation:Optional
 	RevokeWithKey *bool `json:"revokeWithKey,omitempty" tf:"revoke_with_key,omitempty"`

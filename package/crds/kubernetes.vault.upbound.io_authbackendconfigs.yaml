@@ -210,9 +210,8 @@ spec:
                     - namespace
                     type: object
                   useAnnotationsAsAliasMetadata:
-                    description: |-
-                      Use annotations from the client token's associated service account as alias metadata for the Vault entity. Requires Vault v1.16+ or Vault auth kubernetes plugin v0.18.0+
-                      Use annotations from the client token's associated service account as alias metadata for the Vault entity.
+                    description: Use annotations from the client token's associated
+                      service account as alias metadata for the Vault entity.
                     type: boolean
                 type: object
               initProvider:
@@ -365,9 +364,8 @@ spec:
                     - namespace
                     type: object
                   useAnnotationsAsAliasMetadata:
-                    description: |-
-                      Use annotations from the client token's associated service account as alias metadata for the Vault entity. Requires Vault v1.16+ or Vault auth kubernetes plugin v0.18.0+
-                      Use annotations from the client token's associated service account as alias metadata for the Vault entity.
+                    description: Use annotations from the client token's associated
+                      service account as alias metadata for the Vault entity.
                     type: boolean
                 type: object
               managementPolicies:
@@ -512,9 +510,8 @@ spec:
                       type: string
                     type: array
                   useAnnotationsAsAliasMetadata:
-                    description: |-
-                      Use annotations from the client token's associated service account as alias metadata for the Vault entity. Requires Vault v1.16+ or Vault auth kubernetes plugin v0.18.0+
-                      Use annotations from the client token's associated service account as alias metadata for the Vault entity.
+                    description: Use annotations from the client token's associated
+                      service account as alias metadata for the Vault entity.
                     type: boolean
                 type: object
               conditions:

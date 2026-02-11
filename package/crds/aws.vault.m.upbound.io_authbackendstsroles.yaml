@@ -151,9 +151,7 @@ spec:
                         type: object
                     type: object
                   externalId:
-                    description: |-
-                      External ID expected by the STS role. The associated STS role must be configured to require the external ID. Requires Vault 1.17+.
-                      External ID expected by the STS role.
+                    description: External ID expected by the STS role.
                     type: string
                   namespace:
                     description: |-
@@ -275,9 +273,7 @@ spec:
                         type: object
                     type: object
                   externalId:
-                    description: |-
-                      External ID expected by the STS role. The associated STS role must be configured to require the external ID. Requires Vault 1.17+.
-                      External ID expected by the STS role.
+                    description: External ID expected by the STS role.
                     type: string
                   namespace:
                     description: |-
@@ -378,9 +374,7 @@ spec:
                       Unique name of the auth backend to configure.
                     type: string
                   externalId:
-                    description: |-
-                      External ID expected by the STS role. The associated STS role must be configured to require the external ID. Requires Vault 1.17+.
-                      External ID expected by the STS role.
+                    description: External ID expected by the STS role.
                     type: string
                   id:
                     type: string

@@ -104,12 +104,9 @@ type SecretV2InitParameters struct {
 	// JSON-encoded secret data to write.
 	DataJSONSecretRef *v1.LocalSecretKeySelector `json:"dataJsonSecretRef,omitempty" tf:"-"`
 
-	// JSON-encoded secret data to write to Vault. Can be updated.
-	// Note: This property is write-only and will not be read from the API.
 	// Write-Only JSON-encoded secret data to write.
 	DataJSONWo *string `json:"dataJsonWo,omitempty" tf:"data_json_wo,omitempty"`
 
-	// The version of the data_json_wo. For more info see updating write-only attributes.
 	// Version counter for write-only secret data.
 	DataJSONWoVersion *float64 `json:"dataJsonWoVersion,omitempty" tf:"data_json_wo_version,omitempty"`
 
@@ -172,12 +169,9 @@ type SecretV2Observation struct {
 	// Custom metadata to be set for the secret.
 	CustomMetadata []CustomMetadataObservation `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
-	// JSON-encoded secret data to write to Vault. Can be updated.
-	// Note: This property is write-only and will not be read from the API.
 	// Write-Only JSON-encoded secret data to write.
 	DataJSONWo *string `json:"dataJsonWo,omitempty" tf:"data_json_wo,omitempty"`
 
-	// The version of the data_json_wo. For more info see updating write-only attributes.
 	// Version counter for write-only secret data.
 	DataJSONWoVersion *float64 `json:"dataJsonWoVersion,omitempty" tf:"data_json_wo_version,omitempty"`
 
@@ -249,13 +243,10 @@ type SecretV2Parameters struct {
 	// +kubebuilder:validation:Optional
 	DataJSONSecretRef *v1.LocalSecretKeySelector `json:"dataJsonSecretRef,omitempty" tf:"-"`
 
-	// JSON-encoded secret data to write to Vault. Can be updated.
-	// Note: This property is write-only and will not be read from the API.
 	// Write-Only JSON-encoded secret data to write.
 	// +kubebuilder:validation:Optional
 	DataJSONWo *string `json:"dataJsonWo,omitempty" tf:"data_json_wo,omitempty"`
 
-	// The version of the data_json_wo. For more info see updating write-only attributes.
 	// Version counter for write-only secret data.
 	// +kubebuilder:validation:Optional
 	DataJSONWoVersion *float64 `json:"dataJsonWoVersion,omitempty" tf:"data_json_wo_version,omitempty"`

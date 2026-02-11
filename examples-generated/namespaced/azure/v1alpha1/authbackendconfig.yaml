@@ -17,8 +17,6 @@ spec:
       name: example-secret
     identityTokenAudience: <TOKEN_AUDIENCE>
     identityTokenTtl: <TOKEN_TTL>
-    rotationSchedule: 0 * * * SAT
-    rotationWindow: 3600
     tenantIdSecretRef:
       key: example-key
       name: example-secret

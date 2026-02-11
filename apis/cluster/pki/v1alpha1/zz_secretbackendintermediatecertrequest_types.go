@@ -78,7 +78,6 @@ type SecretBackendIntermediateCertRequestInitParameters struct {
 	// The desired key type.
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
-	// Specifies key_usage to encode in the generated certificate.
 	// Specify the key usages to encode in the generated certificate.
 	KeyUsage []*string `json:"keyUsage,omitempty" tf:"key_usage,omitempty"`
 
@@ -127,11 +126,10 @@ type SecretBackendIntermediateCertRequestInitParameters struct {
 	// The province.
 	Province *string `json:"province,omitempty" tf:"province,omitempty"`
 
-	// The requested Subject's named Serial Number
+	// The serial number
 	// The requested Subject's named serial number.
 	SerialNumber *string `json:"serialNumber,omitempty" tf:"serial_number,omitempty"`
 
-	// The number of bits to use in the signature algorithm
 	// The number of bits to use in the signature algorithm.
 	SignatureBits *float64 `json:"signatureBits,omitempty" tf:"signature_bits,omitempty"`
 
@@ -214,7 +212,6 @@ type SecretBackendIntermediateCertRequestObservation struct {
 	// The desired key type.
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
-	// Specifies key_usage to encode in the generated certificate.
 	// Specify the key usages to encode in the generated certificate.
 	KeyUsage []*string `json:"keyUsage,omitempty" tf:"key_usage,omitempty"`
 
@@ -267,11 +264,10 @@ type SecretBackendIntermediateCertRequestObservation struct {
 	// The province.
 	Province *string `json:"province,omitempty" tf:"province,omitempty"`
 
-	// The requested Subject's named Serial Number
+	// The serial number
 	// The requested Subject's named serial number.
 	SerialNumber *string `json:"serialNumber,omitempty" tf:"serial_number,omitempty"`
 
-	// The number of bits to use in the signature algorithm
 	// The number of bits to use in the signature algorithm.
 	SignatureBits *float64 `json:"signatureBits,omitempty" tf:"signature_bits,omitempty"`
 
@@ -366,7 +362,6 @@ type SecretBackendIntermediateCertRequestParameters struct {
 	// +kubebuilder:validation:Optional
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
-	// Specifies key_usage to encode in the generated certificate.
 	// Specify the key usages to encode in the generated certificate.
 	// +kubebuilder:validation:Optional
 	KeyUsage []*string `json:"keyUsage,omitempty" tf:"key_usage,omitempty"`
@@ -426,12 +421,11 @@ type SecretBackendIntermediateCertRequestParameters struct {
 	// +kubebuilder:validation:Optional
 	Province *string `json:"province,omitempty" tf:"province,omitempty"`
 
-	// The requested Subject's named Serial Number
+	// The serial number
 	// The requested Subject's named serial number.
 	// +kubebuilder:validation:Optional
 	SerialNumber *string `json:"serialNumber,omitempty" tf:"serial_number,omitempty"`
 
-	// The number of bits to use in the signature algorithm
 	// The number of bits to use in the signature algorithm.
 	// +kubebuilder:validation:Optional
 	SignatureBits *float64 `json:"signatureBits,omitempty" tf:"signature_bits,omitempty"`

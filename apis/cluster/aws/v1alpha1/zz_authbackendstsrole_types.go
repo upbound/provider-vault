@@ -34,7 +34,6 @@ type AuthBackendStsRoleInitParameters struct {
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
-	// External ID expected by the STS role. The associated STS role must be configured to require the external ID. Requires Vault 1.17+.
 	// External ID expected by the STS role.
 	ExternalID *string `json:"externalId,omitempty" tf:"external_id,omitempty"`
 
@@ -62,7 +61,6 @@ type AuthBackendStsRoleObservation struct {
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
-	// External ID expected by the STS role. The associated STS role must be configured to require the external ID. Requires Vault 1.17+.
 	// External ID expected by the STS role.
 	ExternalID *string `json:"externalId,omitempty" tf:"external_id,omitempty"`
 
@@ -104,7 +102,6 @@ type AuthBackendStsRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
-	// External ID expected by the STS role. The associated STS role must be configured to require the external ID. Requires Vault 1.17+.
 	// External ID expected by the STS role.
 	// +kubebuilder:validation:Optional
 	ExternalID *string `json:"externalId,omitempty" tf:"external_id,omitempty"`

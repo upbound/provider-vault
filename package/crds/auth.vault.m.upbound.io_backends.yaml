@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Backend is the Schema for the Backends API. Writes auth methods
-          for Vault
+        description: Backend is the Schema for the Backends API. Managing roles in
+          an Cert auth backend in Vault
         properties:
           apiVersion:
             description: |-
@@ -60,23 +60,16 @@ spec:
               forProvider:
                 properties:
                   description:
-                    description: |-
-                      A description of the auth method.
-                      The description of the auth backend
+                    description: The description of the auth backend
                     type: string
                   disableRemount:
-                    description: |-
-                      If set, opts out of mount migration on path updates.
-                      See here for more info on Mount Migration
-                      If set, opts out of mount migration on path updates.
+                    description: If set, opts out of mount migration on path updates.
                     type: boolean
                   identityTokenKey:
                     description: The key to use for signing identity tokens.
                     type: string
                   local:
-                    description: |-
-                      Specifies if the auth method is local only.
-                      Specifies if the auth method is local only
+                    description: Specifies if the auth method is local only
                     type: boolean
                   namespace:
                     description: |-
@@ -87,71 +80,45 @@ spec:
                       Target namespace. (requires Enterprise)
                     type: string
                   path:
-                    description: |-
-                      The path to mount the auth method — this defaults to the name of the type.
-                      path to mount the backend. This defaults to the type.
+                    description: path to mount the backend. This defaults to the type.
                     type: string
                   tune:
-                    description: Extra configuration block. Structure is documented
-                      below.
                     items:
                       properties:
                         allowedResponseHeaders:
-                          description: |-
-                            List of headers to whitelist and allowing
-                            a plugin to include them in the response.
                           items:
                             type: string
                           type: array
                         auditNonHmacRequestKeys:
-                          description: |-
-                            Specifies the list of keys that will
-                            not be HMAC'd by audit devices in the request data object.
                           items:
                             type: string
                           type: array
                         auditNonHmacResponseKeys:
-                          description: |-
-                            Specifies the list of keys that will
-                            not be HMAC'd by audit devices in the response data object.
                           items:
                             type: string
                           type: array
                         defaultLeaseTtl:
-                          description: |-
-                            Specifies the default time-to-live.
-                            If set, this overrides the global default.
-                            Must be a valid duration string
                           type: string
                         listingVisibility:
-                          description: |-
-                            Specifies whether to show this mount in
-                            the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
                           type: string
                         maxLeaseTtl:
-                          description: |-
-                            Specifies the maximum time-to-live.
-                            If set, this overrides the global default.
-                            Must be a valid duration string
                           type: string
                         passthroughRequestHeaders:
-                          description: |-
-                            List of headers to whitelist and
-                            pass from the request to the backend.
                           items:
                             type: string
                           type: array
                         tokenType:
                           description: |-
-                            Specifies the type of tokens that should be returned by
-                            the mount. Valid values are "default-service", "default-batch", "service", "batch".
+                            The type of token that should be generated. Can be service,
+                            batch, or default to use the mount's tuned default (which unless changed will be
+                            service tokens). For token store roles, there are two additional possibilities:
+                            default-service and default-batch which specify the type to return unless the client
+                            requests a different type at generation time.
                           type: string
                       type: object
                     type: array
                   type:
-                    description: |-
-                      The name of the auth method type.
-                      Name of the auth backend
+                    description: Name of the auth backend
                     type: string
                 type: object
               initProvider:
@@ -168,23 +135,16 @@ spec:
                   autoscaler.
                 properties:
                   description:
-                    description: |-
-                      A description of the auth method.
-                      The description of the auth backend
+                    description: The description of the auth backend
                     type: string
                   disableRemount:
-                    description: |-
-                      If set, opts out of mount migration on path updates.
-                      See here for more info on Mount Migration
-                      If set, opts out of mount migration on path updates.
+                    description: If set, opts out of mount migration on path updates.
                     type: boolean
                   identityTokenKey:
                     description: The key to use for signing identity tokens.
                     type: string
                   local:
-                    description: |-
-                      Specifies if the auth method is local only.
-                      Specifies if the auth method is local only
+                    description: Specifies if the auth method is local only
                     type: boolean
                   namespace:
                     description: |-
@@ -195,71 +155,45 @@ spec:
                       Target namespace. (requires Enterprise)
                     type: string
                   path:
-                    description: |-
-                      The path to mount the auth method — this defaults to the name of the type.
-                      path to mount the backend. This defaults to the type.
+                    description: path to mount the backend. This defaults to the type.
                     type: string
                   tune:
-                    description: Extra configuration block. Structure is documented
-                      below.
                     items:
                       properties:
                         allowedResponseHeaders:
-                          description: |-
-                            List of headers to whitelist and allowing
-                            a plugin to include them in the response.
                           items:
                             type: string
                           type: array
                         auditNonHmacRequestKeys:
-                          description: |-
-                            Specifies the list of keys that will
-                            not be HMAC'd by audit devices in the request data object.
                           items:
                             type: string
                           type: array
                         auditNonHmacResponseKeys:
-                          description: |-
-                            Specifies the list of keys that will
-                            not be HMAC'd by audit devices in the response data object.
                           items:
                             type: string
                           type: array
                         defaultLeaseTtl:
-                          description: |-
-                            Specifies the default time-to-live.
-                            If set, this overrides the global default.
-                            Must be a valid duration string
                           type: string
                         listingVisibility:
-                          description: |-
-                            Specifies whether to show this mount in
-                            the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
                           type: string
                         maxLeaseTtl:
-                          description: |-
-                            Specifies the maximum time-to-live.
-                            If set, this overrides the global default.
-                            Must be a valid duration string
                           type: string
                         passthroughRequestHeaders:
-                          description: |-
-                            List of headers to whitelist and
-                            pass from the request to the backend.
                           items:
                             type: string
                           type: array
                         tokenType:
                           description: |-
-                            Specifies the type of tokens that should be returned by
-                            the mount. Valid values are "default-service", "default-batch", "service", "batch".
+                            The type of token that should be generated. Can be service,
+                            batch, or default to use the mount's tuned default (which unless changed will be
+                            service tokens). For token store roles, there are two additional possibilities:
+                            default-service and default-batch which specify the type to return unless the client
+                            requests a different type at generation time.
                           type: string
                       type: object
                     type: array
                   type:
-                    description: |-
-                      The name of the auth method type.
-                      Name of the auth backend
+                    description: Name of the auth backend
                     type: string
                 type: object
               managementPolicies:
@@ -331,20 +265,13 @@ spec:
               atProvider:
                 properties:
                   accessor:
-                    description: |-
-                      The accessor for this auth method
-                      The accessor of the auth backend
+                    description: The accessor of the auth backend
                     type: string
                   description:
-                    description: |-
-                      A description of the auth method.
-                      The description of the auth backend
+                    description: The description of the auth backend
                     type: string
                   disableRemount:
-                    description: |-
-                      If set, opts out of mount migration on path updates.
-                      See here for more info on Mount Migration
-                      If set, opts out of mount migration on path updates.
+                    description: If set, opts out of mount migration on path updates.
                     type: boolean
                   id:
                     type: string
@@ -352,9 +279,7 @@ spec:
                     description: The key to use for signing identity tokens.
                     type: string
                   local:
-                    description: |-
-                      Specifies if the auth method is local only.
-                      Specifies if the auth method is local only
+                    description: Specifies if the auth method is local only
                     type: boolean
                   namespace:
                     description: |-
@@ -365,71 +290,45 @@ spec:
                       Target namespace. (requires Enterprise)
                     type: string
                   path:
-                    description: |-
-                      The path to mount the auth method — this defaults to the name of the type.
-                      path to mount the backend. This defaults to the type.
+                    description: path to mount the backend. This defaults to the type.
                     type: string
                   tune:
-                    description: Extra configuration block. Structure is documented
-                      below.
                     items:
                       properties:
                         allowedResponseHeaders:
-                          description: |-
-                            List of headers to whitelist and allowing
-                            a plugin to include them in the response.
                           items:
                             type: string
                           type: array
                         auditNonHmacRequestKeys:
-                          description: |-
-                            Specifies the list of keys that will
-                            not be HMAC'd by audit devices in the request data object.
                           items:
                             type: string
                           type: array
                         auditNonHmacResponseKeys:
-                          description: |-
-                            Specifies the list of keys that will
-                            not be HMAC'd by audit devices in the response data object.
                           items:
                             type: string
                           type: array
                         defaultLeaseTtl:
-                          description: |-
-                            Specifies the default time-to-live.
-                            If set, this overrides the global default.
-                            Must be a valid duration string
                           type: string
                         listingVisibility:
-                          description: |-
-                            Specifies whether to show this mount in
-                            the UI-specific listing endpoint. Valid values are "unauth" or "hidden".
                           type: string
                         maxLeaseTtl:
-                          description: |-
-                            Specifies the maximum time-to-live.
-                            If set, this overrides the global default.
-                            Must be a valid duration string
                           type: string
                         passthroughRequestHeaders:
-                          description: |-
-                            List of headers to whitelist and
-                            pass from the request to the backend.
                           items:
                             type: string
                           type: array
                         tokenType:
                           description: |-
-                            Specifies the type of tokens that should be returned by
-                            the mount. Valid values are "default-service", "default-batch", "service", "batch".
+                            The type of token that should be generated. Can be service,
+                            batch, or default to use the mount's tuned default (which unless changed will be
+                            service tokens). For token store roles, there are two additional possibilities:
+                            default-service and default-batch which specify the type to return unless the client
+                            requests a different type at generation time.
                           type: string
                       type: object
                     type: array
                   type:
-                    description: |-
-                      The name of the auth method type.
-                      Name of the auth backend
+                    description: Name of the auth backend
                     type: string
                 type: object
               conditions:

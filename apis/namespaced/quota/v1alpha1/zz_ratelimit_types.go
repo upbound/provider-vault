@@ -21,13 +21,6 @@ type RateLimitInitParameters struct {
 	// If set, when a client reaches a rate limit threshold, the client will be prohibited from any further requests until after the 'block_interval' in seconds has elapsed.
 	BlockInterval *float64 `json:"blockInterval,omitempty" tf:"block_interval,omitempty"`
 
-	// Attribute used to group requests for rate limiting. Limits are enforced independently for each
-	// group. Valid group_by modes are: 1) ip that groups requests by their source IP address (group_by defaults to
-	// ip if unset, which is the only supported mode in community edition); 2) none that groups together all requests
-	// that match the rate limit quota rule; 3) entity_then_ip that groups requests by their entity ID for authenticated
-	// requests that carry one, or by their IP for unauthenticated requests (or requests whose authentication is not
-	// connected to an entity); and 4) entity_then_none which also groups requests by their entity ID when available, but
-	// the rest is all grouped together (i.e. unauthenticated or with authentication not connected to an entity).
 	// Attribute used to group requests for rate limiting. Limits are enforced independently for each group. Valid group_by modes are: 1) "ip" that groups requests by their source IP address (group_by defaults to ip if unset); 2) "none" that groups all requests that match the rate limit quota rule together; 3) "entity_then_ip" that groups requests by their entity ID for authenticated requests that carry one, or by their IP for unauthenticated requests (or requests whose authentication is not connected to an entity); and 4) "entity_then_none" which also groups requests by their entity ID when available, but the rest is all grouped together (i.e. unauthenticated or with authentication not connected to an entity).
 	GroupBy *string `json:"groupBy,omitempty" tf:"group_by,omitempty"`
 
@@ -68,9 +61,8 @@ type RateLimitInitParameters struct {
 	// If set on a quota where path is set to an auth mount with a concept of roles (such as /auth/approle/), this will make the quota restrict login requests to that mount that are made with the specified role.
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
-	// Can only be set for the group_by modes entity_then_ip or entity_then_none. This is
-	// the rate limit applied to the requests that fall under the "ip" or "none" groupings, while the authenticated requests
-	// that contain an entity ID are subject to the rate field instead. Defaults to the same value as rate.
+	// The maximum number of requests at any given second to be allowed by the quota
+	// rule. The rate must be positive.
 	// Only available when using the "entity_then_ip" or "entity_then_none" group_by modes. This is the rate limit applied to the requests that fall under the "ip" or "none" groupings, while the authenticated requests that contain an entity ID are subject to the "rate" field instead. Defaults to the same value as "rate".
 	SecondaryRate *float64 `json:"secondaryRate,omitempty" tf:"secondary_rate,omitempty"`
 }
@@ -82,13 +74,6 @@ type RateLimitObservation struct {
 	// If set, when a client reaches a rate limit threshold, the client will be prohibited from any further requests until after the 'block_interval' in seconds has elapsed.
 	BlockInterval *float64 `json:"blockInterval,omitempty" tf:"block_interval,omitempty"`
 
-	// Attribute used to group requests for rate limiting. Limits are enforced independently for each
-	// group. Valid group_by modes are: 1) ip that groups requests by their source IP address (group_by defaults to
-	// ip if unset, which is the only supported mode in community edition); 2) none that groups together all requests
-	// that match the rate limit quota rule; 3) entity_then_ip that groups requests by their entity ID for authenticated
-	// requests that carry one, or by their IP for unauthenticated requests (or requests whose authentication is not
-	// connected to an entity); and 4) entity_then_none which also groups requests by their entity ID when available, but
-	// the rest is all grouped together (i.e. unauthenticated or with authentication not connected to an entity).
 	// Attribute used to group requests for rate limiting. Limits are enforced independently for each group. Valid group_by modes are: 1) "ip" that groups requests by their source IP address (group_by defaults to ip if unset); 2) "none" that groups all requests that match the rate limit quota rule together; 3) "entity_then_ip" that groups requests by their entity ID for authenticated requests that carry one, or by their IP for unauthenticated requests (or requests whose authentication is not connected to an entity); and 4) "entity_then_none" which also groups requests by their entity ID when available, but the rest is all grouped together (i.e. unauthenticated or with authentication not connected to an entity).
 	GroupBy *string `json:"groupBy,omitempty" tf:"group_by,omitempty"`
 
@@ -131,9 +116,8 @@ type RateLimitObservation struct {
 	// If set on a quota where path is set to an auth mount with a concept of roles (such as /auth/approle/), this will make the quota restrict login requests to that mount that are made with the specified role.
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
-	// Can only be set for the group_by modes entity_then_ip or entity_then_none. This is
-	// the rate limit applied to the requests that fall under the "ip" or "none" groupings, while the authenticated requests
-	// that contain an entity ID are subject to the rate field instead. Defaults to the same value as rate.
+	// The maximum number of requests at any given second to be allowed by the quota
+	// rule. The rate must be positive.
 	// Only available when using the "entity_then_ip" or "entity_then_none" group_by modes. This is the rate limit applied to the requests that fall under the "ip" or "none" groupings, while the authenticated requests that contain an entity ID are subject to the "rate" field instead. Defaults to the same value as "rate".
 	SecondaryRate *float64 `json:"secondaryRate,omitempty" tf:"secondary_rate,omitempty"`
 }
@@ -146,13 +130,6 @@ type RateLimitParameters struct {
 	// +kubebuilder:validation:Optional
 	BlockInterval *float64 `json:"blockInterval,omitempty" tf:"block_interval,omitempty"`
 
-	// Attribute used to group requests for rate limiting. Limits are enforced independently for each
-	// group. Valid group_by modes are: 1) ip that groups requests by their source IP address (group_by defaults to
-	// ip if unset, which is the only supported mode in community edition); 2) none that groups together all requests
-	// that match the rate limit quota rule; 3) entity_then_ip that groups requests by their entity ID for authenticated
-	// requests that carry one, or by their IP for unauthenticated requests (or requests whose authentication is not
-	// connected to an entity); and 4) entity_then_none which also groups requests by their entity ID when available, but
-	// the rest is all grouped together (i.e. unauthenticated or with authentication not connected to an entity).
 	// Attribute used to group requests for rate limiting. Limits are enforced independently for each group. Valid group_by modes are: 1) "ip" that groups requests by their source IP address (group_by defaults to ip if unset); 2) "none" that groups all requests that match the rate limit quota rule together; 3) "entity_then_ip" that groups requests by their entity ID for authenticated requests that carry one, or by their IP for unauthenticated requests (or requests whose authentication is not connected to an entity); and 4) "entity_then_none" which also groups requests by their entity ID when available, but the rest is all grouped together (i.e. unauthenticated or with authentication not connected to an entity).
 	// +kubebuilder:validation:Optional
 	GroupBy *string `json:"groupBy,omitempty" tf:"group_by,omitempty"`
@@ -201,9 +178,8 @@ type RateLimitParameters struct {
 	// +kubebuilder:validation:Optional
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
-	// Can only be set for the group_by modes entity_then_ip or entity_then_none. This is
-	// the rate limit applied to the requests that fall under the "ip" or "none" groupings, while the authenticated requests
-	// that contain an entity ID are subject to the rate field instead. Defaults to the same value as rate.
+	// The maximum number of requests at any given second to be allowed by the quota
+	// rule. The rate must be positive.
 	// Only available when using the "entity_then_ip" or "entity_then_none" group_by modes. This is the rate limit applied to the requests that fall under the "ip" or "none" groupings, while the authenticated requests that contain an entity ID are subject to the "rate" field instead. Defaults to the same value as "rate".
 	// +kubebuilder:validation:Optional
 	SecondaryRate *float64 `json:"secondaryRate,omitempty" tf:"secondary_rate,omitempty"`

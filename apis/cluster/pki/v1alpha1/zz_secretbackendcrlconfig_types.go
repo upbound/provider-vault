@@ -58,8 +58,6 @@ type SecretBackendCrlConfigInitParameters struct {
 	// Specifies the time until expiration.
 	Expiry *string `json:"expiry,omitempty" tf:"expiry,omitempty"`
 
-	// The maximum number of entries a CRL can contain. This option exists to prevent
-	// accidental runaway issuance/revocation from overloading Vault. If set to -1, the limit is disabled. Vault 1.19
 	// The maximum number of entries a CRL can contain. This option exists to prevent accidental runaway issuance/revocation from overloading Vault. If set to -1, the limit is disabled.
 	MaxCrlEntries *float64 `json:"maxCrlEntries,omitempty" tf:"max_crl_entries,omitempty"`
 
@@ -126,8 +124,6 @@ type SecretBackendCrlConfigObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The maximum number of entries a CRL can contain. This option exists to prevent
-	// accidental runaway issuance/revocation from overloading Vault. If set to -1, the limit is disabled. Vault 1.19
 	// The maximum number of entries a CRL can contain. This option exists to prevent accidental runaway issuance/revocation from overloading Vault. If set to -1, the limit is disabled.
 	MaxCrlEntries *float64 `json:"maxCrlEntries,omitempty" tf:"max_crl_entries,omitempty"`
 
@@ -210,8 +206,6 @@ type SecretBackendCrlConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	Expiry *string `json:"expiry,omitempty" tf:"expiry,omitempty"`
 
-	// The maximum number of entries a CRL can contain. This option exists to prevent
-	// accidental runaway issuance/revocation from overloading Vault. If set to -1, the limit is disabled. Vault 1.19
 	// The maximum number of entries a CRL can contain. This option exists to prevent accidental runaway issuance/revocation from overloading Vault. If set to -1, the limit is disabled.
 	// +kubebuilder:validation:Optional
 	MaxCrlEntries *float64 `json:"maxCrlEntries,omitempty" tf:"max_crl_entries,omitempty"`

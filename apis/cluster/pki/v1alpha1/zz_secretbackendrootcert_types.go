@@ -45,19 +45,15 @@ type SecretBackendRootCertInitParameters struct {
 	// Flag to exclude CN from SANs.
 	ExcludeCnFromSans *bool `json:"excludeCnFromSans,omitempty" tf:"exclude_cn_from_sans,omitempty"`
 
-	// List of domains for which certificates are not allowed to be issued. Requires Vault version 1.19+.
 	// List of domains for which certificates are not allowed to be issued.
 	ExcludedDNSDomains []*string `json:"excludedDnsDomains,omitempty" tf:"excluded_dns_domains,omitempty"`
 
-	// List of email addresses for which certificates are not allowed to be issued. Requires Vault version 1.19+.
 	// List of email addresses for which certificates are not allowed to be issued.
 	ExcludedEmailAddresses []*string `json:"excludedEmailAddresses,omitempty" tf:"excluded_email_addresses,omitempty"`
 
-	// List of IP ranges for which certificates are not allowed to be issued. Requires Vault version 1.19+.
 	// List of IP ranges for which certificates are not allowed to be issued.
 	ExcludedIPRanges []*string `json:"excludedIpRanges,omitempty" tf:"excluded_ip_ranges,omitempty"`
 
-	// List of URI domains for which certificates are not allowed to be issued. Requires Vault version 1.19+.
 	// List of URI domains for which certificates are not allowed to be issued.
 	ExcludedURIDomains []*string `json:"excludedUriDomains,omitempty" tf:"excluded_uri_domains,omitempty"`
 
@@ -118,7 +114,6 @@ type SecretBackendRootCertInitParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
-	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
 	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
 
 	// The organization
@@ -137,15 +132,12 @@ type SecretBackendRootCertInitParameters struct {
 	// List of domains for which certificates are allowed to be issued.
 	PermittedDNSDomains []*string `json:"permittedDnsDomains,omitempty" tf:"permitted_dns_domains,omitempty"`
 
-	// List of email addresses for which certificates are allowed to be issued. Requires Vault version 1.19+.
 	// List of email addresses for which certificates are allowed to be issued.
 	PermittedEmailAddresses []*string `json:"permittedEmailAddresses,omitempty" tf:"permitted_email_addresses,omitempty"`
 
-	// List of IP ranges for which certificates are allowed to be issued. Requires Vault version 1.19+.
 	// List of IP ranges for which certificates are allowed to be issued.
 	PermittedIPRanges []*string `json:"permittedIpRanges,omitempty" tf:"permitted_ip_ranges,omitempty"`
 
-	// List of URI domains for which certificates are allowed to be issued. Requires Vault version 1.19+.
 	// List of URI domains for which certificates are allowed to be issued.
 	PermittedURIDomains []*string `json:"permittedUriDomains,omitempty" tf:"permitted_uri_domains,omitempty"`
 
@@ -161,7 +153,6 @@ type SecretBackendRootCertInitParameters struct {
 	// The province.
 	Province *string `json:"province,omitempty" tf:"province,omitempty"`
 
-	// The number of bits to use in the signature algorithm
 	// The number of bits to use in the signature algorithm.
 	SignatureBits *float64 `json:"signatureBits,omitempty" tf:"signature_bits,omitempty"`
 
@@ -209,19 +200,15 @@ type SecretBackendRootCertObservation struct {
 	// Flag to exclude CN from SANs.
 	ExcludeCnFromSans *bool `json:"excludeCnFromSans,omitempty" tf:"exclude_cn_from_sans,omitempty"`
 
-	// List of domains for which certificates are not allowed to be issued. Requires Vault version 1.19+.
 	// List of domains for which certificates are not allowed to be issued.
 	ExcludedDNSDomains []*string `json:"excludedDnsDomains,omitempty" tf:"excluded_dns_domains,omitempty"`
 
-	// List of email addresses for which certificates are not allowed to be issued. Requires Vault version 1.19+.
 	// List of email addresses for which certificates are not allowed to be issued.
 	ExcludedEmailAddresses []*string `json:"excludedEmailAddresses,omitempty" tf:"excluded_email_addresses,omitempty"`
 
-	// List of IP ranges for which certificates are not allowed to be issued. Requires Vault version 1.19+.
 	// List of IP ranges for which certificates are not allowed to be issued.
 	ExcludedIPRanges []*string `json:"excludedIpRanges,omitempty" tf:"excluded_ip_ranges,omitempty"`
 
-	// List of URI domains for which certificates are not allowed to be issued. Requires Vault version 1.19+.
 	// List of URI domains for which certificates are not allowed to be issued.
 	ExcludedURIDomains []*string `json:"excludedUriDomains,omitempty" tf:"excluded_uri_domains,omitempty"`
 
@@ -296,7 +283,6 @@ type SecretBackendRootCertObservation struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
-	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
 	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
 
 	// The organization
@@ -315,15 +301,12 @@ type SecretBackendRootCertObservation struct {
 	// List of domains for which certificates are allowed to be issued.
 	PermittedDNSDomains []*string `json:"permittedDnsDomains,omitempty" tf:"permitted_dns_domains,omitempty"`
 
-	// List of email addresses for which certificates are allowed to be issued. Requires Vault version 1.19+.
 	// List of email addresses for which certificates are allowed to be issued.
 	PermittedEmailAddresses []*string `json:"permittedEmailAddresses,omitempty" tf:"permitted_email_addresses,omitempty"`
 
-	// List of IP ranges for which certificates are allowed to be issued. Requires Vault version 1.19+.
 	// List of IP ranges for which certificates are allowed to be issued.
 	PermittedIPRanges []*string `json:"permittedIpRanges,omitempty" tf:"permitted_ip_ranges,omitempty"`
 
-	// List of URI domains for which certificates are allowed to be issued. Requires Vault version 1.19+.
 	// List of URI domains for which certificates are allowed to be issued.
 	PermittedURIDomains []*string `json:"permittedUriDomains,omitempty" tf:"permitted_uri_domains,omitempty"`
 
@@ -343,7 +326,6 @@ type SecretBackendRootCertObservation struct {
 	// The certificate's serial number, hex formatted.
 	SerialNumber *string `json:"serialNumber,omitempty" tf:"serial_number,omitempty"`
 
-	// The number of bits to use in the signature algorithm
 	// The number of bits to use in the signature algorithm.
 	SignatureBits *float64 `json:"signatureBits,omitempty" tf:"signature_bits,omitempty"`
 
@@ -402,22 +384,18 @@ type SecretBackendRootCertParameters struct {
 	// +kubebuilder:validation:Optional
 	ExcludeCnFromSans *bool `json:"excludeCnFromSans,omitempty" tf:"exclude_cn_from_sans,omitempty"`
 
-	// List of domains for which certificates are not allowed to be issued. Requires Vault version 1.19+.
 	// List of domains for which certificates are not allowed to be issued.
 	// +kubebuilder:validation:Optional
 	ExcludedDNSDomains []*string `json:"excludedDnsDomains,omitempty" tf:"excluded_dns_domains,omitempty"`
 
-	// List of email addresses for which certificates are not allowed to be issued. Requires Vault version 1.19+.
 	// List of email addresses for which certificates are not allowed to be issued.
 	// +kubebuilder:validation:Optional
 	ExcludedEmailAddresses []*string `json:"excludedEmailAddresses,omitempty" tf:"excluded_email_addresses,omitempty"`
 
-	// List of IP ranges for which certificates are not allowed to be issued. Requires Vault version 1.19+.
 	// List of IP ranges for which certificates are not allowed to be issued.
 	// +kubebuilder:validation:Optional
 	ExcludedIPRanges []*string `json:"excludedIpRanges,omitempty" tf:"excluded_ip_ranges,omitempty"`
 
-	// List of URI domains for which certificates are not allowed to be issued. Requires Vault version 1.19+.
 	// List of URI domains for which certificates are not allowed to be issued.
 	// +kubebuilder:validation:Optional
 	ExcludedURIDomains []*string `json:"excludedUriDomains,omitempty" tf:"excluded_uri_domains,omitempty"`
@@ -491,7 +469,6 @@ type SecretBackendRootCertParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
-	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
 	// +kubebuilder:validation:Optional
 	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
 
@@ -515,17 +492,14 @@ type SecretBackendRootCertParameters struct {
 	// +kubebuilder:validation:Optional
 	PermittedDNSDomains []*string `json:"permittedDnsDomains,omitempty" tf:"permitted_dns_domains,omitempty"`
 
-	// List of email addresses for which certificates are allowed to be issued. Requires Vault version 1.19+.
 	// List of email addresses for which certificates are allowed to be issued.
 	// +kubebuilder:validation:Optional
 	PermittedEmailAddresses []*string `json:"permittedEmailAddresses,omitempty" tf:"permitted_email_addresses,omitempty"`
 
-	// List of IP ranges for which certificates are allowed to be issued. Requires Vault version 1.19+.
 	// List of IP ranges for which certificates are allowed to be issued.
 	// +kubebuilder:validation:Optional
 	PermittedIPRanges []*string `json:"permittedIpRanges,omitempty" tf:"permitted_ip_ranges,omitempty"`
 
-	// List of URI domains for which certificates are allowed to be issued. Requires Vault version 1.19+.
 	// List of URI domains for which certificates are allowed to be issued.
 	// +kubebuilder:validation:Optional
 	PermittedURIDomains []*string `json:"permittedUriDomains,omitempty" tf:"permitted_uri_domains,omitempty"`
@@ -545,7 +519,6 @@ type SecretBackendRootCertParameters struct {
 	// +kubebuilder:validation:Optional
 	Province *string `json:"province,omitempty" tf:"province,omitempty"`
 
-	// The number of bits to use in the signature algorithm
 	// The number of bits to use in the signature algorithm.
 	// +kubebuilder:validation:Optional
 	SignatureBits *float64 `json:"signatureBits,omitempty" tf:"signature_bits,omitempty"`

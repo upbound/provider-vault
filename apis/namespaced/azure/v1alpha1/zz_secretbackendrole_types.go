@@ -88,7 +88,8 @@ type SecretBackendRoleInitParameters struct {
 	// Human-friendly description of the mount for the backend.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// Specifies the explicit maximum lifetime of the lease and service principal generated using this role. If not set or set to 0, will use the system default (10 years). Requires Vault 1.18+.
+	// –  Specifies the maximum TTL for service principals generated using this role. Accepts time
+	// suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine max TTL time.
 	// Specifies the explicit maximum lifetime of the lease and service principal.
 	ExplicitMaxTTL *string `json:"explicitMaxTtl,omitempty" tf:"explicit_max_ttl,omitempty"`
 
@@ -148,7 +149,8 @@ type SecretBackendRoleObservation struct {
 	// Human-friendly description of the mount for the backend.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// Specifies the explicit maximum lifetime of the lease and service principal generated using this role. If not set or set to 0, will use the system default (10 years). Requires Vault 1.18+.
+	// –  Specifies the maximum TTL for service principals generated using this role. Accepts time
+	// suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine max TTL time.
 	// Specifies the explicit maximum lifetime of the lease and service principal.
 	ExplicitMaxTTL *string `json:"explicitMaxTtl,omitempty" tf:"explicit_max_ttl,omitempty"`
 
@@ -225,7 +227,8 @@ type SecretBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// Specifies the explicit maximum lifetime of the lease and service principal generated using this role. If not set or set to 0, will use the system default (10 years). Requires Vault 1.18+.
+	// –  Specifies the maximum TTL for service principals generated using this role. Accepts time
+	// suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine max TTL time.
 	// Specifies the explicit maximum lifetime of the lease and service principal.
 	// +kubebuilder:validation:Optional
 	ExplicitMaxTTL *string `json:"explicitMaxTtl,omitempty" tf:"explicit_max_ttl,omitempty"`

@@ -64,7 +64,6 @@ type AuthBackendConfigInitParameters struct {
 	// A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
 	TokenReviewerJwtSecretRef *v1.LocalSecretKeySelector `json:"tokenReviewerJwtSecretRef,omitempty" tf:"-"`
 
-	// Use annotations from the client token's associated service account as alias metadata for the Vault entity. Requires Vault v1.16+ or Vault auth kubernetes plugin v0.18.0+
 	// Use annotations from the client token's associated service account as alias metadata for the Vault entity.
 	UseAnnotationsAsAliasMetadata *bool `json:"useAnnotationsAsAliasMetadata,omitempty" tf:"use_annotations_as_alias_metadata,omitempty"`
 }
@@ -107,7 +106,6 @@ type AuthBackendConfigObservation struct {
 	// Optional list of PEM-formatted public keys or certificates used to verify the signatures of Kubernetes service account JWTs. If a certificate is given, its public key will be extracted. Not every installation of Kubernetes exposes these keys.
 	PemKeys []*string `json:"pemKeys,omitempty" tf:"pem_keys,omitempty"`
 
-	// Use annotations from the client token's associated service account as alias metadata for the Vault entity. Requires Vault v1.16+ or Vault auth kubernetes plugin v0.18.0+
 	// Use annotations from the client token's associated service account as alias metadata for the Vault entity.
 	UseAnnotationsAsAliasMetadata *bool `json:"useAnnotationsAsAliasMetadata,omitempty" tf:"use_annotations_as_alias_metadata,omitempty"`
 }
@@ -171,7 +169,6 @@ type AuthBackendConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	TokenReviewerJwtSecretRef *v1.LocalSecretKeySelector `json:"tokenReviewerJwtSecretRef,omitempty" tf:"-"`
 
-	// Use annotations from the client token's associated service account as alias metadata for the Vault entity. Requires Vault v1.16+ or Vault auth kubernetes plugin v0.18.0+
 	// Use annotations from the client token's associated service account as alias metadata for the Vault entity.
 	// +kubebuilder:validation:Optional
 	UseAnnotationsAsAliasMetadata *bool `json:"useAnnotationsAsAliasMetadata,omitempty" tf:"use_annotations_as_alias_metadata,omitempty"`
