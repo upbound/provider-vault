@@ -107,6 +107,12 @@ linters:
         linters:
           - gosec
 
+      # QF1008 suggests removing embedded field names from selectors, which can
+      # reduce code clarity. This is a style preference, not a bug.
+      - text: "QF1008:"
+        linters:
+          - staticcheck
+
 run:
   timeout: 60m
   concurrency: 3
