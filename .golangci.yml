@@ -11,8 +11,6 @@ linters:
     - goconst
     - gocritic
     - gocyclo
-    - gofmt
-    - goimports
     - gosimple
     - govet
     - misspell
@@ -97,10 +95,6 @@ linters:
       - text: "SA3000:"
         linters:
           - staticcheck
-
-      - text: "k8s.io/api/core/v1"
-        linters:
-          - goimports
 
       # This is a "potential hardcoded credentials" warning. It's triggered by
       # any variable with 'secret' in the same, and thus hits a lot of false
