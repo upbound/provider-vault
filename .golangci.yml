@@ -31,13 +31,6 @@ linters:
     revive:
       confidence: 0.8
 
-    gofmt:
-      simplify: true
-
-    goimports:
-      local-prefixes:
-        - github.com/upbound/provider-vault
-
     gocyclo:
       min-complexity: 10
 
