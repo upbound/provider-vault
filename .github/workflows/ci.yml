@@ -69,11 +69,9 @@ jobs:
       # We could run 'make lint' but we prefer this action because it leaves
       # 'annotations' (i.e. it comments on PRs to point out linter violations).
       - name: Lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v7
         with:
           version: ${{ env.GOLANGCI_VERSION }}
-          skip-pkg-cache: true
-          skip-build-cache: true
 
   check-diff:
     runs-on: ubuntu-24.04
