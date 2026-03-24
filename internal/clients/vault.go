@@ -170,24 +170,30 @@ func commonCredentialsAuth(ctx context.Context, client client.Client, pcSpec *na
 }
 
 func kubernetesAuth(pcSpec *namespacedv1beta1.ProviderConfigSpec, ps *terraform.Setup) error {
-	jwt, err := os.ReadFile(serviceAccountTokenPath)
+    // Default mount to "kubernetes" if not provided
+	mount := "kubernetes"
+    if pcSpec.Mount != nil && *pcSpec.Mount != "" {
+        mount = *pcSpec.Mount
+	}
+
+    jwt, err := os.ReadFile(serviceAccountTokenPath)
 	if err != nil {
-		return errors.Wrap(err, errNoServiceAccountToken)
+        return errors.Wrap(err, errNoServiceAccountToken)
 	}
 
-	if pcSpec.Role == nil || *pcSpec.Role == "" {
-		return errors.New(errNoRole)
-	}
+    if pcSpec.Role == nil || *pcSpec.Role == "" {
+        return errors.New(errNoRole)
+}
 
-	ps.Configuration[keyAuthLoginJWT] = []any{
-		map[string]string{
-			"jwt":   string(jwt),
-			"mount": "kubernetes",
-			"role":  *pcSpec.Role,
-		},
-	}
+    ps.Configuration[keyAuthLoginJWT] = []any{
+        map[string]string{
+            "jwt":   string(jwt),
+            "mount": mount,
+            "role":  *pcSpec.Role,
+        },
+    }
 
-	return nil
+    return nil
 }
 
 func configureNoForkVaultClient(ctx context.Context, ps *terraform.Setup, p schema.Provider) error {
@@ -220,7 +226,7 @@ func legacyToModernProviderConfigSpec(pc *clusterv1beta1.ProviderConfig) (*names
 	var mSpec namespacedv1beta1.ProviderConfigSpec
 	err = json.Unmarshal(data, &mSpec)
 	return &mSpec, err
-}
+	}
 
 func resolveProviderConfig(ctx context.Context, crClient client.Client, mg resource.Managed) (*namespacedv1beta1.ProviderConfigSpec, error) {
 	switch managed := mg.(type) {
@@ -231,13 +237,13 @@ func resolveProviderConfig(ctx context.Context, crClient client.Client, mg resou
 	default:
 		return nil, errors.New("resource is not a managed")
 	}
-}
+	}
 
 func resolveProviderConfigLegacy(ctx context.Context, client client.Client, mg resource.LegacyManaged) (*namespacedv1beta1.ProviderConfigSpec, error) {
 	configRef := mg.GetProviderConfigReference()
 	if configRef == nil {
 		return nil, errors.New(errNoProviderConfig)
-	}
+}
 	pc := &clusterv1beta1.ProviderConfig{}
 	if err := client.Get(ctx, types.NamespacedName{Name: configRef.Name}, pc); err != nil {
 		return nil, errors.Wrap(err, errGetProviderConfig)
