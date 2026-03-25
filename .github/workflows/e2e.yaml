@@ -5,7 +5,7 @@ on:
     types: [created]
 
 env:
-  GO_VERSION: "1.24"
+  GO_VERSION: "1.25.8"
 
 jobs:
   debug:
