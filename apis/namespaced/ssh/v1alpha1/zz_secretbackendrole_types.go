@@ -141,14 +141,26 @@ type SecretBackendRoleInitParameters struct {
 	DefaultCriticalOptions map[string]*string `json:"defaultCriticalOptions,omitempty" tf:"default_critical_options,omitempty"`
 
 	// Specifies a map of extensions that certificates have when signed.
+	// Default extensions to include in SSH certificates. Only applicable for CA key type.
 	// +mapType=granular
 	DefaultExtensions map[string]*string `json:"defaultExtensions,omitempty" tf:"default_extensions,omitempty"`
+
+	// Specifies if the default_extensions field supports templating.
+	// When set to true, the extension values can use identity template policies. Defaults to false.
+	// Specifies if the default_extensions field supports templating. Only applicable for CA key type.
+	DefaultExtensionsTemplate *bool `json:"defaultExtensionsTemplate,omitempty" tf:"default_extensions_template,omitempty"`
 
 	// Specifies the default username for which a credential will be generated.
 	DefaultUser *string `json:"defaultUser,omitempty" tf:"default_user,omitempty"`
 
 	// If set, default_users can be specified using identity template values. A non-templated user is also permitted.
 	DefaultUserTemplate *bool `json:"defaultUserTemplate,omitempty" tf:"default_user_template,omitempty"`
+
+	// Specifies a comma-separated list of CIDR blocks for which credentials cannot be created.
+	// This is particularly useful for OTP key types to restrict credential generation to specific network ranges.
+	// List of CIDR blocks for which credentials cannot be created. Applicable for OTP and dynamic key types.
+	// +listType=set
+	ExcludeCidrList []*string `json:"excludeCidrList,omitempty" tf:"exclude_cidr_list,omitempty"`
 
 	// Specifies a custom format for the key id of a signed certificate.
 	KeyIDFormat *string `json:"keyIdFormat,omitempty" tf:"key_id_format,omitempty"`
@@ -174,6 +186,11 @@ type SecretBackendRoleInitParameters struct {
 	// Uses duration format strings.
 	// Specifies the duration by which to backdate the ValidAfter property. Uses duration format strings.
 	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
+
+	// Specifies the port number for SSH connections. Defaults to 22.
+	// This is primarily used with OTP key types to specify the SSH port on target hosts.
+	// Specifies the port number for SSH connections (default 22). Applicable for OTP and dynamic key types.
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
 	// Specifies the Time To Live value.
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
@@ -240,14 +257,26 @@ type SecretBackendRoleObservation struct {
 	DefaultCriticalOptions map[string]*string `json:"defaultCriticalOptions,omitempty" tf:"default_critical_options,omitempty"`
 
 	// Specifies a map of extensions that certificates have when signed.
+	// Default extensions to include in SSH certificates. Only applicable for CA key type.
 	// +mapType=granular
 	DefaultExtensions map[string]*string `json:"defaultExtensions,omitempty" tf:"default_extensions,omitempty"`
+
+	// Specifies if the default_extensions field supports templating.
+	// When set to true, the extension values can use identity template policies. Defaults to false.
+	// Specifies if the default_extensions field supports templating. Only applicable for CA key type.
+	DefaultExtensionsTemplate *bool `json:"defaultExtensionsTemplate,omitempty" tf:"default_extensions_template,omitempty"`
 
 	// Specifies the default username for which a credential will be generated.
 	DefaultUser *string `json:"defaultUser,omitempty" tf:"default_user,omitempty"`
 
 	// If set, default_users can be specified using identity template values. A non-templated user is also permitted.
 	DefaultUserTemplate *bool `json:"defaultUserTemplate,omitempty" tf:"default_user_template,omitempty"`
+
+	// Specifies a comma-separated list of CIDR blocks for which credentials cannot be created.
+	// This is particularly useful for OTP key types to restrict credential generation to specific network ranges.
+	// List of CIDR blocks for which credentials cannot be created. Applicable for OTP and dynamic key types.
+	// +listType=set
+	ExcludeCidrList []*string `json:"excludeCidrList,omitempty" tf:"exclude_cidr_list,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -275,6 +304,11 @@ type SecretBackendRoleObservation struct {
 	// Uses duration format strings.
 	// Specifies the duration by which to backdate the ValidAfter property. Uses duration format strings.
 	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
+
+	// Specifies the port number for SSH connections. Defaults to 22.
+	// This is primarily used with OTP key types to specify the SSH port on target hosts.
+	// Specifies the port number for SSH connections (default 22). Applicable for OTP and dynamic key types.
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
 	// Specifies the Time To Live value.
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
@@ -368,9 +402,16 @@ type SecretBackendRoleParameters struct {
 	DefaultCriticalOptions map[string]*string `json:"defaultCriticalOptions,omitempty" tf:"default_critical_options,omitempty"`
 
 	// Specifies a map of extensions that certificates have when signed.
+	// Default extensions to include in SSH certificates. Only applicable for CA key type.
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	DefaultExtensions map[string]*string `json:"defaultExtensions,omitempty" tf:"default_extensions,omitempty"`
+
+	// Specifies if the default_extensions field supports templating.
+	// When set to true, the extension values can use identity template policies. Defaults to false.
+	// Specifies if the default_extensions field supports templating. Only applicable for CA key type.
+	// +kubebuilder:validation:Optional
+	DefaultExtensionsTemplate *bool `json:"defaultExtensionsTemplate,omitempty" tf:"default_extensions_template,omitempty"`
 
 	// Specifies the default username for which a credential will be generated.
 	// +kubebuilder:validation:Optional
@@ -379,6 +420,13 @@ type SecretBackendRoleParameters struct {
 	// If set, default_users can be specified using identity template values. A non-templated user is also permitted.
 	// +kubebuilder:validation:Optional
 	DefaultUserTemplate *bool `json:"defaultUserTemplate,omitempty" tf:"default_user_template,omitempty"`
+
+	// Specifies a comma-separated list of CIDR blocks for which credentials cannot be created.
+	// This is particularly useful for OTP key types to restrict credential generation to specific network ranges.
+	// List of CIDR blocks for which credentials cannot be created. Applicable for OTP and dynamic key types.
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	ExcludeCidrList []*string `json:"excludeCidrList,omitempty" tf:"exclude_cidr_list,omitempty"`
 
 	// Specifies a custom format for the key id of a signed certificate.
 	// +kubebuilder:validation:Optional
@@ -410,6 +458,12 @@ type SecretBackendRoleParameters struct {
 	// Specifies the duration by which to backdate the ValidAfter property. Uses duration format strings.
 	// +kubebuilder:validation:Optional
 	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
+
+	// Specifies the port number for SSH connections. Defaults to 22.
+	// This is primarily used with OTP key types to specify the SSH port on target hosts.
+	// Specifies the port number for SSH connections (default 22). Applicable for OTP and dynamic key types.
+	// +kubebuilder:validation:Optional
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
 	// Specifies the Time To Live value.
 	// +kubebuilder:validation:Optional

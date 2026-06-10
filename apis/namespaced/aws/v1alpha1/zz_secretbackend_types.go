@@ -98,6 +98,10 @@ type SecretBackendInitParameters struct {
 	// Maximum possible lease duration for secrets in seconds
 	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
 
+	// Number of max retries the client should use for recoverable errors.
+	// Number of max retries the client should use for recoverable errors.
+	MaxRetries *float64 `json:"maxRetries,omitempty" tf:"max_retries,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -155,9 +159,22 @@ type SecretBackendInitParameters struct {
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
 
 	// The AWS Secret Key this backend should use to
-	// issue new credentials. Vault uses the official AWS SDK to authenticate, and thus can also use standard AWS environment credentials, shared file credentials or IAM role/ECS task credentials.
+	// issue new credentials. Vault uses the official AWS SDK to authenticate, and thus can also use standard AWS environment credentials, shared file credentials or IAM role/ECS task credentials. Conflicts with secret_key_wo.
 	// The AWS Secret Access Key to use when generating new credentials.
 	SecretKeySecretRef *v1.LocalSecretKeySelector `json:"secretKeySecretRef,omitempty" tf:"-"`
+
+	// The AWS Secret Key this backend should use to
+	// issue new credentials. This is a write-only field and will not be stored in state.
+	// Vault uses the official AWS SDK to authenticate, and thus can also use standard AWS
+	// environment credentials, shared file credentials or IAM role/ECS task credentials.
+	// Conflicts with secret_key.
+	// The AWS Secret Access Key to use when generating new credentials. This is a write-only field and will not be read back from Vault.
+	SecretKeyWoSecretRef *v1.LocalSecretKeySelector `json:"secretKeyWoSecretRef,omitempty" tf:"-"`
+
+	// A version counter for the
+	// secret_key_wo field. Incrementing this value will trigger an update to the secret key.
+	// A version counter for the write-only secret_key_wo field. Incrementing this value will trigger an update to the secret_key.
+	SecretKeyWoVersion *float64 `json:"secretKeyWoVersion,omitempty" tf:"secret_key_wo_version,omitempty"`
 
 	// Specifies a custom HTTP STS endpoint to use.
 	// Specifies a custom HTTP STS endpoint to use.
@@ -264,6 +281,10 @@ type SecretBackendObservation struct {
 	// Maximum possible lease duration for secrets in seconds
 	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
 
+	// Number of max retries the client should use for recoverable errors.
+	// Number of max retries the client should use for recoverable errors.
+	MaxRetries *float64 `json:"maxRetries,omitempty" tf:"max_retries,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -319,6 +340,11 @@ type SecretBackendObservation struct {
 	// Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
+
+	// A version counter for the
+	// secret_key_wo field. Incrementing this value will trigger an update to the secret key.
+	// A version counter for the write-only secret_key_wo field. Incrementing this value will trigger an update to the secret_key.
+	SecretKeyWoVersion *float64 `json:"secretKeyWoVersion,omitempty" tf:"secret_key_wo_version,omitempty"`
 
 	// Specifies a custom HTTP STS endpoint to use.
 	// Specifies a custom HTTP STS endpoint to use.
@@ -444,6 +470,11 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
 
+	// Number of max retries the client should use for recoverable errors.
+	// Number of max retries the client should use for recoverable errors.
+	// +kubebuilder:validation:Optional
+	MaxRetries *float64 `json:"maxRetries,omitempty" tf:"max_retries,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -512,10 +543,25 @@ type SecretBackendParameters struct {
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
 
 	// The AWS Secret Key this backend should use to
-	// issue new credentials. Vault uses the official AWS SDK to authenticate, and thus can also use standard AWS environment credentials, shared file credentials or IAM role/ECS task credentials.
+	// issue new credentials. Vault uses the official AWS SDK to authenticate, and thus can also use standard AWS environment credentials, shared file credentials or IAM role/ECS task credentials. Conflicts with secret_key_wo.
 	// The AWS Secret Access Key to use when generating new credentials.
 	// +kubebuilder:validation:Optional
 	SecretKeySecretRef *v1.LocalSecretKeySelector `json:"secretKeySecretRef,omitempty" tf:"-"`
+
+	// The AWS Secret Key this backend should use to
+	// issue new credentials. This is a write-only field and will not be stored in state.
+	// Vault uses the official AWS SDK to authenticate, and thus can also use standard AWS
+	// environment credentials, shared file credentials or IAM role/ECS task credentials.
+	// Conflicts with secret_key.
+	// The AWS Secret Access Key to use when generating new credentials. This is a write-only field and will not be read back from Vault.
+	// +kubebuilder:validation:Optional
+	SecretKeyWoSecretRef *v1.LocalSecretKeySelector `json:"secretKeyWoSecretRef,omitempty" tf:"-"`
+
+	// A version counter for the
+	// secret_key_wo field. Incrementing this value will trigger an update to the secret key.
+	// A version counter for the write-only secret_key_wo field. Incrementing this value will trigger an update to the secret_key.
+	// +kubebuilder:validation:Optional
+	SecretKeyWoVersion *float64 `json:"secretKeyWoVersion,omitempty" tf:"secret_key_wo_version,omitempty"`
 
 	// Specifies a custom HTTP STS endpoint to use.
 	// Specifies a custom HTTP STS endpoint to use.

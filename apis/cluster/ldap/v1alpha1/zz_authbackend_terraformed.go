@@ -21,7 +21,7 @@ func (mg *AuthBackend) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this AuthBackend
 func (tr *AuthBackend) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"bindpass": "bindpassSecretRef", "client_tls_key": "clientTlsKeySecretRef"}
+	return map[string]string{"bindpass": "bindpassSecretRef", "bindpass_wo": "bindpassWoSecretRef", "client_tls_key": "clientTlsKeySecretRef"}
 }
 
 // GetObservation of this AuthBackend

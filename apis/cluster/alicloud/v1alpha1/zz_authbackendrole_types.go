@@ -15,6 +15,11 @@ import (
 
 type AuthBackendRoleInitParameters struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// The role's arn.
 	// The role's arn.
 	Arn *string `json:"arn,omitempty" tf:"arn,omitempty"`
@@ -104,6 +109,11 @@ type AuthBackendRoleInitParameters struct {
 
 type AuthBackendRoleObservation struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// The role's arn.
 	// The role's arn.
 	Arn *string `json:"arn,omitempty" tf:"arn,omitempty"`
@@ -184,6 +194,12 @@ type AuthBackendRoleObservation struct {
 }
 
 type AuthBackendRoleParameters struct {
+
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
 
 	// The role's arn.
 	// The role's arn.

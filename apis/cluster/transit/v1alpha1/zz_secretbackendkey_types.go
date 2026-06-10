@@ -38,6 +38,10 @@ type SecretBackendKeyInitParameters struct {
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
+	// Base64 encoded context for key derivation. Required if derived is set to true. This provides additional entropy for key derivation and should be consistent across operations that need to use the same derived key.
+	// Base64 encoded context for key derivation. Required if derived is set to true.
+	Context *string `json:"context,omitempty" tf:"context,omitempty"`
+
 	// Whether or not to support convergent encryption, where the same plaintext creates the same ciphertext. This requires derived to be set to true.
 	// Whether or not to support convergent encryption, where the same plaintext creates the same ciphertext. This requires derived to be set to true.
 	ConvergentEncryption *bool `json:"convergentEncryption,omitempty" tf:"convergent_encryption,omitempty"`
@@ -67,6 +71,14 @@ type SecretBackendKeyInitParameters struct {
 	// The key size in bytes for algorithms that allow variable key sizes. Currently only applicable to HMAC, where it must be between 32 and 512 bytes.
 	// The key size in bytes for algorithms that allow variable key sizes. Currently only applicable to HMAC; this value must be between 32 and 512.
 	KeySize *float64 `json:"keySize,omitempty" tf:"key_size,omitempty"`
+
+	// The UUID of the managed key to use when the key type is managed_key. This is the unique identifier of a previously configured managed key. When type is managed_key, either managed_key_name or managed_key_id must be specified.
+	// The UUID of the managed key to use when the key type is managed_key.
+	ManagedKeyID *string `json:"managedKeyId,omitempty" tf:"managed_key_id,omitempty"`
+
+	// The name of the managed key to use when the key type is managed_key. This references a previously configured managed key in Vault (e.g., AWS KMS, Azure Key Vault, PKCS#11, etc.). When type is managed_key, either managed_key_name or managed_key_id must be specified.
+	// The name of the managed key to use when the key type is managed_key.
+	ManagedKeyName *string `json:"managedKeyName,omitempty" tf:"managed_key_name,omitempty"`
 
 	// Minimum key version to use for decryption.
 	// Minimum key version to use for decryption.
@@ -116,6 +128,10 @@ type SecretBackendKeyObservation struct {
 	// The Transit secret backend the resource belongs to.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// Base64 encoded context for key derivation. Required if derived is set to true. This provides additional entropy for key derivation and should be consistent across operations that need to use the same derived key.
+	// Base64 encoded context for key derivation. Required if derived is set to true.
+	Context *string `json:"context,omitempty" tf:"context,omitempty"`
+
 	// Whether or not to support convergent encryption, where the same plaintext creates the same ciphertext. This requires derived to be set to true.
 	// Whether or not to support convergent encryption, where the same plaintext creates the same ciphertext. This requires derived to be set to true.
 	ConvergentEncryption *bool `json:"convergentEncryption,omitempty" tf:"convergent_encryption,omitempty"`
@@ -155,6 +171,14 @@ type SecretBackendKeyObservation struct {
 	// Latest key version available. This value is 1-indexed, so if latest_version is 1, then the key's information can be referenced from keys by selecting element 0
 	// Latest key version in use in the keyring
 	LatestVersion *float64 `json:"latestVersion,omitempty" tf:"latest_version,omitempty"`
+
+	// The UUID of the managed key to use when the key type is managed_key. This is the unique identifier of a previously configured managed key. When type is managed_key, either managed_key_name or managed_key_id must be specified.
+	// The UUID of the managed key to use when the key type is managed_key.
+	ManagedKeyID *string `json:"managedKeyId,omitempty" tf:"managed_key_id,omitempty"`
+
+	// The name of the managed key to use when the key type is managed_key. This references a previously configured managed key in Vault (e.g., AWS KMS, Azure Key Vault, PKCS#11, etc.). When type is managed_key, either managed_key_name or managed_key_id must be specified.
+	// The name of the managed key to use when the key type is managed_key.
+	ManagedKeyName *string `json:"managedKeyName,omitempty" tf:"managed_key_name,omitempty"`
 
 	// Minimum key version available for use. If keys have been archived by increasing min_decryption_version, this attribute will reflect that change.
 	// Minimum key version available for use.
@@ -237,6 +261,11 @@ type SecretBackendKeyParameters struct {
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
+	// Base64 encoded context for key derivation. Required if derived is set to true. This provides additional entropy for key derivation and should be consistent across operations that need to use the same derived key.
+	// Base64 encoded context for key derivation. Required if derived is set to true.
+	// +kubebuilder:validation:Optional
+	Context *string `json:"context,omitempty" tf:"context,omitempty"`
+
 	// Whether or not to support convergent encryption, where the same plaintext creates the same ciphertext. This requires derived to be set to true.
 	// Whether or not to support convergent encryption, where the same plaintext creates the same ciphertext. This requires derived to be set to true.
 	// +kubebuilder:validation:Optional
@@ -273,6 +302,16 @@ type SecretBackendKeyParameters struct {
 	// The key size in bytes for algorithms that allow variable key sizes. Currently only applicable to HMAC; this value must be between 32 and 512.
 	// +kubebuilder:validation:Optional
 	KeySize *float64 `json:"keySize,omitempty" tf:"key_size,omitempty"`
+
+	// The UUID of the managed key to use when the key type is managed_key. This is the unique identifier of a previously configured managed key. When type is managed_key, either managed_key_name or managed_key_id must be specified.
+	// The UUID of the managed key to use when the key type is managed_key.
+	// +kubebuilder:validation:Optional
+	ManagedKeyID *string `json:"managedKeyId,omitempty" tf:"managed_key_id,omitempty"`
+
+	// The name of the managed key to use when the key type is managed_key. This references a previously configured managed key in Vault (e.g., AWS KMS, Azure Key Vault, PKCS#11, etc.). When type is managed_key, either managed_key_name or managed_key_id must be specified.
+	// The name of the managed key to use when the key type is managed_key.
+	// +kubebuilder:validation:Optional
+	ManagedKeyName *string `json:"managedKeyName,omitempty" tf:"managed_key_name,omitempty"`
 
 	// Minimum key version to use for decryption.
 	// Minimum key version to use for decryption.

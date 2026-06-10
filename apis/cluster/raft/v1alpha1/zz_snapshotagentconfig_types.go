@@ -15,6 +15,11 @@ import (
 
 type SnapshotAgentConfigInitParameters struct {
 
+	// Have Vault automatically load the latest snapshot after it is written. This will replace the previously loaded snapshot. Note that this does not mean the snapshot is automatically applied to the cluster, it is just loaded and available for recovery operations.
+	// Note: Not supported with storage_type = "local".
+	// Have Vault automatically load the latest snapshot after it is written. This will replace the previously loaded snapshot. Note that this does not mean the snapshot is automatically applied to the cluster, it is just loaded and available for recovery operations. Requires Vault Enterprise 1.21.0+. Not supported with storage_type = "local".
+	AutoloadEnabled *bool `json:"autoloadEnabled,omitempty" tf:"autoload_enabled,omitempty"`
+
 	// AWS access key ID.
 	// AWS access key ID.
 	AwsAccessKeyID *string `json:"awsAccessKeyId,omitempty" tf:"aws_access_key_id,omitempty"`
@@ -63,17 +68,26 @@ type SnapshotAgentConfigInitParameters struct {
 	// AWS session token.
 	AwsSessionToken *string `json:"awsSessionToken,omitempty" tf:"aws_session_token,omitempty"`
 
-	// Azure account key.
-	// Azure account key.
+	// Azure account key. Required when azure_auth_mode = "shared".
+	// Azure account key. Required when azure_auth_mode is 'shared'.
 	AzureAccountKey *string `json:"azureAccountKey,omitempty" tf:"azure_account_key,omitempty"`
 
 	// Azure account name.
 	// Azure account name.
 	AzureAccountName *string `json:"azureAccountName,omitempty" tf:"azure_account_name,omitempty"`
 
+	// Azure authentication mode. Required by Vault API when using storage_type = "azure-blob". Possible values are:
+	// Azure authentication mode. Required for azure-blob storage. Possible values are 'shared', 'managed', or 'environment'. Requires Vault Enterprise 1.18.0+.
+	AzureAuthMode *string `json:"azureAuthMode,omitempty" tf:"azure_auth_mode,omitempty"`
+
 	// Azure blob environment.
 	// Azure blob environment.
 	AzureBlobEnvironment *string `json:"azureBlobEnvironment,omitempty" tf:"azure_blob_environment,omitempty"`
+
+	// Azure client ID for authentication. Required when azure_auth_mode = "managed".
+	// Requires Vault Enterprise 1.18.0+.
+	// Azure client ID for authentication. Required when azure_auth_mode is 'managed'. Requires Vault Enterprise 1.18.0+.
+	AzureClientID *string `json:"azureClientId,omitempty" tf:"azure_client_id,omitempty"`
 
 	// Azure container name to write
 	// snapshots to.
@@ -154,6 +168,11 @@ type SnapshotAgentConfigInitParameters struct {
 
 type SnapshotAgentConfigObservation struct {
 
+	// Have Vault automatically load the latest snapshot after it is written. This will replace the previously loaded snapshot. Note that this does not mean the snapshot is automatically applied to the cluster, it is just loaded and available for recovery operations.
+	// Note: Not supported with storage_type = "local".
+	// Have Vault automatically load the latest snapshot after it is written. This will replace the previously loaded snapshot. Note that this does not mean the snapshot is automatically applied to the cluster, it is just loaded and available for recovery operations. Requires Vault Enterprise 1.21.0+. Not supported with storage_type = "local".
+	AutoloadEnabled *bool `json:"autoloadEnabled,omitempty" tf:"autoload_enabled,omitempty"`
+
 	// AWS access key ID.
 	// AWS access key ID.
 	AwsAccessKeyID *string `json:"awsAccessKeyId,omitempty" tf:"aws_access_key_id,omitempty"`
@@ -202,17 +221,26 @@ type SnapshotAgentConfigObservation struct {
 	// AWS session token.
 	AwsSessionToken *string `json:"awsSessionToken,omitempty" tf:"aws_session_token,omitempty"`
 
-	// Azure account key.
-	// Azure account key.
+	// Azure account key. Required when azure_auth_mode = "shared".
+	// Azure account key. Required when azure_auth_mode is 'shared'.
 	AzureAccountKey *string `json:"azureAccountKey,omitempty" tf:"azure_account_key,omitempty"`
 
 	// Azure account name.
 	// Azure account name.
 	AzureAccountName *string `json:"azureAccountName,omitempty" tf:"azure_account_name,omitempty"`
 
+	// Azure authentication mode. Required by Vault API when using storage_type = "azure-blob". Possible values are:
+	// Azure authentication mode. Required for azure-blob storage. Possible values are 'shared', 'managed', or 'environment'. Requires Vault Enterprise 1.18.0+.
+	AzureAuthMode *string `json:"azureAuthMode,omitempty" tf:"azure_auth_mode,omitempty"`
+
 	// Azure blob environment.
 	// Azure blob environment.
 	AzureBlobEnvironment *string `json:"azureBlobEnvironment,omitempty" tf:"azure_blob_environment,omitempty"`
+
+	// Azure client ID for authentication. Required when azure_auth_mode = "managed".
+	// Requires Vault Enterprise 1.18.0+.
+	// Azure client ID for authentication. Required when azure_auth_mode is 'managed'. Requires Vault Enterprise 1.18.0+.
+	AzureClientID *string `json:"azureClientId,omitempty" tf:"azure_client_id,omitempty"`
 
 	// Azure container name to write
 	// snapshots to.
@@ -295,6 +323,12 @@ type SnapshotAgentConfigObservation struct {
 
 type SnapshotAgentConfigParameters struct {
 
+	// Have Vault automatically load the latest snapshot after it is written. This will replace the previously loaded snapshot. Note that this does not mean the snapshot is automatically applied to the cluster, it is just loaded and available for recovery operations.
+	// Note: Not supported with storage_type = "local".
+	// Have Vault automatically load the latest snapshot after it is written. This will replace the previously loaded snapshot. Note that this does not mean the snapshot is automatically applied to the cluster, it is just loaded and available for recovery operations. Requires Vault Enterprise 1.21.0+. Not supported with storage_type = "local".
+	// +kubebuilder:validation:Optional
+	AutoloadEnabled *bool `json:"autoloadEnabled,omitempty" tf:"autoload_enabled,omitempty"`
+
 	// AWS access key ID.
 	// AWS access key ID.
 	// +kubebuilder:validation:Optional
@@ -354,8 +388,8 @@ type SnapshotAgentConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	AwsSessionToken *string `json:"awsSessionToken,omitempty" tf:"aws_session_token,omitempty"`
 
-	// Azure account key.
-	// Azure account key.
+	// Azure account key. Required when azure_auth_mode = "shared".
+	// Azure account key. Required when azure_auth_mode is 'shared'.
 	// +kubebuilder:validation:Optional
 	AzureAccountKey *string `json:"azureAccountKey,omitempty" tf:"azure_account_key,omitempty"`
 
@@ -364,10 +398,21 @@ type SnapshotAgentConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	AzureAccountName *string `json:"azureAccountName,omitempty" tf:"azure_account_name,omitempty"`
 
+	// Azure authentication mode. Required by Vault API when using storage_type = "azure-blob". Possible values are:
+	// Azure authentication mode. Required for azure-blob storage. Possible values are 'shared', 'managed', or 'environment'. Requires Vault Enterprise 1.18.0+.
+	// +kubebuilder:validation:Optional
+	AzureAuthMode *string `json:"azureAuthMode,omitempty" tf:"azure_auth_mode,omitempty"`
+
 	// Azure blob environment.
 	// Azure blob environment.
 	// +kubebuilder:validation:Optional
 	AzureBlobEnvironment *string `json:"azureBlobEnvironment,omitempty" tf:"azure_blob_environment,omitempty"`
+
+	// Azure client ID for authentication. Required when azure_auth_mode = "managed".
+	// Requires Vault Enterprise 1.18.0+.
+	// Azure client ID for authentication. Required when azure_auth_mode is 'managed'. Requires Vault Enterprise 1.18.0+.
+	// +kubebuilder:validation:Optional
+	AzureClientID *string `json:"azureClientId,omitempty" tf:"azure_client_id,omitempty"`
 
 	// Azure container name to write
 	// snapshots to.

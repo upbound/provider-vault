@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: authbackendroles.kubernetes.vault.upbound.io
 spec:
   group: kubernetes.vault.upbound.io
@@ -73,6 +73,14 @@ spec:
                 type: string
               forProvider:
                 properties:
+                  aliasMetadata:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                    type: object
+                    x-kubernetes-map-type: granular
                   aliasNameSource:
                     description: |-
                       Configures how identity aliases are generated.
@@ -171,6 +179,11 @@ spec:
                       type: string
                     type: array
                     x-kubernetes-list-type: set
+                  boundServiceAccountNamespaceSelector:
+                    description: |-
+                      A label selector for Kubernetes namespaces allowed to access this role. Accepts either a JSON or YAML object. The value should be of type LabelSelector. Currently, label selectors with matchExpressions are not supported. To use label selectors, Vault must have permission to read namespaces on the Kubernetes cluster. If set with bound_service_account_namespaces, the conditions are ORed. Requires Vault v1.16+.
+                      A label selector for Kubernetes namespaces allowed to access this role. Accepts either a JSON or YAML object. The value should be of type LabelSelector. Currently, label selectors with matchExpressions are not supported. To use label selectors, Vault must have permission to read namespaces on the Kubernetes cluster. If set with bound_service_account_namespaces, the conditions are ORed.
+                    type: string
                   boundServiceAccountNamespaces:
                     description: |-
                       List of namespaces allowed to access this role. If set to ["*"] all namespaces are allowed, both this and bound_service_account_names can not be set to "*".
@@ -271,6 +284,14 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
+                  aliasMetadata:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                    type: object
+                    x-kubernetes-map-type: granular
                   aliasNameSource:
                     description: |-
                       Configures how identity aliases are generated.
@@ -369,6 +390,11 @@ spec:
                       type: string
                     type: array
                     x-kubernetes-list-type: set
+                  boundServiceAccountNamespaceSelector:
+                    description: |-
+                      A label selector for Kubernetes namespaces allowed to access this role. Accepts either a JSON or YAML object. The value should be of type LabelSelector. Currently, label selectors with matchExpressions are not supported. To use label selectors, Vault must have permission to read namespaces on the Kubernetes cluster. If set with bound_service_account_namespaces, the conditions are ORed. Requires Vault v1.16+.
+                      A label selector for Kubernetes namespaces allowed to access this role. Accepts either a JSON or YAML object. The value should be of type LabelSelector. Currently, label selectors with matchExpressions are not supported. To use label selectors, Vault must have permission to read namespaces on the Kubernetes cluster. If set with bound_service_account_namespaces, the conditions are ORed.
+                    type: string
                   boundServiceAccountNamespaces:
                     description: |-
                       List of namespaces allowed to access this role. If set to ["*"] all namespaces are allowed, both this and bound_service_account_names can not be set to "*".
@@ -547,11 +573,6 @@ spec:
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.boundServiceAccountNames)
                 || (has(self.initProvider) && has(self.initProvider.boundServiceAccountNames))'
-            - message: spec.forProvider.boundServiceAccountNamespaces is a required
-                parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.boundServiceAccountNamespaces)
-                || (has(self.initProvider) && has(self.initProvider.boundServiceAccountNamespaces))'
             - message: spec.forProvider.roleName is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.roleName)
@@ -561,6 +582,14 @@ spec:
             properties:
               atProvider:
                 properties:
+                  aliasMetadata:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                    type: object
+                    x-kubernetes-map-type: granular
                   aliasNameSource:
                     description: |-
                       Configures how identity aliases are generated.
@@ -585,6 +614,11 @@ spec:
                       type: string
                     type: array
                     x-kubernetes-list-type: set
+                  boundServiceAccountNamespaceSelector:
+                    description: |-
+                      A label selector for Kubernetes namespaces allowed to access this role. Accepts either a JSON or YAML object. The value should be of type LabelSelector. Currently, label selectors with matchExpressions are not supported. To use label selectors, Vault must have permission to read namespaces on the Kubernetes cluster. If set with bound_service_account_namespaces, the conditions are ORed. Requires Vault v1.16+.
+                      A label selector for Kubernetes namespaces allowed to access this role. Accepts either a JSON or YAML object. The value should be of type LabelSelector. Currently, label selectors with matchExpressions are not supported. To use label selectors, Vault must have permission to read namespaces on the Kubernetes cluster. If set with bound_service_account_namespaces, the conditions are ORed.
+                    type: string
                   boundServiceAccountNamespaces:
                     description: |-
                       List of namespaces allowed to access this role. If set to ["*"] all namespaces are allowed, both this and bound_service_account_names can not be set to "*".

@@ -92,6 +92,10 @@ type SecretBackendRootCertInitParameters struct {
 	// The desired key type.
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
+	// Specifies the allowed key usage constraints for the certificate. This list of key usages will be added to the existing set of key usages (CRLSign, CertSign) on the generated certificate. Defaults to ["CRLSign", "CertSign"] for root CA certificates. Requires Vault 1.19.2+.
+	// Specify the allowed key usage constraint on issued certificates.
+	KeyUsage []*string `json:"keyUsage,omitempty" tf:"key_usage,omitempty"`
+
 	// The locality
 	// The locality.
 	Locality *string `json:"locality,omitempty" tf:"locality,omitempty"`
@@ -120,6 +124,10 @@ type SecretBackendRootCertInitParameters struct {
 	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
 	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
 	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
+
+	// Specifies the duration by which to backdate the NotBefore property.
+	// Specifies the duration by which to backdate the NotBefore property.
+	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
 
 	// The organization
 	// The organization.
@@ -181,6 +189,10 @@ type SecretBackendRootCertInitParameters struct {
 	// List of alternative URIs
 	// List of alternative URIs.
 	URISans []*string `json:"uriSans,omitempty" tf:"uri_sans,omitempty"`
+
+	// When true, uses PSS (Probabilistic Signature Scheme) for RSA signatures instead of PKCS#1 v1.5. PSS provides enhanced security but may have compatibility issues with older systems. Only applicable to RSA keys; ignored for ECDSA/Ed25519 keys. Defaults to false. Requires Vault 1.18.0+.
+	// Whether to use PSS signatures when using a RSA key-type issuer.
+	UsePss *bool `json:"usePss,omitempty" tf:"use_pss,omitempty"`
 }
 
 type SecretBackendRootCertObservation struct {
@@ -270,6 +282,10 @@ type SecretBackendRootCertObservation struct {
 	// The desired key type.
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
+	// Specifies the allowed key usage constraints for the certificate. This list of key usages will be added to the existing set of key usages (CRLSign, CertSign) on the generated certificate. Defaults to ["CRLSign", "CertSign"] for root CA certificates. Requires Vault 1.19.2+.
+	// Specify the allowed key usage constraint on issued certificates.
+	KeyUsage []*string `json:"keyUsage,omitempty" tf:"key_usage,omitempty"`
+
 	// The locality
 	// The locality.
 	Locality *string `json:"locality,omitempty" tf:"locality,omitempty"`
@@ -298,6 +314,10 @@ type SecretBackendRootCertObservation struct {
 	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
 	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
 	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
+
+	// Specifies the duration by which to backdate the NotBefore property.
+	// Specifies the duration by which to backdate the NotBefore property.
+	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
 
 	// The organization
 	// The organization.
@@ -363,6 +383,10 @@ type SecretBackendRootCertObservation struct {
 	// List of alternative URIs
 	// List of alternative URIs.
 	URISans []*string `json:"uriSans,omitempty" tf:"uri_sans,omitempty"`
+
+	// When true, uses PSS (Probabilistic Signature Scheme) for RSA signatures instead of PKCS#1 v1.5. PSS provides enhanced security but may have compatibility issues with older systems. Only applicable to RSA keys; ignored for ECDSA/Ed25519 keys. Defaults to false. Requires Vault 1.18.0+.
+	// Whether to use PSS signatures when using a RSA key-type issuer.
+	UsePss *bool `json:"usePss,omitempty" tf:"use_pss,omitempty"`
 }
 
 type SecretBackendRootCertParameters struct {
@@ -460,6 +484,11 @@ type SecretBackendRootCertParameters struct {
 	// +kubebuilder:validation:Optional
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
+	// Specifies the allowed key usage constraints for the certificate. This list of key usages will be added to the existing set of key usages (CRLSign, CertSign) on the generated certificate. Defaults to ["CRLSign", "CertSign"] for root CA certificates. Requires Vault 1.19.2+.
+	// Specify the allowed key usage constraint on issued certificates.
+	// +kubebuilder:validation:Optional
+	KeyUsage []*string `json:"keyUsage,omitempty" tf:"key_usage,omitempty"`
+
 	// The locality
 	// The locality.
 	// +kubebuilder:validation:Optional
@@ -494,6 +523,11 @@ type SecretBackendRootCertParameters struct {
 	// Set the Not After field of the certificate with specified date value. The value format should be given in UTC format YYYY-MM-ddTHH:MM:SSZ. Supports the Y10K end date for IEEE 802.1AR-2018 standard devices, 9999-12-31T23:59:59Z.
 	// +kubebuilder:validation:Optional
 	NotAfter *string `json:"notAfter,omitempty" tf:"not_after,omitempty"`
+
+	// Specifies the duration by which to backdate the NotBefore property.
+	// Specifies the duration by which to backdate the NotBefore property.
+	// +kubebuilder:validation:Optional
+	NotBeforeDuration *string `json:"notBeforeDuration,omitempty" tf:"not_before_duration,omitempty"`
 
 	// The organization
 	// The organization.
@@ -570,6 +604,11 @@ type SecretBackendRootCertParameters struct {
 	// List of alternative URIs.
 	// +kubebuilder:validation:Optional
 	URISans []*string `json:"uriSans,omitempty" tf:"uri_sans,omitempty"`
+
+	// When true, uses PSS (Probabilistic Signature Scheme) for RSA signatures instead of PKCS#1 v1.5. PSS provides enhanced security but may have compatibility issues with older systems. Only applicable to RSA keys; ignored for ECDSA/Ed25519 keys. Defaults to false. Requires Vault 1.18.0+.
+	// Whether to use PSS signatures when using a RSA key-type issuer.
+	// +kubebuilder:validation:Optional
+	UsePss *bool `json:"usePss,omitempty" tf:"use_pss,omitempty"`
 }
 
 // SecretBackendRootCertSpec defines the desired state of SecretBackendRootCert

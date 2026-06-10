@@ -21,7 +21,7 @@ func (mg *AuthBackend) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this AuthBackend
 func (tr *AuthBackend) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"oidc_client_secret": "oidcClientSecretSecretRef"}
+	return map[string]string{"oidc_client_secret": "oidcClientSecretSecretRef", "oidc_client_secret_wo": "oidcClientSecretWoSecretRef"}
 }
 
 // GetObservation of this AuthBackend

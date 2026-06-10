@@ -15,6 +15,8 @@ import (
 
 type AuthBackendConfigIdentityInitParameters struct {
 
+	// The path the AWS auth backend being configured was
+	// mounted at.  Defaults to aws.
 	// Unique name of the auth backend to configure.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
@@ -60,6 +62,8 @@ type AuthBackendConfigIdentityInitParameters struct {
 
 type AuthBackendConfigIdentityObservation struct {
 
+	// The path the AWS auth backend being configured was
+	// mounted at.  Defaults to aws.
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -97,6 +101,8 @@ type AuthBackendConfigIdentityObservation struct {
 
 type AuthBackendConfigIdentityParameters struct {
 
+	// The path the AWS auth backend being configured was
+	// mounted at.  Defaults to aws.
 	// Unique name of the auth backend to configure.
 	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)

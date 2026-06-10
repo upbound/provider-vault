@@ -21,7 +21,7 @@ func (mg *AuthBackend) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this AuthBackend
 func (tr *AuthBackend) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"token": "tokenSecretRef"}
+	return map[string]string{"api_token": "apiTokenSecretRef", "api_token_wo": "apiTokenWoSecretRef", "token": "tokenSecretRef"}
 }
 
 // GetObservation of this AuthBackend

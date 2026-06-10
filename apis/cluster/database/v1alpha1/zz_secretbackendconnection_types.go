@@ -20,6 +20,10 @@ type CassandraInitParameters struct {
 	// The number of seconds to use as a connection timeout.
 	ConnectTimeout *float64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
 
+	// Specifies the consistency option to use. See the gocql definition for valid options.
+	// Cassandra consistency level.
+	Consistency *string `json:"consistency,omitempty" tf:"consistency,omitempty"`
+
 	// The hosts to connect to.
 	// Cassandra hosts to connect to.
 	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
@@ -28,6 +32,10 @@ type CassandraInitParameters struct {
 	// certificate when using TLS.
 	// Whether to skip verification of the server certificate when using TLS.
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
+
+	// If set, enables host selection policy which will prioritize and use hosts which are in the local datacenter before hosts in all other datacenters.
+	// Cassandra local datacenter name.
+	LocalDatacenter *string `json:"localDatacenter,omitempty" tf:"local_datacenter,omitempty"`
 
 	// The password to authenticate with.
 	// The password to use when authenticating with Cassandra.
@@ -56,13 +64,25 @@ type CassandraInitParameters struct {
 	// Skip permissions checks when a connection to Cassandra is first created. These checks ensure that Vault is able to create roles, but can be resource intensive in clusters with many roles.
 	SkipVerification *bool `json:"skipVerification,omitempty" tf:"skip_verification,omitempty"`
 
+	// The keep-alive period for an active network connection. If zero, keep-alives are not enabled.
+	// Enable TCP keepalive for Cassandra connections.
+	SocketKeepAlive *string `json:"socketKeepAlive,omitempty" tf:"socket_keep_alive,omitempty"`
+
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Cassandra.
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
 
+	// Specifies the name to use as the SNI host when connecting to the Cassandra server via TLS.
+	// SNI host for TLS connections.
+	TLSServerName *string `json:"tlsServerName,omitempty" tf:"tls_server_name,omitempty"`
+
 	// The username to authenticate with.
 	// The username to use when authenticating with Cassandra.
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Template for dynamic Cassandra usernames.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 }
 
 type CassandraObservation struct {
@@ -72,6 +92,10 @@ type CassandraObservation struct {
 	// The number of seconds to use as a connection timeout.
 	ConnectTimeout *float64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
 
+	// Specifies the consistency option to use. See the gocql definition for valid options.
+	// Cassandra consistency level.
+	Consistency *string `json:"consistency,omitempty" tf:"consistency,omitempty"`
+
 	// The hosts to connect to.
 	// Cassandra hosts to connect to.
 	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
@@ -80,6 +104,10 @@ type CassandraObservation struct {
 	// certificate when using TLS.
 	// Whether to skip verification of the server certificate when using TLS.
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
+
+	// If set, enables host selection policy which will prioritize and use hosts which are in the local datacenter before hosts in all other datacenters.
+	// Cassandra local datacenter name.
+	LocalDatacenter *string `json:"localDatacenter,omitempty" tf:"local_datacenter,omitempty"`
 
 	// The default port to connect to if no port is specified as
 	// part of the host.
@@ -95,13 +123,25 @@ type CassandraObservation struct {
 	// Skip permissions checks when a connection to Cassandra is first created. These checks ensure that Vault is able to create roles, but can be resource intensive in clusters with many roles.
 	SkipVerification *bool `json:"skipVerification,omitempty" tf:"skip_verification,omitempty"`
 
+	// The keep-alive period for an active network connection. If zero, keep-alives are not enabled.
+	// Enable TCP keepalive for Cassandra connections.
+	SocketKeepAlive *string `json:"socketKeepAlive,omitempty" tf:"socket_keep_alive,omitempty"`
+
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Cassandra.
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
 
+	// Specifies the name to use as the SNI host when connecting to the Cassandra server via TLS.
+	// SNI host for TLS connections.
+	TLSServerName *string `json:"tlsServerName,omitempty" tf:"tls_server_name,omitempty"`
+
 	// The username to authenticate with.
 	// The username to use when authenticating with Cassandra.
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Template for dynamic Cassandra usernames.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 }
 
 type CassandraParameters struct {
@@ -112,6 +152,11 @@ type CassandraParameters struct {
 	// +kubebuilder:validation:Optional
 	ConnectTimeout *float64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
 
+	// Specifies the consistency option to use. See the gocql definition for valid options.
+	// Cassandra consistency level.
+	// +kubebuilder:validation:Optional
+	Consistency *string `json:"consistency,omitempty" tf:"consistency,omitempty"`
+
 	// The hosts to connect to.
 	// Cassandra hosts to connect to.
 	// +kubebuilder:validation:Optional
@@ -122,6 +167,11 @@ type CassandraParameters struct {
 	// Whether to skip verification of the server certificate when using TLS.
 	// +kubebuilder:validation:Optional
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
+
+	// If set, enables host selection policy which will prioritize and use hosts which are in the local datacenter before hosts in all other datacenters.
+	// Cassandra local datacenter name.
+	// +kubebuilder:validation:Optional
+	LocalDatacenter *string `json:"localDatacenter,omitempty" tf:"local_datacenter,omitempty"`
 
 	// The password to authenticate with.
 	// The password to use when authenticating with Cassandra.
@@ -156,15 +206,30 @@ type CassandraParameters struct {
 	// +kubebuilder:validation:Optional
 	SkipVerification *bool `json:"skipVerification,omitempty" tf:"skip_verification,omitempty"`
 
+	// The keep-alive period for an active network connection. If zero, keep-alives are not enabled.
+	// Enable TCP keepalive for Cassandra connections.
+	// +kubebuilder:validation:Optional
+	SocketKeepAlive *string `json:"socketKeepAlive,omitempty" tf:"socket_keep_alive,omitempty"`
+
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Cassandra.
 	// +kubebuilder:validation:Optional
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
 
+	// Specifies the name to use as the SNI host when connecting to the Cassandra server via TLS.
+	// SNI host for TLS connections.
+	// +kubebuilder:validation:Optional
+	TLSServerName *string `json:"tlsServerName,omitempty" tf:"tls_server_name,omitempty"`
+
 	// The username to authenticate with.
 	// The username to use when authenticating with Cassandra.
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Template for dynamic Cassandra usernames.
+	// +kubebuilder:validation:Optional
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 }
 
 type CouchbaseInitParameters struct {
@@ -301,7 +366,7 @@ type ElasticsearchInitParameters struct {
 	// The password to be used in the connection URL
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
-	// This, if set, is used to set the SNI host when connecting via TLS.
+	// Specifies the name to use as the SNI host when connecting to the Cassandra server via TLS.
 	// This, if set, is used to set the SNI host when connecting via TLS
 	TLSServerName *string `json:"tlsServerName,omitempty" tf:"tls_server_name,omitempty"`
 
@@ -340,7 +405,7 @@ type ElasticsearchObservation struct {
 	// Whether to disable certificate verification
 	Insecure *bool `json:"insecure,omitempty" tf:"insecure,omitempty"`
 
-	// This, if set, is used to set the SNI host when connecting via TLS.
+	// Specifies the name to use as the SNI host when connecting to the Cassandra server via TLS.
 	// This, if set, is used to set the SNI host when connecting via TLS
 	TLSServerName *string `json:"tlsServerName,omitempty" tf:"tls_server_name,omitempty"`
 
@@ -389,7 +454,7 @@ type ElasticsearchParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
-	// This, if set, is used to set the SNI host when connecting via TLS.
+	// Specifies the name to use as the SNI host when connecting to the Cassandra server via TLS.
 	// This, if set, is used to set the SNI host when connecting via TLS
 	// +kubebuilder:validation:Optional
 	TLSServerName *string `json:"tlsServerName,omitempty" tf:"tls_server_name,omitempty"`
@@ -454,6 +519,10 @@ type HanaInitParameters struct {
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Username generation template.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 }
 
 type HanaObservation struct {
@@ -496,6 +565,10 @@ type HanaObservation struct {
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Username generation template.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 }
 
 type HanaParameters struct {
@@ -551,6 +624,11 @@ type HanaParameters struct {
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Username generation template.
+	// +kubebuilder:validation:Optional
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 }
 
 type InfluxdbInitParameters struct {
@@ -728,6 +806,14 @@ type MongodbInitParameters struct {
 	// Version counter for root credential password write-only field
 	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
+	// The x509 CA file for validating the certificate presented by the MongoDB server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// The client certificate and private key (concatenated in PEM format) to use for TLS authentication with MongoDB. This is a sensitive field that will not be returned in API responses.
+	// The x509 certificate and private key bundle for connecting to the database. Must be PEM encoded.
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -735,6 +821,10 @@ type MongodbInitParameters struct {
 	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
+	// A JSON string specifying the MongoDB write concern. For example: {"wmode": "majority", "wtimeout": 5000}.
+	// Specifies the MongoDB write concern for Vault management operations.
+	WriteConcern *string `json:"writeConcern,omitempty" tf:"write_concern,omitempty"`
 }
 
 type MongodbObservation struct {
@@ -770,6 +860,10 @@ type MongodbObservation struct {
 	// Version counter for root credential password write-only field
 	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
+	// The x509 CA file for validating the certificate presented by the MongoDB server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -777,6 +871,10 @@ type MongodbObservation struct {
 	// Template describing how dynamic usernames are generated.
 	// Username generation template.
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
+	// A JSON string specifying the MongoDB write concern. For example: {"wmode": "majority", "wtimeout": 5000}.
+	// Specifies the MongoDB write concern for Vault management operations.
+	WriteConcern *string `json:"writeConcern,omitempty" tf:"write_concern,omitempty"`
 }
 
 type MongodbParameters struct {
@@ -823,6 +921,16 @@ type MongodbParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
+	// The x509 CA file for validating the certificate presented by the MongoDB server. Must be PEM encoded.
+	// +kubebuilder:validation:Optional
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// The client certificate and private key (concatenated in PEM format) to use for TLS authentication with MongoDB. This is a sensitive field that will not be returned in API responses.
+	// The x509 certificate and private key bundle for connecting to the database. Must be PEM encoded.
+	// +kubebuilder:validation:Optional
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
@@ -832,6 +940,11 @@ type MongodbParameters struct {
 	// Username generation template.
 	// +kubebuilder:validation:Optional
 	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
+	// A JSON string specifying the MongoDB write concern. For example: {"wmode": "majority", "wtimeout": 5000}.
+	// Specifies the MongoDB write concern for Vault management operations.
+	// +kubebuilder:validation:Optional
+	WriteConcern *string `json:"writeConcern,omitempty" tf:"write_concern,omitempty"`
 }
 
 type MongodbatlasInitParameters struct {
@@ -847,6 +960,10 @@ type MongodbatlasInitParameters struct {
 	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
 	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
 	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Template describing how dynamic usernames are generated.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 }
 
 type MongodbatlasObservation struct {
@@ -858,6 +975,10 @@ type MongodbatlasObservation struct {
 	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
 	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
 	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Template describing how dynamic usernames are generated.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 }
 
 type MongodbatlasParameters struct {
@@ -876,6 +997,11 @@ type MongodbatlasParameters struct {
 	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API.
 	// +kubebuilder:validation:Optional
 	PublicKey *string `json:"publicKey" tf:"public_key,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Template describing how dynamic usernames are generated.
+	// +kubebuilder:validation:Optional
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 }
 
 type MssqlInitParameters struct {
@@ -1101,11 +1227,11 @@ type MySQLAuroraInitParameters struct {
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
 
-	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
-	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// The client certificate and private key (concatenated in PEM format) to use for TLS authentication with MongoDB. This is a sensitive field that will not be returned in API responses.
 	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
 	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
@@ -1155,7 +1281,7 @@ type MySQLAuroraObservation struct {
 	// Version counter for root credential password write-only field
 	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
-	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
@@ -1222,12 +1348,12 @@ type MySQLAuroraParameters struct {
 	// +kubebuilder:validation:Optional
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
 
-	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// +kubebuilder:validation:Optional
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
-	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// The client certificate and private key (concatenated in PEM format) to use for TLS authentication with MongoDB. This is a sensitive field that will not be returned in API responses.
 	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
 	// +kubebuilder:validation:Optional
 	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
@@ -1288,11 +1414,11 @@ type MySQLInitParameters struct {
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
 
-	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
-	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// The client certificate and private key (concatenated in PEM format) to use for TLS authentication with MongoDB. This is a sensitive field that will not be returned in API responses.
 	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
 	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
@@ -1350,11 +1476,11 @@ type MySQLLegacyInitParameters struct {
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
 
-	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
-	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// The client certificate and private key (concatenated in PEM format) to use for TLS authentication with MongoDB. This is a sensitive field that will not be returned in API responses.
 	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
 	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
@@ -1404,7 +1530,7 @@ type MySQLLegacyObservation struct {
 	// Version counter for root credential password write-only field
 	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
-	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
@@ -1471,12 +1597,12 @@ type MySQLLegacyParameters struct {
 	// +kubebuilder:validation:Optional
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
 
-	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// +kubebuilder:validation:Optional
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
-	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// The client certificate and private key (concatenated in PEM format) to use for TLS authentication with MongoDB. This is a sensitive field that will not be returned in API responses.
 	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
 	// +kubebuilder:validation:Optional
 	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
@@ -1529,7 +1655,7 @@ type MySQLObservation struct {
 	// Version counter for root credential password write-only field
 	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
-	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
@@ -1596,12 +1722,12 @@ type MySQLParameters struct {
 	// +kubebuilder:validation:Optional
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
 
-	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// +kubebuilder:validation:Optional
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
-	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// The client certificate and private key (concatenated in PEM format) to use for TLS authentication with MongoDB. This is a sensitive field that will not be returned in API responses.
 	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
 	// +kubebuilder:validation:Optional
 	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
@@ -1662,11 +1788,11 @@ type MySQLRDSInitParameters struct {
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
 
-	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
-	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// The client certificate and private key (concatenated in PEM format) to use for TLS authentication with MongoDB. This is a sensitive field that will not be returned in API responses.
 	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
 	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
 
@@ -1716,7 +1842,7 @@ type MySQLRDSObservation struct {
 	// Version counter for root credential password write-only field
 	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
-	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
@@ -1783,12 +1909,12 @@ type MySQLRDSParameters struct {
 	// +kubebuilder:validation:Optional
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
 
-	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// +kubebuilder:validation:Optional
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
-	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// The client certificate and private key (concatenated in PEM format) to use for TLS authentication with MongoDB. This is a sensitive field that will not be returned in API responses.
 	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
 	// +kubebuilder:validation:Optional
 	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
@@ -1845,6 +1971,12 @@ type OracleInitParameters struct {
 	// Version counter for root credential password write-only field
 	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
+	// If set, allows onboarding static roles with a rootless
+	// connection configuration. Mutually exclusive with username and password.
+	// If set, will force verify_connection to be false. Requires Vault 1.18+ Enterprise.
+	// If set, allows onboarding static roles with a rootless connection configuration.
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
+
 	// Enable spliting statements after semi-colons.
 	// Set to true in order to split statements after semi-colons.
 	SplitStatements *bool `json:"splitStatements,omitempty" tf:"split_statements,omitempty"`
@@ -1894,6 +2026,12 @@ type OracleObservation struct {
 	// The version of the password_wo. For more info see updating write-only attributes.
 	// Version counter for root credential password write-only field
 	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
+	// If set, allows onboarding static roles with a rootless
+	// connection configuration. Mutually exclusive with username and password.
+	// If set, will force verify_connection to be false. Requires Vault 1.18+ Enterprise.
+	// If set, allows onboarding static roles with a rootless connection configuration.
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
 
 	// Enable spliting statements after semi-colons.
 	// Set to true in order to split statements after semi-colons.
@@ -1956,6 +2094,13 @@ type OracleParameters struct {
 	// Version counter for root credential password write-only field
 	// +kubebuilder:validation:Optional
 	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
+	// If set, allows onboarding static roles with a rootless
+	// connection configuration. Mutually exclusive with username and password.
+	// If set, will force verify_connection to be false. Requires Vault 1.18+ Enterprise.
+	// If set, allows onboarding static roles with a rootless connection configuration.
+	// +kubebuilder:validation:Optional
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
 
 	// Enable spliting statements after semi-colons.
 	// Set to true in order to split statements after semi-colons.
@@ -2038,7 +2183,7 @@ type PostgresqlInitParameters struct {
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
 
-	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
 	// The x509 CA file for validating the certificate presented by the PostgreSQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
@@ -2109,7 +2254,7 @@ type PostgresqlObservation struct {
 	// If set, allows onboarding static roles with a rootless connection configuration.
 	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
 
-	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
 	// The x509 CA file for validating the certificate presented by the PostgreSQL server. Must be PEM encoded.
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
 
@@ -2205,7 +2350,7 @@ type PostgresqlParameters struct {
 	// +kubebuilder:validation:Optional
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
 
-	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The CA certificate to use when verifying the MongoDB server's TLS certificate.
 	// The x509 CA file for validating the certificate presented by the PostgreSQL server. Must be PEM encoded.
 	// +kubebuilder:validation:Optional
 	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
@@ -2631,9 +2776,17 @@ type SecretBackendConnectionInitParameters struct {
 	// Connection parameters for the oracle-database-plugin plugin.
 	Oracle []OracleInitParameters `json:"oracle,omitempty" tf:"oracle,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Specifies the semantic version of the plugin to use for this connection
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A nested block containing configuration options for PostgreSQL connections.
 	// Connection parameters for the postgresql-database-plugin plugin.
@@ -2669,6 +2822,10 @@ type SecretBackendConnectionInitParameters struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This is can be overridden at the role-level by the static role's skip_import_rotation field. The default is false
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// A nested block containing configuration options for Snowflake connections.
 	// Connection parameters for the snowflake-database-plugin plugin.
@@ -2765,9 +2922,17 @@ type SecretBackendConnectionObservation struct {
 	// Connection parameters for the oracle-database-plugin plugin.
 	Oracle []OracleObservation `json:"oracle,omitempty" tf:"oracle,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Specifies the semantic version of the plugin to use for this connection
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A nested block containing configuration options for PostgreSQL connections.
 	// Connection parameters for the postgresql-database-plugin plugin.
@@ -2803,6 +2968,10 @@ type SecretBackendConnectionObservation struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This is can be overridden at the role-level by the static role's skip_import_rotation field. The default is false
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// A nested block containing configuration options for Snowflake connections.
 	// Connection parameters for the snowflake-database-plugin plugin.
@@ -2926,10 +3095,20 @@ type SecretBackendConnectionParameters struct {
 	// +kubebuilder:validation:Optional
 	Oracle []OracleParameters `json:"oracle,omitempty" tf:"oracle,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Specifies the semantic version of the plugin to use for this connection
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A nested block containing configuration options for PostgreSQL connections.
 	// Connection parameters for the postgresql-database-plugin plugin.
@@ -2973,6 +3152,11 @@ type SecretBackendConnectionParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This is can be overridden at the role-level by the static role's skip_import_rotation field. The default is false
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// A nested block containing configuration options for Snowflake connections.
 	// Connection parameters for the snowflake-database-plugin plugin.

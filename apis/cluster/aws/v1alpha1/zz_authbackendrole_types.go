@@ -15,6 +15,13 @@ import (
 
 type AuthBackendRoleInitParameters struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// If set to true, allows migration of
 	// the underlying instance where the client resides.
 	// When true, allows migration of the underlying instance where the client resides. Use with caution.
@@ -221,6 +228,13 @@ type AuthBackendRoleInitParameters struct {
 
 type AuthBackendRoleObservation struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// If set to true, allows migration of
 	// the underlying instance where the client resides.
 	// When true, allows migration of the underlying instance where the client resides. Use with caution.
@@ -422,6 +436,14 @@ type AuthBackendRoleObservation struct {
 }
 
 type AuthBackendRoleParameters struct {
+
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
 
 	// If set to true, allows migration of
 	// the underlying instance where the client resides.

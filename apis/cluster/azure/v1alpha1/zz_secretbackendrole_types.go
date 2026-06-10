@@ -93,8 +93,14 @@ type SecretBackendRoleInitParameters struct {
 
 	// –  Specifies the maximum TTL for service principals generated using this role. Accepts time
 	// suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine max TTL time.
-	// Human-friendly description of the mount for the backend.
+	// Specifies the maximum TTL for service principals generated using this role.
 	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
+
+	// value pairs that are stored alongside the role and returned with generated
+	// credentials.
+	// A map of string key/value pairs that will be stored as metadata on the secret.
+	// +mapType=granular
+	Metadata map[string]*string `json:"metadata,omitempty" tf:"metadata,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -108,6 +114,10 @@ type SecretBackendRoleInitParameters struct {
 	// Indicates whether the applications and service principals created by Vault will be permanently deleted when the corresponding leases expire.
 	PermanentlyDelete *bool `json:"permanentlyDelete,omitempty" tf:"permanently_delete,omitempty"`
 
+	// If set to true, persists the created service principal and application for the lifetime of the role
+	// If true, persists the created service principal and application for the lifetime of the role.
+	PersistApp *bool `json:"persistApp,omitempty" tf:"persist_app,omitempty"`
+
 	// Name of the Azure role
 	// Name of the role to create
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
@@ -119,7 +129,7 @@ type SecretBackendRoleInitParameters struct {
 
 	// –  Specifies the default TTL for service principals generated using this role.
 	// Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
-	// Human-friendly description of the mount for the backend.
+	// Specifies the default TTL for service principals generated using this role.
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
 	// - A list of Azure tags to attach to an application. Requires Vault 1.16+.
@@ -155,8 +165,14 @@ type SecretBackendRoleObservation struct {
 
 	// –  Specifies the maximum TTL for service principals generated using this role. Accepts time
 	// suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine max TTL time.
-	// Human-friendly description of the mount for the backend.
+	// Specifies the maximum TTL for service principals generated using this role.
 	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
+
+	// value pairs that are stored alongside the role and returned with generated
+	// credentials.
+	// A map of string key/value pairs that will be stored as metadata on the secret.
+	// +mapType=granular
+	Metadata map[string]*string `json:"metadata,omitempty" tf:"metadata,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -170,6 +186,10 @@ type SecretBackendRoleObservation struct {
 	// Indicates whether the applications and service principals created by Vault will be permanently deleted when the corresponding leases expire.
 	PermanentlyDelete *bool `json:"permanentlyDelete,omitempty" tf:"permanently_delete,omitempty"`
 
+	// If set to true, persists the created service principal and application for the lifetime of the role
+	// If true, persists the created service principal and application for the lifetime of the role.
+	PersistApp *bool `json:"persistApp,omitempty" tf:"persist_app,omitempty"`
+
 	// Name of the Azure role
 	// Name of the role to create
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
@@ -181,7 +201,7 @@ type SecretBackendRoleObservation struct {
 
 	// –  Specifies the default TTL for service principals generated using this role.
 	// Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
-	// Human-friendly description of the mount for the backend.
+	// Specifies the default TTL for service principals generated using this role.
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
 	// - A list of Azure tags to attach to an application. Requires Vault 1.16+.
@@ -231,9 +251,16 @@ type SecretBackendRoleParameters struct {
 
 	// –  Specifies the maximum TTL for service principals generated using this role. Accepts time
 	// suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine max TTL time.
-	// Human-friendly description of the mount for the backend.
+	// Specifies the maximum TTL for service principals generated using this role.
 	// +kubebuilder:validation:Optional
 	MaxTTL *string `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
+
+	// value pairs that are stored alongside the role and returned with generated
+	// credentials.
+	// A map of string key/value pairs that will be stored as metadata on the secret.
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	Metadata map[string]*string `json:"metadata,omitempty" tf:"metadata,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -249,6 +276,11 @@ type SecretBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	PermanentlyDelete *bool `json:"permanentlyDelete,omitempty" tf:"permanently_delete,omitempty"`
 
+	// If set to true, persists the created service principal and application for the lifetime of the role
+	// If true, persists the created service principal and application for the lifetime of the role.
+	// +kubebuilder:validation:Optional
+	PersistApp *bool `json:"persistApp,omitempty" tf:"persist_app,omitempty"`
+
 	// Name of the Azure role
 	// Name of the role to create
 	// +kubebuilder:validation:Optional
@@ -262,7 +294,7 @@ type SecretBackendRoleParameters struct {
 
 	// –  Specifies the default TTL for service principals generated using this role.
 	// Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
-	// Human-friendly description of the mount for the backend.
+	// Specifies the default TTL for service principals generated using this role.
 	// +kubebuilder:validation:Optional
 	TTL *string `json:"ttl,omitempty" tf:"ttl,omitempty"`
 

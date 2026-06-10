@@ -62,6 +62,18 @@ type SecretBackendStaticRoleInitParameters struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The password corresponding to the username in the database.
+	// This is a write-only field. Requires Vault 1.19+. Deprecates self_managed_password which was introduced in Vault 1.18.
+	// Cannot be used with self_managed_password.
+	// The password corresponding to the username in the database. This is a write-only field. Requires Vault 1.19+. Deprecates 'self_managed_password' which was introduced in Vault 1.18.
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo field.
+	// Used for tracking changes to the write-only password field. For more info see
+	// updating write-only attributes.
+	// The version of the password_wo field. Used for tracking changes to the write-only password field.
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// The amount of time Vault should wait before rotating the password, in seconds.
 	// Mutually exclusive with rotation_schedule.
 	// The amount of time Vault should wait before rotating the password, in seconds.
@@ -84,12 +96,13 @@ type SecretBackendStaticRoleInitParameters struct {
 	// The password corresponding to the username in the database.
 	// Required when using the Rootless Password Rotation workflow for static roles. Only enabled for
 	// select DB engines (Postgres). Requires Vault 1.18+ Enterprise.
-	// The password corresponding to the username in the database. Required when using the Rootless Password Rotation workflow for static roles.
+	// Deprecated: Use password_wo instead. This field will be removed in a future version.
+	// The password corresponding to the username in the database. Required when using the Rootless Password Rotation workflow for static roles. Deprecated in favor of password_wo field introduced in Vault 1.19.
 	SelfManagedPasswordSecretRef *v1.LocalSecretKeySelector `json:"selfManagedPasswordSecretRef,omitempty" tf:"-"`
 
 	// If set to true, Vault will skip the
 	// initial secret rotation on import. Requires Vault 1.18+ Enterprise.
-	// Skip rotation of the password on import.
+	// Skip rotation of the password on import. When not set, inherits from connection's skip_static_role_import_rotation.
 	SkipImportRotation *bool `json:"skipImportRotation,omitempty" tf:"skip_import_rotation,omitempty"`
 
 	// The database username that this static role corresponds to.
@@ -127,6 +140,18 @@ type SecretBackendStaticRoleObservation struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The password corresponding to the username in the database.
+	// This is a write-only field. Requires Vault 1.19+. Deprecates self_managed_password which was introduced in Vault 1.18.
+	// Cannot be used with self_managed_password.
+	// The password corresponding to the username in the database. This is a write-only field. Requires Vault 1.19+. Deprecates 'self_managed_password' which was introduced in Vault 1.18.
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo field.
+	// Used for tracking changes to the write-only password field. For more info see
+	// updating write-only attributes.
+	// The version of the password_wo field. Used for tracking changes to the write-only password field.
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// The amount of time Vault should wait before rotating the password, in seconds.
 	// Mutually exclusive with rotation_schedule.
 	// The amount of time Vault should wait before rotating the password, in seconds.
@@ -148,7 +173,7 @@ type SecretBackendStaticRoleObservation struct {
 
 	// If set to true, Vault will skip the
 	// initial secret rotation on import. Requires Vault 1.18+ Enterprise.
-	// Skip rotation of the password on import.
+	// Skip rotation of the password on import. When not set, inherits from connection's skip_static_role_import_rotation.
 	SkipImportRotation *bool `json:"skipImportRotation,omitempty" tf:"skip_import_rotation,omitempty"`
 
 	// The database username that this static role corresponds to.
@@ -210,6 +235,20 @@ type SecretBackendStaticRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
+	// The password corresponding to the username in the database.
+	// This is a write-only field. Requires Vault 1.19+. Deprecates self_managed_password which was introduced in Vault 1.18.
+	// Cannot be used with self_managed_password.
+	// The password corresponding to the username in the database. This is a write-only field. Requires Vault 1.19+. Deprecates 'self_managed_password' which was introduced in Vault 1.18.
+	// +kubebuilder:validation:Optional
+	PasswordWo *string `json:"passwordWo,omitempty" tf:"password_wo,omitempty"`
+
+	// The version of the password_wo field.
+	// Used for tracking changes to the write-only password field. For more info see
+	// updating write-only attributes.
+	// The version of the password_wo field. Used for tracking changes to the write-only password field.
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
+
 	// The amount of time Vault should wait before rotating the password, in seconds.
 	// Mutually exclusive with rotation_schedule.
 	// The amount of time Vault should wait before rotating the password, in seconds.
@@ -236,13 +275,14 @@ type SecretBackendStaticRoleParameters struct {
 	// The password corresponding to the username in the database.
 	// Required when using the Rootless Password Rotation workflow for static roles. Only enabled for
 	// select DB engines (Postgres). Requires Vault 1.18+ Enterprise.
-	// The password corresponding to the username in the database. Required when using the Rootless Password Rotation workflow for static roles.
+	// Deprecated: Use password_wo instead. This field will be removed in a future version.
+	// The password corresponding to the username in the database. Required when using the Rootless Password Rotation workflow for static roles. Deprecated in favor of password_wo field introduced in Vault 1.19.
 	// +kubebuilder:validation:Optional
 	SelfManagedPasswordSecretRef *v1.LocalSecretKeySelector `json:"selfManagedPasswordSecretRef,omitempty" tf:"-"`
 
 	// If set to true, Vault will skip the
 	// initial secret rotation on import. Requires Vault 1.18+ Enterprise.
-	// Skip rotation of the password on import.
+	// Skip rotation of the password on import. When not set, inherits from connection's skip_static_role_import_rotation.
 	// +kubebuilder:validation:Optional
 	SkipImportRotation *bool `json:"skipImportRotation,omitempty" tf:"skip_import_rotation,omitempty"`
 

@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: authbackendroles.cert.vault.upbound.io
 spec:
   group: cert.vault.upbound.io
@@ -73,6 +73,16 @@ spec:
                 type: string
               forProvider:
                 properties:
+                  aliasMetadata:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                    type: object
+                    x-kubernetes-map-type: granular
                   allowedCommonNames:
                     description: Allowed the common names for authenticated client
                       certificates
@@ -229,6 +239,13 @@ spec:
                       Requires Vault version 1.13+.
                       If true and an OCSP response cannot be fetched or is of an unknown status, the login will proceed as if the certificate has not been revoked.
                     type: boolean
+                  ocspMaxRetries:
+                    description: |-
+                      The number of retries to attempt when
+                      connecting to an OCSP server. Defaults to 4 retries.
+                      Must be a non-negative value. Requires Vault version 1.16+.
+                      The number of retries to attempt when connecting to an OCSP server. Defaults to 4 retries. Must be a non-negative value.
+                    type: number
                   ocspQueryAllServers:
                     description: |-
                       If set to true, rather than
@@ -248,6 +265,14 @@ spec:
                       type: string
                     type: array
                     x-kubernetes-list-type: set
+                  ocspThisUpdateMaxAge:
+                    description: |-
+                      The maximum age in seconds of the
+                      'thisUpdate' field in an OCSP response before it is considered too old.
+                      Defaults to 0 (disabled). Must be a non-negative value.
+                      Requires Vault version 1.16+.
+                      The maximum age in seconds of the 'thisUpdate' field in an OCSP response before it is considered too old. Defaults to 0 (disabled). Must be a non-negative value.
+                    type: number
                   requiredExtensions:
                     description: |-
                       TLS extensions required on
@@ -338,6 +363,16 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
+                  aliasMetadata:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                    type: object
+                    x-kubernetes-map-type: granular
                   allowedCommonNames:
                     description: Allowed the common names for authenticated client
                       certificates
@@ -494,6 +529,13 @@ spec:
                       Requires Vault version 1.13+.
                       If true and an OCSP response cannot be fetched or is of an unknown status, the login will proceed as if the certificate has not been revoked.
                     type: boolean
+                  ocspMaxRetries:
+                    description: |-
+                      The number of retries to attempt when
+                      connecting to an OCSP server. Defaults to 4 retries.
+                      Must be a non-negative value. Requires Vault version 1.16+.
+                      The number of retries to attempt when connecting to an OCSP server. Defaults to 4 retries. Must be a non-negative value.
+                    type: number
                   ocspQueryAllServers:
                     description: |-
                       If set to true, rather than
@@ -513,6 +555,14 @@ spec:
                       type: string
                     type: array
                     x-kubernetes-list-type: set
+                  ocspThisUpdateMaxAge:
+                    description: |-
+                      The maximum age in seconds of the
+                      'thisUpdate' field in an OCSP response before it is considered too old.
+                      Defaults to 0 (disabled). Must be a non-negative value.
+                      Requires Vault version 1.16+.
+                      The maximum age in seconds of the 'thisUpdate' field in an OCSP response before it is considered too old. Defaults to 0 (disabled). Must be a non-negative value.
+                    type: number
                   requiredExtensions:
                     description: |-
                       TLS extensions required on
@@ -690,6 +740,16 @@ spec:
             properties:
               atProvider:
                 properties:
+                  aliasMetadata:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                    type: object
+                    x-kubernetes-map-type: granular
                   allowedCommonNames:
                     description: Allowed the common names for authenticated client
                       certificates
@@ -774,6 +834,13 @@ spec:
                       Requires Vault version 1.13+.
                       If true and an OCSP response cannot be fetched or is of an unknown status, the login will proceed as if the certificate has not been revoked.
                     type: boolean
+                  ocspMaxRetries:
+                    description: |-
+                      The number of retries to attempt when
+                      connecting to an OCSP server. Defaults to 4 retries.
+                      Must be a non-negative value. Requires Vault version 1.16+.
+                      The number of retries to attempt when connecting to an OCSP server. Defaults to 4 retries. Must be a non-negative value.
+                    type: number
                   ocspQueryAllServers:
                     description: |-
                       If set to true, rather than
@@ -793,6 +860,14 @@ spec:
                       type: string
                     type: array
                     x-kubernetes-list-type: set
+                  ocspThisUpdateMaxAge:
+                    description: |-
+                      The maximum age in seconds of the
+                      'thisUpdate' field in an OCSP response before it is considered too old.
+                      Defaults to 0 (disabled). Must be a non-negative value.
+                      Requires Vault version 1.16+.
+                      The maximum age in seconds of the 'thisUpdate' field in an OCSP response before it is considered too old. Defaults to 0 (disabled). Must be a non-negative value.
+                    type: number
                   requiredExtensions:
                     description: |-
                       TLS extensions required on

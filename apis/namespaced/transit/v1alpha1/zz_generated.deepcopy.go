@@ -68,6 +68,11 @@ func (in *SecretBackendKeyInitParameters) DeepCopyInto(out *SecretBackendKeyInit
 		*out = new(v1.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.Context != nil {
+		in, out := &in.Context, &out.Context
+		*out = new(string)
+		**out = **in
+	}
 	if in.ConvergentEncryption != nil {
 		in, out := &in.ConvergentEncryption, &out.ConvergentEncryption
 		*out = new(bool)
@@ -101,6 +106,16 @@ func (in *SecretBackendKeyInitParameters) DeepCopyInto(out *SecretBackendKeyInit
 	if in.KeySize != nil {
 		in, out := &in.KeySize, &out.KeySize
 		*out = new(float64)
+		**out = **in
+	}
+	if in.ManagedKeyID != nil {
+		in, out := &in.ManagedKeyID, &out.ManagedKeyID
+		*out = new(string)
+		**out = **in
+	}
+	if in.ManagedKeyName != nil {
+		in, out := &in.ManagedKeyName, &out.ManagedKeyName
+		*out = new(string)
 		**out = **in
 	}
 	if in.MinDecryptionVersion != nil {
@@ -195,6 +210,11 @@ func (in *SecretBackendKeyObservation) DeepCopyInto(out *SecretBackendKeyObserva
 		*out = new(string)
 		**out = **in
 	}
+	if in.Context != nil {
+		in, out := &in.Context, &out.Context
+		*out = new(string)
+		**out = **in
+	}
 	if in.ConvergentEncryption != nil {
 		in, out := &in.ConvergentEncryption, &out.ConvergentEncryption
 		*out = new(bool)
@@ -260,6 +280,16 @@ func (in *SecretBackendKeyObservation) DeepCopyInto(out *SecretBackendKeyObserva
 	if in.LatestVersion != nil {
 		in, out := &in.LatestVersion, &out.LatestVersion
 		*out = new(float64)
+		**out = **in
+	}
+	if in.ManagedKeyID != nil {
+		in, out := &in.ManagedKeyID, &out.ManagedKeyID
+		*out = new(string)
+		**out = **in
+	}
+	if in.ManagedKeyName != nil {
+		in, out := &in.ManagedKeyName, &out.ManagedKeyName
+		*out = new(string)
 		**out = **in
 	}
 	if in.MinAvailableVersion != nil {
@@ -357,6 +387,11 @@ func (in *SecretBackendKeyParameters) DeepCopyInto(out *SecretBackendKeyParamete
 		*out = new(v1.NamespacedSelector)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.Context != nil {
+		in, out := &in.Context, &out.Context
+		*out = new(string)
+		**out = **in
+	}
 	if in.ConvergentEncryption != nil {
 		in, out := &in.ConvergentEncryption, &out.ConvergentEncryption
 		*out = new(bool)
@@ -390,6 +425,16 @@ func (in *SecretBackendKeyParameters) DeepCopyInto(out *SecretBackendKeyParamete
 	if in.KeySize != nil {
 		in, out := &in.KeySize, &out.KeySize
 		*out = new(float64)
+		**out = **in
+	}
+	if in.ManagedKeyID != nil {
+		in, out := &in.ManagedKeyID, &out.ManagedKeyID
+		*out = new(string)
+		**out = **in
+	}
+	if in.ManagedKeyName != nil {
+		in, out := &in.ManagedKeyName, &out.ManagedKeyName
+		*out = new(string)
 		**out = **in
 	}
 	if in.MinDecryptionVersion != nil {

@@ -16,6 +16,9 @@ import (
 
 type SecretRoleInitParameters struct {
 
+	// Name of the ca to use, if absent use legacy ca
+	CA *string `json:"ca,omitempty" tf:"ca,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -39,6 +42,18 @@ type SecretRoleInitParameters struct {
 	// Grant permission to use the KMIP Create operation
 	OperationCreate *bool `json:"operationCreate,omitempty" tf:"operation_create,omitempty"`
 
+	// Grant permission to use the KMIP Create Key Pair operation.
+	// Grant permission to use the KMIP Create Key Pair operation
+	OperationCreateKeyPair *bool `json:"operationCreateKeyPair,omitempty" tf:"operation_create_key_pair,omitempty"`
+
+	// Grant permission to use the KMIP Decrypt operation.
+	// Grant permission to use the KMIP Decrypt operation
+	OperationDecrypt *bool `json:"operationDecrypt,omitempty" tf:"operation_decrypt,omitempty"`
+
+	// Grant permission to use the KMIP Delete Attribute operation.
+	// Grant permission to use the KMIP Delete Attribute operation
+	OperationDeleteAttribute *bool `json:"operationDeleteAttribute,omitempty" tf:"operation_delete_attribute,omitempty"`
+
 	// Grant permission to use the KMIP Destroy operation.
 	// Grant permission to use the KMIP Destroy operation
 	OperationDestroy *bool `json:"operationDestroy,omitempty" tf:"operation_destroy,omitempty"`
@@ -46,6 +61,10 @@ type SecretRoleInitParameters struct {
 	// Grant permission to use the KMIP Discover Version operation.
 	// Grant permission to use the KMIP Discover Version operation
 	OperationDiscoverVersions *bool `json:"operationDiscoverVersions,omitempty" tf:"operation_discover_versions,omitempty"`
+
+	// Grant permission to use the KMIP Encrypt operation.
+	// Grant permission to use the KMIP Encrypt operation
+	OperationEncrypt *bool `json:"operationEncrypt,omitempty" tf:"operation_encrypt,omitempty"`
 
 	// Grant permission to use the KMIP Get operation.
 	// Grant permission to use the KMIP Get operation
@@ -59,13 +78,33 @@ type SecretRoleInitParameters struct {
 	// Grant permission to use the KMIP Get Attributes operation
 	OperationGetAttributes *bool `json:"operationGetAttributes,omitempty" tf:"operation_get_attributes,omitempty"`
 
+	// Grant permission to use the KMIP Import operation.
+	// Grant permission to use the KMIP Import operation
+	OperationImport *bool `json:"operationImport,omitempty" tf:"operation_import,omitempty"`
+
 	// Grant permission to use the KMIP Get Locate operation.
 	// Grant permission to use the KMIP Locate operation
 	OperationLocate *bool `json:"operationLocate,omitempty" tf:"operation_locate,omitempty"`
 
+	// Grant permission to use the KMIP MAC operation.
+	// Grant permission to use the KMIP MAC operation
+	OperationMac *bool `json:"operationMac,omitempty" tf:"operation_mac,omitempty"`
+
+	// Grant permission to use the KMIP MAC Verify operation.
+	// Grant permission to use the KMIP MAC Verify operation
+	OperationMacVerify *bool `json:"operationMacVerify,omitempty" tf:"operation_mac_verify,omitempty"`
+
+	// Grant permission to use the KMIP Modify Attribute operation.
+	// Grant permission to use the KMIP Modify Attribute operation
+	OperationModifyAttribute *bool `json:"operationModifyAttribute,omitempty" tf:"operation_modify_attribute,omitempty"`
+
 	// Remove all permissions from this role. May not be specified with any other operation_* params.
 	// Remove all permissions from this role. May not be specified with any other operation_* params
 	OperationNone *bool `json:"operationNone,omitempty" tf:"operation_none,omitempty"`
+
+	// Grant permission to use the KMIP Query operation.
+	// Grant permission to use the KMIP Query operation
+	OperationQuery *bool `json:"operationQuery,omitempty" tf:"operation_query,omitempty"`
 
 	// Grant permission to use the KMIP Register operation.
 	// Grant permission to use the KMIP Register operation
@@ -75,9 +114,29 @@ type SecretRoleInitParameters struct {
 	// Grant permission to use the KMIP Rekey operation
 	OperationRekey *bool `json:"operationRekey,omitempty" tf:"operation_rekey,omitempty"`
 
+	// Grant permission to use the KMIP Rekey Key Pair operation.
+	// Grant permission to use the KMIP Rekey Key Pair operation
+	OperationRekeyKeyPair *bool `json:"operationRekeyKeyPair,omitempty" tf:"operation_rekey_key_pair,omitempty"`
+
 	// Grant permission to use the KMIP Revoke operation.
 	// Grant permission to use the KMIP Revoke operation
 	OperationRevoke *bool `json:"operationRevoke,omitempty" tf:"operation_revoke,omitempty"`
+
+	// Grant permission to use the KMIP RNG Retrieve operation.
+	// Grant permission to use the KMIP RNG Retrieve operation
+	OperationRngRetrieve *bool `json:"operationRngRetrieve,omitempty" tf:"operation_rng_retrieve,omitempty"`
+
+	// Grant permission to use the KMIP RNG Seed operation.
+	// Grant permission to use the KMIP RNG Seed operation
+	OperationRngSeed *bool `json:"operationRngSeed,omitempty" tf:"operation_rng_seed,omitempty"`
+
+	// Grant permission to use the KMIP Sign operation.
+	// Grant permission to use the KMIP Sign operation
+	OperationSign *bool `json:"operationSign,omitempty" tf:"operation_sign,omitempty"`
+
+	// Grant permission to use the KMIP Signature Verify operation.
+	// Grant permission to use the KMIP Signature Verify operation
+	OperationSignatureVerify *bool `json:"operationSignatureVerify,omitempty" tf:"operation_signature_verify,omitempty"`
 
 	// The unique path this backend should be mounted at. Must
 	// not begin or end with a /. Defaults to kmip.
@@ -126,6 +185,10 @@ type SecretRoleInitParameters struct {
 }
 
 type SecretRoleObservation struct {
+
+	// Name of the ca to use, if absent use legacy ca
+	CA *string `json:"ca,omitempty" tf:"ca,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The namespace to provision the resource in.
@@ -151,6 +214,18 @@ type SecretRoleObservation struct {
 	// Grant permission to use the KMIP Create operation
 	OperationCreate *bool `json:"operationCreate,omitempty" tf:"operation_create,omitempty"`
 
+	// Grant permission to use the KMIP Create Key Pair operation.
+	// Grant permission to use the KMIP Create Key Pair operation
+	OperationCreateKeyPair *bool `json:"operationCreateKeyPair,omitempty" tf:"operation_create_key_pair,omitempty"`
+
+	// Grant permission to use the KMIP Decrypt operation.
+	// Grant permission to use the KMIP Decrypt operation
+	OperationDecrypt *bool `json:"operationDecrypt,omitempty" tf:"operation_decrypt,omitempty"`
+
+	// Grant permission to use the KMIP Delete Attribute operation.
+	// Grant permission to use the KMIP Delete Attribute operation
+	OperationDeleteAttribute *bool `json:"operationDeleteAttribute,omitempty" tf:"operation_delete_attribute,omitempty"`
+
 	// Grant permission to use the KMIP Destroy operation.
 	// Grant permission to use the KMIP Destroy operation
 	OperationDestroy *bool `json:"operationDestroy,omitempty" tf:"operation_destroy,omitempty"`
@@ -158,6 +233,10 @@ type SecretRoleObservation struct {
 	// Grant permission to use the KMIP Discover Version operation.
 	// Grant permission to use the KMIP Discover Version operation
 	OperationDiscoverVersions *bool `json:"operationDiscoverVersions,omitempty" tf:"operation_discover_versions,omitempty"`
+
+	// Grant permission to use the KMIP Encrypt operation.
+	// Grant permission to use the KMIP Encrypt operation
+	OperationEncrypt *bool `json:"operationEncrypt,omitempty" tf:"operation_encrypt,omitempty"`
 
 	// Grant permission to use the KMIP Get operation.
 	// Grant permission to use the KMIP Get operation
@@ -171,13 +250,33 @@ type SecretRoleObservation struct {
 	// Grant permission to use the KMIP Get Attributes operation
 	OperationGetAttributes *bool `json:"operationGetAttributes,omitempty" tf:"operation_get_attributes,omitempty"`
 
+	// Grant permission to use the KMIP Import operation.
+	// Grant permission to use the KMIP Import operation
+	OperationImport *bool `json:"operationImport,omitempty" tf:"operation_import,omitempty"`
+
 	// Grant permission to use the KMIP Get Locate operation.
 	// Grant permission to use the KMIP Locate operation
 	OperationLocate *bool `json:"operationLocate,omitempty" tf:"operation_locate,omitempty"`
 
+	// Grant permission to use the KMIP MAC operation.
+	// Grant permission to use the KMIP MAC operation
+	OperationMac *bool `json:"operationMac,omitempty" tf:"operation_mac,omitempty"`
+
+	// Grant permission to use the KMIP MAC Verify operation.
+	// Grant permission to use the KMIP MAC Verify operation
+	OperationMacVerify *bool `json:"operationMacVerify,omitempty" tf:"operation_mac_verify,omitempty"`
+
+	// Grant permission to use the KMIP Modify Attribute operation.
+	// Grant permission to use the KMIP Modify Attribute operation
+	OperationModifyAttribute *bool `json:"operationModifyAttribute,omitempty" tf:"operation_modify_attribute,omitempty"`
+
 	// Remove all permissions from this role. May not be specified with any other operation_* params.
 	// Remove all permissions from this role. May not be specified with any other operation_* params
 	OperationNone *bool `json:"operationNone,omitempty" tf:"operation_none,omitempty"`
+
+	// Grant permission to use the KMIP Query operation.
+	// Grant permission to use the KMIP Query operation
+	OperationQuery *bool `json:"operationQuery,omitempty" tf:"operation_query,omitempty"`
 
 	// Grant permission to use the KMIP Register operation.
 	// Grant permission to use the KMIP Register operation
@@ -187,9 +286,29 @@ type SecretRoleObservation struct {
 	// Grant permission to use the KMIP Rekey operation
 	OperationRekey *bool `json:"operationRekey,omitempty" tf:"operation_rekey,omitempty"`
 
+	// Grant permission to use the KMIP Rekey Key Pair operation.
+	// Grant permission to use the KMIP Rekey Key Pair operation
+	OperationRekeyKeyPair *bool `json:"operationRekeyKeyPair,omitempty" tf:"operation_rekey_key_pair,omitempty"`
+
 	// Grant permission to use the KMIP Revoke operation.
 	// Grant permission to use the KMIP Revoke operation
 	OperationRevoke *bool `json:"operationRevoke,omitempty" tf:"operation_revoke,omitempty"`
+
+	// Grant permission to use the KMIP RNG Retrieve operation.
+	// Grant permission to use the KMIP RNG Retrieve operation
+	OperationRngRetrieve *bool `json:"operationRngRetrieve,omitempty" tf:"operation_rng_retrieve,omitempty"`
+
+	// Grant permission to use the KMIP RNG Seed operation.
+	// Grant permission to use the KMIP RNG Seed operation
+	OperationRngSeed *bool `json:"operationRngSeed,omitempty" tf:"operation_rng_seed,omitempty"`
+
+	// Grant permission to use the KMIP Sign operation.
+	// Grant permission to use the KMIP Sign operation
+	OperationSign *bool `json:"operationSign,omitempty" tf:"operation_sign,omitempty"`
+
+	// Grant permission to use the KMIP Signature Verify operation.
+	// Grant permission to use the KMIP Signature Verify operation
+	OperationSignatureVerify *bool `json:"operationSignatureVerify,omitempty" tf:"operation_signature_verify,omitempty"`
 
 	// The unique path this backend should be mounted at. Must
 	// not begin or end with a /. Defaults to kmip.
@@ -219,6 +338,10 @@ type SecretRoleObservation struct {
 
 type SecretRoleParameters struct {
 
+	// Name of the ca to use, if absent use legacy ca
+	// +kubebuilder:validation:Optional
+	CA *string `json:"ca,omitempty" tf:"ca,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -247,6 +370,21 @@ type SecretRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	OperationCreate *bool `json:"operationCreate,omitempty" tf:"operation_create,omitempty"`
 
+	// Grant permission to use the KMIP Create Key Pair operation.
+	// Grant permission to use the KMIP Create Key Pair operation
+	// +kubebuilder:validation:Optional
+	OperationCreateKeyPair *bool `json:"operationCreateKeyPair,omitempty" tf:"operation_create_key_pair,omitempty"`
+
+	// Grant permission to use the KMIP Decrypt operation.
+	// Grant permission to use the KMIP Decrypt operation
+	// +kubebuilder:validation:Optional
+	OperationDecrypt *bool `json:"operationDecrypt,omitempty" tf:"operation_decrypt,omitempty"`
+
+	// Grant permission to use the KMIP Delete Attribute operation.
+	// Grant permission to use the KMIP Delete Attribute operation
+	// +kubebuilder:validation:Optional
+	OperationDeleteAttribute *bool `json:"operationDeleteAttribute,omitempty" tf:"operation_delete_attribute,omitempty"`
+
 	// Grant permission to use the KMIP Destroy operation.
 	// Grant permission to use the KMIP Destroy operation
 	// +kubebuilder:validation:Optional
@@ -256,6 +394,11 @@ type SecretRoleParameters struct {
 	// Grant permission to use the KMIP Discover Version operation
 	// +kubebuilder:validation:Optional
 	OperationDiscoverVersions *bool `json:"operationDiscoverVersions,omitempty" tf:"operation_discover_versions,omitempty"`
+
+	// Grant permission to use the KMIP Encrypt operation.
+	// Grant permission to use the KMIP Encrypt operation
+	// +kubebuilder:validation:Optional
+	OperationEncrypt *bool `json:"operationEncrypt,omitempty" tf:"operation_encrypt,omitempty"`
 
 	// Grant permission to use the KMIP Get operation.
 	// Grant permission to use the KMIP Get operation
@@ -272,15 +415,40 @@ type SecretRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	OperationGetAttributes *bool `json:"operationGetAttributes,omitempty" tf:"operation_get_attributes,omitempty"`
 
+	// Grant permission to use the KMIP Import operation.
+	// Grant permission to use the KMIP Import operation
+	// +kubebuilder:validation:Optional
+	OperationImport *bool `json:"operationImport,omitempty" tf:"operation_import,omitempty"`
+
 	// Grant permission to use the KMIP Get Locate operation.
 	// Grant permission to use the KMIP Locate operation
 	// +kubebuilder:validation:Optional
 	OperationLocate *bool `json:"operationLocate,omitempty" tf:"operation_locate,omitempty"`
 
+	// Grant permission to use the KMIP MAC operation.
+	// Grant permission to use the KMIP MAC operation
+	// +kubebuilder:validation:Optional
+	OperationMac *bool `json:"operationMac,omitempty" tf:"operation_mac,omitempty"`
+
+	// Grant permission to use the KMIP MAC Verify operation.
+	// Grant permission to use the KMIP MAC Verify operation
+	// +kubebuilder:validation:Optional
+	OperationMacVerify *bool `json:"operationMacVerify,omitempty" tf:"operation_mac_verify,omitempty"`
+
+	// Grant permission to use the KMIP Modify Attribute operation.
+	// Grant permission to use the KMIP Modify Attribute operation
+	// +kubebuilder:validation:Optional
+	OperationModifyAttribute *bool `json:"operationModifyAttribute,omitempty" tf:"operation_modify_attribute,omitempty"`
+
 	// Remove all permissions from this role. May not be specified with any other operation_* params.
 	// Remove all permissions from this role. May not be specified with any other operation_* params
 	// +kubebuilder:validation:Optional
 	OperationNone *bool `json:"operationNone,omitempty" tf:"operation_none,omitempty"`
+
+	// Grant permission to use the KMIP Query operation.
+	// Grant permission to use the KMIP Query operation
+	// +kubebuilder:validation:Optional
+	OperationQuery *bool `json:"operationQuery,omitempty" tf:"operation_query,omitempty"`
 
 	// Grant permission to use the KMIP Register operation.
 	// Grant permission to use the KMIP Register operation
@@ -292,10 +460,35 @@ type SecretRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	OperationRekey *bool `json:"operationRekey,omitempty" tf:"operation_rekey,omitempty"`
 
+	// Grant permission to use the KMIP Rekey Key Pair operation.
+	// Grant permission to use the KMIP Rekey Key Pair operation
+	// +kubebuilder:validation:Optional
+	OperationRekeyKeyPair *bool `json:"operationRekeyKeyPair,omitempty" tf:"operation_rekey_key_pair,omitempty"`
+
 	// Grant permission to use the KMIP Revoke operation.
 	// Grant permission to use the KMIP Revoke operation
 	// +kubebuilder:validation:Optional
 	OperationRevoke *bool `json:"operationRevoke,omitempty" tf:"operation_revoke,omitempty"`
+
+	// Grant permission to use the KMIP RNG Retrieve operation.
+	// Grant permission to use the KMIP RNG Retrieve operation
+	// +kubebuilder:validation:Optional
+	OperationRngRetrieve *bool `json:"operationRngRetrieve,omitempty" tf:"operation_rng_retrieve,omitempty"`
+
+	// Grant permission to use the KMIP RNG Seed operation.
+	// Grant permission to use the KMIP RNG Seed operation
+	// +kubebuilder:validation:Optional
+	OperationRngSeed *bool `json:"operationRngSeed,omitempty" tf:"operation_rng_seed,omitempty"`
+
+	// Grant permission to use the KMIP Sign operation.
+	// Grant permission to use the KMIP Sign operation
+	// +kubebuilder:validation:Optional
+	OperationSign *bool `json:"operationSign,omitempty" tf:"operation_sign,omitempty"`
+
+	// Grant permission to use the KMIP Signature Verify operation.
+	// Grant permission to use the KMIP Signature Verify operation
+	// +kubebuilder:validation:Optional
+	OperationSignatureVerify *bool `json:"operationSignatureVerify,omitempty" tf:"operation_signature_verify,omitempty"`
 
 	// The unique path this backend should be mounted at. Must
 	// not begin or end with a /. Defaults to kmip.

@@ -37,9 +37,20 @@ type SecretBackendInitParameters struct {
 	// Target namespace. (requires Enterprise)
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// Specifies the Private API Key used to authenticate with the MongoDB Atlas API.
+	// Specifies the Private API Key used to authenticate with the MongoDB Atlas API. Mutually exclusive
+	// with private_key_wo. Consider using private_key_wo instead for enhanced security.
 	// The Private Programmatic API Key used to connect with MongoDB Atlas API
-	PrivateKey *string `json:"privateKey,omitempty" tf:"private_key,omitempty"`
+	PrivateKeySecretRef *v1.LocalSecretKeySelector `json:"privateKeySecretRef,omitempty" tf:"-"`
+
+	// Specifies the Private API Key used to authenticate with the MongoDB Atlas API.
+	// Mutually exclusive with private_key. Must be used with private_key_wo_version. To rotate the secret, update the value and increment private_key_wo_version.
+	// The Private Programmatic API Key used to connect with MongoDB Atlas API. This is a write-only field that is not stored in state.
+	PrivateKeyWoSecretRef *v1.LocalSecretKeySelector `json:"privateKeyWoSecretRef,omitempty" tf:"-"`
+
+	// An incrementing version counter. Increment this value to force an update
+	// to the private key. Required when using private_key_wo.
+	// Incrementing version counter for the private_key_wo field. Increment to force an update to the private key.
+	PrivateKeyWoVersion *float64 `json:"privateKeyWoVersion,omitempty" tf:"private_key_wo_version,omitempty"`
 
 	// Specifies the Public API Key used to authenticate with the MongoDB Atlas API.
 	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API
@@ -63,9 +74,10 @@ type SecretBackendObservation struct {
 	// Path where MongoDB Atlas configuration is located
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
-	// Specifies the Private API Key used to authenticate with the MongoDB Atlas API.
-	// The Private Programmatic API Key used to connect with MongoDB Atlas API
-	PrivateKey *string `json:"privateKey,omitempty" tf:"private_key,omitempty"`
+	// An incrementing version counter. Increment this value to force an update
+	// to the private key. Required when using private_key_wo.
+	// Incrementing version counter for the private_key_wo field. Increment to force an update to the private key.
+	PrivateKeyWoVersion *float64 `json:"privateKeyWoVersion,omitempty" tf:"private_key_wo_version,omitempty"`
 
 	// Specifies the Public API Key used to authenticate with the MongoDB Atlas API.
 	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API
@@ -97,10 +109,23 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
-	// Specifies the Private API Key used to authenticate with the MongoDB Atlas API.
+	// Specifies the Private API Key used to authenticate with the MongoDB Atlas API. Mutually exclusive
+	// with private_key_wo. Consider using private_key_wo instead for enhanced security.
 	// The Private Programmatic API Key used to connect with MongoDB Atlas API
 	// +kubebuilder:validation:Optional
-	PrivateKey *string `json:"privateKey,omitempty" tf:"private_key,omitempty"`
+	PrivateKeySecretRef *v1.LocalSecretKeySelector `json:"privateKeySecretRef,omitempty" tf:"-"`
+
+	// Specifies the Private API Key used to authenticate with the MongoDB Atlas API.
+	// Mutually exclusive with private_key. Must be used with private_key_wo_version. To rotate the secret, update the value and increment private_key_wo_version.
+	// The Private Programmatic API Key used to connect with MongoDB Atlas API. This is a write-only field that is not stored in state.
+	// +kubebuilder:validation:Optional
+	PrivateKeyWoSecretRef *v1.LocalSecretKeySelector `json:"privateKeyWoSecretRef,omitempty" tf:"-"`
+
+	// An incrementing version counter. Increment this value to force an update
+	// to the private key. Required when using private_key_wo.
+	// Incrementing version counter for the private_key_wo field. Increment to force an update to the private key.
+	// +kubebuilder:validation:Optional
+	PrivateKeyWoVersion *float64 `json:"privateKeyWoVersion,omitempty" tf:"private_key_wo_version,omitempty"`
 
 	// Specifies the Public API Key used to authenticate with the MongoDB Atlas API.
 	// The Public Programmatic API Key used to authenticate with the MongoDB Atlas API
@@ -144,7 +169,6 @@ type SecretBackendStatus struct {
 type SecretBackend struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.privateKey) || (has(self.initProvider) && has(self.initProvider.privateKey))",message="spec.forProvider.privateKey is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.publicKey) || (has(self.initProvider) && has(self.initProvider.publicKey))",message="spec.forProvider.publicKey is a required parameter"
 	Spec   SecretBackendSpec   `json:"spec"`
 	Status SecretBackendStatus `json:"status,omitempty"`

@@ -866,6 +866,11 @@ func (in *TotpInitParameters) DeepCopyInto(out *TotpInitParameters) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.MaxValidationAttempts != nil {
+		in, out := &in.MaxValidationAttempts, &out.MaxValidationAttempts
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -963,6 +968,11 @@ func (in *TotpObservation) DeepCopyInto(out *TotpObservation) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.MaxValidationAttempts != nil {
+		in, out := &in.MaxValidationAttempts, &out.MaxValidationAttempts
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -1020,6 +1030,11 @@ func (in *TotpParameters) DeepCopyInto(out *TotpParameters) {
 	}
 	if in.KeySize != nil {
 		in, out := &in.KeySize, &out.KeySize
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxValidationAttempts != nil {
+		in, out := &in.MaxValidationAttempts, &out.MaxValidationAttempts
 		*out = new(float64)
 		**out = **in
 	}

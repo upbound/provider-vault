@@ -96,6 +96,13 @@ type SecretBackendRoleInitParameters struct {
 	// The pre-existing service account to generate tokens for. Mutually exclusive with 'kubernetes_role_name' and 'generated_role_rules'. If set, only a Kubernetes token will be created when credentials are requested.
 	ServiceAccountName *string `json:"serviceAccountName,omitempty" tf:"service_account_name,omitempty"`
 
+	// The default audiences for generated Kubernetes tokens.
+	// If not set, defaults to the Kubernetes cluster's default audiences. This field requires
+	// Vault 1.15 or later.
+	// The default audiences for generated Kubernetes tokens. If not set, defaults to the Kubernetes cluster's default audiences. Requires Vault 1.15+.
+	// +listType=set
+	TokenDefaultAudiences []*string `json:"tokenDefaultAudiences,omitempty" tf:"token_default_audiences,omitempty"`
+
 	// The default TTL for generated Kubernetes tokens in seconds.
 	// The default TTL for generated Kubernetes tokens in seconds.
 	TokenDefaultTTL *float64 `json:"tokenDefaultTtl,omitempty" tf:"token_default_ttl,omitempty"`
@@ -179,6 +186,13 @@ type SecretBackendRoleObservation struct {
 	// Kubernetes token will be created when credentials are requested.
 	// The pre-existing service account to generate tokens for. Mutually exclusive with 'kubernetes_role_name' and 'generated_role_rules'. If set, only a Kubernetes token will be created when credentials are requested.
 	ServiceAccountName *string `json:"serviceAccountName,omitempty" tf:"service_account_name,omitempty"`
+
+	// The default audiences for generated Kubernetes tokens.
+	// If not set, defaults to the Kubernetes cluster's default audiences. This field requires
+	// Vault 1.15 or later.
+	// The default audiences for generated Kubernetes tokens. If not set, defaults to the Kubernetes cluster's default audiences. Requires Vault 1.15+.
+	// +listType=set
+	TokenDefaultAudiences []*string `json:"tokenDefaultAudiences,omitempty" tf:"token_default_audiences,omitempty"`
 
 	// The default TTL for generated Kubernetes tokens in seconds.
 	// The default TTL for generated Kubernetes tokens in seconds.
@@ -283,6 +297,14 @@ type SecretBackendRoleParameters struct {
 	// The pre-existing service account to generate tokens for. Mutually exclusive with 'kubernetes_role_name' and 'generated_role_rules'. If set, only a Kubernetes token will be created when credentials are requested.
 	// +kubebuilder:validation:Optional
 	ServiceAccountName *string `json:"serviceAccountName,omitempty" tf:"service_account_name,omitempty"`
+
+	// The default audiences for generated Kubernetes tokens.
+	// If not set, defaults to the Kubernetes cluster's default audiences. This field requires
+	// Vault 1.15 or later.
+	// The default audiences for generated Kubernetes tokens. If not set, defaults to the Kubernetes cluster's default audiences. Requires Vault 1.15+.
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	TokenDefaultAudiences []*string `json:"tokenDefaultAudiences,omitempty" tf:"token_default_audiences,omitempty"`
 
 	// The default TTL for generated Kubernetes tokens in seconds.
 	// The default TTL for generated Kubernetes tokens in seconds.

@@ -39,8 +39,21 @@ type SecretBackendInitParameters struct {
 	ClientIDSecretRef *v1.LocalSecretKeySelector `json:"clientIdSecretRef,omitempty" tf:"-"`
 
 	// The OAuth2 client secret to connect to Azure.
+	// Conflicts with client_secret_wo.
 	// The client secret for credentials to query the Azure APIs
 	ClientSecretSecretRef *v1.LocalSecretKeySelector `json:"clientSecretSecretRef,omitempty" tf:"-"`
+
+	// The OAuth2 client secret to connect to Azure.
+	// This is a write-only field and will not be read back from Vault.
+	// Conflicts with client_secret.
+	// The client secret for credentials to query the Azure APIs. This is a write-only field and will not be read back from Vault.
+	ClientSecretWoSecretRef *v1.LocalSecretKeySelector `json:"clientSecretWoSecretRef,omitempty" tf:"-"`
+
+	// A version counter for the write-only client_secret_wo field.
+	// Incrementing this value will trigger an update to the client secret.
+	// Required when using client_secret_wo.
+	// A version counter for the write-only client_secret_wo field. Incrementing this value will trigger an update to the client secret.
+	ClientSecretWoVersion *float64 `json:"clientSecretWoVersion,omitempty" tf:"client_secret_wo_version,omitempty"`
 
 	// Default lease duration for tokens and secrets in seconds
 	// Default lease duration for tokens and secrets in seconds
@@ -131,6 +144,7 @@ type SecretBackendInitParameters struct {
 	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
 	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
+	// Specifies the TTL of the root password when rotate-root generates a new client secret. Requires Vault 1.15+.
 	// The TTL in seconds of the root password in Azure when rotate-root generates a new client secret
 	RootPasswordTTL *float64 `json:"rootPasswordTtl,omitempty" tf:"root_password_ttl,omitempty"`
 
@@ -187,6 +201,12 @@ type SecretBackendObservation struct {
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
 	// Specifies the list of keys that will not be HMAC'd by audit devices in the response data object.
 	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
+
+	// A version counter for the write-only client_secret_wo field.
+	// Incrementing this value will trigger an update to the client secret.
+	// Required when using client_secret_wo.
+	// A version counter for the write-only client_secret_wo field. Incrementing this value will trigger an update to the client secret.
+	ClientSecretWoVersion *float64 `json:"clientSecretWoVersion,omitempty" tf:"client_secret_wo_version,omitempty"`
 
 	// Default lease duration for tokens and secrets in seconds
 	// Default lease duration for tokens and secrets in seconds
@@ -279,6 +299,7 @@ type SecretBackendObservation struct {
 	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
 	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
+	// Specifies the TTL of the root password when rotate-root generates a new client secret. Requires Vault 1.15+.
 	// The TTL in seconds of the root password in Azure when rotate-root generates a new client secret
 	RootPasswordTTL *float64 `json:"rootPasswordTtl,omitempty" tf:"root_password_ttl,omitempty"`
 
@@ -335,9 +356,24 @@ type SecretBackendParameters struct {
 	ClientIDSecretRef *v1.LocalSecretKeySelector `json:"clientIdSecretRef,omitempty" tf:"-"`
 
 	// The OAuth2 client secret to connect to Azure.
+	// Conflicts with client_secret_wo.
 	// The client secret for credentials to query the Azure APIs
 	// +kubebuilder:validation:Optional
 	ClientSecretSecretRef *v1.LocalSecretKeySelector `json:"clientSecretSecretRef,omitempty" tf:"-"`
+
+	// The OAuth2 client secret to connect to Azure.
+	// This is a write-only field and will not be read back from Vault.
+	// Conflicts with client_secret.
+	// The client secret for credentials to query the Azure APIs. This is a write-only field and will not be read back from Vault.
+	// +kubebuilder:validation:Optional
+	ClientSecretWoSecretRef *v1.LocalSecretKeySelector `json:"clientSecretWoSecretRef,omitempty" tf:"-"`
+
+	// A version counter for the write-only client_secret_wo field.
+	// Incrementing this value will trigger an update to the client secret.
+	// Required when using client_secret_wo.
+	// A version counter for the write-only client_secret_wo field. Incrementing this value will trigger an update to the client secret.
+	// +kubebuilder:validation:Optional
+	ClientSecretWoVersion *float64 `json:"clientSecretWoVersion,omitempty" tf:"client_secret_wo_version,omitempty"`
 
 	// Default lease duration for tokens and secrets in seconds
 	// Default lease duration for tokens and secrets in seconds
@@ -447,6 +483,7 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
+	// Specifies the TTL of the root password when rotate-root generates a new client secret. Requires Vault 1.15+.
 	// The TTL in seconds of the root password in Azure when rotate-root generates a new client secret
 	// +kubebuilder:validation:Optional
 	RootPasswordTTL *float64 `json:"rootPasswordTtl,omitempty" tf:"root_password_ttl,omitempty"`

@@ -15,6 +15,13 @@ import (
 
 type AuthBackendRoleInitParameters struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// The unique name of the auth backend to configure.
 	// Defaults to approle.
 	// Unique name of the auth backend to configure.
@@ -34,6 +41,10 @@ type AuthBackendRoleInitParameters struct {
 	// presented when logging in using this AppRole. Defaults to true.
 	// Whether or not to require secret_id to be present when logging in using this AppRole.
 	BindSecretID *bool `json:"bindSecretId,omitempty" tf:"bind_secret_id,omitempty"`
+
+	// If set, the secret IDs generated using this role will be cluster local. This can only be set during role creation and once set, it can't be reset later.
+	// If true, SecretIDs generated against this role will be 'local' to the node they were generated on. This means that they will only be valid when used against the same node that they were generated on.
+	LocalSecretIds *bool `json:"localSecretIds,omitempty" tf:"local_secret_ids,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -126,6 +137,13 @@ type AuthBackendRoleInitParameters struct {
 
 type AuthBackendRoleObservation struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// The unique name of the auth backend to configure.
 	// Defaults to approle.
 	// Unique name of the auth backend to configure.
@@ -137,6 +155,10 @@ type AuthBackendRoleObservation struct {
 	BindSecretID *bool `json:"bindSecretId,omitempty" tf:"bind_secret_id,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// If set, the secret IDs generated using this role will be cluster local. This can only be set during role creation and once set, it can't be reset later.
+	// If true, SecretIDs generated against this role will be 'local' to the node they were generated on. This means that they will only be valid when used against the same node that they were generated on.
+	LocalSecretIds *bool `json:"localSecretIds,omitempty" tf:"local_secret_ids,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -229,6 +251,14 @@ type AuthBackendRoleObservation struct {
 
 type AuthBackendRoleParameters struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// The unique name of the auth backend to configure.
 	// Defaults to approle.
 	// Unique name of the auth backend to configure.
@@ -250,6 +280,11 @@ type AuthBackendRoleParameters struct {
 	// Whether or not to require secret_id to be present when logging in using this AppRole.
 	// +kubebuilder:validation:Optional
 	BindSecretID *bool `json:"bindSecretId,omitempty" tf:"bind_secret_id,omitempty"`
+
+	// If set, the secret IDs generated using this role will be cluster local. This can only be set during role creation and once set, it can't be reset later.
+	// If true, SecretIDs generated against this role will be 'local' to the node they were generated on. This means that they will only be valid when used against the same node that they were generated on.
+	// +kubebuilder:validation:Optional
+	LocalSecretIds *bool `json:"localSecretIds,omitempty" tf:"local_secret_ids,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.

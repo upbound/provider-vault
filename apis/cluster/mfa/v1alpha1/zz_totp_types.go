@@ -33,6 +33,10 @@ type TotpInitParameters struct {
 	// Specifies the size in bytes of the generated key.
 	KeySize *float64 `json:"keySize,omitempty" tf:"key_size,omitempty"`
 
+	// The maximum number of consecutive failed validation attempts allowed. Must be a positive integer. Vault defaults this value to 5 if not provided or if set to 0.
+	// The maximum number of consecutive failed validation attempts allowed. Must be a positive integer. Vault defaults this value to 5 if not provided or if set to 0.
+	MaxValidationAttempts *float64 `json:"maxValidationAttempts,omitempty" tf:"max_validation_attempts,omitempty"`
+
 	// (string: <required>) – Name of the MFA method.
 	// Name of the MFA method.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -79,6 +83,10 @@ type TotpObservation struct {
 	// Specifies the size in bytes of the generated key.
 	// Specifies the size in bytes of the generated key.
 	KeySize *float64 `json:"keySize,omitempty" tf:"key_size,omitempty"`
+
+	// The maximum number of consecutive failed validation attempts allowed. Must be a positive integer. Vault defaults this value to 5 if not provided or if set to 0.
+	// The maximum number of consecutive failed validation attempts allowed. Must be a positive integer. Vault defaults this value to 5 if not provided or if set to 0.
+	MaxValidationAttempts *float64 `json:"maxValidationAttempts,omitempty" tf:"max_validation_attempts,omitempty"`
 
 	// (string: <required>) – Name of the MFA method.
 	// Name of the MFA method.
@@ -128,6 +136,11 @@ type TotpParameters struct {
 	// Specifies the size in bytes of the generated key.
 	// +kubebuilder:validation:Optional
 	KeySize *float64 `json:"keySize,omitempty" tf:"key_size,omitempty"`
+
+	// The maximum number of consecutive failed validation attempts allowed. Must be a positive integer. Vault defaults this value to 5 if not provided or if set to 0.
+	// The maximum number of consecutive failed validation attempts allowed. Must be a positive integer. Vault defaults this value to 5 if not provided or if set to 0.
+	// +kubebuilder:validation:Optional
+	MaxValidationAttempts *float64 `json:"maxValidationAttempts,omitempty" tf:"max_validation_attempts,omitempty"`
 
 	// (string: <required>) – Name of the MFA method.
 	// Name of the MFA method.

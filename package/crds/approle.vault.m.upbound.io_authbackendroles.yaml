@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: authbackendroles.approle.vault.m.upbound.io
 spec:
   group: approle.vault.m.upbound.io
@@ -59,6 +59,16 @@ spec:
             properties:
               forProvider:
                 properties:
+                  aliasMetadata:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                    type: object
+                    x-kubernetes-map-type: granular
                   backend:
                     description: |-
                       The unique name of the auth backend to configure.
@@ -150,6 +160,11 @@ spec:
                       Whether or not to require secret_id to be
                       presented when logging in using this AppRole. Defaults to true.
                       Whether or not to require secret_id to be present when logging in using this AppRole.
+                    type: boolean
+                  localSecretIds:
+                    description: |-
+                      If set, the secret IDs generated using this role will be cluster local. This can only be set during role creation and once set, it can't be reset later.
+                      If true, SecretIDs generated against this role will be 'local' to the node they were generated on. This means that they will only be valid when used against the same node that they were generated on.
                     type: boolean
                   namespace:
                     description: |-
@@ -274,6 +289,16 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
+                  aliasMetadata:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                    type: object
+                    x-kubernetes-map-type: granular
                   backend:
                     description: |-
                       The unique name of the auth backend to configure.
@@ -365,6 +390,11 @@ spec:
                       Whether or not to require secret_id to be
                       presented when logging in using this AppRole. Defaults to true.
                       Whether or not to require secret_id to be present when logging in using this AppRole.
+                    type: boolean
+                  localSecretIds:
+                    description: |-
+                      If set, the secret IDs generated using this role will be cluster local. This can only be set during role creation and once set, it can't be reset later.
+                      If true, SecretIDs generated against this role will be 'local' to the node they were generated on. This means that they will only be valid when used against the same node that they were generated on.
                     type: boolean
                   namespace:
                     description: |-
@@ -544,6 +574,16 @@ spec:
             properties:
               atProvider:
                 properties:
+                  aliasMetadata:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                    type: object
+                    x-kubernetes-map-type: granular
                   backend:
                     description: |-
                       The unique name of the auth backend to configure.
@@ -558,6 +598,11 @@ spec:
                     type: boolean
                   id:
                     type: string
+                  localSecretIds:
+                    description: |-
+                      If set, the secret IDs generated using this role will be cluster local. This can only be set during role creation and once set, it can't be reset later.
+                      If true, SecretIDs generated against this role will be 'local' to the node they were generated on. This means that they will only be valid when used against the same node that they were generated on.
+                    type: boolean
                   namespace:
                     description: |-
                       The namespace to provision the resource in.

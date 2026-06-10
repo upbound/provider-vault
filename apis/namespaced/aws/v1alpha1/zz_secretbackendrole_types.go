@@ -72,6 +72,10 @@ type SecretBackendRoleInitParameters struct {
 	// The max allowed TTL in seconds for STS credentials (credentials TTL are capped to max_sts_ttl). Valid only when credential_type is one of assumed_role or federation_token.
 	MaxStsTTL *float64 `json:"maxStsTtl,omitempty" tf:"max_sts_ttl,omitempty"`
 
+	// The ARN or hardware device number of the device configured to the IAM user for multi-factor authentication. Only required if the IAM user has an MFA device set up in AWS.
+	// The ARN or hardware device number of the device configured to the IAM user for multi-factor authentication. Only required if the IAM user has an MFA device set up in AWS.
+	MfaSerialNumber *string `json:"mfaSerialNumber,omitempty" tf:"mfa_serial_number,omitempty"`
+
 	// The name to identify this role within the backend.
 	// Must be unique within the backend.
 	// Unique name for the role.
@@ -179,6 +183,10 @@ type SecretBackendRoleObservation struct {
 	// one of assumed_role or federation_token.
 	// The max allowed TTL in seconds for STS credentials (credentials TTL are capped to max_sts_ttl). Valid only when credential_type is one of assumed_role or federation_token.
 	MaxStsTTL *float64 `json:"maxStsTtl,omitempty" tf:"max_sts_ttl,omitempty"`
+
+	// The ARN or hardware device number of the device configured to the IAM user for multi-factor authentication. Only required if the IAM user has an MFA device set up in AWS.
+	// The ARN or hardware device number of the device configured to the IAM user for multi-factor authentication. Only required if the IAM user has an MFA device set up in AWS.
+	MfaSerialNumber *string `json:"mfaSerialNumber,omitempty" tf:"mfa_serial_number,omitempty"`
 
 	// The name to identify this role within the backend.
 	// Must be unique within the backend.
@@ -302,6 +310,11 @@ type SecretBackendRoleParameters struct {
 	// The max allowed TTL in seconds for STS credentials (credentials TTL are capped to max_sts_ttl). Valid only when credential_type is one of assumed_role or federation_token.
 	// +kubebuilder:validation:Optional
 	MaxStsTTL *float64 `json:"maxStsTtl,omitempty" tf:"max_sts_ttl,omitempty"`
+
+	// The ARN or hardware device number of the device configured to the IAM user for multi-factor authentication. Only required if the IAM user has an MFA device set up in AWS.
+	// The ARN or hardware device number of the device configured to the IAM user for multi-factor authentication. Only required if the IAM user has an MFA device set up in AWS.
+	// +kubebuilder:validation:Optional
+	MfaSerialNumber *string `json:"mfaSerialNumber,omitempty" tf:"mfa_serial_number,omitempty"`
 
 	// The name to identify this role within the backend.
 	// Must be unique within the backend.

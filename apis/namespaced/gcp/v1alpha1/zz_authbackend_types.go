@@ -21,6 +21,12 @@ type AuthBackendInitParameters struct {
 
 	CredentialsSecretRef *v1.LocalSecretKeySelector `json:"credentialsSecretRef,omitempty" tf:"-"`
 
+	// JSON-encoded credentials to use to connect to GCP. This field is write-only and the value cannot be read back.
+	CredentialsWoSecretRef *v1.LocalSecretKeySelector `json:"credentialsWoSecretRef,omitempty" tf:"-"`
+
+	// A version counter for write-only credentials. Incrementing this value will cause the provider to send the credentials to Vault.
+	CredentialsWoVersion *float64 `json:"credentialsWoVersion,omitempty" tf:"credentials_wo_version,omitempty"`
+
 	// Specifies overrides to service endpoints used when making API requests to GCP.
 	CustomEndpoint []CustomEndpointInitParameters `json:"customEndpoint,omitempty" tf:"custom_endpoint,omitempty"`
 
@@ -31,6 +37,20 @@ type AuthBackendInitParameters struct {
 
 	// If set, opts out of mount migration on path updates.
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
+
+	// Defines what alias needs to be used during login and refelects the same in token metadata and audit logs.
+	GceAlias *string `json:"gceAlias,omitempty" tf:"gce_alias,omitempty"`
+
+	// Controls which instance metadata fields from the GCE login are captured into Vault's token metadata or audit logs.
+	// +listType=set
+	GceMetadata []*string `json:"gceMetadata,omitempty" tf:"gce_metadata,omitempty"`
+
+	// Defines what alias needs to be used during login and refelects the same in token metadata and audit logs.
+	IAMAlias *string `json:"iamAlias,omitempty" tf:"iam_alias,omitempty"`
+
+	// Controls the metadata to include on the token returned by the login endpoint.
+	// +listType=set
+	IAMMetadata []*string `json:"iamMetadata,omitempty" tf:"iam_metadata,omitempty"`
 
 	// The audience claim value for plugin identity tokens.
 	IdentityTokenAudience *string `json:"identityTokenAudience,omitempty" tf:"identity_token_audience,omitempty"`
@@ -77,6 +97,9 @@ type AuthBackendObservation struct {
 
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
 
+	// A version counter for write-only credentials. Incrementing this value will cause the provider to send the credentials to Vault.
+	CredentialsWoVersion *float64 `json:"credentialsWoVersion,omitempty" tf:"credentials_wo_version,omitempty"`
+
 	// Specifies overrides to service endpoints used when making API requests to GCP.
 	CustomEndpoint []CustomEndpointObservation `json:"customEndpoint,omitempty" tf:"custom_endpoint,omitempty"`
 
@@ -87,6 +110,20 @@ type AuthBackendObservation struct {
 
 	// If set, opts out of mount migration on path updates.
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
+
+	// Defines what alias needs to be used during login and refelects the same in token metadata and audit logs.
+	GceAlias *string `json:"gceAlias,omitempty" tf:"gce_alias,omitempty"`
+
+	// Controls which instance metadata fields from the GCE login are captured into Vault's token metadata or audit logs.
+	// +listType=set
+	GceMetadata []*string `json:"gceMetadata,omitempty" tf:"gce_metadata,omitempty"`
+
+	// Defines what alias needs to be used during login and refelects the same in token metadata and audit logs.
+	IAMAlias *string `json:"iamAlias,omitempty" tf:"iam_alias,omitempty"`
+
+	// Controls the metadata to include on the token returned by the login endpoint.
+	// +listType=set
+	IAMMetadata []*string `json:"iamMetadata,omitempty" tf:"iam_metadata,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -137,6 +174,14 @@ type AuthBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	CredentialsSecretRef *v1.LocalSecretKeySelector `json:"credentialsSecretRef,omitempty" tf:"-"`
 
+	// JSON-encoded credentials to use to connect to GCP. This field is write-only and the value cannot be read back.
+	// +kubebuilder:validation:Optional
+	CredentialsWoSecretRef *v1.LocalSecretKeySelector `json:"credentialsWoSecretRef,omitempty" tf:"-"`
+
+	// A version counter for write-only credentials. Incrementing this value will cause the provider to send the credentials to Vault.
+	// +kubebuilder:validation:Optional
+	CredentialsWoVersion *float64 `json:"credentialsWoVersion,omitempty" tf:"credentials_wo_version,omitempty"`
+
 	// Specifies overrides to service endpoints used when making API requests to GCP.
 	// +kubebuilder:validation:Optional
 	CustomEndpoint []CustomEndpointParameters `json:"customEndpoint,omitempty" tf:"custom_endpoint,omitempty"`
@@ -151,6 +196,24 @@ type AuthBackendParameters struct {
 	// If set, opts out of mount migration on path updates.
 	// +kubebuilder:validation:Optional
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
+
+	// Defines what alias needs to be used during login and refelects the same in token metadata and audit logs.
+	// +kubebuilder:validation:Optional
+	GceAlias *string `json:"gceAlias,omitempty" tf:"gce_alias,omitempty"`
+
+	// Controls which instance metadata fields from the GCE login are captured into Vault's token metadata or audit logs.
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	GceMetadata []*string `json:"gceMetadata,omitempty" tf:"gce_metadata,omitempty"`
+
+	// Defines what alias needs to be used during login and refelects the same in token metadata and audit logs.
+	// +kubebuilder:validation:Optional
+	IAMAlias *string `json:"iamAlias,omitempty" tf:"iam_alias,omitempty"`
+
+	// Controls the metadata to include on the token returned by the login endpoint.
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	IAMMetadata []*string `json:"iamMetadata,omitempty" tf:"iam_metadata,omitempty"`
 
 	// The audience claim value for plugin identity tokens.
 	// +kubebuilder:validation:Optional

@@ -28,6 +28,14 @@ type CloudSecretRoleInitParameters struct {
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
 
+	// The type of credential to generate. Valid values are 'team', 'team_legacy', 'user', or 'organization'. Can only create multiple-team tokens with team.
+	// The type of credential to generate. Valid values are 'team', 'team_legacy', 'user', or 'organization'.
+	CredentialType *string `json:"credentialType,omitempty" tf:"credential_type,omitempty"`
+
+	// Description of the role. Only valid with team or user credential types.
+	// Description of the role. Only valid with 'team' or 'user' credential types.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
 	// Maximum TTL for leases associated with this role, in seconds.
 	// Maximum allowed lease for generated credentials. If not set or set to 0, will use system default.
 	MaxTTL *float64 `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
@@ -62,6 +70,14 @@ type CloudSecretRoleObservation struct {
 
 	// Must not begin or end with a /.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
+
+	// The type of credential to generate. Valid values are 'team', 'team_legacy', 'user', or 'organization'. Can only create multiple-team tokens with team.
+	// The type of credential to generate. Valid values are 'team', 'team_legacy', 'user', or 'organization'.
+	CredentialType *string `json:"credentialType,omitempty" tf:"credential_type,omitempty"`
+
+	// Description of the role. Only valid with team or user credential types.
+	// Description of the role. Only valid with 'team' or 'user' credential types.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -110,6 +126,16 @@ type CloudSecretRoleParameters struct {
 	// Selector for a CloudSecretBackend in terraform to populate backend.
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
+
+	// The type of credential to generate. Valid values are 'team', 'team_legacy', 'user', or 'organization'. Can only create multiple-team tokens with team.
+	// The type of credential to generate. Valid values are 'team', 'team_legacy', 'user', or 'organization'.
+	// +kubebuilder:validation:Optional
+	CredentialType *string `json:"credentialType,omitempty" tf:"credential_type,omitempty"`
+
+	// Description of the role. Only valid with team or user credential types.
+	// Description of the role. Only valid with 'team' or 'user' credential types.
+	// +kubebuilder:validation:Optional
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// Maximum TTL for leases associated with this role, in seconds.
 	// Maximum allowed lease for generated credentials. If not set or set to 0, will use system default.

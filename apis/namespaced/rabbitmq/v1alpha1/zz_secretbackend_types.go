@@ -103,8 +103,21 @@ type SecretBackendInitParameters struct {
 	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
 
 	// Specifies the RabbitMQ management administrator password.
+	// Conflicts with password_wo.
 	// Specifies the RabbitMQ management administrator password
-	PasswordSecretRef v1.LocalSecretKeySelector `json:"passwordSecretRef" tf:"-"`
+	PasswordSecretRef *v1.LocalSecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// Specifies the RabbitMQ management administrator password.
+	// This is a write-only field and will not be read back from Vault.
+	// Conflicts with password.
+	// Specifies the RabbitMQ management administrator password. This is a write-only field and will not be read back from Vault.
+	PasswordWoSecretRef *v1.LocalSecretKeySelector `json:"passwordWoSecretRef,omitempty" tf:"-"`
+
+	// A version counter for the write-only password_wo field.
+	// Incrementing this value will trigger an update to the password.
+	// Required when using password_wo.
+	// A version counter for the write-only password_wo field. Incrementing this value will trigger an update to the password.
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// The unique path this backend should be mounted at. Must
 	// not begin or end with a /. Defaults to rabbitmq.
@@ -227,6 +240,12 @@ type SecretBackendObservation struct {
 	// Specifies a password policy to use when creating dynamic credentials. Defaults to generating an alphanumeric password if not set.
 	// Specifies a password policy to use when creating dynamic credentials. Defaults to generating an alphanumeric password if not set.
 	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
+	// A version counter for the write-only password_wo field.
+	// Incrementing this value will trigger an update to the password.
+	// Required when using password_wo.
+	// A version counter for the write-only password_wo field. Incrementing this value will trigger an update to the password.
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// The unique path this backend should be mounted at. Must
 	// not begin or end with a /. Defaults to rabbitmq.
@@ -361,9 +380,24 @@ type SecretBackendParameters struct {
 	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
 
 	// Specifies the RabbitMQ management administrator password.
+	// Conflicts with password_wo.
 	// Specifies the RabbitMQ management administrator password
 	// +kubebuilder:validation:Optional
-	PasswordSecretRef v1.LocalSecretKeySelector `json:"passwordSecretRef" tf:"-"`
+	PasswordSecretRef *v1.LocalSecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
+
+	// Specifies the RabbitMQ management administrator password.
+	// This is a write-only field and will not be read back from Vault.
+	// Conflicts with password.
+	// Specifies the RabbitMQ management administrator password. This is a write-only field and will not be read back from Vault.
+	// +kubebuilder:validation:Optional
+	PasswordWoSecretRef *v1.LocalSecretKeySelector `json:"passwordWoSecretRef,omitempty" tf:"-"`
+
+	// A version counter for the write-only password_wo field.
+	// Incrementing this value will trigger an update to the password.
+	// Required when using password_wo.
+	// A version counter for the write-only password_wo field. Incrementing this value will trigger an update to the password.
+	// +kubebuilder:validation:Optional
+	PasswordWoVersion *float64 `json:"passwordWoVersion,omitempty" tf:"password_wo_version,omitempty"`
 
 	// The unique path this backend should be mounted at. Must
 	// not begin or end with a /. Defaults to rabbitmq.
@@ -437,7 +471,6 @@ type SecretBackend struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.connectionUri) || (has(self.initProvider) && has(self.initProvider.connectionUri))",message="spec.forProvider.connectionUri is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.passwordSecretRef)",message="spec.forProvider.passwordSecretRef is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.usernameSecretRef)",message="spec.forProvider.usernameSecretRef is a required parameter"
 	Spec   SecretBackendSpec   `json:"spec"`
 	Status SecretBackendStatus `json:"status,omitempty"`

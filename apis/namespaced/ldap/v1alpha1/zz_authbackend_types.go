@@ -15,9 +15,24 @@ import (
 )
 
 type AuthBackendInitParameters struct {
+
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
+	// Allows anonymous group searches.
+	AnonymousGroupSearch *bool `json:"anonymousGroupSearch,omitempty" tf:"anonymous_group_search,omitempty"`
+
 	Binddn *string `json:"binddn,omitempty" tf:"binddn,omitempty"`
 
 	BindpassSecretRef *v1.LocalSecretKeySelector `json:"bindpassSecretRef,omitempty" tf:"-"`
+
+	// Write-only bind password to use for LDAP authentication.
+	BindpassWoSecretRef *v1.LocalSecretKeySelector `json:"bindpassWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for write-only bind password.
+	BindpassWoVersion *float64 `json:"bindpassWoVersion,omitempty" tf:"bindpass_wo_version,omitempty"`
 
 	CaseSensitiveNames *bool `json:"caseSensitiveNames,omitempty" tf:"case_sensitive_names,omitempty"`
 
@@ -31,6 +46,9 @@ type AuthBackendInitParameters struct {
 
 	DenyNullBind *bool `json:"denyNullBind,omitempty" tf:"deny_null_bind,omitempty"`
 
+	// Specifies how aliases are dereferenced during LDAP searches. Valid values are 'never','searching','finding', and 'always'.
+	DereferenceAliases *string `json:"dereferenceAliases,omitempty" tf:"dereference_aliases,omitempty"`
+
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// Stops rotation of the root credential until set to false.
@@ -40,6 +58,9 @@ type AuthBackendInitParameters struct {
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
 	Discoverdn *bool `json:"discoverdn,omitempty" tf:"discoverdn,omitempty"`
+
+	// Enables login using the sAMAccountName attribute.
+	EnableSamaccountnameLogin *bool `json:"enableSamaccountnameLogin,omitempty" tf:"enable_samaccountname_login,omitempty"`
 
 	Groupattr *string `json:"groupattr,omitempty" tf:"groupattr,omitempty"`
 
@@ -58,6 +79,9 @@ type AuthBackendInitParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// The timeout(in sec) for requests to the LDAP server.
+	RequestTimeout *float64 `json:"requestTimeout,omitempty" tf:"request_timeout,omitempty"`
 
 	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
 	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
@@ -102,6 +126,8 @@ type AuthBackendInitParameters struct {
 
 	// The type of token to generate, service or batch
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
+
+	Tune []TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 
 	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 
@@ -124,7 +150,18 @@ type AuthBackendObservation struct {
 	// The accessor of the LDAP auth backend
 	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
+	// Allows anonymous group searches.
+	AnonymousGroupSearch *bool `json:"anonymousGroupSearch,omitempty" tf:"anonymous_group_search,omitempty"`
+
 	Binddn *string `json:"binddn,omitempty" tf:"binddn,omitempty"`
+
+	// Version counter for write-only bind password.
+	BindpassWoVersion *float64 `json:"bindpassWoVersion,omitempty" tf:"bindpass_wo_version,omitempty"`
 
 	CaseSensitiveNames *bool `json:"caseSensitiveNames,omitempty" tf:"case_sensitive_names,omitempty"`
 
@@ -136,6 +173,9 @@ type AuthBackendObservation struct {
 
 	DenyNullBind *bool `json:"denyNullBind,omitempty" tf:"deny_null_bind,omitempty"`
 
+	// Specifies how aliases are dereferenced during LDAP searches. Valid values are 'never','searching','finding', and 'always'.
+	DereferenceAliases *string `json:"dereferenceAliases,omitempty" tf:"dereference_aliases,omitempty"`
+
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// Stops rotation of the root credential until set to false.
@@ -145,6 +185,9 @@ type AuthBackendObservation struct {
 	DisableRemount *bool `json:"disableRemount,omitempty" tf:"disable_remount,omitempty"`
 
 	Discoverdn *bool `json:"discoverdn,omitempty" tf:"discoverdn,omitempty"`
+
+	// Enables login using the sAMAccountName attribute.
+	EnableSamaccountnameLogin *bool `json:"enableSamaccountnameLogin,omitempty" tf:"enable_samaccountname_login,omitempty"`
 
 	Groupattr *string `json:"groupattr,omitempty" tf:"groupattr,omitempty"`
 
@@ -166,6 +209,9 @@ type AuthBackendObservation struct {
 
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// The timeout(in sec) for requests to the LDAP server.
+	RequestTimeout *float64 `json:"requestTimeout,omitempty" tf:"request_timeout,omitempty"`
+
 	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
 	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
 
@@ -210,6 +256,8 @@ type AuthBackendObservation struct {
 	// The type of token to generate, service or batch
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 
+	Tune []TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
+
 	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 
 	Upndomain *string `json:"upndomain,omitempty" tf:"upndomain,omitempty"`
@@ -228,11 +276,29 @@ type AuthBackendObservation struct {
 
 type AuthBackendParameters struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
+	// Allows anonymous group searches.
+	// +kubebuilder:validation:Optional
+	AnonymousGroupSearch *bool `json:"anonymousGroupSearch,omitempty" tf:"anonymous_group_search,omitempty"`
+
 	// +kubebuilder:validation:Optional
 	Binddn *string `json:"binddn,omitempty" tf:"binddn,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	BindpassSecretRef *v1.LocalSecretKeySelector `json:"bindpassSecretRef,omitempty" tf:"-"`
+
+	// Write-only bind password to use for LDAP authentication.
+	// +kubebuilder:validation:Optional
+	BindpassWoSecretRef *v1.LocalSecretKeySelector `json:"bindpassWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for write-only bind password.
+	// +kubebuilder:validation:Optional
+	BindpassWoVersion *float64 `json:"bindpassWoVersion,omitempty" tf:"bindpass_wo_version,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	CaseSensitiveNames *bool `json:"caseSensitiveNames,omitempty" tf:"case_sensitive_names,omitempty"`
@@ -252,6 +318,10 @@ type AuthBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	DenyNullBind *bool `json:"denyNullBind,omitempty" tf:"deny_null_bind,omitempty"`
 
+	// Specifies how aliases are dereferenced during LDAP searches. Valid values are 'never','searching','finding', and 'always'.
+	// +kubebuilder:validation:Optional
+	DereferenceAliases *string `json:"dereferenceAliases,omitempty" tf:"dereference_aliases,omitempty"`
+
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
@@ -265,6 +335,10 @@ type AuthBackendParameters struct {
 
 	// +kubebuilder:validation:Optional
 	Discoverdn *bool `json:"discoverdn,omitempty" tf:"discoverdn,omitempty"`
+
+	// Enables login using the sAMAccountName attribute.
+	// +kubebuilder:validation:Optional
+	EnableSamaccountnameLogin *bool `json:"enableSamaccountnameLogin,omitempty" tf:"enable_samaccountname_login,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Groupattr *string `json:"groupattr,omitempty" tf:"groupattr,omitempty"`
@@ -292,6 +366,10 @@ type AuthBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// The timeout(in sec) for requests to the LDAP server.
+	// +kubebuilder:validation:Optional
+	RequestTimeout *float64 `json:"requestTimeout,omitempty" tf:"request_timeout,omitempty"`
+
 	// The period of time in seconds between each rotation of the root credential. Cannot be used with rotation_schedule.
 	// +kubebuilder:validation:Optional
 	RotationPeriod *float64 `json:"rotationPeriod,omitempty" tf:"rotation_period,omitempty"`
@@ -352,6 +430,9 @@ type AuthBackendParameters struct {
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 
 	// +kubebuilder:validation:Optional
+	Tune []TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`
+
+	// +kubebuilder:validation:Optional
 	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 
 	// +kubebuilder:validation:Optional
@@ -372,6 +453,69 @@ type AuthBackendParameters struct {
 	// Force the auth method to use the username passed by the user as the alias name.
 	// +kubebuilder:validation:Optional
 	UsernameAsAlias *bool `json:"usernameAsAlias,omitempty" tf:"username_as_alias,omitempty"`
+}
+
+type TuneInitParameters struct {
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers"`
+
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys"`
+
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys"`
+
+	DefaultLeaseTTL *string `json:"defaultLeaseTtl,omitempty" tf:"default_lease_ttl"`
+
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility"`
+
+	MaxLeaseTTL *string `json:"maxLeaseTtl,omitempty" tf:"max_lease_ttl"`
+
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers"`
+
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type"`
+}
+
+type TuneObservation struct {
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
+
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
+
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
+
+	DefaultLeaseTTL *string `json:"defaultLeaseTtl,omitempty" tf:"default_lease_ttl,omitempty"`
+
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
+
+	MaxLeaseTTL *string `json:"maxLeaseTtl,omitempty" tf:"max_lease_ttl,omitempty"`
+
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
+
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
+}
+
+type TuneParameters struct {
+
+	// +kubebuilder:validation:Optional
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers"`
+
+	// +kubebuilder:validation:Optional
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys"`
+
+	// +kubebuilder:validation:Optional
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys"`
+
+	// +kubebuilder:validation:Optional
+	DefaultLeaseTTL *string `json:"defaultLeaseTtl,omitempty" tf:"default_lease_ttl"`
+
+	// +kubebuilder:validation:Optional
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility"`
+
+	// +kubebuilder:validation:Optional
+	MaxLeaseTTL *string `json:"maxLeaseTtl,omitempty" tf:"max_lease_ttl"`
+
+	// +kubebuilder:validation:Optional
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers"`
+
+	// +kubebuilder:validation:Optional
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type"`
 }
 
 // AuthBackendSpec defines the desired state of AuthBackend

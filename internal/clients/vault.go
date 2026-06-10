@@ -280,8 +280,8 @@ func resolveProviderConfigModern(ctx context.Context, crClient client.Client, mg
 	switch pc := pcObj.(type) {
 	case *namespacedv1beta1.ProviderConfig:
 		pcSpec = pc.Spec
-		if pcSpec.Credentials.CommonCredentialSelectors.SecretRef != nil {
-			pcSpec.Credentials.CommonCredentialSelectors.SecretRef.Namespace = mg.GetNamespace()
+		if pcSpec.Credentials.SecretRef != nil {
+			pcSpec.Credentials.SecretRef.Namespace = mg.GetNamespace()
 		}
 	case *namespacedv1beta1.ClusterProviderConfig:
 		pcSpec = pc.Spec

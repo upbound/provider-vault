@@ -58,6 +58,16 @@ func (in *AuthBackendInitParameters) DeepCopyInto(out *AuthBackendInitParameters
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.CredentialsWoSecretRef != nil {
+		in, out := &in.CredentialsWoSecretRef, &out.CredentialsWoSecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.CredentialsWoVersion != nil {
+		in, out := &in.CredentialsWoVersion, &out.CredentialsWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.CustomEndpoint != nil {
 		in, out := &in.CustomEndpoint, &out.CustomEndpoint
 		*out = make([]CustomEndpointInitParameters, len(*in))
@@ -79,6 +89,38 @@ func (in *AuthBackendInitParameters) DeepCopyInto(out *AuthBackendInitParameters
 		in, out := &in.DisableRemount, &out.DisableRemount
 		*out = new(bool)
 		**out = **in
+	}
+	if in.GceAlias != nil {
+		in, out := &in.GceAlias, &out.GceAlias
+		*out = new(string)
+		**out = **in
+	}
+	if in.GceMetadata != nil {
+		in, out := &in.GceMetadata, &out.GceMetadata
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.IAMAlias != nil {
+		in, out := &in.IAMAlias, &out.IAMAlias
+		*out = new(string)
+		**out = **in
+	}
+	if in.IAMMetadata != nil {
+		in, out := &in.IAMMetadata, &out.IAMMetadata
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
 	}
 	if in.IdentityTokenAudience != nil {
 		in, out := &in.IdentityTokenAudience, &out.IdentityTokenAudience
@@ -209,6 +251,11 @@ func (in *AuthBackendObservation) DeepCopyInto(out *AuthBackendObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.CredentialsWoVersion != nil {
+		in, out := &in.CredentialsWoVersion, &out.CredentialsWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.CustomEndpoint != nil {
 		in, out := &in.CustomEndpoint, &out.CustomEndpoint
 		*out = make([]CustomEndpointObservation, len(*in))
@@ -230,6 +277,38 @@ func (in *AuthBackendObservation) DeepCopyInto(out *AuthBackendObservation) {
 		in, out := &in.DisableRemount, &out.DisableRemount
 		*out = new(bool)
 		**out = **in
+	}
+	if in.GceAlias != nil {
+		in, out := &in.GceAlias, &out.GceAlias
+		*out = new(string)
+		**out = **in
+	}
+	if in.GceMetadata != nil {
+		in, out := &in.GceMetadata, &out.GceMetadata
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.IAMAlias != nil {
+		in, out := &in.IAMAlias, &out.IAMAlias
+		*out = new(string)
+		**out = **in
+	}
+	if in.IAMMetadata != nil {
+		in, out := &in.IAMMetadata, &out.IAMMetadata
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
 	}
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
@@ -333,6 +412,16 @@ func (in *AuthBackendParameters) DeepCopyInto(out *AuthBackendParameters) {
 		*out = new(v1.SecretKeySelector)
 		**out = **in
 	}
+	if in.CredentialsWoSecretRef != nil {
+		in, out := &in.CredentialsWoSecretRef, &out.CredentialsWoSecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.CredentialsWoVersion != nil {
+		in, out := &in.CredentialsWoVersion, &out.CredentialsWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.CustomEndpoint != nil {
 		in, out := &in.CustomEndpoint, &out.CustomEndpoint
 		*out = make([]CustomEndpointParameters, len(*in))
@@ -354,6 +443,38 @@ func (in *AuthBackendParameters) DeepCopyInto(out *AuthBackendParameters) {
 		in, out := &in.DisableRemount, &out.DisableRemount
 		*out = new(bool)
 		**out = **in
+	}
+	if in.GceAlias != nil {
+		in, out := &in.GceAlias, &out.GceAlias
+		*out = new(string)
+		**out = **in
+	}
+	if in.GceMetadata != nil {
+		in, out := &in.GceMetadata, &out.GceMetadata
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.IAMAlias != nil {
+		in, out := &in.IAMAlias, &out.IAMAlias
+		*out = new(string)
+		**out = **in
+	}
+	if in.IAMMetadata != nil {
+		in, out := &in.IAMMetadata, &out.IAMMetadata
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
 	}
 	if in.IdentityTokenAudience != nil {
 		in, out := &in.IdentityTokenAudience, &out.IdentityTokenAudience
@@ -469,6 +590,22 @@ func (in *AuthBackendRoleInitParameters) DeepCopyInto(out *AuthBackendRoleInitPa
 		*out = new(bool)
 		**out = **in
 	}
+	if in.AliasMetadata != nil {
+		in, out := &in.AliasMetadata, &out.AliasMetadata
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
+	}
 	if in.AllowGceInference != nil {
 		in, out := &in.AllowGceInference, &out.AllowGceInference
 		*out = new(bool)
@@ -567,6 +704,11 @@ func (in *AuthBackendRoleInitParameters) DeepCopyInto(out *AuthBackendRoleInitPa
 	}
 	if in.Role != nil {
 		in, out := &in.Role, &out.Role
+		*out = new(string)
+		**out = **in
+	}
+	if in.RoleID != nil {
+		in, out := &in.RoleID, &out.RoleID
 		*out = new(string)
 		**out = **in
 	}
@@ -684,6 +826,22 @@ func (in *AuthBackendRoleObservation) DeepCopyInto(out *AuthBackendRoleObservati
 		*out = new(bool)
 		**out = **in
 	}
+	if in.AliasMetadata != nil {
+		in, out := &in.AliasMetadata, &out.AliasMetadata
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
+	}
 	if in.AllowGceInference != nil {
 		in, out := &in.AllowGceInference, &out.AllowGceInference
 		*out = new(bool)
@@ -780,6 +938,11 @@ func (in *AuthBackendRoleObservation) DeepCopyInto(out *AuthBackendRoleObservati
 		*out = new(string)
 		**out = **in
 	}
+	if in.RoleID != nil {
+		in, out := &in.RoleID, &out.RoleID
+		*out = new(string)
+		**out = **in
+	}
 	if in.TokenBoundCidrs != nil {
 		in, out := &in.TokenBoundCidrs, &out.TokenBoundCidrs
 		*out = make([]*string, len(*in))
@@ -861,6 +1024,22 @@ func (in *AuthBackendRoleParameters) DeepCopyInto(out *AuthBackendRoleParameters
 		in, out := &in.AddGroupAliases, &out.AddGroupAliases
 		*out = new(bool)
 		**out = **in
+	}
+	if in.AliasMetadata != nil {
+		in, out := &in.AliasMetadata, &out.AliasMetadata
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
 	}
 	if in.AllowGceInference != nil {
 		in, out := &in.AllowGceInference, &out.AllowGceInference
@@ -960,6 +1139,11 @@ func (in *AuthBackendRoleParameters) DeepCopyInto(out *AuthBackendRoleParameters
 	}
 	if in.Role != nil {
 		in, out := &in.Role, &out.Role
+		*out = new(string)
+		**out = **in
+	}
+	if in.RoleID != nil {
+		in, out := &in.RoleID, &out.RoleID
 		*out = new(string)
 		**out = **in
 	}
@@ -1465,6 +1649,11 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 		*out = new(float64)
 		**out = **in
 	}
+	if in.MaxTTL != nil {
+		in, out := &in.MaxTTL, &out.MaxTTL
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -1530,6 +1719,11 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 	if in.ServiceAccountEmail != nil {
 		in, out := &in.ServiceAccountEmail, &out.ServiceAccountEmail
 		*out = new(string)
+		**out = **in
+	}
+	if in.TTL != nil {
+		in, out := &in.TTL, &out.TTL
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -1709,6 +1903,11 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 		*out = new(float64)
 		**out = **in
 	}
+	if in.MaxTTL != nil {
+		in, out := &in.MaxTTL, &out.MaxTTL
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -1774,6 +1973,11 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 	if in.ServiceAccountEmail != nil {
 		in, out := &in.ServiceAccountEmail, &out.ServiceAccountEmail
 		*out = new(string)
+		**out = **in
+	}
+	if in.TTL != nil {
+		in, out := &in.TTL, &out.TTL
+		*out = new(float64)
 		**out = **in
 	}
 }
@@ -1921,6 +2125,11 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.MaxTTL != nil {
+		in, out := &in.MaxTTL, &out.MaxTTL
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Namespace != nil {
 		in, out := &in.Namespace, &out.Namespace
 		*out = new(string)
@@ -1986,6 +2195,11 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 	if in.ServiceAccountEmail != nil {
 		in, out := &in.ServiceAccountEmail, &out.ServiceAccountEmail
 		*out = new(string)
+		**out = **in
+	}
+	if in.TTL != nil {
+		in, out := &in.TTL, &out.TTL
+		*out = new(float64)
 		**out = **in
 	}
 }

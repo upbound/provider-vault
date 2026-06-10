@@ -554,6 +554,11 @@ func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleIn
 			(*out)[key] = outVal
 		}
 	}
+	if in.DefaultExtensionsTemplate != nil {
+		in, out := &in.DefaultExtensionsTemplate, &out.DefaultExtensionsTemplate
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DefaultUser != nil {
 		in, out := &in.DefaultUser, &out.DefaultUser
 		*out = new(string)
@@ -563,6 +568,17 @@ func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleIn
 		in, out := &in.DefaultUserTemplate, &out.DefaultUserTemplate
 		*out = new(bool)
 		**out = **in
+	}
+	if in.ExcludeCidrList != nil {
+		in, out := &in.ExcludeCidrList, &out.ExcludeCidrList
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
 	}
 	if in.KeyIDFormat != nil {
 		in, out := &in.KeyIDFormat, &out.KeyIDFormat
@@ -592,6 +608,11 @@ func (in *SecretBackendRoleInitParameters) DeepCopyInto(out *SecretBackendRoleIn
 	if in.NotBeforeDuration != nil {
 		in, out := &in.NotBeforeDuration, &out.NotBeforeDuration
 		*out = new(string)
+		**out = **in
+	}
+	if in.Port != nil {
+		in, out := &in.Port, &out.Port
+		*out = new(float64)
 		**out = **in
 	}
 	if in.TTL != nil {
@@ -760,6 +781,11 @@ func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObser
 			(*out)[key] = outVal
 		}
 	}
+	if in.DefaultExtensionsTemplate != nil {
+		in, out := &in.DefaultExtensionsTemplate, &out.DefaultExtensionsTemplate
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DefaultUser != nil {
 		in, out := &in.DefaultUser, &out.DefaultUser
 		*out = new(string)
@@ -769,6 +795,17 @@ func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObser
 		in, out := &in.DefaultUserTemplate, &out.DefaultUserTemplate
 		*out = new(bool)
 		**out = **in
+	}
+	if in.ExcludeCidrList != nil {
+		in, out := &in.ExcludeCidrList, &out.ExcludeCidrList
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
 	}
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
@@ -803,6 +840,11 @@ func (in *SecretBackendRoleObservation) DeepCopyInto(out *SecretBackendRoleObser
 	if in.NotBeforeDuration != nil {
 		in, out := &in.NotBeforeDuration, &out.NotBeforeDuration
 		*out = new(string)
+		**out = **in
+	}
+	if in.Port != nil {
+		in, out := &in.Port, &out.Port
+		*out = new(float64)
 		**out = **in
 	}
 	if in.TTL != nil {
@@ -949,6 +991,11 @@ func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParame
 			(*out)[key] = outVal
 		}
 	}
+	if in.DefaultExtensionsTemplate != nil {
+		in, out := &in.DefaultExtensionsTemplate, &out.DefaultExtensionsTemplate
+		*out = new(bool)
+		**out = **in
+	}
 	if in.DefaultUser != nil {
 		in, out := &in.DefaultUser, &out.DefaultUser
 		*out = new(string)
@@ -958,6 +1005,17 @@ func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParame
 		in, out := &in.DefaultUserTemplate, &out.DefaultUserTemplate
 		*out = new(bool)
 		**out = **in
+	}
+	if in.ExcludeCidrList != nil {
+		in, out := &in.ExcludeCidrList, &out.ExcludeCidrList
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
 	}
 	if in.KeyIDFormat != nil {
 		in, out := &in.KeyIDFormat, &out.KeyIDFormat
@@ -987,6 +1045,11 @@ func (in *SecretBackendRoleParameters) DeepCopyInto(out *SecretBackendRoleParame
 	if in.NotBeforeDuration != nil {
 		in, out := &in.NotBeforeDuration, &out.NotBeforeDuration
 		*out = new(string)
+		**out = **in
+	}
+	if in.Port != nil {
+		in, out := &in.Port, &out.Port
+		*out = new(float64)
 		**out = **in
 	}
 	if in.TTL != nil {

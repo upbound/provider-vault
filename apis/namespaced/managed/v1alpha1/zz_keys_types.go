@@ -428,6 +428,195 @@ type AzureParameters struct {
 	VaultName *string `json:"vaultName" tf:"vault_name,omitempty"`
 }
 
+type GCPInitParameters struct {
+
+	// The signature algorithm to be used with the key. Supported values are:
+	// The signature algorithm to be used with the key. Supported values: ec_sign_p256_sha256, ec_sign_p384_sha384, rsa_sign_pss_2048_sha256, rsa_sign_pss_3072_sha256, rsa_sign_pss_4096_sha256, rsa_sign_pss_4096_sha512, rsa_sign_pkcs1_2048_sha256, rsa_sign_pkcs1_3072_sha256, rsa_sign_pkcs1_4096_sha256, rsa_sign_pkcs1_4096_sha512
+	Algorithm *string `json:"algorithm,omitempty" tf:"algorithm,omitempty"`
+
+	// If no existing key can be found in
+	// the referenced backend, instructs Vault to generate a key within the backend.
+	// If no existing key can be found in the referenced backend, instructs Vault to generate a key within the backend
+	AllowGenerateKey *bool `json:"allowGenerateKey,omitempty" tf:"allow_generate_key,omitempty"`
+
+	// Controls the ability for Vault to replace through
+	// generation or importing a key into the configured backend even
+	// if a key is present, if set to false those operations are forbidden
+	// if a key exists.
+	// Controls the ability for Vault to replace through generation or importing a key into the configured backend even if a key is present, if set to false those operations are forbidden if a key exists.
+	AllowReplaceKey *bool `json:"allowReplaceKey,omitempty" tf:"allow_replace_key,omitempty"`
+
+	// Controls the ability for Vault to import a key to the
+	// configured backend, if false, those operations will be forbidden.
+	// Controls the ability for Vault to import a key to the configured backend, if 'false', those operations will be forbidden
+	AllowStoreKey *bool `json:"allowStoreKey,omitempty" tf:"allow_store_key,omitempty"`
+
+	// If true, allows usage from any mount point within the
+	// namespace.
+	// Allow usage from any mount point within the namespace if 'true'
+	AnyMount *bool `json:"anyMount,omitempty" tf:"any_mount,omitempty"`
+
+	// The GCP service account credentials JSON contents (the raw JSON
+	// key data), not a path to a credentials file.
+	// The GCP service account credentials JSON to use for authenticating to GCP.
+	Credentials *string `json:"credentials,omitempty" tf:"credentials,omitempty"`
+
+	// The name of the Cloud KMS crypto key to use.
+	// The name of the GCP Cloud KMS key. If no existing key exists and allow_generate_key is true, Vault will generate a key with this name
+	CryptoKey *string `json:"cryptoKey,omitempty" tf:"crypto_key,omitempty"`
+
+	// The version of the key to use. (Default: 1)
+	// The version of the key to use. (Default: 1)
+	CryptoKeyVersion *string `json:"cryptoKeyVersion,omitempty" tf:"crypto_key_version,omitempty"`
+
+	// The name of the Cloud KMS key ring.
+	// The name of the key ring in GCP Cloud KMS. This needs to be created prior to key creation
+	KeyRing *string `json:"keyRing,omitempty" tf:"key_ring,omitempty"`
+
+	// A unique lowercase name that serves as identifying the key.
+	// A unique lowercase name that serves as identifying the key
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The GCP project ID where the Cloud KMS resources are located.
+	// The GCP project ID.
+	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+
+	// The AWS region where the keys are stored (or will be stored).
+	// The GCP region where the key ring was created.
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+}
+
+type GCPObservation struct {
+
+	// The signature algorithm to be used with the key. Supported values are:
+	// The signature algorithm to be used with the key. Supported values: ec_sign_p256_sha256, ec_sign_p384_sha384, rsa_sign_pss_2048_sha256, rsa_sign_pss_3072_sha256, rsa_sign_pss_4096_sha256, rsa_sign_pss_4096_sha512, rsa_sign_pkcs1_2048_sha256, rsa_sign_pkcs1_3072_sha256, rsa_sign_pkcs1_4096_sha256, rsa_sign_pkcs1_4096_sha512
+	Algorithm *string `json:"algorithm,omitempty" tf:"algorithm,omitempty"`
+
+	// If no existing key can be found in
+	// the referenced backend, instructs Vault to generate a key within the backend.
+	// If no existing key can be found in the referenced backend, instructs Vault to generate a key within the backend
+	AllowGenerateKey *bool `json:"allowGenerateKey,omitempty" tf:"allow_generate_key,omitempty"`
+
+	// Controls the ability for Vault to replace through
+	// generation or importing a key into the configured backend even
+	// if a key is present, if set to false those operations are forbidden
+	// if a key exists.
+	// Controls the ability for Vault to replace through generation or importing a key into the configured backend even if a key is present, if set to false those operations are forbidden if a key exists.
+	AllowReplaceKey *bool `json:"allowReplaceKey,omitempty" tf:"allow_replace_key,omitempty"`
+
+	// Controls the ability for Vault to import a key to the
+	// configured backend, if false, those operations will be forbidden.
+	// Controls the ability for Vault to import a key to the configured backend, if 'false', those operations will be forbidden
+	AllowStoreKey *bool `json:"allowStoreKey,omitempty" tf:"allow_store_key,omitempty"`
+
+	// If true, allows usage from any mount point within the
+	// namespace.
+	// Allow usage from any mount point within the namespace if 'true'
+	AnyMount *bool `json:"anyMount,omitempty" tf:"any_mount,omitempty"`
+
+	// The GCP service account credentials JSON contents (the raw JSON
+	// key data), not a path to a credentials file.
+	// The GCP service account credentials JSON to use for authenticating to GCP.
+	Credentials *string `json:"credentials,omitempty" tf:"credentials,omitempty"`
+
+	// The name of the Cloud KMS crypto key to use.
+	// The name of the GCP Cloud KMS key. If no existing key exists and allow_generate_key is true, Vault will generate a key with this name
+	CryptoKey *string `json:"cryptoKey,omitempty" tf:"crypto_key,omitempty"`
+
+	// The version of the key to use. (Default: 1)
+	// The version of the key to use. (Default: 1)
+	CryptoKeyVersion *string `json:"cryptoKeyVersion,omitempty" tf:"crypto_key_version,omitempty"`
+
+	// The name of the Cloud KMS key ring.
+	// The name of the key ring in GCP Cloud KMS. This needs to be created prior to key creation
+	KeyRing *string `json:"keyRing,omitempty" tf:"key_ring,omitempty"`
+
+	// A unique lowercase name that serves as identifying the key.
+	// A unique lowercase name that serves as identifying the key
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The GCP project ID where the Cloud KMS resources are located.
+	// The GCP project ID.
+	Project *string `json:"project,omitempty" tf:"project,omitempty"`
+
+	// The AWS region where the keys are stored (or will be stored).
+	// The GCP region where the key ring was created.
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+
+	// ID of the managed key read from Vault
+	UUID *string `json:"uuid,omitempty" tf:"uuid,omitempty"`
+}
+
+type GCPParameters struct {
+
+	// The signature algorithm to be used with the key. Supported values are:
+	// The signature algorithm to be used with the key. Supported values: ec_sign_p256_sha256, ec_sign_p384_sha384, rsa_sign_pss_2048_sha256, rsa_sign_pss_3072_sha256, rsa_sign_pss_4096_sha256, rsa_sign_pss_4096_sha512, rsa_sign_pkcs1_2048_sha256, rsa_sign_pkcs1_3072_sha256, rsa_sign_pkcs1_4096_sha256, rsa_sign_pkcs1_4096_sha512
+	// +kubebuilder:validation:Optional
+	Algorithm *string `json:"algorithm" tf:"algorithm,omitempty"`
+
+	// If no existing key can be found in
+	// the referenced backend, instructs Vault to generate a key within the backend.
+	// If no existing key can be found in the referenced backend, instructs Vault to generate a key within the backend
+	// +kubebuilder:validation:Optional
+	AllowGenerateKey *bool `json:"allowGenerateKey,omitempty" tf:"allow_generate_key,omitempty"`
+
+	// Controls the ability for Vault to replace through
+	// generation or importing a key into the configured backend even
+	// if a key is present, if set to false those operations are forbidden
+	// if a key exists.
+	// Controls the ability for Vault to replace through generation or importing a key into the configured backend even if a key is present, if set to false those operations are forbidden if a key exists.
+	// +kubebuilder:validation:Optional
+	AllowReplaceKey *bool `json:"allowReplaceKey,omitempty" tf:"allow_replace_key,omitempty"`
+
+	// Controls the ability for Vault to import a key to the
+	// configured backend, if false, those operations will be forbidden.
+	// Controls the ability for Vault to import a key to the configured backend, if 'false', those operations will be forbidden
+	// +kubebuilder:validation:Optional
+	AllowStoreKey *bool `json:"allowStoreKey,omitempty" tf:"allow_store_key,omitempty"`
+
+	// If true, allows usage from any mount point within the
+	// namespace.
+	// Allow usage from any mount point within the namespace if 'true'
+	// +kubebuilder:validation:Optional
+	AnyMount *bool `json:"anyMount,omitempty" tf:"any_mount,omitempty"`
+
+	// The GCP service account credentials JSON contents (the raw JSON
+	// key data), not a path to a credentials file.
+	// The GCP service account credentials JSON to use for authenticating to GCP.
+	// +kubebuilder:validation:Optional
+	Credentials *string `json:"credentials" tf:"credentials,omitempty"`
+
+	// The name of the Cloud KMS crypto key to use.
+	// The name of the GCP Cloud KMS key. If no existing key exists and allow_generate_key is true, Vault will generate a key with this name
+	// +kubebuilder:validation:Optional
+	CryptoKey *string `json:"cryptoKey" tf:"crypto_key,omitempty"`
+
+	// The version of the key to use. (Default: 1)
+	// The version of the key to use. (Default: 1)
+	// +kubebuilder:validation:Optional
+	CryptoKeyVersion *string `json:"cryptoKeyVersion,omitempty" tf:"crypto_key_version,omitempty"`
+
+	// The name of the Cloud KMS key ring.
+	// The name of the key ring in GCP Cloud KMS. This needs to be created prior to key creation
+	// +kubebuilder:validation:Optional
+	KeyRing *string `json:"keyRing" tf:"key_ring,omitempty"`
+
+	// A unique lowercase name that serves as identifying the key.
+	// A unique lowercase name that serves as identifying the key
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// The GCP project ID where the Cloud KMS resources are located.
+	// The GCP project ID.
+	// +kubebuilder:validation:Optional
+	Project *string `json:"project" tf:"project,omitempty"`
+
+	// The AWS region where the keys are stored (or will be stored).
+	// The GCP region where the key ring was created.
+	// +kubebuilder:validation:Optional
+	Region *string `json:"region" tf:"region,omitempty"`
+}
+
 type KeysInitParameters struct {
 
 	// Configuration block for AWS Managed Keys
@@ -435,6 +624,9 @@ type KeysInitParameters struct {
 
 	// Configuration block for Azure Managed Keys
 	Azure []AzureInitParameters `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	// Configuration block for GCP Cloud KMS Managed Keys
+	GCP []GCPInitParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -454,6 +646,9 @@ type KeysObservation struct {
 
 	// Configuration block for Azure Managed Keys
 	Azure []AzureObservation `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	// Configuration block for GCP Cloud KMS Managed Keys
+	GCP []GCPObservation `json:"gcp,omitempty" tf:"gcp,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -477,6 +672,10 @@ type KeysParameters struct {
 	// Configuration block for Azure Managed Keys
 	// +kubebuilder:validation:Optional
 	Azure []AzureParameters `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	// Configuration block for GCP Cloud KMS Managed Keys
+	// +kubebuilder:validation:Optional
+	GCP []GCPParameters `json:"gcp,omitempty" tf:"gcp,omitempty"`
 
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
@@ -690,12 +889,12 @@ type PkcsParameters struct {
 	// The id of a PKCS#11 key to use.
 	// The id of a PKCS#11 key to use
 	// +kubebuilder:validation:Optional
-	KeyID *string `json:"keyId" tf:"key_id,omitempty"`
+	KeyID *string `json:"keyId,omitempty" tf:"key_id,omitempty"`
 
 	// The label of the key to use.
 	// The label of the key to use
 	// +kubebuilder:validation:Optional
-	KeyLabel *string `json:"keyLabel" tf:"key_label,omitempty"`
+	KeyLabel *string `json:"keyLabel,omitempty" tf:"key_label,omitempty"`
 
 	// The name of the kms_library stanza to use from Vault's config
 	// to lookup the local library path.
