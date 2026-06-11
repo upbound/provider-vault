@@ -98,11 +98,9 @@ jobs:
       # We could run 'make lint' but we prefer this action because it leaves
       # 'annotations' (i.e. it comments on PRs to point out linter violations).
       - name: Lint
-        uses: golangci/golangci-lint-action@v7
+        uses: golangci/golangci-lint-action@82606bf257cbaff209d206a39f5134f0cfbfd2ee # v9.2.1
         with:
           version: ${{ env.GOLANGCI_VERSION }}
-          skip-pkg-cache: true
-          skip-build-cache: true
 
   check-diff:
     runs-on: ubuntu-latest
@@ -191,10 +189,11 @@ jobs:
         run: make -j2 test
 
       - name: Publish Unit Test Coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
           flags: unittests
-          file: _output/tests/linux_amd64/coverage.txt
+          files: _output/tests/linux_amd64/coverage.txt
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   local-deploy:
     runs-on: ubuntu-22.04
