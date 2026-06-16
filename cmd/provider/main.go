@@ -41,16 +41,16 @@ import (
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
-	apisCluster "github.com/upbound/provider-vault/v3/apis/cluster"
-	apisNamespaced "github.com/upbound/provider-vault/v3/apis/namespaced"
-	"github.com/upbound/provider-vault/v3/config"
-	"github.com/upbound/provider-vault/v3/internal/clients"
+	apisCluster "github.com/upbound/provider-vault/v4/apis/cluster"
+	apisNamespaced "github.com/upbound/provider-vault/v4/apis/namespaced"
+	"github.com/upbound/provider-vault/v4/config"
+	"github.com/upbound/provider-vault/v4/internal/clients"
 
-	"github.com/upbound/provider-vault/v3/internal/bootcheck"
-	controllerCluster "github.com/upbound/provider-vault/v3/internal/controller/cluster"
-	controllerNamespaced "github.com/upbound/provider-vault/v3/internal/controller/namespaced"
-	"github.com/upbound/provider-vault/v3/internal/features"
-	"github.com/upbound/provider-vault/v3/internal/version"
+	"github.com/upbound/provider-vault/v4/internal/bootcheck"
+	controllerCluster "github.com/upbound/provider-vault/v4/internal/controller/cluster"
+	controllerNamespaced "github.com/upbound/provider-vault/v4/internal/controller/namespaced"
+	"github.com/upbound/provider-vault/v4/internal/features"
+	"github.com/upbound/provider-vault/v4/internal/version"
 )
 
 const (

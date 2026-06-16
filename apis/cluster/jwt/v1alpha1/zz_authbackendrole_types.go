@@ -29,7 +29,7 @@ type AuthBackendRoleInitParameters struct {
 	// The unique name of the auth backend to configure.
 	// Defaults to jwt.
 	// Unique name of the auth backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/jwt/v1alpha1.AuthBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/jwt/v1alpha1.AuthBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -395,7 +395,7 @@ type AuthBackendRoleParameters struct {
 	// The unique name of the auth backend to configure.
 	// Defaults to jwt.
 	// Unique name of the auth backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/jwt/v1alpha1.AuthBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/jwt/v1alpha1.AuthBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
