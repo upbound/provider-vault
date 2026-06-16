@@ -3,6 +3,7 @@
 
 PROJECT_NAME ?= provider-vault
 PROJECT_REPO ?= github.com/upbound/$(PROJECT_NAME)/v4
+GO_PROJECT := github.com/upbound/provider-vault/v4
 
 export TERRAFORM_VERSION := 1.5.5
 
