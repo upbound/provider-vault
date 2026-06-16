@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: authbackendconfigs.kubernetes.vault.upbound.io
 spec:
   group: kubernetes.vault.upbound.io
@@ -192,7 +192,7 @@ spec:
                     type: array
                   tokenReviewerJwtSecretRef:
                     description: |-
-                      A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
+                      A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API. Conflicts with token_reviewer_jwt_wo.
                       A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
                     properties:
                       key:
@@ -209,6 +209,33 @@ spec:
                     - name
                     - namespace
                     type: object
+                  tokenReviewerJwtWoSecretRef:
+                    description: |-
+                      A write-only service account JWT (or other token) used as a bearer token to access the
+                      TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
+                      Conflicts with token_reviewer_jwt.
+                      Note: This property is write-only and will not be read from the API.
+                      A write-only service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  tokenReviewerJwtWoVersion:
+                    description: |-
+                      The version of token_reviewer_jwt_wo to use during write operations. Required with token_reviewer_jwt_wo. For more info see updating write-only attributes.
+                      The version of token_reviewer_jwt_wo to use during write operations.
+                    type: number
                   useAnnotationsAsAliasMetadata:
                     description: |-
                       Use annotations from the client token's associated service account as alias metadata for the Vault entity. Requires Vault v1.16+ or Vault auth kubernetes plugin v0.18.0+
@@ -347,7 +374,7 @@ spec:
                     type: array
                   tokenReviewerJwtSecretRef:
                     description: |-
-                      A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
+                      A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API. Conflicts with token_reviewer_jwt_wo.
                       A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
                     properties:
                       key:
@@ -364,6 +391,33 @@ spec:
                     - name
                     - namespace
                     type: object
+                  tokenReviewerJwtWoSecretRef:
+                    description: |-
+                      A write-only service account JWT (or other token) used as a bearer token to access the
+                      TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
+                      Conflicts with token_reviewer_jwt.
+                      Note: This property is write-only and will not be read from the API.
+                      A write-only service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  tokenReviewerJwtWoVersion:
+                    description: |-
+                      The version of token_reviewer_jwt_wo to use during write operations. Required with token_reviewer_jwt_wo. For more info see updating write-only attributes.
+                      The version of token_reviewer_jwt_wo to use during write operations.
+                    type: number
                   useAnnotationsAsAliasMetadata:
                     description: |-
                       Use annotations from the client token's associated service account as alias metadata for the Vault entity. Requires Vault v1.16+ or Vault auth kubernetes plugin v0.18.0+
@@ -511,6 +565,11 @@ spec:
                     items:
                       type: string
                     type: array
+                  tokenReviewerJwtWoVersion:
+                    description: |-
+                      The version of token_reviewer_jwt_wo to use during write operations. Required with token_reviewer_jwt_wo. For more info see updating write-only attributes.
+                      The version of token_reviewer_jwt_wo to use during write operations.
+                    type: number
                   useAnnotationsAsAliasMetadata:
                     description: |-
                       Use annotations from the client token's associated service account as alias metadata for the Vault entity. Requires Vault v1.16+ or Vault auth kubernetes plugin v0.18.0+

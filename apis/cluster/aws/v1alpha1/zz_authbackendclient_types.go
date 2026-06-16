@@ -20,10 +20,17 @@ type AuthBackendClientInitParameters struct {
 	// AWS Access key with permissions to query AWS APIs.
 	AccessKeySecretRef *v1.SecretKeySelector `json:"accessKeySecretRef,omitempty" tf:"-"`
 
+	// List of additional headers that are allowed to be in STS request headers.
+	// The headers are automatically canonicalized (e.g., content-type becomes Content-Type). Duplicate values are automatically
+	// removed. This can be useful when you need to allow specific headers in STS requests for IAM-based authentication.
+	// List of additional headers that are allowed to be in STS request headers.
+	// +listType=set
+	AllowedStsHeaderValues []*string `json:"allowedStsHeaderValues,omitempty" tf:"allowed_sts_header_values,omitempty"`
+
 	// The path the AWS auth backend being configured was
 	// mounted at.  Defaults to aws.
 	// Unique name of the auth backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -99,9 +106,22 @@ type AuthBackendClientInitParameters struct {
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The AWS secret key that Vault should use for the
-	// auth backend.
+	// auth backend. Mutually exclusive with secret_key_wo.
+	// Consider using secret_key_wo instead for enhanced security.
 	// AWS Secret key with permissions to query AWS APIs.
 	SecretKeySecretRef *v1.SecretKeySelector `json:"secretKeySecretRef,omitempty" tf:"-"`
+
+	// Write-only AWS secret key that Vault should use for the
+	// auth backend. Mutually exclusive with secret_key.
+	// Must be used together with secret_key_wo_version.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only AWS Secret key with permissions to query AWS APIs. This field is recommended over secret_key for enhanced security.
+	SecretKeyWoSecretRef *v1.SecretKeySelector `json:"secretKeyWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for the write-only secret_key_wo field.
+	// Increment this value to rotate the secret key. Required when secret_key_wo is set.
+	// Version counter for write-only secret_key field. Increment this value to force update of the secret.
+	SecretKeyWoVersion *float64 `json:"secretKeyWoVersion,omitempty" tf:"secret_key_wo_version,omitempty"`
 
 	// Override the URL Vault uses when making STS API
 	// calls.
@@ -123,6 +143,13 @@ type AuthBackendClientInitParameters struct {
 }
 
 type AuthBackendClientObservation struct {
+
+	// List of additional headers that are allowed to be in STS request headers.
+	// The headers are automatically canonicalized (e.g., content-type becomes Content-Type). Duplicate values are automatically
+	// removed. This can be useful when you need to allow specific headers in STS requests for IAM-based authentication.
+	// List of additional headers that are allowed to be in STS request headers.
+	// +listType=set
+	AllowedStsHeaderValues []*string `json:"allowedStsHeaderValues,omitempty" tf:"allowed_sts_header_values,omitempty"`
 
 	// The path the AWS auth backend being configured was
 	// mounted at.  Defaults to aws.
@@ -194,6 +221,11 @@ type AuthBackendClientObservation struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// Version counter for the write-only secret_key_wo field.
+	// Increment this value to rotate the secret key. Required when secret_key_wo is set.
+	// Version counter for write-only secret_key field. Increment this value to force update of the secret.
+	SecretKeyWoVersion *float64 `json:"secretKeyWoVersion,omitempty" tf:"secret_key_wo_version,omitempty"`
+
 	// Override the URL Vault uses when making STS API
 	// calls.
 	// URL to override the default generated endpoint for making AWS STS API calls.
@@ -221,10 +253,18 @@ type AuthBackendClientParameters struct {
 	// +kubebuilder:validation:Optional
 	AccessKeySecretRef *v1.SecretKeySelector `json:"accessKeySecretRef,omitempty" tf:"-"`
 
+	// List of additional headers that are allowed to be in STS request headers.
+	// The headers are automatically canonicalized (e.g., content-type becomes Content-Type). Duplicate values are automatically
+	// removed. This can be useful when you need to allow specific headers in STS requests for IAM-based authentication.
+	// List of additional headers that are allowed to be in STS request headers.
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	AllowedStsHeaderValues []*string `json:"allowedStsHeaderValues,omitempty" tf:"allowed_sts_header_values,omitempty"`
+
 	// The path the AWS auth backend being configured was
 	// mounted at.  Defaults to aws.
 	// Unique name of the auth backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -313,10 +353,25 @@ type AuthBackendClientParameters struct {
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
 	// The AWS secret key that Vault should use for the
-	// auth backend.
+	// auth backend. Mutually exclusive with secret_key_wo.
+	// Consider using secret_key_wo instead for enhanced security.
 	// AWS Secret key with permissions to query AWS APIs.
 	// +kubebuilder:validation:Optional
 	SecretKeySecretRef *v1.SecretKeySelector `json:"secretKeySecretRef,omitempty" tf:"-"`
+
+	// Write-only AWS secret key that Vault should use for the
+	// auth backend. Mutually exclusive with secret_key.
+	// Must be used together with secret_key_wo_version.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only AWS Secret key with permissions to query AWS APIs. This field is recommended over secret_key for enhanced security.
+	// +kubebuilder:validation:Optional
+	SecretKeyWoSecretRef *v1.SecretKeySelector `json:"secretKeyWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for the write-only secret_key_wo field.
+	// Increment this value to rotate the secret key. Required when secret_key_wo is set.
+	// Version counter for write-only secret_key field. Increment this value to force update of the secret.
+	// +kubebuilder:validation:Optional
+	SecretKeyWoVersion *float64 `json:"secretKeyWoVersion,omitempty" tf:"secret_key_wo_version,omitempty"`
 
 	// Override the URL Vault uses when making STS API
 	// calls.

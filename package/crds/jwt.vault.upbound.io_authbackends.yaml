@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: authbackends.jwt.vault.upbound.io
 spec:
   group: jwt.vault.upbound.io
@@ -152,7 +152,7 @@ spec:
                     type: string
                   oidcClientSecretSecretRef:
                     description: |-
-                      Client Secret used for OIDC backends
+                      Client Secret used for OIDC backends. Note: This field is stored in state. For enhanced security, use oidc_client_secret_wo instead.
                       Client Secret used for OIDC
                     properties:
                       key:
@@ -169,6 +169,30 @@ spec:
                     - name
                     - namespace
                     type: object
+                  oidcClientSecretWoSecretRef:
+                    description: |-
+                      Write-only Client Secret used for OIDC backends. Mutually exclusive with oidc_client_secret. Must be used with oidc_client_secret_wo_version. To rotate the secret, update the value and increment oidc_client_secret_wo_version.
+                      Write-only Client Secret used for OIDC. This field is recommended over oidc_client_secret for enhanced security.
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  oidcClientSecretWoVersion:
+                    description: |-
+                      Version counter for the write-only oidc_client_secret_wo field. Increment this value to trigger an update of the client secret in Vault. Required when using oidc_client_secret_wo.
+                      Version counter for write-only oidc_client_secret field. Increment this value to force update of the secret.
+                    type: number
                   oidcDiscoveryCaPem:
                     description: |-
                       The CA certificate or chain of certificates, in PEM format, to use to validate connections to the OIDC Discovery URL. If not set, system certificates are used
@@ -357,7 +381,7 @@ spec:
                     type: string
                   oidcClientSecretSecretRef:
                     description: |-
-                      Client Secret used for OIDC backends
+                      Client Secret used for OIDC backends. Note: This field is stored in state. For enhanced security, use oidc_client_secret_wo instead.
                       Client Secret used for OIDC
                     properties:
                       key:
@@ -374,6 +398,30 @@ spec:
                     - name
                     - namespace
                     type: object
+                  oidcClientSecretWoSecretRef:
+                    description: |-
+                      Write-only Client Secret used for OIDC backends. Mutually exclusive with oidc_client_secret. Must be used with oidc_client_secret_wo_version. To rotate the secret, update the value and increment oidc_client_secret_wo_version.
+                      Write-only Client Secret used for OIDC. This field is recommended over oidc_client_secret for enhanced security.
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  oidcClientSecretWoVersion:
+                    description: |-
+                      Version counter for the write-only oidc_client_secret_wo field. Increment this value to trigger an update of the client secret in Vault. Required when using oidc_client_secret_wo.
+                      Version counter for write-only oidc_client_secret field. Increment this value to force update of the secret.
+                    type: number
                   oidcDiscoveryCaPem:
                     description: |-
                       The CA certificate or chain of certificates, in PEM format, to use to validate connections to the OIDC Discovery URL. If not set, system certificates are used
@@ -645,6 +693,11 @@ spec:
                       Client ID used for OIDC backends
                       Client ID used for OIDC
                     type: string
+                  oidcClientSecretWoVersion:
+                    description: |-
+                      Version counter for the write-only oidc_client_secret_wo field. Increment this value to trigger an update of the client secret in Vault. Required when using oidc_client_secret_wo.
+                      Version counter for write-only oidc_client_secret field. Increment this value to force update of the secret.
+                    type: number
                   oidcDiscoveryCaPem:
                     description: |-
                       The CA certificate or chain of certificates, in PEM format, to use to validate connections to the OIDC Discovery URL. If not set, system certificates are used

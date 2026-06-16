@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: authbackendlogins.approle.vault.m.upbound.io
 spec:
   group: approle.vault.m.upbound.io
@@ -243,7 +243,7 @@ spec:
                     description: |-
                       The secret ID of the role to log in with. Required
                       unless bind_secret_id is set to false on the role.
-                      The SecretID to log in with.
+                      The SecretID to log in with. Required unless `bind_secret_id` is set to false on the role.
                     properties:
                       key:
                         type: string
@@ -254,6 +254,26 @@ spec:
                     - key
                     - name
                     type: object
+                  secretIdWoSecretRef:
+                    description: |-
+                      The secret ID of the role to log in with. Write-only attribute that can accept ephemeral values. Required unless bind_secret_id is set to false on the role.
+                      Note: This property is write-only and will not be read from the API.
+                      The SecretID to log in with. Write-only attribute that can accept ephemeral values. Required unless `bind_secret_id` is set to false on the role.
+                    properties:
+                      key:
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    type: object
+                  secretIdWoVersion:
+                    description: |-
+                      The version of the secret_id_wo. For more info see updating write-only attributes.
+                      Version counter for the write-only secret_id field. Increment this to trigger re-authentication with a new SecretID.
+                    type: number
                 type: object
               initProvider:
                 description: |-
@@ -452,7 +472,7 @@ spec:
                     description: |-
                       The secret ID of the role to log in with. Required
                       unless bind_secret_id is set to false on the role.
-                      The SecretID to log in with.
+                      The SecretID to log in with. Required unless `bind_secret_id` is set to false on the role.
                     properties:
                       key:
                         type: string
@@ -463,6 +483,26 @@ spec:
                     - key
                     - name
                     type: object
+                  secretIdWoSecretRef:
+                    description: |-
+                      The secret ID of the role to log in with. Write-only attribute that can accept ephemeral values. Required unless bind_secret_id is set to false on the role.
+                      Note: This property is write-only and will not be read from the API.
+                      The SecretID to log in with. Write-only attribute that can accept ephemeral values. Required unless `bind_secret_id` is set to false on the role.
+                    properties:
+                      key:
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    type: object
+                  secretIdWoVersion:
+                    description: |-
+                      The version of the secret_id_wo. For more info see updating write-only attributes.
+                      Version counter for the write-only secret_id field. Increment this to trigger re-authentication with a new SecretID.
+                    type: number
                 type: object
               managementPolicies:
                 default:
@@ -581,6 +621,11 @@ spec:
                       The ID of the role to log in with.
                       The RoleID to log in with.
                     type: string
+                  secretIdWoVersion:
+                    description: |-
+                      The version of the secret_id_wo. For more info see updating write-only attributes.
+                      Version counter for the write-only secret_id field. Increment this to trigger re-authentication with a new SecretID.
+                    type: number
                 type: object
               conditions:
                 description: Conditions of the resource.

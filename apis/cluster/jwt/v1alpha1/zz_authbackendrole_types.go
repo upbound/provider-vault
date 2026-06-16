@@ -15,6 +15,11 @@ import (
 
 type AuthBackendRoleInitParameters struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// The list of allowed values for redirect_uri during OIDC logins.
 	// Required for OIDC roles
 	// The list of allowed values for redirect_uri during OIDC logins.
@@ -24,7 +29,7 @@ type AuthBackendRoleInitParameters struct {
 	// The unique name of the auth backend to configure.
 	// Defaults to jwt.
 	// Unique name of the auth backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/jwt/v1alpha1.AuthBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/jwt/v1alpha1.AuthBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -195,6 +200,11 @@ type AuthBackendRoleInitParameters struct {
 }
 
 type AuthBackendRoleObservation struct {
+
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
 
 	// The list of allowed values for redirect_uri during OIDC logins.
 	// Required for OIDC roles
@@ -369,6 +379,12 @@ type AuthBackendRoleObservation struct {
 
 type AuthBackendRoleParameters struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// The list of allowed values for redirect_uri during OIDC logins.
 	// Required for OIDC roles
 	// The list of allowed values for redirect_uri during OIDC logins.
@@ -379,7 +395,7 @@ type AuthBackendRoleParameters struct {
 	// The unique name of the auth backend to configure.
 	// Defaults to jwt.
 	// Unique name of the auth backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/jwt/v1alpha1.AuthBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/jwt/v1alpha1.AuthBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`

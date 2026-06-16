@@ -21,8 +21,8 @@ import (
 	"github.com/pkg/errors"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	v1alpha1 "github.com/upbound/provider-vault/v3/apis/cluster/identity/v1alpha1"
-	features "github.com/upbound/provider-vault/v3/internal/features"
+	v1alpha1 "github.com/upbound/provider-vault/v4/apis/cluster/identity/v1alpha1"
+	features "github.com/upbound/provider-vault/v4/internal/features"
 )
 
 // SetupGated adds a controller that reconciles GroupMemberEntityIds managed resources.
@@ -69,8 +69,7 @@ func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
 	// register webhooks for the kind v1alpha1.GroupMemberEntityIds
 	// if they're enabled.
 	if o.StartWebhooks {
-		if err := ctrl.NewWebhookManagedBy(mgr).
-			For(&v1alpha1.GroupMemberEntityIds{}).
+		if err := ctrl.NewWebhookManagedBy(mgr, &v1alpha1.GroupMemberEntityIds{}).
 			Complete(); err != nil {
 			return errors.Wrap(err, "cannot register webhook for the kind v1alpha1.GroupMemberEntityIds")
 		}

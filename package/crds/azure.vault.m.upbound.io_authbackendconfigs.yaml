@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: authbackendconfigs.azure.vault.m.upbound.io
 spec:
   group: azure.vault.m.upbound.io
@@ -163,8 +163,8 @@ spec:
                   clientSecretSecretRef:
                     description: |-
                       The client secret for credentials to query the
-                      Azure APIs.
-                      The client secret for credentials to query the Azure APIs
+                      Azure APIs. Mutually exclusive with client_secret_wo. Consider using client_secret_wo instead for enhanced security.
+                      The client secret for credentials to query the Azure APIs. Mutually exclusive with 'client_secret_wo'.
                     properties:
                       key:
                         type: string
@@ -175,6 +175,30 @@ spec:
                     - key
                     - name
                     type: object
+                  clientSecretWoSecretRef:
+                    description: |-
+                      The client secret for credentials to query the Azure APIs,
+                      provided as a write-only field.
+                      Mutually exclusive with client_secret. Must be used with client_secret_wo_version.
+                      To rotate the secret, update the value and increment client_secret_wo_version.
+                      The client secret for credentials to query the Azure APIs. This field is write-only and will never be stored in state. Mutually exclusive with 'client_secret'. Requires 'client_secret_wo_version' to trigger updates.
+                    properties:
+                      key:
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    type: object
+                  clientSecretWoVersion:
+                    description: |-
+                      Version counter for the write-only client secret.
+                      Increment this value to trigger an update of the client secret in Vault.
+                      Required when using client_secret_wo.
+                      Version counter for the write-only client secret. Increment this value to trigger rotation of the client secret. Required when using 'client_secret_wo'.
+                    type: number
                   disableAutomatedRotation:
                     description: |-
                       Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
@@ -201,6 +225,18 @@ spec:
                       Requires Vault 1.17+. Available only for Vault Enterprise
                       The TTL of generated identity tokens in seconds.
                     type: number
+                  maxRetries:
+                    description: |-
+                      Maximum number of retries for Azure API requests.
+                      Defaults to 3.
+                      Maximum number of retries for Azure API requests. Defaults to 3.
+                    type: number
+                  maxRetryDelay:
+                    description: |-
+                      The maximum delay in seconds between retries for Azure API requests.
+                      Defaults to 60.
+                      The maximum delay in seconds between retries for Azure API requests. Defaults to 60.
+                    type: number
                   namespace:
                     description: |-
                       The namespace to provision the resource in.
@@ -215,6 +251,12 @@ spec:
                       Azure Active Directory.
                       The configured URL for the application registered in Azure Active Directory.
                     type: string
+                  retryDelay:
+                    description: |-
+                      The initial delay in seconds between retries for Azure API requests.
+                      Defaults to 4.
+                      The initial delay in seconds between retries for Azure API requests. Defaults to 4.
+                    type: number
                   rotationPeriod:
                     description: |-
                       The amount of time in seconds Vault should wait before rotating the root credential.
@@ -370,8 +412,8 @@ spec:
                   clientSecretSecretRef:
                     description: |-
                       The client secret for credentials to query the
-                      Azure APIs.
-                      The client secret for credentials to query the Azure APIs
+                      Azure APIs. Mutually exclusive with client_secret_wo. Consider using client_secret_wo instead for enhanced security.
+                      The client secret for credentials to query the Azure APIs. Mutually exclusive with 'client_secret_wo'.
                     properties:
                       key:
                         type: string
@@ -382,6 +424,30 @@ spec:
                     - key
                     - name
                     type: object
+                  clientSecretWoSecretRef:
+                    description: |-
+                      The client secret for credentials to query the Azure APIs,
+                      provided as a write-only field.
+                      Mutually exclusive with client_secret. Must be used with client_secret_wo_version.
+                      To rotate the secret, update the value and increment client_secret_wo_version.
+                      The client secret for credentials to query the Azure APIs. This field is write-only and will never be stored in state. Mutually exclusive with 'client_secret'. Requires 'client_secret_wo_version' to trigger updates.
+                    properties:
+                      key:
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    type: object
+                  clientSecretWoVersion:
+                    description: |-
+                      Version counter for the write-only client secret.
+                      Increment this value to trigger an update of the client secret in Vault.
+                      Required when using client_secret_wo.
+                      Version counter for the write-only client secret. Increment this value to trigger rotation of the client secret. Required when using 'client_secret_wo'.
+                    type: number
                   disableAutomatedRotation:
                     description: |-
                       Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
@@ -408,6 +474,18 @@ spec:
                       Requires Vault 1.17+. Available only for Vault Enterprise
                       The TTL of generated identity tokens in seconds.
                     type: number
+                  maxRetries:
+                    description: |-
+                      Maximum number of retries for Azure API requests.
+                      Defaults to 3.
+                      Maximum number of retries for Azure API requests. Defaults to 3.
+                    type: number
+                  maxRetryDelay:
+                    description: |-
+                      The maximum delay in seconds between retries for Azure API requests.
+                      Defaults to 60.
+                      The maximum delay in seconds between retries for Azure API requests. Defaults to 60.
+                    type: number
                   namespace:
                     description: |-
                       The namespace to provision the resource in.
@@ -422,6 +500,12 @@ spec:
                       Azure Active Directory.
                       The configured URL for the application registered in Azure Active Directory.
                     type: string
+                  retryDelay:
+                    description: |-
+                      The initial delay in seconds between retries for Azure API requests.
+                      Defaults to 4.
+                      The initial delay in seconds between retries for Azure API requests. Defaults to 4.
+                    type: number
                   rotationPeriod:
                     description: |-
                       The amount of time in seconds Vault should wait before rotating the root credential.
@@ -539,6 +623,13 @@ spec:
                       mounted at.  Defaults to azure.
                       Unique name of the auth backend to configure.
                     type: string
+                  clientSecretWoVersion:
+                    description: |-
+                      Version counter for the write-only client secret.
+                      Increment this value to trigger an update of the client secret in Vault.
+                      Required when using client_secret_wo.
+                      Version counter for the write-only client secret. Increment this value to trigger rotation of the client secret. Required when using 'client_secret_wo'.
+                    type: number
                   disableAutomatedRotation:
                     description: |-
                       Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
@@ -567,6 +658,18 @@ spec:
                       Requires Vault 1.17+. Available only for Vault Enterprise
                       The TTL of generated identity tokens in seconds.
                     type: number
+                  maxRetries:
+                    description: |-
+                      Maximum number of retries for Azure API requests.
+                      Defaults to 3.
+                      Maximum number of retries for Azure API requests. Defaults to 3.
+                    type: number
+                  maxRetryDelay:
+                    description: |-
+                      The maximum delay in seconds between retries for Azure API requests.
+                      Defaults to 60.
+                      The maximum delay in seconds between retries for Azure API requests. Defaults to 60.
+                    type: number
                   namespace:
                     description: |-
                       The namespace to provision the resource in.
@@ -581,6 +684,12 @@ spec:
                       Azure Active Directory.
                       The configured URL for the application registered in Azure Active Directory.
                     type: string
+                  retryDelay:
+                    description: |-
+                      The initial delay in seconds between retries for Azure API requests.
+                      Defaults to 4.
+                      The initial delay in seconds between retries for Azure API requests. Defaults to 4.
+                    type: number
                   rotationPeriod:
                     description: |-
                       The amount of time in seconds Vault should wait before rotating the root credential.

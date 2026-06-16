@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: authbackends.okta.vault.m.upbound.io
 spec:
   group: okta.vault.m.upbound.io
@@ -58,6 +58,45 @@ spec:
             properties:
               forProvider:
                 properties:
+                  aliasMetadata:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                    type: object
+                    x-kubernetes-map-type: granular
+                  apiTokenSecretRef:
+                    description: The Okta API token. This is required to query Okta
+                      for user group membership. If this is not supplied only locally
+                      configured groups will be enabled.
+                    properties:
+                      key:
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    type: object
+                  apiTokenWoSecretRef:
+                    description: Write-only Okta API token. This is required to query
+                      Okta for user group membership. If this is not supplied only
+                      locally configured groups will be enabled.
+                    properties:
+                      key:
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    type: object
+                  apiTokenWoVersion:
+                    description: Version counter for write-only api_token.
+                    type: number
                   baseUrl:
                     description: 'The Okta url. Examples: oktapreview.com, okta.com
                       (default)'
@@ -88,9 +127,13 @@ spec:
                   namespace:
                     description: Target namespace. (requires Enterprise)
                     type: string
-                  organization:
+                  orgName:
                     description: The Okta organization. This will be the first part
                       of the url https://XXX.okta.com.
+                    type: string
+                  organization:
+                    description: The Okta organization. This will be the first part
+                      of the url https://XXX.okta.com. Use org_name instead.
                     type: string
                   path:
                     description: path to mount the backend
@@ -128,7 +171,7 @@ spec:
                   tokenSecretRef:
                     description: The Okta API token. This is required to query Okta
                       for user group membership. If this is not supplied only locally
-                      configured groups will be enabled.
+                      configured groups will be enabled. Use api_token instead.
                     properties:
                       key:
                         type: string
@@ -145,6 +188,35 @@ spec:
                   tokenType:
                     description: The type of token to generate, service or batch
                     type: string
+                  tune:
+                    items:
+                      properties:
+                        allowedResponseHeaders:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacRequestKeys:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacResponseKeys:
+                          items:
+                            type: string
+                          type: array
+                        defaultLeaseTtl:
+                          type: string
+                        listingVisibility:
+                          type: string
+                        maxLeaseTtl:
+                          type: string
+                        passthroughRequestHeaders:
+                          items:
+                            type: string
+                          type: array
+                        tokenType:
+                          type: string
+                      type: object
+                    type: array
                   user:
                     items:
                       properties:
@@ -176,6 +248,45 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
+                  aliasMetadata:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                    type: object
+                    x-kubernetes-map-type: granular
+                  apiTokenSecretRef:
+                    description: The Okta API token. This is required to query Okta
+                      for user group membership. If this is not supplied only locally
+                      configured groups will be enabled.
+                    properties:
+                      key:
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    type: object
+                  apiTokenWoSecretRef:
+                    description: Write-only Okta API token. This is required to query
+                      Okta for user group membership. If this is not supplied only
+                      locally configured groups will be enabled.
+                    properties:
+                      key:
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    type: object
+                  apiTokenWoVersion:
+                    description: Version counter for write-only api_token.
+                    type: number
                   baseUrl:
                     description: 'The Okta url. Examples: oktapreview.com, okta.com
                       (default)'
@@ -206,9 +317,13 @@ spec:
                   namespace:
                     description: Target namespace. (requires Enterprise)
                     type: string
-                  organization:
+                  orgName:
                     description: The Okta organization. This will be the first part
                       of the url https://XXX.okta.com.
+                    type: string
+                  organization:
+                    description: The Okta organization. This will be the first part
+                      of the url https://XXX.okta.com. Use org_name instead.
                     type: string
                   path:
                     description: path to mount the backend
@@ -246,7 +361,7 @@ spec:
                   tokenSecretRef:
                     description: The Okta API token. This is required to query Okta
                       for user group membership. If this is not supplied only locally
-                      configured groups will be enabled.
+                      configured groups will be enabled. Use api_token instead.
                     properties:
                       key:
                         type: string
@@ -263,6 +378,35 @@ spec:
                   tokenType:
                     description: The type of token to generate, service or batch
                     type: string
+                  tune:
+                    items:
+                      properties:
+                        allowedResponseHeaders:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacRequestKeys:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacResponseKeys:
+                          items:
+                            type: string
+                          type: array
+                        defaultLeaseTtl:
+                          type: string
+                        listingVisibility:
+                          type: string
+                        maxLeaseTtl:
+                          type: string
+                        passthroughRequestHeaders:
+                          items:
+                            type: string
+                          type: array
+                        tokenType:
+                          type: string
+                      type: object
+                    type: array
                   user:
                     items:
                       properties:
@@ -339,11 +483,6 @@ spec:
             required:
             - forProvider
             type: object
-            x-kubernetes-validations:
-            - message: spec.forProvider.organization is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.organization)
-                || (has(self.initProvider) && has(self.initProvider.organization))'
           status:
             description: AuthBackendStatus defines the observed state of AuthBackend.
             properties:
@@ -352,6 +491,17 @@ spec:
                   accessor:
                     description: The mount accessor related to the auth mount.
                     type: string
+                  aliasMetadata:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                    type: object
+                    x-kubernetes-map-type: granular
+                  apiTokenWoVersion:
+                    description: Version counter for write-only api_token.
+                    type: number
                   baseUrl:
                     description: 'The Okta url. Examples: oktapreview.com, okta.com
                       (default)'
@@ -384,9 +534,13 @@ spec:
                   namespace:
                     description: Target namespace. (requires Enterprise)
                     type: string
-                  organization:
+                  orgName:
                     description: The Okta organization. This will be the first part
                       of the url https://XXX.okta.com.
+                    type: string
+                  organization:
+                    description: The Okta organization. This will be the first part
+                      of the url https://XXX.okta.com. Use org_name instead.
                     type: string
                   path:
                     description: path to mount the backend
@@ -427,6 +581,35 @@ spec:
                   tokenType:
                     description: The type of token to generate, service or batch
                     type: string
+                  tune:
+                    items:
+                      properties:
+                        allowedResponseHeaders:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacRequestKeys:
+                          items:
+                            type: string
+                          type: array
+                        auditNonHmacResponseKeys:
+                          items:
+                            type: string
+                          type: array
+                        defaultLeaseTtl:
+                          type: string
+                        listingVisibility:
+                          type: string
+                        maxLeaseTtl:
+                          type: string
+                        passthroughRequestHeaders:
+                          items:
+                            type: string
+                          type: array
+                        tokenType:
+                          type: string
+                      type: object
+                    type: array
                   user:
                     items:
                       properties:

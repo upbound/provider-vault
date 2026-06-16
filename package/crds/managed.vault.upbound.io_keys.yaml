@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: keys.managed.vault.upbound.io
 spec:
   group: managed.vault.upbound.io
@@ -230,6 +230,79 @@ spec:
                           description: |-
                             The Key Vault vault to use for encryption and decryption.
                             The Key Vault vault to use the encryption keys for encryption and decryption
+                          type: string
+                      type: object
+                    type: array
+                  gcp:
+                    description: Configuration block for GCP Cloud KMS Managed Keys
+                    items:
+                      properties:
+                        algorithm:
+                          description: |-
+                            The signature algorithm to be used with the key. Supported values are:
+                            The signature algorithm to be used with the key. Supported values: ec_sign_p256_sha256, ec_sign_p384_sha384, rsa_sign_pss_2048_sha256, rsa_sign_pss_3072_sha256, rsa_sign_pss_4096_sha256, rsa_sign_pss_4096_sha512, rsa_sign_pkcs1_2048_sha256, rsa_sign_pkcs1_3072_sha256, rsa_sign_pkcs1_4096_sha256, rsa_sign_pkcs1_4096_sha512
+                          type: string
+                        allowGenerateKey:
+                          description: |-
+                            If no existing key can be found in
+                            the referenced backend, instructs Vault to generate a key within the backend.
+                            If no existing key can be found in the referenced backend, instructs Vault to generate a key within the backend
+                          type: boolean
+                        allowReplaceKey:
+                          description: |-
+                            Controls the ability for Vault to replace through
+                            generation or importing a key into the configured backend even
+                            if a key is present, if set to false those operations are forbidden
+                            if a key exists.
+                            Controls the ability for Vault to replace through generation or importing a key into the configured backend even if a key is present, if set to false those operations are forbidden if a key exists.
+                          type: boolean
+                        allowStoreKey:
+                          description: |-
+                            Controls the ability for Vault to import a key to the
+                            configured backend, if false, those operations will be forbidden.
+                            Controls the ability for Vault to import a key to the configured backend, if 'false', those operations will be forbidden
+                          type: boolean
+                        anyMount:
+                          description: |-
+                            If true, allows usage from any mount point within the
+                            namespace.
+                            Allow usage from any mount point within the namespace if 'true'
+                          type: boolean
+                        credentials:
+                          description: |-
+                            The GCP service account credentials JSON contents (the raw JSON
+                            key data), not a path to a credentials file.
+                            The GCP service account credentials JSON to use for authenticating to GCP.
+                          type: string
+                        cryptoKey:
+                          description: |-
+                            The name of the Cloud KMS crypto key to use.
+                            The name of the GCP Cloud KMS key. If no existing key exists and allow_generate_key is true, Vault will generate a key with this name
+                          type: string
+                        cryptoKeyVersion:
+                          description: |-
+                            The version of the key to use. (Default: 1)
+                            The version of the key to use. (Default: 1)
+                          type: string
+                        keyRing:
+                          description: |-
+                            The name of the Cloud KMS key ring.
+                            The name of the key ring in GCP Cloud KMS. This needs to be created prior to key creation
+                          type: string
+                        name:
+                          description: |-
+                            A unique lowercase name that serves as identifying the key.
+                            A unique lowercase name that serves as identifying the key
+                          type: string
+                        project:
+                          description: |-
+                            The GCP project ID where the Cloud KMS resources are located.
+                            The GCP project ID.
+                          type: string
+                        region:
+                          description: |-
+                            The AWS region where the keys are stored (or will be stored).
+                            The GCP region where the key ring was created.
                           type: string
                       type: object
                     type: array
@@ -504,6 +577,79 @@ spec:
                           description: |-
                             The Key Vault vault to use for encryption and decryption.
                             The Key Vault vault to use the encryption keys for encryption and decryption
+                          type: string
+                      type: object
+                    type: array
+                  gcp:
+                    description: Configuration block for GCP Cloud KMS Managed Keys
+                    items:
+                      properties:
+                        algorithm:
+                          description: |-
+                            The signature algorithm to be used with the key. Supported values are:
+                            The signature algorithm to be used with the key. Supported values: ec_sign_p256_sha256, ec_sign_p384_sha384, rsa_sign_pss_2048_sha256, rsa_sign_pss_3072_sha256, rsa_sign_pss_4096_sha256, rsa_sign_pss_4096_sha512, rsa_sign_pkcs1_2048_sha256, rsa_sign_pkcs1_3072_sha256, rsa_sign_pkcs1_4096_sha256, rsa_sign_pkcs1_4096_sha512
+                          type: string
+                        allowGenerateKey:
+                          description: |-
+                            If no existing key can be found in
+                            the referenced backend, instructs Vault to generate a key within the backend.
+                            If no existing key can be found in the referenced backend, instructs Vault to generate a key within the backend
+                          type: boolean
+                        allowReplaceKey:
+                          description: |-
+                            Controls the ability for Vault to replace through
+                            generation or importing a key into the configured backend even
+                            if a key is present, if set to false those operations are forbidden
+                            if a key exists.
+                            Controls the ability for Vault to replace through generation or importing a key into the configured backend even if a key is present, if set to false those operations are forbidden if a key exists.
+                          type: boolean
+                        allowStoreKey:
+                          description: |-
+                            Controls the ability for Vault to import a key to the
+                            configured backend, if false, those operations will be forbidden.
+                            Controls the ability for Vault to import a key to the configured backend, if 'false', those operations will be forbidden
+                          type: boolean
+                        anyMount:
+                          description: |-
+                            If true, allows usage from any mount point within the
+                            namespace.
+                            Allow usage from any mount point within the namespace if 'true'
+                          type: boolean
+                        credentials:
+                          description: |-
+                            The GCP service account credentials JSON contents (the raw JSON
+                            key data), not a path to a credentials file.
+                            The GCP service account credentials JSON to use for authenticating to GCP.
+                          type: string
+                        cryptoKey:
+                          description: |-
+                            The name of the Cloud KMS crypto key to use.
+                            The name of the GCP Cloud KMS key. If no existing key exists and allow_generate_key is true, Vault will generate a key with this name
+                          type: string
+                        cryptoKeyVersion:
+                          description: |-
+                            The version of the key to use. (Default: 1)
+                            The version of the key to use. (Default: 1)
+                          type: string
+                        keyRing:
+                          description: |-
+                            The name of the Cloud KMS key ring.
+                            The name of the key ring in GCP Cloud KMS. This needs to be created prior to key creation
+                          type: string
+                        name:
+                          description: |-
+                            A unique lowercase name that serves as identifying the key.
+                            A unique lowercase name that serves as identifying the key
+                          type: string
+                        project:
+                          description: |-
+                            The GCP project ID where the Cloud KMS resources are located.
+                            The GCP project ID.
+                          type: string
+                        region:
+                          description: |-
+                            The AWS region where the keys are stored (or will be stored).
+                            The GCP region where the key ring was created.
                           type: string
                       type: object
                     type: array
@@ -862,6 +1008,82 @@ spec:
                           description: |-
                             The Key Vault vault to use for encryption and decryption.
                             The Key Vault vault to use the encryption keys for encryption and decryption
+                          type: string
+                      type: object
+                    type: array
+                  gcp:
+                    description: Configuration block for GCP Cloud KMS Managed Keys
+                    items:
+                      properties:
+                        algorithm:
+                          description: |-
+                            The signature algorithm to be used with the key. Supported values are:
+                            The signature algorithm to be used with the key. Supported values: ec_sign_p256_sha256, ec_sign_p384_sha384, rsa_sign_pss_2048_sha256, rsa_sign_pss_3072_sha256, rsa_sign_pss_4096_sha256, rsa_sign_pss_4096_sha512, rsa_sign_pkcs1_2048_sha256, rsa_sign_pkcs1_3072_sha256, rsa_sign_pkcs1_4096_sha256, rsa_sign_pkcs1_4096_sha512
+                          type: string
+                        allowGenerateKey:
+                          description: |-
+                            If no existing key can be found in
+                            the referenced backend, instructs Vault to generate a key within the backend.
+                            If no existing key can be found in the referenced backend, instructs Vault to generate a key within the backend
+                          type: boolean
+                        allowReplaceKey:
+                          description: |-
+                            Controls the ability for Vault to replace through
+                            generation or importing a key into the configured backend even
+                            if a key is present, if set to false those operations are forbidden
+                            if a key exists.
+                            Controls the ability for Vault to replace through generation or importing a key into the configured backend even if a key is present, if set to false those operations are forbidden if a key exists.
+                          type: boolean
+                        allowStoreKey:
+                          description: |-
+                            Controls the ability for Vault to import a key to the
+                            configured backend, if false, those operations will be forbidden.
+                            Controls the ability for Vault to import a key to the configured backend, if 'false', those operations will be forbidden
+                          type: boolean
+                        anyMount:
+                          description: |-
+                            If true, allows usage from any mount point within the
+                            namespace.
+                            Allow usage from any mount point within the namespace if 'true'
+                          type: boolean
+                        credentials:
+                          description: |-
+                            The GCP service account credentials JSON contents (the raw JSON
+                            key data), not a path to a credentials file.
+                            The GCP service account credentials JSON to use for authenticating to GCP.
+                          type: string
+                        cryptoKey:
+                          description: |-
+                            The name of the Cloud KMS crypto key to use.
+                            The name of the GCP Cloud KMS key. If no existing key exists and allow_generate_key is true, Vault will generate a key with this name
+                          type: string
+                        cryptoKeyVersion:
+                          description: |-
+                            The version of the key to use. (Default: 1)
+                            The version of the key to use. (Default: 1)
+                          type: string
+                        keyRing:
+                          description: |-
+                            The name of the Cloud KMS key ring.
+                            The name of the key ring in GCP Cloud KMS. This needs to be created prior to key creation
+                          type: string
+                        name:
+                          description: |-
+                            A unique lowercase name that serves as identifying the key.
+                            A unique lowercase name that serves as identifying the key
+                          type: string
+                        project:
+                          description: |-
+                            The GCP project ID where the Cloud KMS resources are located.
+                            The GCP project ID.
+                          type: string
+                        region:
+                          description: |-
+                            The AWS region where the keys are stored (or will be stored).
+                            The GCP region where the key ring was created.
+                          type: string
+                        uuid:
+                          description: ID of the managed key read from Vault
                           type: string
                       type: object
                     type: array

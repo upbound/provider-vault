@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: authbackendclients.aws.vault.m.upbound.io
 spec:
   group: aws.vault.m.upbound.io
@@ -74,6 +74,16 @@ spec:
                     - key
                     - name
                     type: object
+                  allowedStsHeaderValues:
+                    description: |-
+                      List of additional headers that are allowed to be in STS request headers.
+                      The headers are automatically canonicalized (e.g., content-type becomes Content-Type). Duplicate values are automatically
+                      removed. This can be useful when you need to allow specific headers in STS requests for IAM-based authentication.
+                      List of additional headers that are allowed to be in STS request headers.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                   backend:
                     description: |-
                       The path the AWS auth backend being configured was
@@ -238,7 +248,8 @@ spec:
                   secretKeySecretRef:
                     description: |-
                       The AWS secret key that Vault should use for the
-                      auth backend.
+                      auth backend. Mutually exclusive with secret_key_wo.
+                      Consider using secret_key_wo instead for enhanced security.
                       AWS Secret key with permissions to query AWS APIs.
                     properties:
                       key:
@@ -250,6 +261,29 @@ spec:
                     - key
                     - name
                     type: object
+                  secretKeyWoSecretRef:
+                    description: |-
+                      Write-only AWS secret key that Vault should use for the
+                      auth backend. Mutually exclusive with secret_key.
+                      Must be used together with secret_key_wo_version.
+                      Note: This property is write-only and will not be read from the API.
+                      Write-only AWS Secret key with permissions to query AWS APIs. This field is recommended over secret_key for enhanced security.
+                    properties:
+                      key:
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    type: object
+                  secretKeyWoVersion:
+                    description: |-
+                      Version counter for the write-only secret_key_wo field.
+                      Increment this value to rotate the secret key. Required when secret_key_wo is set.
+                      Version counter for write-only secret_key field. Increment this value to force update of the secret.
+                    type: number
                   stsEndpoint:
                     description: |-
                       Override the URL Vault uses when making STS API
@@ -300,6 +334,16 @@ spec:
                     - key
                     - name
                     type: object
+                  allowedStsHeaderValues:
+                    description: |-
+                      List of additional headers that are allowed to be in STS request headers.
+                      The headers are automatically canonicalized (e.g., content-type becomes Content-Type). Duplicate values are automatically
+                      removed. This can be useful when you need to allow specific headers in STS requests for IAM-based authentication.
+                      List of additional headers that are allowed to be in STS request headers.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                   backend:
                     description: |-
                       The path the AWS auth backend being configured was
@@ -464,7 +508,8 @@ spec:
                   secretKeySecretRef:
                     description: |-
                       The AWS secret key that Vault should use for the
-                      auth backend.
+                      auth backend. Mutually exclusive with secret_key_wo.
+                      Consider using secret_key_wo instead for enhanced security.
                       AWS Secret key with permissions to query AWS APIs.
                     properties:
                       key:
@@ -476,6 +521,29 @@ spec:
                     - key
                     - name
                     type: object
+                  secretKeyWoSecretRef:
+                    description: |-
+                      Write-only AWS secret key that Vault should use for the
+                      auth backend. Mutually exclusive with secret_key.
+                      Must be used together with secret_key_wo_version.
+                      Note: This property is write-only and will not be read from the API.
+                      Write-only AWS Secret key with permissions to query AWS APIs. This field is recommended over secret_key for enhanced security.
+                    properties:
+                      key:
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    type: object
+                  secretKeyWoVersion:
+                    description: |-
+                      Version counter for the write-only secret_key_wo field.
+                      Increment this value to rotate the secret key. Required when secret_key_wo is set.
+                      Version counter for write-only secret_key field. Increment this value to force update of the secret.
+                    type: number
                   stsEndpoint:
                     description: |-
                       Override the URL Vault uses when making STS API
@@ -561,6 +629,16 @@ spec:
             properties:
               atProvider:
                 properties:
+                  allowedStsHeaderValues:
+                    description: |-
+                      List of additional headers that are allowed to be in STS request headers.
+                      The headers are automatically canonicalized (e.g., content-type becomes Content-Type). Duplicate values are automatically
+                      removed. This can be useful when you need to allow specific headers in STS requests for IAM-based authentication.
+                      List of additional headers that are allowed to be in STS request headers.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                   backend:
                     description: |-
                       The path the AWS auth backend being configured was
@@ -643,6 +721,12 @@ spec:
                       a rotation when a scheduled token rotation occurs. The default rotation window is
                       unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
                       The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
+                    type: number
+                  secretKeyWoVersion:
+                    description: |-
+                      Version counter for the write-only secret_key_wo field.
+                      Increment this value to rotate the secret key. Required when secret_key_wo is set.
+                      Version counter for write-only secret_key field. Increment this value to force update of the secret.
                     type: number
                   stsEndpoint:
                     description: |-

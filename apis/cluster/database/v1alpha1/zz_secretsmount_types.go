@@ -25,6 +25,10 @@ type SecretsMountCassandraInitParameters struct {
 	// The number of seconds to use as a connection timeout.
 	ConnectTimeout *float64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
 
+	// Specifies the consistency option to use. See the gocql definition for valid options.
+	// Cassandra consistency level.
+	Consistency *string `json:"consistency,omitempty" tf:"consistency,omitempty"`
+
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +mapType=granular
@@ -43,9 +47,17 @@ type SecretsMountCassandraInitParameters struct {
 	// Whether to skip verification of the server certificate when using TLS.
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
 
+	// If set, enables host selection policy which will prioritize and use hosts which are in the local datacenter before hosts in all other datacenters.
+	// Cassandra local datacenter name.
+	LocalDatacenter *string `json:"localDatacenter,omitempty" tf:"local_datacenter,omitempty"`
+
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
 
 	// The password to authenticate with.
 	// The password to use when authenticating with Cassandra.
@@ -63,6 +75,10 @@ type SecretsMountCassandraInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The default port to connect to if no port is specified as
 	// part of the host.
@@ -93,16 +109,32 @@ type SecretsMountCassandraInitParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
+
 	// Skip permissions checks when a connection to Cassandra is first created. These checks ensure that Vault is able to create roles, but can be resource intensive in clusters with many roles.
 	SkipVerification *bool `json:"skipVerification,omitempty" tf:"skip_verification,omitempty"`
+
+	// The keep-alive period for an active network connection. If zero, keep-alives are not enabled.
+	// Enable TCP keepalive for Cassandra connections.
+	SocketKeepAlive *string `json:"socketKeepAlive,omitempty" tf:"socket_keep_alive,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Cassandra.
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
 
+	// Specifies the name to use as the SNI host when connecting to the Cassandra server via TLS.
+	// SNI host for TLS connections.
+	TLSServerName *string `json:"tlsServerName,omitempty" tf:"tls_server_name,omitempty"`
+
 	// The username to authenticate with.
 	// The username to use when authenticating with Cassandra.
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Template for dynamic Cassandra usernames.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
 	// Whether the connection should be verified on
 	// initial configuration or not.
@@ -122,6 +154,10 @@ type SecretsMountCassandraObservation struct {
 	// The number of seconds to use as a connection timeout.
 	ConnectTimeout *float64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
 
+	// Specifies the consistency option to use. See the gocql definition for valid options.
+	// Cassandra consistency level.
+	Consistency *string `json:"consistency,omitempty" tf:"consistency,omitempty"`
+
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +mapType=granular
@@ -140,13 +176,25 @@ type SecretsMountCassandraObservation struct {
 	// Whether to skip verification of the server certificate when using TLS.
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
 
+	// If set, enables host selection policy which will prioritize and use hosts which are in the local datacenter before hosts in all other datacenters.
+	// Cassandra local datacenter name.
+	LocalDatacenter *string `json:"localDatacenter,omitempty" tf:"local_datacenter,omitempty"`
+
 	// for any configured database engine is changed
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The default port to connect to if no port is specified as
 	// part of the host.
@@ -177,16 +225,32 @@ type SecretsMountCassandraObservation struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
+
 	// Skip permissions checks when a connection to Cassandra is first created. These checks ensure that Vault is able to create roles, but can be resource intensive in clusters with many roles.
 	SkipVerification *bool `json:"skipVerification,omitempty" tf:"skip_verification,omitempty"`
+
+	// The keep-alive period for an active network connection. If zero, keep-alives are not enabled.
+	// Enable TCP keepalive for Cassandra connections.
+	SocketKeepAlive *string `json:"socketKeepAlive,omitempty" tf:"socket_keep_alive,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Cassandra.
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
 
+	// Specifies the name to use as the SNI host when connecting to the Cassandra server via TLS.
+	// SNI host for TLS connections.
+	TLSServerName *string `json:"tlsServerName,omitempty" tf:"tls_server_name,omitempty"`
+
 	// The username to authenticate with.
 	// The username to use when authenticating with Cassandra.
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Template for dynamic Cassandra usernames.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
 	// Whether the connection should be verified on
 	// initial configuration or not.
@@ -208,6 +272,11 @@ type SecretsMountCassandraParameters struct {
 	// +kubebuilder:validation:Optional
 	ConnectTimeout *float64 `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
 
+	// Specifies the consistency option to use. See the gocql definition for valid options.
+	// Cassandra consistency level.
+	// +kubebuilder:validation:Optional
+	Consistency *string `json:"consistency,omitempty" tf:"consistency,omitempty"`
+
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// A map of sensitive data to pass to the endpoint. Useful for templated connection strings.
 	// +kubebuilder:validation:Optional
@@ -230,10 +299,20 @@ type SecretsMountCassandraParameters struct {
 	// +kubebuilder:validation:Optional
 	InsecureTLS *bool `json:"insecureTls,omitempty" tf:"insecure_tls,omitempty"`
 
+	// If set, enables host selection policy which will prioritize and use hosts which are in the local datacenter before hosts in all other datacenters.
+	// Cassandra local datacenter name.
+	// +kubebuilder:validation:Optional
+	LocalDatacenter *string `json:"localDatacenter,omitempty" tf:"local_datacenter,omitempty"`
+
 	// for any configured database engine is changed
 	// Name of the database connection.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
+
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
 
 	// The password to authenticate with.
 	// The password to use when authenticating with Cassandra.
@@ -255,6 +334,11 @@ type SecretsMountCassandraParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The default port to connect to if no port is specified as
 	// part of the host.
@@ -291,19 +375,39 @@ type SecretsMountCassandraParameters struct {
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
+
 	// Skip permissions checks when a connection to Cassandra is first created. These checks ensure that Vault is able to create roles, but can be resource intensive in clusters with many roles.
 	// +kubebuilder:validation:Optional
 	SkipVerification *bool `json:"skipVerification,omitempty" tf:"skip_verification,omitempty"`
+
+	// The keep-alive period for an active network connection. If zero, keep-alives are not enabled.
+	// Enable TCP keepalive for Cassandra connections.
+	// +kubebuilder:validation:Optional
+	SocketKeepAlive *string `json:"socketKeepAlive,omitempty" tf:"socket_keep_alive,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Cassandra.
 	// +kubebuilder:validation:Optional
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
 
+	// Specifies the name to use as the SNI host when connecting to the Cassandra server via TLS.
+	// SNI host for TLS connections.
+	// +kubebuilder:validation:Optional
+	TLSServerName *string `json:"tlsServerName,omitempty" tf:"tls_server_name,omitempty"`
+
 	// The username to authenticate with.
 	// The username to use when authenticating with Cassandra.
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Template for dynamic Cassandra usernames.
+	// +kubebuilder:validation:Optional
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
 	// Whether the connection should be verified on
 	// initial configuration or not.
@@ -349,6 +453,10 @@ type SecretsMountCouchbaseInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
@@ -356,6 +464,10 @@ type SecretsMountCouchbaseInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -376,6 +488,10 @@ type SecretsMountCouchbaseInitParameters struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Couchbase.
@@ -428,9 +544,17 @@ type SecretsMountCouchbaseObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -451,6 +575,10 @@ type SecretsMountCouchbaseObservation struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Couchbase.
@@ -515,6 +643,11 @@ type SecretsMountCouchbaseParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
 	// +kubebuilder:validation:Optional
@@ -524,6 +657,11 @@ type SecretsMountCouchbaseParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -548,6 +686,11 @@ type SecretsMountCouchbaseParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Couchbase.
@@ -611,6 +754,10 @@ type SecretsMountElasticsearchInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The password to be used in the connection URL
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
@@ -618,6 +765,10 @@ type SecretsMountElasticsearchInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -639,7 +790,11 @@ type SecretsMountElasticsearchInitParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
-	// This, if set, is used to set the SNI host when connecting via TLS.
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
+
+	// Specifies the name to use as the SNI host when connecting to the Cassandra server via TLS.
 	// This, if set, is used to set the SNI host when connecting via TLS
 	TLSServerName *string `json:"tlsServerName,omitempty" tf:"tls_server_name,omitempty"`
 
@@ -702,9 +857,17 @@ type SecretsMountElasticsearchObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -726,7 +889,11 @@ type SecretsMountElasticsearchObservation struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
-	// This, if set, is used to set the SNI host when connecting via TLS.
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
+
+	// Specifies the name to use as the SNI host when connecting to the Cassandra server via TLS.
 	// This, if set, is used to set the SNI host when connecting via TLS
 	TLSServerName *string `json:"tlsServerName,omitempty" tf:"tls_server_name,omitempty"`
 
@@ -798,6 +965,11 @@ type SecretsMountElasticsearchParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The password to be used in the connection URL
 	// +kubebuilder:validation:Optional
@@ -807,6 +979,11 @@ type SecretsMountElasticsearchParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -832,7 +1009,12 @@ type SecretsMountElasticsearchParameters struct {
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
-	// This, if set, is used to set the SNI host when connecting via TLS.
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
+
+	// Specifies the name to use as the SNI host when connecting to the Cassandra server via TLS.
 	// This, if set, is used to set the SNI host when connecting via TLS
 	// +kubebuilder:validation:Optional
 	TLSServerName *string `json:"tlsServerName,omitempty" tf:"tls_server_name,omitempty"`
@@ -904,6 +1086,10 @@ type SecretsMountHanaInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
@@ -920,6 +1106,10 @@ type SecretsMountHanaInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -941,9 +1131,17 @@ type SecretsMountHanaInitParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Username generation template.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
 	// Whether the connection should be verified on
 	// initial configuration or not.
@@ -995,6 +1193,10 @@ type SecretsMountHanaObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password for the user. Can be updated.
 	// Note: This property is write-only and will not be read from the API.
 	// Write-only field for the root credential password used in the connection URL
@@ -1007,6 +1209,10 @@ type SecretsMountHanaObservation struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -1028,9 +1234,17 @@ type SecretsMountHanaObservation struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Username generation template.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
 	// Whether the connection should be verified on
 	// initial configuration or not.
@@ -1091,6 +1305,11 @@ type SecretsMountHanaParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
@@ -1111,6 +1330,11 @@ type SecretsMountHanaParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -1136,10 +1360,20 @@ type SecretsMountHanaParameters struct {
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Username generation template.
+	// +kubebuilder:validation:Optional
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
 	// Whether the connection should be verified on
 	// initial configuration or not.
@@ -1182,6 +1416,10 @@ type SecretsMountInfluxdbInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
@@ -1198,6 +1436,10 @@ type SecretsMountInfluxdbInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The default port to connect to if no port is specified as
 	// part of the host.
@@ -1223,6 +1465,10 @@ type SecretsMountInfluxdbInitParameters struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Influxdb.
@@ -1276,9 +1522,17 @@ type SecretsMountInfluxdbObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The default port to connect to if no port is specified as
 	// part of the host.
@@ -1304,6 +1558,10 @@ type SecretsMountInfluxdbObservation struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Influxdb.
@@ -1364,6 +1622,11 @@ type SecretsMountInfluxdbParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
 	// +kubebuilder:validation:Optional
@@ -1384,6 +1647,11 @@ type SecretsMountInfluxdbParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The default port to connect to if no port is specified as
 	// part of the host.
@@ -1414,6 +1682,11 @@ type SecretsMountInfluxdbParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Whether to use TLS when connecting to Influxdb.
@@ -1567,6 +1840,7 @@ type SecretsMountInitParameters struct {
 	// Where the secret backend will be mounted
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Specifies the semantic version of the plugin to use for this connection.
 	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
 	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
@@ -1640,6 +1914,10 @@ type SecretsMountMongodbInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
@@ -1656,6 +1934,10 @@ type SecretsMountMongodbInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -1677,6 +1959,18 @@ type SecretsMountMongodbInitParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The x509 CA file for validating the certificate presented by the MongoDB server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// The x509 certificate and private key bundle for connecting to the database. Must be PEM encoded.
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -1689,6 +1983,9 @@ type SecretsMountMongodbInitParameters struct {
 	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+
+	// Specifies the MongoDB write concern for Vault management operations.
+	WriteConcern *string `json:"writeConcern,omitempty" tf:"write_concern,omitempty"`
 }
 
 type SecretsMountMongodbObservation struct {
@@ -1731,6 +2028,10 @@ type SecretsMountMongodbObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password for the user. Can be updated.
 	// Note: This property is write-only and will not be read from the API.
 	// Write-only field for the root credential password used in the connection URL
@@ -1743,6 +2044,10 @@ type SecretsMountMongodbObservation struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -1764,6 +2069,14 @@ type SecretsMountMongodbObservation struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The x509 CA file for validating the certificate presented by the MongoDB server. Must be PEM encoded.
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
@@ -1776,6 +2089,9 @@ type SecretsMountMongodbObservation struct {
 	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+
+	// Specifies the MongoDB write concern for Vault management operations.
+	WriteConcern *string `json:"writeConcern,omitempty" tf:"write_concern,omitempty"`
 }
 
 type SecretsMountMongodbParameters struct {
@@ -1826,6 +2142,11 @@ type SecretsMountMongodbParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
@@ -1846,6 +2167,11 @@ type SecretsMountMongodbParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -1871,6 +2197,21 @@ type SecretsMountMongodbParameters struct {
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
+
+	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
+	// The x509 CA file for validating the certificate presented by the MongoDB server. Must be PEM encoded.
+	// +kubebuilder:validation:Optional
+	TLSCA *string `json:"tlsCa,omitempty" tf:"tls_ca,omitempty"`
+
+	// x509 certificate for connecting to the database. This must be a PEM encoded version of the private key and the certificate combined.
+	// The x509 certificate and private key bundle for connecting to the database. Must be PEM encoded.
+	// +kubebuilder:validation:Optional
+	TLSCertificateKeySecretRef *v1.SecretKeySelector `json:"tlsCertificateKeySecretRef,omitempty" tf:"-"`
+
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
 	// +kubebuilder:validation:Optional
@@ -1886,6 +2227,10 @@ type SecretsMountMongodbParameters struct {
 	// Specifies if the connection is verified during initial configuration.
 	// +kubebuilder:validation:Optional
 	VerifyConnection *bool `json:"verifyConnection,omitempty" tf:"verify_connection,omitempty"`
+
+	// Specifies the MongoDB write concern for Vault management operations.
+	// +kubebuilder:validation:Optional
+	WriteConcern *string `json:"writeConcern,omitempty" tf:"write_concern,omitempty"`
 }
 
 type SecretsMountMongodbatlasInitParameters struct {
@@ -1908,9 +2253,17 @@ type SecretsMountMongodbatlasInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
 	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
@@ -1944,6 +2297,14 @@ type SecretsMountMongodbatlasInitParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
 
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Template describing how dynamic usernames are generated.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
+
 	// Whether the connection should be verified on
 	// initial configuration or not.
 	// Specifies if the connection is verified during initial configuration.
@@ -1970,9 +2331,17 @@ type SecretsMountMongodbatlasObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The Project ID the Database User should be created within.
 	// The Project ID the Database User should be created within.
@@ -2001,6 +2370,14 @@ type SecretsMountMongodbatlasObservation struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Template describing how dynamic usernames are generated.
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
 	// Whether the connection should be verified on
 	// initial configuration or not.
@@ -2032,10 +2409,20 @@ type SecretsMountMongodbatlasParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
 	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
@@ -2075,6 +2462,16 @@ type SecretsMountMongodbatlasParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
+
+	// Template describing how dynamic usernames are generated.
+	// Template describing how dynamic usernames are generated.
+	// +kubebuilder:validation:Optional
+	UsernameTemplate *string `json:"usernameTemplate,omitempty" tf:"username_template,omitempty"`
 
 	// Whether the connection should be verified on
 	// initial configuration or not.
@@ -2133,6 +2530,10 @@ type SecretsMountMssqlInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
@@ -2149,6 +2550,10 @@ type SecretsMountMssqlInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -2169,6 +2574,10 @@ type SecretsMountMssqlInitParameters struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2234,6 +2643,10 @@ type SecretsMountMssqlObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password for the user. Can be updated.
 	// Note: This property is write-only and will not be read from the API.
 	// Write-only field for the root credential password used in the connection URL
@@ -2246,6 +2659,10 @@ type SecretsMountMssqlObservation struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -2266,6 +2683,10 @@ type SecretsMountMssqlObservation struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2341,6 +2762,11 @@ type SecretsMountMssqlParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
@@ -2361,6 +2787,11 @@ type SecretsMountMssqlParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -2385,6 +2816,11 @@ type SecretsMountMssqlParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -2446,6 +2882,10 @@ type SecretsMountMySQLAuroraInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
@@ -2462,6 +2902,10 @@ type SecretsMountMySQLAuroraInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -2485,6 +2929,10 @@ type SecretsMountMySQLAuroraInitParameters struct {
 
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -2551,6 +2999,10 @@ type SecretsMountMySQLAuroraObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password for the user. Can be updated.
 	// Note: This property is write-only and will not be read from the API.
 	// Write-only field for the root credential password used in the connection URL
@@ -2563,6 +3015,10 @@ type SecretsMountMySQLAuroraObservation struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -2583,6 +3039,10 @@ type SecretsMountMySQLAuroraObservation struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -2654,6 +3114,11 @@ type SecretsMountMySQLAuroraParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
@@ -2674,6 +3139,11 @@ type SecretsMountMySQLAuroraParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -2702,6 +3172,11 @@ type SecretsMountMySQLAuroraParameters struct {
 	// A JSON encoded credential for use with IAM authorization
 	// +kubebuilder:validation:Optional
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -2773,6 +3248,10 @@ type SecretsMountMySQLInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
@@ -2789,6 +3268,10 @@ type SecretsMountMySQLInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -2812,6 +3295,10 @@ type SecretsMountMySQLInitParameters struct {
 
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -2878,6 +3365,10 @@ type SecretsMountMySQLLegacyInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
@@ -2894,6 +3385,10 @@ type SecretsMountMySQLLegacyInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -2917,6 +3412,10 @@ type SecretsMountMySQLLegacyInitParameters struct {
 
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -2983,6 +3482,10 @@ type SecretsMountMySQLLegacyObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password for the user. Can be updated.
 	// Note: This property is write-only and will not be read from the API.
 	// Write-only field for the root credential password used in the connection URL
@@ -2995,6 +3498,10 @@ type SecretsMountMySQLLegacyObservation struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -3015,6 +3522,10 @@ type SecretsMountMySQLLegacyObservation struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -3086,6 +3597,11 @@ type SecretsMountMySQLLegacyParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
@@ -3106,6 +3622,11 @@ type SecretsMountMySQLLegacyParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -3134,6 +3655,11 @@ type SecretsMountMySQLLegacyParameters struct {
 	// A JSON encoded credential for use with IAM authorization
 	// +kubebuilder:validation:Optional
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -3205,6 +3731,10 @@ type SecretsMountMySQLObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password for the user. Can be updated.
 	// Note: This property is write-only and will not be read from the API.
 	// Write-only field for the root credential password used in the connection URL
@@ -3217,6 +3747,10 @@ type SecretsMountMySQLObservation struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -3237,6 +3771,10 @@ type SecretsMountMySQLObservation struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -3308,6 +3846,11 @@ type SecretsMountMySQLParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
@@ -3328,6 +3871,11 @@ type SecretsMountMySQLParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -3356,6 +3904,11 @@ type SecretsMountMySQLParameters struct {
 	// A JSON encoded credential for use with IAM authorization
 	// +kubebuilder:validation:Optional
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -3427,6 +3980,10 @@ type SecretsMountMySQLRDSInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
@@ -3443,6 +4000,10 @@ type SecretsMountMySQLRDSInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -3466,6 +4027,10 @@ type SecretsMountMySQLRDSInitParameters struct {
 
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -3532,6 +4097,10 @@ type SecretsMountMySQLRDSObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password for the user. Can be updated.
 	// Note: This property is write-only and will not be read from the API.
 	// Write-only field for the root credential password used in the connection URL
@@ -3544,6 +4113,10 @@ type SecretsMountMySQLRDSObservation struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -3564,6 +4137,10 @@ type SecretsMountMySQLRDSObservation struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -3635,6 +4212,11 @@ type SecretsMountMySQLRDSParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
@@ -3655,6 +4237,11 @@ type SecretsMountMySQLRDSParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -3683,6 +4270,11 @@ type SecretsMountMySQLRDSParameters struct {
 	// A JSON encoded credential for use with IAM authorization
 	// +kubebuilder:validation:Optional
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
@@ -3850,6 +4442,7 @@ type SecretsMountObservation struct {
 	// Where the secret backend will be mounted
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Specifies the semantic version of the plugin to use for this connection.
 	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
 	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
@@ -3926,6 +4519,10 @@ type SecretsMountOracleInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
@@ -3942,6 +4539,10 @@ type SecretsMountOracleInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -3962,6 +4563,13 @@ type SecretsMountOracleInitParameters struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// If set, allows onboarding static roles with a rootless connection configuration.
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// Set to true in order to split statements after semi-colons.
 	SplitStatements *bool `json:"splitStatements,omitempty" tf:"split_statements,omitempty"`
@@ -4023,6 +4631,10 @@ type SecretsMountOracleObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password for the user. Can be updated.
 	// Note: This property is write-only and will not be read from the API.
 	// Write-only field for the root credential password used in the connection URL
@@ -4035,6 +4647,10 @@ type SecretsMountOracleObservation struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -4055,6 +4671,13 @@ type SecretsMountOracleObservation struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// If set, allows onboarding static roles with a rootless connection configuration.
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// Set to true in order to split statements after semi-colons.
 	SplitStatements *bool `json:"splitStatements,omitempty" tf:"split_statements,omitempty"`
@@ -4125,6 +4748,11 @@ type SecretsMountOracleParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
@@ -4145,6 +4773,11 @@ type SecretsMountOracleParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -4169,6 +4802,15 @@ type SecretsMountOracleParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// If set, allows onboarding static roles with a rootless connection configuration.
+	// +kubebuilder:validation:Optional
+	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// Set to true in order to split statements after semi-colons.
 	// +kubebuilder:validation:Optional
@@ -4351,6 +4993,7 @@ type SecretsMountParameters struct {
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// Specifies the semantic version of the plugin to use for this connection.
 	// Specifies the semantic version of the plugin to use, e.g. 'v1.0.0'
 	// +kubebuilder:validation:Optional
 	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
@@ -4441,6 +5084,10 @@ type SecretsMountPostgresqlInitParameters struct {
 	// When set to `scram-sha-256`, passwords will be hashed by Vault before being sent to PostgreSQL.
 	PasswordAuthentication *string `json:"passwordAuthentication,omitempty" tf:"password_authentication,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
@@ -4457,6 +5104,10 @@ type SecretsMountPostgresqlInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
 	// The secret key used for the x509 client certificate. Must be PEM encoded.
@@ -4487,6 +5138,10 @@ type SecretsMountPostgresqlInitParameters struct {
 
 	// A JSON encoded credential for use with IAM authorization
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// The x509 CA file for validating the certificate presented by the PostgreSQL server. Must be PEM encoded.
@@ -4559,6 +5214,10 @@ type SecretsMountPostgresqlObservation struct {
 	// When set to `scram-sha-256`, passwords will be hashed by Vault before being sent to PostgreSQL.
 	PasswordAuthentication *string `json:"passwordAuthentication,omitempty" tf:"password_authentication,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password for the user. Can be updated.
 	// Note: This property is write-only and will not be read from the API.
 	// Write-only field for the root credential password used in the connection URL
@@ -4571,6 +5230,10 @@ type SecretsMountPostgresqlObservation struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -4594,6 +5257,10 @@ type SecretsMountPostgresqlObservation struct {
 
 	// If set, allows onboarding static roles with a rootless connection configuration.
 	SelfManaged *bool `json:"selfManaged,omitempty" tf:"self_managed,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// The x509 CA file for validating the certificate presented by the PostgreSQL server. Must be PEM encoded.
@@ -4677,6 +5344,11 @@ type SecretsMountPostgresqlParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordAuthentication *string `json:"passwordAuthentication,omitempty" tf:"password_authentication,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
@@ -4697,6 +5369,11 @@ type SecretsMountPostgresqlParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The Private Programmatic API Key used to connect with MongoDB Atlas API.
 	// The secret key used for the x509 client certificate. Must be PEM encoded.
@@ -4734,6 +5411,11 @@ type SecretsMountPostgresqlParameters struct {
 	// A JSON encoded credential for use with IAM authorization
 	// +kubebuilder:validation:Optional
 	ServiceAccountJSONSecretRef *v1.SecretKeySelector `json:"serviceAccountJsonSecretRef,omitempty" tf:"-"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// x509 CA file for validating the certificate presented by the MySQL server. Must be PEM encoded.
 	// The x509 CA file for validating the certificate presented by the PostgreSQL server. Must be PEM encoded.
@@ -4781,6 +5463,10 @@ type SecretsMountRedisElasticacheInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The AWS secret key id to use to talk to ElastiCache. If omitted the credentials chain provider is used instead.
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
@@ -4788,6 +5474,10 @@ type SecretsMountRedisElasticacheInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The AWS region where the ElastiCache cluster is hosted.
 	// If omitted the plugin tries to infer the region from the environment.
@@ -4813,6 +5503,10 @@ type SecretsMountRedisElasticacheInitParameters struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// The URL for Elasticsearch's API. https requires certificate
 	// by trusted CA if used.
@@ -4849,9 +5543,17 @@ type SecretsMountRedisElasticacheObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The AWS region where the ElastiCache cluster is hosted.
 	// If omitted the plugin tries to infer the region from the environment.
@@ -4877,6 +5579,10 @@ type SecretsMountRedisElasticacheObservation struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// The URL for Elasticsearch's API. https requires certificate
 	// by trusted CA if used.
@@ -4913,6 +5619,11 @@ type SecretsMountRedisElasticacheParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The AWS secret key id to use to talk to ElastiCache. If omitted the credentials chain provider is used instead.
 	// +kubebuilder:validation:Optional
@@ -4922,6 +5633,11 @@ type SecretsMountRedisElasticacheParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The AWS region where the ElastiCache cluster is hosted.
 	// If omitted the plugin tries to infer the region from the environment.
@@ -4952,6 +5668,11 @@ type SecretsMountRedisElasticacheParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// The URL for Elasticsearch's API. https requires certificate
 	// by trusted CA if used.
@@ -5004,6 +5725,10 @@ type SecretsMountRedisInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
@@ -5011,6 +5736,10 @@ type SecretsMountRedisInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The default port to connect to if no port is specified as
 	// part of the host.
@@ -5036,6 +5765,10 @@ type SecretsMountRedisInitParameters struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Redis.
@@ -5084,9 +5817,17 @@ type SecretsMountRedisObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The default port to connect to if no port is specified as
 	// part of the host.
@@ -5112,6 +5853,10 @@ type SecretsMountRedisObservation struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Redis.
@@ -5167,6 +5912,11 @@ type SecretsMountRedisParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// Specifies the password corresponding to the given username.
 	// +kubebuilder:validation:Optional
@@ -5176,6 +5926,11 @@ type SecretsMountRedisParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The default port to connect to if no port is specified as
 	// part of the host.
@@ -5206,6 +5961,11 @@ type SecretsMountRedisParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// Whether to use TLS when connecting to Cassandra.
 	// Specifies whether to use TLS when connecting to Redis.
@@ -5268,6 +6028,10 @@ type SecretsMountRedshiftInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
@@ -5284,6 +6048,10 @@ type SecretsMountRedshiftInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -5304,6 +6072,10 @@ type SecretsMountRedshiftInitParameters struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -5363,6 +6135,10 @@ type SecretsMountRedshiftObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password for the user. Can be updated.
 	// Note: This property is write-only and will not be read from the API.
 	// Write-only field for the root credential password used in the connection URL
@@ -5375,6 +6151,10 @@ type SecretsMountRedshiftObservation struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -5395,6 +6175,10 @@ type SecretsMountRedshiftObservation struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -5463,6 +6247,11 @@ type SecretsMountRedshiftParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
@@ -5483,6 +6272,11 @@ type SecretsMountRedshiftParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// A list of database statements to be executed to rotate the root user's credentials.
 	// A list of database statements to be executed to rotate the root user's credentials.
@@ -5507,6 +6301,11 @@ type SecretsMountRedshiftParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -5565,6 +6364,10 @@ type SecretsMountSnowflakeInitParameters struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
@@ -5581,6 +6384,10 @@ type SecretsMountSnowflakeInitParameters struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The private key configured for the admin user in Snowflake.
 	PrivateKeyWoSecretRef *v1.SecretKeySelector `json:"privateKeyWoSecretRef,omitempty" tf:"-"`
@@ -5607,6 +6414,10 @@ type SecretsMountSnowflakeInitParameters struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -5662,6 +6473,10 @@ type SecretsMountSnowflakeObservation struct {
 	// Name of the database connection.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password for the user. Can be updated.
 	// Note: This property is write-only and will not be read from the API.
 	// Write-only field for the root credential password used in the connection URL
@@ -5674,6 +6489,10 @@ type SecretsMountSnowflakeObservation struct {
 	// Specifies the name of the plugin to use.
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// Version counter for the private key key-pair credentials write-only field
 	PrivateKeyWoVersion *float64 `json:"privateKeyWoVersion,omitempty" tf:"private_key_wo_version,omitempty"`
@@ -5697,6 +6516,10 @@ type SecretsMountSnowflakeObservation struct {
 	// unbound and the minimum allowable window is 3600. Requires Vault Enterprise 1.19+.
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL
@@ -5760,6 +6583,11 @@ type SecretsMountSnowflakeParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// The name of the password policy to use when generating passwords for this database. If not specified, this will use a default policy defined as: 20 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 dash character.
+	// Optional name of the password policy to use for generated passwords.
+	// +kubebuilder:validation:Optional
+	PasswordPolicy *string `json:"passwordPolicy,omitempty" tf:"password_policy,omitempty"`
+
 	// The password to authenticate with.
 	// The root credential password used in the connection URL
 	// +kubebuilder:validation:Optional
@@ -5780,6 +6608,11 @@ type SecretsMountSnowflakeParameters struct {
 	// Specifies the name of the plugin to use for this connection. Must be prefixed with the name of one of the supported database engine types.
 	// +kubebuilder:validation:Optional
 	PluginName *string `json:"pluginName,omitempty" tf:"plugin_name,omitempty"`
+
+	// Specifies the semantic version of the plugin to use for this connection.
+	// Optional plugin version to use for this connection.
+	// +kubebuilder:validation:Optional
+	PluginVersion *string `json:"pluginVersion,omitempty" tf:"plugin_version,omitempty"`
 
 	// The private key configured for the admin user in Snowflake.
 	// +kubebuilder:validation:Optional
@@ -5812,6 +6645,11 @@ type SecretsMountSnowflakeParameters struct {
 	// The maximum amount of time in seconds Vault is allowed to complete a rotation once a scheduled rotation is triggered. Can only be used with rotation_schedule.
 	// +kubebuilder:validation:Optional
 	RotationWindow *float64 `json:"rotationWindow,omitempty" tf:"rotation_window,omitempty"`
+
+	// Specifies if a given static account's password should be rotated on creation of the static roles associated with this database config. This can be overridden at the role-level by the static role's skip_import_rotation field. The default is false. Requires Vault Enterprise 1.19+.
+	// Skip rotation of static role credentials on import.
+	// +kubebuilder:validation:Optional
+	SkipStaticRoleImportRotation *bool `json:"skipStaticRoleImportRotation,omitempty" tf:"skip_static_role_import_rotation,omitempty"`
 
 	// The username to authenticate with.
 	// The root credential username used in the connection URL

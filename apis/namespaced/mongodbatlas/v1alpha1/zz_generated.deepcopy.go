@@ -63,9 +63,19 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 		*out = new(string)
 		**out = **in
 	}
-	if in.PrivateKey != nil {
-		in, out := &in.PrivateKey, &out.PrivateKey
-		*out = new(string)
+	if in.PrivateKeySecretRef != nil {
+		in, out := &in.PrivateKeySecretRef, &out.PrivateKeySecretRef
+		*out = new(v1.LocalSecretKeySelector)
+		**out = **in
+	}
+	if in.PrivateKeyWoSecretRef != nil {
+		in, out := &in.PrivateKeyWoSecretRef, &out.PrivateKeyWoSecretRef
+		*out = new(v1.LocalSecretKeySelector)
+		**out = **in
+	}
+	if in.PrivateKeyWoVersion != nil {
+		in, out := &in.PrivateKeyWoVersion, &out.PrivateKeyWoVersion
+		*out = new(float64)
 		**out = **in
 	}
 	if in.PublicKey != nil {
@@ -140,9 +150,9 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 		*out = new(string)
 		**out = **in
 	}
-	if in.PrivateKey != nil {
-		in, out := &in.PrivateKey, &out.PrivateKey
-		*out = new(string)
+	if in.PrivateKeyWoVersion != nil {
+		in, out := &in.PrivateKeyWoVersion, &out.PrivateKeyWoVersion
+		*out = new(float64)
 		**out = **in
 	}
 	if in.PublicKey != nil {
@@ -185,9 +195,19 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.PrivateKey != nil {
-		in, out := &in.PrivateKey, &out.PrivateKey
-		*out = new(string)
+	if in.PrivateKeySecretRef != nil {
+		in, out := &in.PrivateKeySecretRef, &out.PrivateKeySecretRef
+		*out = new(v1.LocalSecretKeySelector)
+		**out = **in
+	}
+	if in.PrivateKeyWoSecretRef != nil {
+		in, out := &in.PrivateKeyWoSecretRef, &out.PrivateKeyWoSecretRef
+		*out = new(v1.LocalSecretKeySelector)
+		**out = **in
+	}
+	if in.PrivateKeyWoVersion != nil {
+		in, out := &in.PrivateKeyWoVersion, &out.PrivateKeyWoVersion
+		*out = new(float64)
 		**out = **in
 	}
 	if in.PublicKey != nil {

@@ -16,7 +16,7 @@ import (
 type AuthBackendConfigInitParameters struct {
 
 	// Unique name of the kubernetes backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -59,9 +59,20 @@ type AuthBackendConfigInitParameters struct {
 	// Optional list of PEM-formatted public keys or certificates used to verify the signatures of Kubernetes service account JWTs. If a certificate is given, its public key will be extracted. Not every installation of Kubernetes exposes these keys.
 	PemKeys []*string `json:"pemKeys,omitempty" tf:"pem_keys,omitempty"`
 
-	// A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
+	// A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API. Conflicts with token_reviewer_jwt_wo.
 	// A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
 	TokenReviewerJwtSecretRef *v1.SecretKeySelector `json:"tokenReviewerJwtSecretRef,omitempty" tf:"-"`
+
+	// A write-only service account JWT (or other token) used as a bearer token to access the
+	// TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
+	// Conflicts with token_reviewer_jwt.
+	// Note: This property is write-only and will not be read from the API.
+	// A write-only service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
+	TokenReviewerJwtWoSecretRef *v1.SecretKeySelector `json:"tokenReviewerJwtWoSecretRef,omitempty" tf:"-"`
+
+	// The version of token_reviewer_jwt_wo to use during write operations. Required with token_reviewer_jwt_wo. For more info see updating write-only attributes.
+	// The version of token_reviewer_jwt_wo to use during write operations.
+	TokenReviewerJwtWoVersion *float64 `json:"tokenReviewerJwtWoVersion,omitempty" tf:"token_reviewer_jwt_wo_version,omitempty"`
 
 	// Use annotations from the client token's associated service account as alias metadata for the Vault entity. Requires Vault v1.16+ or Vault auth kubernetes plugin v0.18.0+
 	// Use annotations from the client token's associated service account as alias metadata for the Vault entity.
@@ -106,6 +117,10 @@ type AuthBackendConfigObservation struct {
 	// Optional list of PEM-formatted public keys or certificates used to verify the signatures of Kubernetes service account JWTs. If a certificate is given, its public key will be extracted. Not every installation of Kubernetes exposes these keys.
 	PemKeys []*string `json:"pemKeys,omitempty" tf:"pem_keys,omitempty"`
 
+	// The version of token_reviewer_jwt_wo to use during write operations. Required with token_reviewer_jwt_wo. For more info see updating write-only attributes.
+	// The version of token_reviewer_jwt_wo to use during write operations.
+	TokenReviewerJwtWoVersion *float64 `json:"tokenReviewerJwtWoVersion,omitempty" tf:"token_reviewer_jwt_wo_version,omitempty"`
+
 	// Use annotations from the client token's associated service account as alias metadata for the Vault entity. Requires Vault v1.16+ or Vault auth kubernetes plugin v0.18.0+
 	// Use annotations from the client token's associated service account as alias metadata for the Vault entity.
 	UseAnnotationsAsAliasMetadata *bool `json:"useAnnotationsAsAliasMetadata,omitempty" tf:"use_annotations_as_alias_metadata,omitempty"`
@@ -114,7 +129,7 @@ type AuthBackendConfigObservation struct {
 type AuthBackendConfigParameters struct {
 
 	// Unique name of the kubernetes backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -165,10 +180,23 @@ type AuthBackendConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	PemKeys []*string `json:"pemKeys,omitempty" tf:"pem_keys,omitempty"`
 
-	// A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
+	// A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API. Conflicts with token_reviewer_jwt_wo.
 	// A service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
 	// +kubebuilder:validation:Optional
 	TokenReviewerJwtSecretRef *v1.SecretKeySelector `json:"tokenReviewerJwtSecretRef,omitempty" tf:"-"`
+
+	// A write-only service account JWT (or other token) used as a bearer token to access the
+	// TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
+	// Conflicts with token_reviewer_jwt.
+	// Note: This property is write-only and will not be read from the API.
+	// A write-only service account JWT (or other token) used as a bearer token to access the TokenReview API to validate other JWTs during login. If not set the JWT used for login will be used to access the API.
+	// +kubebuilder:validation:Optional
+	TokenReviewerJwtWoSecretRef *v1.SecretKeySelector `json:"tokenReviewerJwtWoSecretRef,omitempty" tf:"-"`
+
+	// The version of token_reviewer_jwt_wo to use during write operations. Required with token_reviewer_jwt_wo. For more info see updating write-only attributes.
+	// The version of token_reviewer_jwt_wo to use during write operations.
+	// +kubebuilder:validation:Optional
+	TokenReviewerJwtWoVersion *float64 `json:"tokenReviewerJwtWoVersion,omitempty" tf:"token_reviewer_jwt_wo_version,omitempty"`
 
 	// Use annotations from the client token's associated service account as alias metadata for the Vault entity. Requires Vault v1.16+ or Vault auth kubernetes plugin v0.18.0+
 	// Use annotations from the client token's associated service account as alias metadata for the Vault entity.

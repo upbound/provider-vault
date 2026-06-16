@@ -53,8 +53,20 @@ type SecretBackendInitParameters struct {
 	ClientCertSecretRef *v1.SecretKeySelector `json:"clientCertSecretRef,omitempty" tf:"-"`
 
 	// Client certificate key to provide to the Nomad server, must be x509 PEM encoded.
+	// Conflicts with client_key_wo.
 	// Client key used for Nomad's TLS communication, must be x509 PEM encoded and if this is set you need to also set client_cert.
 	ClientKeySecretRef *v1.SecretKeySelector `json:"clientKeySecretRef,omitempty" tf:"-"`
+
+	// Write-only client certificate key to provide to the Nomad server, must be x509 PEM encoded.
+	// Use this for enhanced security when you don't want the client key to appear in state files. Requires client_key_wo_version. Conflicts with client_key.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only client key used for Nomad's TLS communication, must be x509 PEM encoded and if this is set you need to also set client_cert.
+	ClientKeyWoSecretRef *v1.SecretKeySelector `json:"clientKeyWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for the write-only client key. This must be incremented
+	// each time the client_key_wo value is changed to trigger an update. Required when using client_key_wo.
+	// Version counter for write-only client_key.
+	ClientKeyWoVersion *float64 `json:"clientKeyWoVersion,omitempty" tf:"client_key_wo_version,omitempty"`
 
 	// Default lease duration for tokens and secrets in seconds
 	// Default lease duration for secrets in seconds.
@@ -140,9 +152,20 @@ type SecretBackendInitParameters struct {
 	// Maximum possible lease duration for secrets in seconds.
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
-	// Specifies the Nomad Management token to use.
+	// Specifies the Nomad Management token to use. Conflicts with token_wo.
 	// Specifies the Nomad Management token to use.
 	TokenSecretRef *v1.SecretKeySelector `json:"tokenSecretRef,omitempty" tf:"-"`
+
+	// Write-only Nomad Management token to use.
+	// Use this for enhanced security when you don't want the token to appear in state files. Requires token_wo_version. Conflicts with token.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only Nomad Management token to use.
+	TokenWoSecretRef *v1.SecretKeySelector `json:"tokenWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for the write-only token. This must be incremented each time
+	// the token_wo value is changed to trigger an update. Required when using token_wo.
+	// Version counter for write-only token.
+	TokenWoVersion *float64 `json:"tokenWoVersion,omitempty" tf:"token_wo_version,omitempty"`
 }
 
 type SecretBackendObservation struct {
@@ -182,6 +205,11 @@ type SecretBackendObservation struct {
 	// x509 PEM encoded.
 	// CA certificate to use when verifying Nomad server certificate, must be x509 PEM encoded.
 	CACert *string `json:"caCert,omitempty" tf:"ca_cert,omitempty"`
+
+	// Version counter for the write-only client key. This must be incremented
+	// each time the client_key_wo value is changed to trigger an update. Required when using client_key_wo.
+	// Version counter for write-only client_key.
+	ClientKeyWoVersion *float64 `json:"clientKeyWoVersion,omitempty" tf:"client_key_wo_version,omitempty"`
 
 	// Default lease duration for tokens and secrets in seconds
 	// Default lease duration for secrets in seconds.
@@ -268,6 +296,11 @@ type SecretBackendObservation struct {
 	// Specifies the ttl of the lease for the generated token.
 	// Maximum possible lease duration for secrets in seconds.
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// Version counter for the write-only token. This must be incremented each time
+	// the token_wo value is changed to trigger an update. Required when using token_wo.
+	// Version counter for write-only token.
+	TokenWoVersion *float64 `json:"tokenWoVersion,omitempty" tf:"token_wo_version,omitempty"`
 }
 
 type SecretBackendParameters struct {
@@ -318,9 +351,23 @@ type SecretBackendParameters struct {
 	ClientCertSecretRef *v1.SecretKeySelector `json:"clientCertSecretRef,omitempty" tf:"-"`
 
 	// Client certificate key to provide to the Nomad server, must be x509 PEM encoded.
+	// Conflicts with client_key_wo.
 	// Client key used for Nomad's TLS communication, must be x509 PEM encoded and if this is set you need to also set client_cert.
 	// +kubebuilder:validation:Optional
 	ClientKeySecretRef *v1.SecretKeySelector `json:"clientKeySecretRef,omitempty" tf:"-"`
+
+	// Write-only client certificate key to provide to the Nomad server, must be x509 PEM encoded.
+	// Use this for enhanced security when you don't want the client key to appear in state files. Requires client_key_wo_version. Conflicts with client_key.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only client key used for Nomad's TLS communication, must be x509 PEM encoded and if this is set you need to also set client_cert.
+	// +kubebuilder:validation:Optional
+	ClientKeyWoSecretRef *v1.SecretKeySelector `json:"clientKeyWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for the write-only client key. This must be incremented
+	// each time the client_key_wo value is changed to trigger an update. Required when using client_key_wo.
+	// Version counter for write-only client_key.
+	// +kubebuilder:validation:Optional
+	ClientKeyWoVersion *float64 `json:"clientKeyWoVersion,omitempty" tf:"client_key_wo_version,omitempty"`
 
 	// Default lease duration for tokens and secrets in seconds
 	// Default lease duration for secrets in seconds.
@@ -424,10 +471,23 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
-	// Specifies the Nomad Management token to use.
+	// Specifies the Nomad Management token to use. Conflicts with token_wo.
 	// Specifies the Nomad Management token to use.
 	// +kubebuilder:validation:Optional
 	TokenSecretRef *v1.SecretKeySelector `json:"tokenSecretRef,omitempty" tf:"-"`
+
+	// Write-only Nomad Management token to use.
+	// Use this for enhanced security when you don't want the token to appear in state files. Requires token_wo_version. Conflicts with token.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only Nomad Management token to use.
+	// +kubebuilder:validation:Optional
+	TokenWoSecretRef *v1.SecretKeySelector `json:"tokenWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for the write-only token. This must be incremented each time
+	// the token_wo value is changed to trigger an update. Required when using token_wo.
+	// Version counter for write-only token.
+	// +kubebuilder:validation:Optional
+	TokenWoVersion *float64 `json:"tokenWoVersion,omitempty" tf:"token_wo_version,omitempty"`
 }
 
 // SecretBackendSpec defines the desired state of SecretBackend

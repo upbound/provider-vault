@@ -15,6 +15,13 @@ import (
 
 type AuthBackendInitParameters struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// The API endpoint to use. Useful if you
 	// are running GitHub Enterprise or an API-compatible authentication server.
 	// The API endpoint to use. Useful if you are running GitHub Enterprise or an API-compatible authentication server.
@@ -116,6 +123,13 @@ type AuthBackendObservation struct {
 	// The mount accessor related to the auth mount.
 	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// The API endpoint to use. Useful if you
 	// are running GitHub Enterprise or an API-compatible authentication server.
 	// The API endpoint to use. Useful if you are running GitHub Enterprise or an API-compatible authentication server.
@@ -214,6 +228,14 @@ type AuthBackendObservation struct {
 }
 
 type AuthBackendParameters struct {
+
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
 
 	// The API endpoint to use. Useful if you
 	// are running GitHub Enterprise or an API-compatible authentication server.

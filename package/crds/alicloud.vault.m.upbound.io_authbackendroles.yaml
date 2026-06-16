@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: authbackendroles.alicloud.vault.m.upbound.io
 spec:
   group: alicloud.vault.m.upbound.io
@@ -59,6 +59,14 @@ spec:
             properties:
               forProvider:
                 properties:
+                  aliasMetadata:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                    type: object
+                    x-kubernetes-map-type: granular
                   arn:
                     description: |-
                       The role's arn.
@@ -246,6 +254,14 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
+                  aliasMetadata:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                    type: object
+                    x-kubernetes-map-type: granular
                   arn:
                     description: |-
                       The role's arn.
@@ -492,6 +508,14 @@ spec:
             properties:
               atProvider:
                 properties:
+                  aliasMetadata:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      The metadata to be tied to generated entity alias.
+                      This should be a list or map containing the metadata in key value pairs.
+                    type: object
+                    x-kubernetes-map-type: granular
                   arn:
                     description: |-
                       The role's arn.

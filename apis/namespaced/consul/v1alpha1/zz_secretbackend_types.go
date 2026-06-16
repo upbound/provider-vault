@@ -52,9 +52,20 @@ type SecretBackendInitParameters struct {
 	ClientCertSecretRef *v1.LocalSecretKeySelector `json:"clientCertSecretRef,omitempty" tf:"-"`
 
 	// Client key used for Consul's TLS communication, must be x509 PEM encoded and if this is set
-	// you need to also set client_cert.
-	// Client key used for Consul's TLS communication, must be x509 PEM encoded and if this is set you need to also set client_cert.
+	// you need to also set client_cert. Mutually exclusive with client_key_wo. Consider using client_key_wo instead for enhanced security.
+	// Client key used for Consul's TLS communication, must be x509 PEM encoded and if this is set you need to also set client_cert. Mutually exclusive with 'client_key_wo'.
 	ClientKeySecretRef *v1.LocalSecretKeySelector `json:"clientKeySecretRef,omitempty" tf:"-"`
+
+	// Client key used for Consul's TLS communication, must be x509 PEM encoded, provided as a
+	// write-only field. Mutually exclusive with client_key. Must be
+	// used with client_key_wo_version.
+	// Client key used for Consul's TLS communication, must be x509 PEM encoded. This field is write-only and will never be stored in state. Mutually exclusive with 'client_key'. Requires 'client_key_wo_version' to trigger updates.
+	ClientKeyWoSecretRef *v1.LocalSecretKeySelector `json:"clientKeyWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for the write-only client key. Increment this value to trigger
+	// an update of the client key in Vault. Required when using client_key_wo.
+	// Version counter for the write-only client key. Increment this value to trigger rotation of the client key. Required when using 'client_key_wo'.
+	ClientKeyWoVersion *float64 `json:"clientKeyWoVersion,omitempty" tf:"client_key_wo_version,omitempty"`
 
 	// Default lease duration for tokens and secrets in seconds
 	// Default lease duration for secrets in seconds
@@ -136,9 +147,21 @@ type SecretBackendInitParameters struct {
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
 
 	// The Consul management token this backend should use to issue new tokens. This field is required
-	// when bootstrap is false.
-	// Specifies the Consul token to use when managing or issuing new tokens.
+	// when bootstrap is false. Mutually exclusive with token_wo.
+	// Consider using token_wo instead for enhanced security.
+	// Specifies the Consul token to use when managing or issuing new tokens. Mutually exclusive with 'token_wo'.
 	TokenSecretRef *v1.LocalSecretKeySelector `json:"tokenSecretRef,omitempty" tf:"-"`
+
+	// The Consul management token this backend should use to issue new tokens, provided as a
+	// write-only field. Mutually exclusive with token. Must be
+	// used with token_wo_version.
+	// Specifies the Consul token to use when managing or issuing new tokens. This field is write-only and will never be stored in state. Mutually exclusive with 'token'. Requires 'token_wo_version' to trigger updates.
+	TokenWoSecretRef *v1.LocalSecretKeySelector `json:"tokenWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for the write-only token. Increment this value to trigger an update
+	// of the token in Vault. Required when using token_wo.
+	// Version counter for the write-only token. Increment this value to trigger rotation of the token. Required when using 'token_wo'.
+	TokenWoVersion *float64 `json:"tokenWoVersion,omitempty" tf:"token_wo_version,omitempty"`
 }
 
 type SecretBackendObservation struct {
@@ -175,6 +198,11 @@ type SecretBackendObservation struct {
 	// CA certificate to use when verifying Consul server certificate, must be x509 PEM encoded.
 	// CA certificate to use when verifying Consul server certificate, must be x509 PEM encoded.
 	CACert *string `json:"caCert,omitempty" tf:"ca_cert,omitempty"`
+
+	// Version counter for the write-only client key. Increment this value to trigger
+	// an update of the client key in Vault. Required when using client_key_wo.
+	// Version counter for the write-only client key. Increment this value to trigger rotation of the client key. Required when using 'client_key_wo'.
+	ClientKeyWoVersion *float64 `json:"clientKeyWoVersion,omitempty" tf:"client_key_wo_version,omitempty"`
 
 	// Default lease duration for tokens and secrets in seconds
 	// Default lease duration for secrets in seconds
@@ -256,6 +284,11 @@ type SecretBackendObservation struct {
 	// Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
+
+	// Version counter for the write-only token. Increment this value to trigger an update
+	// of the token in Vault. Required when using token_wo.
+	// Version counter for the write-only token. Increment this value to trigger rotation of the token. Required when using 'token_wo'.
+	TokenWoVersion *float64 `json:"tokenWoVersion,omitempty" tf:"token_wo_version,omitempty"`
 }
 
 type SecretBackendParameters struct {
@@ -304,10 +337,23 @@ type SecretBackendParameters struct {
 	ClientCertSecretRef *v1.LocalSecretKeySelector `json:"clientCertSecretRef,omitempty" tf:"-"`
 
 	// Client key used for Consul's TLS communication, must be x509 PEM encoded and if this is set
-	// you need to also set client_cert.
-	// Client key used for Consul's TLS communication, must be x509 PEM encoded and if this is set you need to also set client_cert.
+	// you need to also set client_cert. Mutually exclusive with client_key_wo. Consider using client_key_wo instead for enhanced security.
+	// Client key used for Consul's TLS communication, must be x509 PEM encoded and if this is set you need to also set client_cert. Mutually exclusive with 'client_key_wo'.
 	// +kubebuilder:validation:Optional
 	ClientKeySecretRef *v1.LocalSecretKeySelector `json:"clientKeySecretRef,omitempty" tf:"-"`
+
+	// Client key used for Consul's TLS communication, must be x509 PEM encoded, provided as a
+	// write-only field. Mutually exclusive with client_key. Must be
+	// used with client_key_wo_version.
+	// Client key used for Consul's TLS communication, must be x509 PEM encoded. This field is write-only and will never be stored in state. Mutually exclusive with 'client_key'. Requires 'client_key_wo_version' to trigger updates.
+	// +kubebuilder:validation:Optional
+	ClientKeyWoSecretRef *v1.LocalSecretKeySelector `json:"clientKeyWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for the write-only client key. Increment this value to trigger
+	// an update of the client key in Vault. Required when using client_key_wo.
+	// Version counter for the write-only client key. Increment this value to trigger rotation of the client key. Required when using 'client_key_wo'.
+	// +kubebuilder:validation:Optional
+	ClientKeyWoVersion *float64 `json:"clientKeyWoVersion,omitempty" tf:"client_key_wo_version,omitempty"`
 
 	// Default lease duration for tokens and secrets in seconds
 	// Default lease duration for secrets in seconds
@@ -406,10 +452,24 @@ type SecretBackendParameters struct {
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
 
 	// The Consul management token this backend should use to issue new tokens. This field is required
-	// when bootstrap is false.
-	// Specifies the Consul token to use when managing or issuing new tokens.
+	// when bootstrap is false. Mutually exclusive with token_wo.
+	// Consider using token_wo instead for enhanced security.
+	// Specifies the Consul token to use when managing or issuing new tokens. Mutually exclusive with 'token_wo'.
 	// +kubebuilder:validation:Optional
 	TokenSecretRef *v1.LocalSecretKeySelector `json:"tokenSecretRef,omitempty" tf:"-"`
+
+	// The Consul management token this backend should use to issue new tokens, provided as a
+	// write-only field. Mutually exclusive with token. Must be
+	// used with token_wo_version.
+	// Specifies the Consul token to use when managing or issuing new tokens. This field is write-only and will never be stored in state. Mutually exclusive with 'token'. Requires 'token_wo_version' to trigger updates.
+	// +kubebuilder:validation:Optional
+	TokenWoSecretRef *v1.LocalSecretKeySelector `json:"tokenWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for the write-only token. Increment this value to trigger an update
+	// of the token in Vault. Required when using token_wo.
+	// Version counter for the write-only token. Increment this value to trigger rotation of the token. Required when using 'token_wo'.
+	// +kubebuilder:validation:Optional
+	TokenWoVersion *float64 `json:"tokenWoVersion,omitempty" tf:"token_wo_version,omitempty"`
 }
 
 // SecretBackendSpec defines the desired state of SecretBackend

@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: authbackends.gcp.vault.upbound.io
 spec:
   group: gcp.vault.upbound.io
@@ -94,6 +94,29 @@ spec:
                     - name
                     - namespace
                     type: object
+                  credentialsWoSecretRef:
+                    description: JSON-encoded credentials to use to connect to GCP.
+                      This field is write-only and the value cannot be read back.
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  credentialsWoVersion:
+                    description: A version counter for write-only credentials. Incrementing
+                      this value will cause the provider to send the credentials to
+                      Vault.
+                    type: number
                   customEndpoint:
                     description: Specifies overrides to service endpoints used when
                       making API requests to GCP.
@@ -126,6 +149,29 @@ spec:
                   disableRemount:
                     description: If set, opts out of mount migration on path updates.
                     type: boolean
+                  gceAlias:
+                    description: Defines what alias needs to be used during login
+                      and refelects the same in token metadata and audit logs.
+                    type: string
+                  gceMetadata:
+                    description: Controls which instance metadata fields from the
+                      GCE login are captured into Vault's token metadata or audit
+                      logs.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  iamAlias:
+                    description: Defines what alias needs to be used during login
+                      and refelects the same in token metadata and audit logs.
+                    type: string
+                  iamMetadata:
+                    description: Controls the metadata to include on the token returned
+                      by the login endpoint.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                   identityTokenAudience:
                     description: The audience claim value for plugin identity tokens.
                     type: string
@@ -229,6 +275,29 @@ spec:
                     - name
                     - namespace
                     type: object
+                  credentialsWoSecretRef:
+                    description: JSON-encoded credentials to use to connect to GCP.
+                      This field is write-only and the value cannot be read back.
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  credentialsWoVersion:
+                    description: A version counter for write-only credentials. Incrementing
+                      this value will cause the provider to send the credentials to
+                      Vault.
+                    type: number
                   customEndpoint:
                     description: Specifies overrides to service endpoints used when
                       making API requests to GCP.
@@ -261,6 +330,29 @@ spec:
                   disableRemount:
                     description: If set, opts out of mount migration on path updates.
                     type: boolean
+                  gceAlias:
+                    description: Defines what alias needs to be used during login
+                      and refelects the same in token metadata and audit logs.
+                    type: string
+                  gceMetadata:
+                    description: Controls which instance metadata fields from the
+                      GCE login are captured into Vault's token metadata or audit
+                      logs.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  iamAlias:
+                    description: Defines what alias needs to be used during login
+                      and refelects the same in token metadata and audit logs.
+                    type: string
+                  iamMetadata:
+                    description: Controls the metadata to include on the token returned
+                      by the login endpoint.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                   identityTokenAudience:
                     description: The audience claim value for plugin identity tokens.
                     type: string
@@ -427,6 +519,11 @@ spec:
                     type: string
                   clientId:
                     type: string
+                  credentialsWoVersion:
+                    description: A version counter for write-only credentials. Incrementing
+                      this value will cause the provider to send the credentials to
+                      Vault.
+                    type: number
                   customEndpoint:
                     description: Specifies overrides to service endpoints used when
                       making API requests to GCP.
@@ -459,6 +556,29 @@ spec:
                   disableRemount:
                     description: If set, opts out of mount migration on path updates.
                     type: boolean
+                  gceAlias:
+                    description: Defines what alias needs to be used during login
+                      and refelects the same in token metadata and audit logs.
+                    type: string
+                  gceMetadata:
+                    description: Controls which instance metadata fields from the
+                      GCE login are captured into Vault's token metadata or audit
+                      logs.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  iamAlias:
+                    description: Defines what alias needs to be used during login
+                      and refelects the same in token metadata and audit logs.
+                    type: string
+                  iamMetadata:
+                    description: Controls the metadata to include on the token returned
+                      by the login endpoint.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                   id:
                     type: string
                   identityTokenAudience:

@@ -9,11 +9,16 @@ metadata:
   namespace: upbound-system
 spec:
   forProvider:
-    identityTokenAudience: <TOKEN_AUDIENCE>
-    identityTokenTtl: <TOKEN_TTL>
-    roleArn: <AWS_ROLE_ARN>
-    rotationSchedule: 0 * * * SAT
-    rotationWindow: 3600
+    accessKeySecretRef:
+      key: example-key
+      name: example-secret
+    backendSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    secretKeyWoSecretRef:
+      key: example-key
+      name: example-secret
+    secretKeyWoVersion: 1
 
 ---
 

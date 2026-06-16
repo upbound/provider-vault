@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: snapshotagentconfigs.raft.vault.m.upbound.io
 spec:
   group: raft.vault.m.upbound.io
@@ -59,6 +59,12 @@ spec:
             properties:
               forProvider:
                 properties:
+                  autoloadEnabled:
+                    description: |-
+                      Have Vault automatically load the latest snapshot after it is written. This will replace the previously loaded snapshot. Note that this does not mean the snapshot is automatically applied to the cluster, it is just loaded and available for recovery operations.
+                      Note: Not supported with storage_type = "local".
+                      Have Vault automatically load the latest snapshot after it is written. This will replace the previously loaded snapshot. Note that this does not mean the snapshot is automatically applied to the cluster, it is just loaded and available for recovery operations. Requires Vault Enterprise 1.21.0+. Not supported with storage_type = "local".
+                    type: boolean
                   awsAccessKeyId:
                     description: |-
                       AWS access key ID.
@@ -120,18 +126,29 @@ spec:
                     type: string
                   azureAccountKey:
                     description: |-
-                      Azure account key.
-                      Azure account key.
+                      Azure account key. Required when azure_auth_mode = "shared".
+                      Azure account key. Required when azure_auth_mode is 'shared'.
                     type: string
                   azureAccountName:
                     description: |-
                       Azure account name.
                       Azure account name.
                     type: string
+                  azureAuthMode:
+                    description: |-
+                      Azure authentication mode. Required by Vault API when using storage_type = "azure-blob". Possible values are:
+                      Azure authentication mode. Required for azure-blob storage. Possible values are 'shared', 'managed', or 'environment'. Requires Vault Enterprise 1.18.0+.
+                    type: string
                   azureBlobEnvironment:
                     description: |-
                       Azure blob environment.
                       Azure blob environment.
+                    type: string
+                  azureClientId:
+                    description: |-
+                      Azure client ID for authentication. Required when azure_auth_mode = "managed".
+                      Requires Vault Enterprise 1.18.0+.
+                      Azure client ID for authentication. Required when azure_auth_mode is 'managed'. Requires Vault Enterprise 1.18.0+.
                     type: string
                   azureContainerName:
                     description: |-
@@ -237,6 +254,12 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
+                  autoloadEnabled:
+                    description: |-
+                      Have Vault automatically load the latest snapshot after it is written. This will replace the previously loaded snapshot. Note that this does not mean the snapshot is automatically applied to the cluster, it is just loaded and available for recovery operations.
+                      Note: Not supported with storage_type = "local".
+                      Have Vault automatically load the latest snapshot after it is written. This will replace the previously loaded snapshot. Note that this does not mean the snapshot is automatically applied to the cluster, it is just loaded and available for recovery operations. Requires Vault Enterprise 1.21.0+. Not supported with storage_type = "local".
+                    type: boolean
                   awsAccessKeyId:
                     description: |-
                       AWS access key ID.
@@ -298,18 +321,29 @@ spec:
                     type: string
                   azureAccountKey:
                     description: |-
-                      Azure account key.
-                      Azure account key.
+                      Azure account key. Required when azure_auth_mode = "shared".
+                      Azure account key. Required when azure_auth_mode is 'shared'.
                     type: string
                   azureAccountName:
                     description: |-
                       Azure account name.
                       Azure account name.
                     type: string
+                  azureAuthMode:
+                    description: |-
+                      Azure authentication mode. Required by Vault API when using storage_type = "azure-blob". Possible values are:
+                      Azure authentication mode. Required for azure-blob storage. Possible values are 'shared', 'managed', or 'environment'. Requires Vault Enterprise 1.18.0+.
+                    type: string
                   azureBlobEnvironment:
                     description: |-
                       Azure blob environment.
                       Azure blob environment.
+                    type: string
+                  azureClientId:
+                    description: |-
+                      Azure client ID for authentication. Required when azure_auth_mode = "managed".
+                      Requires Vault Enterprise 1.18.0+.
+                      Azure client ID for authentication. Required when azure_auth_mode is 'managed'. Requires Vault Enterprise 1.18.0+.
                     type: string
                   azureContainerName:
                     description: |-
@@ -482,6 +516,12 @@ spec:
             properties:
               atProvider:
                 properties:
+                  autoloadEnabled:
+                    description: |-
+                      Have Vault automatically load the latest snapshot after it is written. This will replace the previously loaded snapshot. Note that this does not mean the snapshot is automatically applied to the cluster, it is just loaded and available for recovery operations.
+                      Note: Not supported with storage_type = "local".
+                      Have Vault automatically load the latest snapshot after it is written. This will replace the previously loaded snapshot. Note that this does not mean the snapshot is automatically applied to the cluster, it is just loaded and available for recovery operations. Requires Vault Enterprise 1.21.0+. Not supported with storage_type = "local".
+                    type: boolean
                   awsAccessKeyId:
                     description: |-
                       AWS access key ID.
@@ -543,18 +583,29 @@ spec:
                     type: string
                   azureAccountKey:
                     description: |-
-                      Azure account key.
-                      Azure account key.
+                      Azure account key. Required when azure_auth_mode = "shared".
+                      Azure account key. Required when azure_auth_mode is 'shared'.
                     type: string
                   azureAccountName:
                     description: |-
                       Azure account name.
                       Azure account name.
                     type: string
+                  azureAuthMode:
+                    description: |-
+                      Azure authentication mode. Required by Vault API when using storage_type = "azure-blob". Possible values are:
+                      Azure authentication mode. Required for azure-blob storage. Possible values are 'shared', 'managed', or 'environment'. Requires Vault Enterprise 1.18.0+.
+                    type: string
                   azureBlobEnvironment:
                     description: |-
                       Azure blob environment.
                       Azure blob environment.
+                    type: string
+                  azureClientId:
+                    description: |-
+                      Azure client ID for authentication. Required when azure_auth_mode = "managed".
+                      Requires Vault Enterprise 1.18.0+.
+                      Azure client ID for authentication. Required when azure_auth_mode is 'managed'. Requires Vault Enterprise 1.18.0+.
                     type: string
                   azureContainerName:
                     description: |-

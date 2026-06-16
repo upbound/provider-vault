@@ -124,6 +124,17 @@ type SecretBackendInitParameters struct {
 	// is running in Kubernetes.
 	// The JSON web token of the service account used by the secrets engine to manage Kubernetes credentials. Defaults to the local pod’s JWT if found.
 	ServiceAccountJwtSecretRef *v1.SecretKeySelector `json:"serviceAccountJwtSecretRef,omitempty" tf:"-"`
+
+	// Write-only JSON web token of the service account used by the secrets engine to manage Kubernetes credentials. This value is not stored in state.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only JSON web token of the service account used by the secrets engine to manage Kubernetes credentials. This value will not be stored in state.
+	ServiceAccountJwtWoSecretRef *v1.SecretKeySelector `json:"serviceAccountJwtWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for service_account_jwt_wo. Increment to force an update.
+	// For more information about write-only attributes, see
+	// using write-only attributes.
+	// Version counter for write-only service account JWT.
+	ServiceAccountJwtWoVersion *float64 `json:"serviceAccountJwtWoVersion,omitempty" tf:"service_account_jwt_wo_version,omitempty"`
 }
 
 type SecretBackendObservation struct {
@@ -236,6 +247,12 @@ type SecretBackendObservation struct {
 	// Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
+
+	// Version counter for service_account_jwt_wo. Increment to force an update.
+	// For more information about write-only attributes, see
+	// using write-only attributes.
+	// Version counter for write-only service account JWT.
+	ServiceAccountJwtWoVersion *float64 `json:"serviceAccountJwtWoVersion,omitempty" tf:"service_account_jwt_wo_version,omitempty"`
 }
 
 type SecretBackendParameters struct {
@@ -372,6 +389,19 @@ type SecretBackendParameters struct {
 	// The JSON web token of the service account used by the secrets engine to manage Kubernetes credentials. Defaults to the local pod’s JWT if found.
 	// +kubebuilder:validation:Optional
 	ServiceAccountJwtSecretRef *v1.SecretKeySelector `json:"serviceAccountJwtSecretRef,omitempty" tf:"-"`
+
+	// Write-only JSON web token of the service account used by the secrets engine to manage Kubernetes credentials. This value is not stored in state.
+	// Note: This property is write-only and will not be read from the API.
+	// Write-only JSON web token of the service account used by the secrets engine to manage Kubernetes credentials. This value will not be stored in state.
+	// +kubebuilder:validation:Optional
+	ServiceAccountJwtWoSecretRef *v1.SecretKeySelector `json:"serviceAccountJwtWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for service_account_jwt_wo. Increment to force an update.
+	// For more information about write-only attributes, see
+	// using write-only attributes.
+	// Version counter for write-only service account JWT.
+	// +kubebuilder:validation:Optional
+	ServiceAccountJwtWoVersion *float64 `json:"serviceAccountJwtWoVersion,omitempty" tf:"service_account_jwt_wo_version,omitempty"`
 }
 
 // SecretBackendSpec defines the desired state of SecretBackend

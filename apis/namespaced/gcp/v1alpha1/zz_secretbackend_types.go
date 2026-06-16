@@ -107,6 +107,10 @@ type SecretBackendInitParameters struct {
 	// Maximum possible lease duration for secrets in seconds
 	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
 
+	// The maximum TTL for long-lived credentials (i.e. service account keys).
+	// The maximum TTL for long-lived credentials (i.e. service account keys).
+	MaxTTL *float64 `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -160,6 +164,10 @@ type SecretBackendInitParameters struct {
 	// Required with identity_token_audience. Requires Vault 1.17+. Available only for Vault Enterprise.
 	// Service Account to impersonate for plugin workload identity federation.
 	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
+
+	// The default TTL for long-lived credentials (i.e. service account keys).
+	// The default TTL for long-lived credentials (i.e. service account keys).
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 }
 
 type SecretBackendObservation struct {
@@ -252,6 +260,10 @@ type SecretBackendObservation struct {
 	// Maximum possible lease duration for secrets in seconds
 	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
 
+	// The maximum TTL for long-lived credentials (i.e. service account keys).
+	// The maximum TTL for long-lived credentials (i.e. service account keys).
+	MaxTTL *float64 `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -305,6 +317,10 @@ type SecretBackendObservation struct {
 	// Required with identity_token_audience. Requires Vault 1.17+. Available only for Vault Enterprise.
 	// Service Account to impersonate for plugin workload identity federation.
 	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
+
+	// The default TTL for long-lived credentials (i.e. service account keys).
+	// The default TTL for long-lived credentials (i.e. service account keys).
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 }
 
 type SecretBackendParameters struct {
@@ -420,6 +436,11 @@ type SecretBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	MaxLeaseTTLSeconds *float64 `json:"maxLeaseTtlSeconds,omitempty" tf:"max_lease_ttl_seconds,omitempty"`
 
+	// The maximum TTL for long-lived credentials (i.e. service account keys).
+	// The maximum TTL for long-lived credentials (i.e. service account keys).
+	// +kubebuilder:validation:Optional
+	MaxTTL *float64 `json:"maxTtl,omitempty" tf:"max_ttl,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -483,6 +504,11 @@ type SecretBackendParameters struct {
 	// Service Account to impersonate for plugin workload identity federation.
 	// +kubebuilder:validation:Optional
 	ServiceAccountEmail *string `json:"serviceAccountEmail,omitempty" tf:"service_account_email,omitempty"`
+
+	// The default TTL for long-lived credentials (i.e. service account keys).
+	// The default TTL for long-lived credentials (i.e. service account keys).
+	// +kubebuilder:validation:Optional
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 }
 
 // SecretBackendSpec defines the desired state of SecretBackend

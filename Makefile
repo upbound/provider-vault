@@ -2,13 +2,13 @@
 # Setup Project
 
 PROJECT_NAME ?= provider-vault
-PROJECT_REPO ?= github.com/upbound/$(PROJECT_NAME)/v3
+PROJECT_REPO ?= github.com/upbound/$(PROJECT_NAME)/v4
 
 export TERRAFORM_VERSION := 1.5.5
 
 export TERRAFORM_PROVIDER_SOURCE ?= hashicorp/vault
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/hashicorp/terraform-provider-vault
-export TERRAFORM_PROVIDER_VERSION ?= 5.2.1
+export TERRAFORM_PROVIDER_VERSION ?= 5.9.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-vault
 export TERRAFORM_DOCS_PATH ?= website/docs/r
 
@@ -38,7 +38,7 @@ NPROCS ?= 1
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
 GO_REQUIRED_VERSION ?= 1.24
-GOLANGCILINT_VERSION ?= 1.64.8
+GOLANGCILINT_VERSION ?= 2.12.1
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
 GO_SUBDIRS += cmd internal apis generate
@@ -243,3 +243,15 @@ crddiff:
 		fi ; \
 	done
 	@$(OK) Checking breaking CRD schema changes
+
+schema-version-diff:
+	@$(INFO) Checking for native state schema version changes
+	@export PREV_PROVIDER_VERSION=$$(git cat-file -p "${GITHUB_BASE_REF}:Makefile" | sed -nr 's/^export[[:space:]]*TERRAFORM_PROVIDER_VERSION[[:space:]]*[\?:]?=[[:space:]]*(.+)/\1/p'); \
+	echo Detected previous Terraform provider version: $${PREV_PROVIDER_VERSION}; \
+	echo Current Terraform provider version: $${TERRAFORM_PROVIDER_VERSION}; \
+	mkdir -p $(WORK_DIR); \
+	git cat-file -p "$${GITHUB_BASE_REF}:config/schema.json" > "$(WORK_DIR)/schema.json.$${PREV_PROVIDER_VERSION}"; \
+	./scripts/version_diff.py config/generated.lst "$(WORK_DIR)/schema.json.$${PREV_PROVIDER_VERSION}" config/schema.json
+	@$(OK) Checking for native state schema version changes
+
+.PHONY: crddiff schema-version-diff

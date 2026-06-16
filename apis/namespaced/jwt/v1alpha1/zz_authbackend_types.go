@@ -72,9 +72,17 @@ type AuthBackendInitParameters struct {
 	// Client ID used for OIDC
 	OidcClientID *string `json:"oidcClientId,omitempty" tf:"oidc_client_id,omitempty"`
 
-	// Client Secret used for OIDC backends
+	// Client Secret used for OIDC backends. Note: This field is stored in state. For enhanced security, use oidc_client_secret_wo instead.
 	// Client Secret used for OIDC
 	OidcClientSecretSecretRef *v1.LocalSecretKeySelector `json:"oidcClientSecretSecretRef,omitempty" tf:"-"`
+
+	// Write-only Client Secret used for OIDC backends. Mutually exclusive with oidc_client_secret. Must be used with oidc_client_secret_wo_version. To rotate the secret, update the value and increment oidc_client_secret_wo_version.
+	// Write-only Client Secret used for OIDC. This field is recommended over oidc_client_secret for enhanced security.
+	OidcClientSecretWoSecretRef *v1.LocalSecretKeySelector `json:"oidcClientSecretWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for the write-only oidc_client_secret_wo field. Increment this value to trigger an update of the client secret in Vault. Required when using oidc_client_secret_wo.
+	// Version counter for write-only oidc_client_secret field. Increment this value to force update of the secret.
+	OidcClientSecretWoVersion *float64 `json:"oidcClientSecretWoVersion,omitempty" tf:"oidc_client_secret_wo_version,omitempty"`
 
 	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the OIDC Discovery URL. If not set, system certificates are used
 	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the OIDC Discovery URL. If not set, system certificates are used
@@ -171,6 +179,10 @@ type AuthBackendObservation struct {
 	// Client ID used for OIDC backends
 	// Client ID used for OIDC
 	OidcClientID *string `json:"oidcClientId,omitempty" tf:"oidc_client_id,omitempty"`
+
+	// Version counter for the write-only oidc_client_secret_wo field. Increment this value to trigger an update of the client secret in Vault. Required when using oidc_client_secret_wo.
+	// Version counter for write-only oidc_client_secret field. Increment this value to force update of the secret.
+	OidcClientSecretWoVersion *float64 `json:"oidcClientSecretWoVersion,omitempty" tf:"oidc_client_secret_wo_version,omitempty"`
 
 	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the OIDC Discovery URL. If not set, system certificates are used
 	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the OIDC Discovery URL. If not set, system certificates are used
@@ -275,10 +287,20 @@ type AuthBackendParameters struct {
 	// +kubebuilder:validation:Optional
 	OidcClientID *string `json:"oidcClientId,omitempty" tf:"oidc_client_id,omitempty"`
 
-	// Client Secret used for OIDC backends
+	// Client Secret used for OIDC backends. Note: This field is stored in state. For enhanced security, use oidc_client_secret_wo instead.
 	// Client Secret used for OIDC
 	// +kubebuilder:validation:Optional
 	OidcClientSecretSecretRef *v1.LocalSecretKeySelector `json:"oidcClientSecretSecretRef,omitempty" tf:"-"`
+
+	// Write-only Client Secret used for OIDC backends. Mutually exclusive with oidc_client_secret. Must be used with oidc_client_secret_wo_version. To rotate the secret, update the value and increment oidc_client_secret_wo_version.
+	// Write-only Client Secret used for OIDC. This field is recommended over oidc_client_secret for enhanced security.
+	// +kubebuilder:validation:Optional
+	OidcClientSecretWoSecretRef *v1.LocalSecretKeySelector `json:"oidcClientSecretWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for the write-only oidc_client_secret_wo field. Increment this value to trigger an update of the client secret in Vault. Required when using oidc_client_secret_wo.
+	// Version counter for write-only oidc_client_secret field. Increment this value to force update of the secret.
+	// +kubebuilder:validation:Optional
+	OidcClientSecretWoVersion *float64 `json:"oidcClientSecretWoVersion,omitempty" tf:"oidc_client_secret_wo_version,omitempty"`
 
 	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the OIDC Discovery URL. If not set, system certificates are used
 	// The CA certificate or chain of certificates, in PEM format, to use to validate connections to the OIDC Discovery URL. If not set, system certificates are used

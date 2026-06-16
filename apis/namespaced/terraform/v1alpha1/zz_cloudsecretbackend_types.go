@@ -114,6 +114,13 @@ type CloudSecretBackendInitParameters struct {
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
 
 	TokenSecretRef *v1.LocalSecretKeySelector `json:"tokenSecretRef,omitempty" tf:"-"`
+
+	// Note: This property is write-only and will not be read from the API.
+	TokenWoSecretRef *v1.LocalSecretKeySelector `json:"tokenWoSecretRef,omitempty" tf:"-"`
+
+	// The version of the token_wo. For more info see updating write-only attributes.
+	// Version counter for write-only secret data.
+	TokenWoVersion *float64 `json:"tokenWoVersion,omitempty" tf:"token_wo_version,omitempty"`
 }
 
 type CloudSecretBackendObservation struct {
@@ -219,6 +226,10 @@ type CloudSecretBackendObservation struct {
 	// Boolean flag that can be explicitly set to true to enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	// Enable seal wrapping for the mount, causing values stored by the mount to be wrapped by the seal's encryption capability
 	SealWrap *bool `json:"sealWrap,omitempty" tf:"seal_wrap,omitempty"`
+
+	// The version of the token_wo. For more info see updating write-only attributes.
+	// Version counter for write-only secret data.
+	TokenWoVersion *float64 `json:"tokenWoVersion,omitempty" tf:"token_wo_version,omitempty"`
 }
 
 type CloudSecretBackendParameters struct {
@@ -344,6 +355,15 @@ type CloudSecretBackendParameters struct {
 
 	// +kubebuilder:validation:Optional
 	TokenSecretRef *v1.LocalSecretKeySelector `json:"tokenSecretRef,omitempty" tf:"-"`
+
+	// Note: This property is write-only and will not be read from the API.
+	// +kubebuilder:validation:Optional
+	TokenWoSecretRef *v1.LocalSecretKeySelector `json:"tokenWoSecretRef,omitempty" tf:"-"`
+
+	// The version of the token_wo. For more info see updating write-only attributes.
+	// Version counter for write-only secret data.
+	// +kubebuilder:validation:Optional
+	TokenWoVersion *float64 `json:"tokenWoVersion,omitempty" tf:"token_wo_version,omitempty"`
 }
 
 // CloudSecretBackendSpec defines the desired state of CloudSecretBackend

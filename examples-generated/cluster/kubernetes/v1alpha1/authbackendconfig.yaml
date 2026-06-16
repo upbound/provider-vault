@@ -11,7 +11,7 @@ spec:
     backendSelector:
       matchLabels:
         testing.upbound.io/example-name: kubernetes
-    disableIssValidation: "true"
+    disableIssValidation: true
     issuer: api
     kubernetesCaCert: |-
       -----BEGIN CERTIFICATE-----

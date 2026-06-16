@@ -16,6 +16,13 @@ import (
 
 type AuthBackendRoleInitParameters struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// Allowed the common names for authenticated client certificates
 	// +listType=set
 	AllowedCommonNames []*string `json:"allowedCommonNames,omitempty" tf:"allowed_common_names,omitempty"`
@@ -41,7 +48,7 @@ type AuthBackendRoleInitParameters struct {
 	AllowedURISans []*string `json:"allowedUriSans,omitempty" tf:"allowed_uri_sans,omitempty"`
 
 	// Path to the mounted Cert auth backend
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/namespaced/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -87,6 +94,12 @@ type AuthBackendRoleInitParameters struct {
 	// If true and an OCSP response cannot be fetched or is of an unknown status, the login will proceed as if the certificate has not been revoked.
 	OcspFailOpen *bool `json:"ocspFailOpen,omitempty" tf:"ocsp_fail_open,omitempty"`
 
+	// The number of retries to attempt when
+	// connecting to an OCSP server. Defaults to 4 retries.
+	// Must be a non-negative value. Requires Vault version 1.16+.
+	// The number of retries to attempt when connecting to an OCSP server. Defaults to 4 retries. Must be a non-negative value.
+	OcspMaxRetries *float64 `json:"ocspMaxRetries,omitempty" tf:"ocsp_max_retries,omitempty"`
+
 	// If set to true, rather than
 	// accepting the first successful OCSP response, query all servers and consider
 	// the certificate valid only if all servers agree.
@@ -101,6 +114,13 @@ type AuthBackendRoleInitParameters struct {
 	// A comma-separated list of OCSP server addresses. If unset, the OCSP server is determined from the AuthorityInformationAccess extension on the certificate being inspected.
 	// +listType=set
 	OcspServersOverride []*string `json:"ocspServersOverride,omitempty" tf:"ocsp_servers_override,omitempty"`
+
+	// The maximum age in seconds of the
+	// 'thisUpdate' field in an OCSP response before it is considered too old.
+	// Defaults to 0 (disabled). Must be a non-negative value.
+	// Requires Vault version 1.16+.
+	// The maximum age in seconds of the 'thisUpdate' field in an OCSP response before it is considered too old. Defaults to 0 (disabled). Must be a non-negative value.
+	OcspThisUpdateMaxAge *float64 `json:"ocspThisUpdateMaxAge,omitempty" tf:"ocsp_this_update_max_age,omitempty"`
 
 	// TLS extensions required on
 	// client certificates
@@ -165,6 +185,13 @@ type AuthBackendRoleInitParameters struct {
 
 type AuthBackendRoleObservation struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// Allowed the common names for authenticated client certificates
 	// +listType=set
 	AllowedCommonNames []*string `json:"allowedCommonNames,omitempty" tf:"allowed_common_names,omitempty"`
@@ -228,6 +255,12 @@ type AuthBackendRoleObservation struct {
 	// If true and an OCSP response cannot be fetched or is of an unknown status, the login will proceed as if the certificate has not been revoked.
 	OcspFailOpen *bool `json:"ocspFailOpen,omitempty" tf:"ocsp_fail_open,omitempty"`
 
+	// The number of retries to attempt when
+	// connecting to an OCSP server. Defaults to 4 retries.
+	// Must be a non-negative value. Requires Vault version 1.16+.
+	// The number of retries to attempt when connecting to an OCSP server. Defaults to 4 retries. Must be a non-negative value.
+	OcspMaxRetries *float64 `json:"ocspMaxRetries,omitempty" tf:"ocsp_max_retries,omitempty"`
+
 	// If set to true, rather than
 	// accepting the first successful OCSP response, query all servers and consider
 	// the certificate valid only if all servers agree.
@@ -242,6 +275,13 @@ type AuthBackendRoleObservation struct {
 	// A comma-separated list of OCSP server addresses. If unset, the OCSP server is determined from the AuthorityInformationAccess extension on the certificate being inspected.
 	// +listType=set
 	OcspServersOverride []*string `json:"ocspServersOverride,omitempty" tf:"ocsp_servers_override,omitempty"`
+
+	// The maximum age in seconds of the
+	// 'thisUpdate' field in an OCSP response before it is considered too old.
+	// Defaults to 0 (disabled). Must be a non-negative value.
+	// Requires Vault version 1.16+.
+	// The maximum age in seconds of the 'thisUpdate' field in an OCSP response before it is considered too old. Defaults to 0 (disabled). Must be a non-negative value.
+	OcspThisUpdateMaxAge *float64 `json:"ocspThisUpdateMaxAge,omitempty" tf:"ocsp_this_update_max_age,omitempty"`
 
 	// TLS extensions required on
 	// client certificates
@@ -306,6 +346,14 @@ type AuthBackendRoleObservation struct {
 
 type AuthBackendRoleParameters struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// Allowed the common names for authenticated client certificates
 	// +kubebuilder:validation:Optional
 	// +listType=set
@@ -337,7 +385,7 @@ type AuthBackendRoleParameters struct {
 	AllowedURISans []*string `json:"allowedUriSans,omitempty" tf:"allowed_uri_sans,omitempty"`
 
 	// Path to the mounted Cert auth backend
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/namespaced/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -391,6 +439,13 @@ type AuthBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	OcspFailOpen *bool `json:"ocspFailOpen,omitempty" tf:"ocsp_fail_open,omitempty"`
 
+	// The number of retries to attempt when
+	// connecting to an OCSP server. Defaults to 4 retries.
+	// Must be a non-negative value. Requires Vault version 1.16+.
+	// The number of retries to attempt when connecting to an OCSP server. Defaults to 4 retries. Must be a non-negative value.
+	// +kubebuilder:validation:Optional
+	OcspMaxRetries *float64 `json:"ocspMaxRetries,omitempty" tf:"ocsp_max_retries,omitempty"`
+
 	// If set to true, rather than
 	// accepting the first successful OCSP response, query all servers and consider
 	// the certificate valid only if all servers agree.
@@ -407,6 +462,14 @@ type AuthBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	OcspServersOverride []*string `json:"ocspServersOverride,omitempty" tf:"ocsp_servers_override,omitempty"`
+
+	// The maximum age in seconds of the
+	// 'thisUpdate' field in an OCSP response before it is considered too old.
+	// Defaults to 0 (disabled). Must be a non-negative value.
+	// Requires Vault version 1.16+.
+	// The maximum age in seconds of the 'thisUpdate' field in an OCSP response before it is considered too old. Defaults to 0 (disabled). Must be a non-negative value.
+	// +kubebuilder:validation:Optional
+	OcspThisUpdateMaxAge *float64 `json:"ocspThisUpdateMaxAge,omitempty" tf:"ocsp_this_update_max_age,omitempty"`
 
 	// TLS extensions required on
 	// client certificates

@@ -15,6 +15,20 @@ import (
 
 type AuthBackendInitParameters struct {
 
+	// The Okta API token. This is required to query Okta for user group membership. If this is not supplied only locally configured groups will be enabled.
+	APITokenSecretRef *v1.SecretKeySelector `json:"apiTokenSecretRef,omitempty" tf:"-"`
+
+	// Write-only Okta API token. This is required to query Okta for user group membership. If this is not supplied only locally configured groups will be enabled.
+	APITokenWoSecretRef *v1.SecretKeySelector `json:"apiTokenWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for write-only api_token.
+	APITokenWoVersion *float64 `json:"apiTokenWoVersion,omitempty" tf:"api_token_wo_version,omitempty"`
+
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// The Okta url. Examples: oktapreview.com, okta.com (default)
 	BaseURL *string `json:"baseUrl,omitempty" tf:"base_url,omitempty"`
 
@@ -33,6 +47,9 @@ type AuthBackendInitParameters struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// The Okta organization. This will be the first part of the url https://XXX.okta.com.
+	OrgName *string `json:"orgName,omitempty" tf:"org_name,omitempty"`
+
+	// The Okta organization. This will be the first part of the url https://XXX.okta.com. Use org_name instead.
 	Organization *string `json:"organization,omitempty" tf:"organization,omitempty"`
 
 	// path to mount the backend
@@ -61,7 +78,7 @@ type AuthBackendInitParameters struct {
 	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
-	// The Okta API token. This is required to query Okta for user group membership. If this is not supplied only locally configured groups will be enabled.
+	// The Okta API token. This is required to query Okta for user group membership. If this is not supplied only locally configured groups will be enabled. Use api_token instead.
 	TokenSecretRef *v1.SecretKeySelector `json:"tokenSecretRef,omitempty" tf:"-"`
 
 	// The initial ttl of the token to generate in seconds
@@ -70,13 +87,23 @@ type AuthBackendInitParameters struct {
 	// The type of token to generate, service or batch
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 
+	Tune []TuneInitParameters `json:"tune,omitempty" tf:"tune,omitempty"`
+
 	User []UserInitParameters `json:"user,omitempty" tf:"user,omitempty"`
 }
 
 type AuthBackendObservation struct {
 
+	// Version counter for write-only api_token.
+	APITokenWoVersion *float64 `json:"apiTokenWoVersion,omitempty" tf:"api_token_wo_version,omitempty"`
+
 	// The mount accessor related to the auth mount.
 	Accessor *string `json:"accessor,omitempty" tf:"accessor,omitempty"`
+
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
 
 	// The Okta url. Examples: oktapreview.com, okta.com (default)
 	BaseURL *string `json:"baseUrl,omitempty" tf:"base_url,omitempty"`
@@ -98,6 +125,9 @@ type AuthBackendObservation struct {
 	Namespace *string `json:"namespace,omitempty" tf:"namespace,omitempty"`
 
 	// The Okta organization. This will be the first part of the url https://XXX.okta.com.
+	OrgName *string `json:"orgName,omitempty" tf:"org_name,omitempty"`
+
+	// The Okta organization. This will be the first part of the url https://XXX.okta.com. Use org_name instead.
 	Organization *string `json:"organization,omitempty" tf:"organization,omitempty"`
 
 	// path to mount the backend
@@ -132,10 +162,30 @@ type AuthBackendObservation struct {
 	// The type of token to generate, service or batch
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
 
+	Tune []TuneObservation `json:"tune,omitempty" tf:"tune,omitempty"`
+
 	User []UserObservation `json:"user,omitempty" tf:"user,omitempty"`
 }
 
 type AuthBackendParameters struct {
+
+	// The Okta API token. This is required to query Okta for user group membership. If this is not supplied only locally configured groups will be enabled.
+	// +kubebuilder:validation:Optional
+	APITokenSecretRef *v1.SecretKeySelector `json:"apiTokenSecretRef,omitempty" tf:"-"`
+
+	// Write-only Okta API token. This is required to query Okta for user group membership. If this is not supplied only locally configured groups will be enabled.
+	// +kubebuilder:validation:Optional
+	APITokenWoSecretRef *v1.SecretKeySelector `json:"apiTokenWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for write-only api_token.
+	// +kubebuilder:validation:Optional
+	APITokenWoVersion *float64 `json:"apiTokenWoVersion,omitempty" tf:"api_token_wo_version,omitempty"`
+
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
 
 	// The Okta url. Examples: oktapreview.com, okta.com (default)
 	// +kubebuilder:validation:Optional
@@ -162,6 +212,10 @@ type AuthBackendParameters struct {
 
 	// The Okta organization. This will be the first part of the url https://XXX.okta.com.
 	// +kubebuilder:validation:Optional
+	OrgName *string `json:"orgName,omitempty" tf:"org_name,omitempty"`
+
+	// The Okta organization. This will be the first part of the url https://XXX.okta.com. Use org_name instead.
+	// +kubebuilder:validation:Optional
 	Organization *string `json:"organization,omitempty" tf:"organization,omitempty"`
 
 	// path to mount the backend
@@ -198,7 +252,7 @@ type AuthBackendParameters struct {
 	// +listType=set
 	TokenPolicies []*string `json:"tokenPolicies,omitempty" tf:"token_policies,omitempty"`
 
-	// The Okta API token. This is required to query Okta for user group membership. If this is not supplied only locally configured groups will be enabled.
+	// The Okta API token. This is required to query Okta for user group membership. If this is not supplied only locally configured groups will be enabled. Use api_token instead.
 	// +kubebuilder:validation:Optional
 	TokenSecretRef *v1.SecretKeySelector `json:"tokenSecretRef,omitempty" tf:"-"`
 
@@ -209,6 +263,9 @@ type AuthBackendParameters struct {
 	// The type of token to generate, service or batch
 	// +kubebuilder:validation:Optional
 	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	Tune []TuneParameters `json:"tune,omitempty" tf:"tune,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	User []UserParameters `json:"user,omitempty" tf:"user,omitempty"`
@@ -236,6 +293,69 @@ type GroupParameters struct {
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	Policies []*string `json:"policies,omitempty" tf:"policies"`
+}
+
+type TuneInitParameters struct {
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers"`
+
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys"`
+
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys"`
+
+	DefaultLeaseTTL *string `json:"defaultLeaseTtl,omitempty" tf:"default_lease_ttl"`
+
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility"`
+
+	MaxLeaseTTL *string `json:"maxLeaseTtl,omitempty" tf:"max_lease_ttl"`
+
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers"`
+
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type"`
+}
+
+type TuneObservation struct {
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers,omitempty"`
+
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys,omitempty"`
+
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys,omitempty"`
+
+	DefaultLeaseTTL *string `json:"defaultLeaseTtl,omitempty" tf:"default_lease_ttl,omitempty"`
+
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility,omitempty"`
+
+	MaxLeaseTTL *string `json:"maxLeaseTtl,omitempty" tf:"max_lease_ttl,omitempty"`
+
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers,omitempty"`
+
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type,omitempty"`
+}
+
+type TuneParameters struct {
+
+	// +kubebuilder:validation:Optional
+	AllowedResponseHeaders []*string `json:"allowedResponseHeaders,omitempty" tf:"allowed_response_headers"`
+
+	// +kubebuilder:validation:Optional
+	AuditNonHMACRequestKeys []*string `json:"auditNonHmacRequestKeys,omitempty" tf:"audit_non_hmac_request_keys"`
+
+	// +kubebuilder:validation:Optional
+	AuditNonHMACResponseKeys []*string `json:"auditNonHmacResponseKeys,omitempty" tf:"audit_non_hmac_response_keys"`
+
+	// +kubebuilder:validation:Optional
+	DefaultLeaseTTL *string `json:"defaultLeaseTtl,omitempty" tf:"default_lease_ttl"`
+
+	// +kubebuilder:validation:Optional
+	ListingVisibility *string `json:"listingVisibility,omitempty" tf:"listing_visibility"`
+
+	// +kubebuilder:validation:Optional
+	MaxLeaseTTL *string `json:"maxLeaseTtl,omitempty" tf:"max_lease_ttl"`
+
+	// +kubebuilder:validation:Optional
+	PassthroughRequestHeaders []*string `json:"passthroughRequestHeaders,omitempty" tf:"passthrough_request_headers"`
+
+	// +kubebuilder:validation:Optional
+	TokenType *string `json:"tokenType,omitempty" tf:"token_type"`
 }
 
 type UserInitParameters struct {
@@ -310,9 +430,8 @@ type AuthBackendStatus struct {
 type AuthBackend struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.organization) || (has(self.initProvider) && has(self.initProvider.organization))",message="spec.forProvider.organization is a required parameter"
-	Spec   AuthBackendSpec   `json:"spec"`
-	Status AuthBackendStatus `json:"status,omitempty"`
+	Spec              AuthBackendSpec   `json:"spec"`
+	Status            AuthBackendStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

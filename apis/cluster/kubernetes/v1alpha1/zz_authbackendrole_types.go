@@ -15,6 +15,11 @@ import (
 
 type AuthBackendRoleInitParameters struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// Configures how identity aliases are generated.
 	// Valid choices are: serviceaccount_uid, serviceaccount_name. (vault-1.9+)
 	// Configures how identity aliases are generated. Valid choices are: serviceaccount_uid, serviceaccount_name
@@ -26,7 +31,7 @@ type AuthBackendRoleInitParameters struct {
 
 	// Unique name of the kubernetes backend to configure.
 	// Unique name of the kubernetes backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -42,6 +47,10 @@ type AuthBackendRoleInitParameters struct {
 	// List of service account names able to access this role. If set to `["*"]` all names are allowed, both this and bound_service_account_namespaces can not be "*".
 	// +listType=set
 	BoundServiceAccountNames []*string `json:"boundServiceAccountNames,omitempty" tf:"bound_service_account_names,omitempty"`
+
+	// A label selector for Kubernetes namespaces allowed to access this role. Accepts either a JSON or YAML object. The value should be of type LabelSelector. Currently, label selectors with matchExpressions are not supported. To use label selectors, Vault must have permission to read namespaces on the Kubernetes cluster. If set with bound_service_account_namespaces, the conditions are ORed. Requires Vault v1.16+.
+	// A label selector for Kubernetes namespaces allowed to access this role. Accepts either a JSON or YAML object. The value should be of type LabelSelector. Currently, label selectors with matchExpressions are not supported. To use label selectors, Vault must have permission to read namespaces on the Kubernetes cluster. If set with bound_service_account_namespaces, the conditions are ORed.
+	BoundServiceAccountNamespaceSelector *string `json:"boundServiceAccountNamespaceSelector,omitempty" tf:"bound_service_account_namespace_selector,omitempty"`
 
 	// List of namespaces allowed to access this role. If set to ["*"] all namespaces are allowed, both this and bound_service_account_names can not be set to "*".
 	// List of namespaces allowed to access this role. If set to `["*"]` all namespaces are allowed, both this and bound_service_account_names can not be set to "*".
@@ -115,6 +124,11 @@ type AuthBackendRoleInitParameters struct {
 
 type AuthBackendRoleObservation struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// Configures how identity aliases are generated.
 	// Valid choices are: serviceaccount_uid, serviceaccount_name. (vault-1.9+)
 	// Configures how identity aliases are generated. Valid choices are: serviceaccount_uid, serviceaccount_name
@@ -132,6 +146,10 @@ type AuthBackendRoleObservation struct {
 	// List of service account names able to access this role. If set to `["*"]` all names are allowed, both this and bound_service_account_namespaces can not be "*".
 	// +listType=set
 	BoundServiceAccountNames []*string `json:"boundServiceAccountNames,omitempty" tf:"bound_service_account_names,omitempty"`
+
+	// A label selector for Kubernetes namespaces allowed to access this role. Accepts either a JSON or YAML object. The value should be of type LabelSelector. Currently, label selectors with matchExpressions are not supported. To use label selectors, Vault must have permission to read namespaces on the Kubernetes cluster. If set with bound_service_account_namespaces, the conditions are ORed. Requires Vault v1.16+.
+	// A label selector for Kubernetes namespaces allowed to access this role. Accepts either a JSON or YAML object. The value should be of type LabelSelector. Currently, label selectors with matchExpressions are not supported. To use label selectors, Vault must have permission to read namespaces on the Kubernetes cluster. If set with bound_service_account_namespaces, the conditions are ORed.
+	BoundServiceAccountNamespaceSelector *string `json:"boundServiceAccountNamespaceSelector,omitempty" tf:"bound_service_account_namespace_selector,omitempty"`
 
 	// List of namespaces allowed to access this role. If set to ["*"] all namespaces are allowed, both this and bound_service_account_names can not be set to "*".
 	// List of namespaces allowed to access this role. If set to `["*"]` all namespaces are allowed, both this and bound_service_account_names can not be set to "*".
@@ -207,6 +225,12 @@ type AuthBackendRoleObservation struct {
 
 type AuthBackendRoleParameters struct {
 
+	// The metadata to be tied to generated entity alias.
+	// This should be a list or map containing the metadata in key value pairs.
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	AliasMetadata map[string]*string `json:"aliasMetadata,omitempty" tf:"alias_metadata,omitempty"`
+
 	// Configures how identity aliases are generated.
 	// Valid choices are: serviceaccount_uid, serviceaccount_name. (vault-1.9+)
 	// Configures how identity aliases are generated. Valid choices are: serviceaccount_uid, serviceaccount_name
@@ -220,7 +244,7 @@ type AuthBackendRoleParameters struct {
 
 	// Unique name of the kubernetes backend to configure.
 	// Unique name of the kubernetes backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -238,6 +262,11 @@ type AuthBackendRoleParameters struct {
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	BoundServiceAccountNames []*string `json:"boundServiceAccountNames,omitempty" tf:"bound_service_account_names,omitempty"`
+
+	// A label selector for Kubernetes namespaces allowed to access this role. Accepts either a JSON or YAML object. The value should be of type LabelSelector. Currently, label selectors with matchExpressions are not supported. To use label selectors, Vault must have permission to read namespaces on the Kubernetes cluster. If set with bound_service_account_namespaces, the conditions are ORed. Requires Vault v1.16+.
+	// A label selector for Kubernetes namespaces allowed to access this role. Accepts either a JSON or YAML object. The value should be of type LabelSelector. Currently, label selectors with matchExpressions are not supported. To use label selectors, Vault must have permission to read namespaces on the Kubernetes cluster. If set with bound_service_account_namespaces, the conditions are ORed.
+	// +kubebuilder:validation:Optional
+	BoundServiceAccountNamespaceSelector *string `json:"boundServiceAccountNamespaceSelector,omitempty" tf:"bound_service_account_namespace_selector,omitempty"`
 
 	// List of namespaces allowed to access this role. If set to ["*"] all namespaces are allowed, both this and bound_service_account_names can not be set to "*".
 	// List of namespaces allowed to access this role. If set to `["*"]` all namespaces are allowed, both this and bound_service_account_names can not be set to "*".
@@ -358,7 +387,6 @@ type AuthBackendRole struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.boundServiceAccountNames) || (has(self.initProvider) && has(self.initProvider.boundServiceAccountNames))",message="spec.forProvider.boundServiceAccountNames is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.boundServiceAccountNamespaces) || (has(self.initProvider) && has(self.initProvider.boundServiceAccountNamespaces))",message="spec.forProvider.boundServiceAccountNamespaces is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.roleName) || (has(self.initProvider) && has(self.initProvider.roleName))",message="spec.forProvider.roleName is a required parameter"
 	Spec   AuthBackendRoleSpec   `json:"spec"`
 	Status AuthBackendRoleStatus `json:"status,omitempty"`

@@ -99,12 +99,12 @@ type SecretV2InitParameters struct {
 	CustomMetadata []CustomMetadataInitParameters `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
 	// JSON-encoded string that will be
-	// written as the secret data at the given path.
+	// written as the secret data at the given path. This is required if data_json_wo is not set.
 	// JSON-encoded secret data to write.
 	DataJSONSecretRef *v1.SecretKeySelector `json:"dataJsonSecretRef,omitempty" tf:"-"`
 
-	// JSON-encoded secret data to write to Vault. Can be updated.
-	// Note: This property is write-only and will not be read from the API.
+	// JSON-encoded string that will be
+	// written as the secret data at the given path. This is required if data_json is not set. Note: This property is write-only and will not be read from the API.
 	// Write-Only JSON-encoded secret data to write.
 	DataJSONWo *string `json:"dataJsonWo,omitempty" tf:"data_json_wo,omitempty"`
 
@@ -124,7 +124,7 @@ type SecretV2InitParameters struct {
 
 	// Path where KV-V2 engine is mounted.
 	// Path where KV-V2 engine is mounted.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/vault/v1alpha1.Mount
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`
 
@@ -171,8 +171,8 @@ type SecretV2Observation struct {
 	// Custom metadata to be set for the secret.
 	CustomMetadata []CustomMetadataObservation `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
-	// JSON-encoded secret data to write to Vault. Can be updated.
-	// Note: This property is write-only and will not be read from the API.
+	// JSON-encoded string that will be
+	// written as the secret data at the given path. This is required if data_json is not set. Note: This property is write-only and will not be read from the API.
 	// Write-Only JSON-encoded secret data to write.
 	DataJSONWo *string `json:"dataJsonWo,omitempty" tf:"data_json_wo,omitempty"`
 
@@ -243,13 +243,13 @@ type SecretV2Parameters struct {
 	CustomMetadata []CustomMetadataParameters `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
 	// JSON-encoded string that will be
-	// written as the secret data at the given path.
+	// written as the secret data at the given path. This is required if data_json_wo is not set.
 	// JSON-encoded secret data to write.
 	// +kubebuilder:validation:Optional
 	DataJSONSecretRef *v1.SecretKeySelector `json:"dataJsonSecretRef,omitempty" tf:"-"`
 
-	// JSON-encoded secret data to write to Vault. Can be updated.
-	// Note: This property is write-only and will not be read from the API.
+	// JSON-encoded string that will be
+	// written as the secret data at the given path. This is required if data_json is not set. Note: This property is write-only and will not be read from the API.
 	// Write-Only JSON-encoded secret data to write.
 	// +kubebuilder:validation:Optional
 	DataJSONWo *string `json:"dataJsonWo,omitempty" tf:"data_json_wo,omitempty"`
@@ -273,7 +273,7 @@ type SecretV2Parameters struct {
 
 	// Path where KV-V2 engine is mounted.
 	// Path where KV-V2 engine is mounted.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/vault/v1alpha1.Mount
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Mount *string `json:"mount,omitempty" tf:"mount,omitempty"`

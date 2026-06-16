@@ -19,7 +19,7 @@ type SecretBackendRoleInitParameters struct {
 	// The path the AWS secret backend is mounted at,
 	// with no leading or trailing /s.
 	// The path of the AWS Secret Backend the role belongs to.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/aws/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/namespaced/aws/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -71,6 +71,10 @@ type SecretBackendRoleInitParameters struct {
 	// one of assumed_role or federation_token.
 	// The max allowed TTL in seconds for STS credentials (credentials TTL are capped to max_sts_ttl). Valid only when credential_type is one of assumed_role or federation_token.
 	MaxStsTTL *float64 `json:"maxStsTtl,omitempty" tf:"max_sts_ttl,omitempty"`
+
+	// The ARN or hardware device number of the device configured to the IAM user for multi-factor authentication. Only required if the IAM user has an MFA device set up in AWS.
+	// The ARN or hardware device number of the device configured to the IAM user for multi-factor authentication. Only required if the IAM user has an MFA device set up in AWS.
+	MfaSerialNumber *string `json:"mfaSerialNumber,omitempty" tf:"mfa_serial_number,omitempty"`
 
 	// The name to identify this role within the backend.
 	// Must be unique within the backend.
@@ -180,6 +184,10 @@ type SecretBackendRoleObservation struct {
 	// The max allowed TTL in seconds for STS credentials (credentials TTL are capped to max_sts_ttl). Valid only when credential_type is one of assumed_role or federation_token.
 	MaxStsTTL *float64 `json:"maxStsTtl,omitempty" tf:"max_sts_ttl,omitempty"`
 
+	// The ARN or hardware device number of the device configured to the IAM user for multi-factor authentication. Only required if the IAM user has an MFA device set up in AWS.
+	// The ARN or hardware device number of the device configured to the IAM user for multi-factor authentication. Only required if the IAM user has an MFA device set up in AWS.
+	MfaSerialNumber *string `json:"mfaSerialNumber,omitempty" tf:"mfa_serial_number,omitempty"`
+
 	// The name to identify this role within the backend.
 	// Must be unique within the backend.
 	// Unique name for the role.
@@ -243,7 +251,7 @@ type SecretBackendRoleParameters struct {
 	// The path the AWS secret backend is mounted at,
 	// with no leading or trailing /s.
 	// The path of the AWS Secret Backend the role belongs to.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/aws/v1alpha1.SecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/namespaced/aws/v1alpha1.SecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -302,6 +310,11 @@ type SecretBackendRoleParameters struct {
 	// The max allowed TTL in seconds for STS credentials (credentials TTL are capped to max_sts_ttl). Valid only when credential_type is one of assumed_role or federation_token.
 	// +kubebuilder:validation:Optional
 	MaxStsTTL *float64 `json:"maxStsTtl,omitempty" tf:"max_sts_ttl,omitempty"`
+
+	// The ARN or hardware device number of the device configured to the IAM user for multi-factor authentication. Only required if the IAM user has an MFA device set up in AWS.
+	// The ARN or hardware device number of the device configured to the IAM user for multi-factor authentication. Only required if the IAM user has an MFA device set up in AWS.
+	// +kubebuilder:validation:Optional
+	MfaSerialNumber *string `json:"mfaSerialNumber,omitempty" tf:"mfa_serial_number,omitempty"`
 
 	// The name to identify this role within the backend.
 	// Must be unique within the backend.

@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.18.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: totps.mfa.vault.upbound.io
 spec:
   group: mfa.vault.upbound.io
@@ -95,6 +95,11 @@ spec:
                       Specifies the size in bytes of the generated key.
                       Specifies the size in bytes of the generated key.
                     type: number
+                  maxValidationAttempts:
+                    description: |-
+                      The maximum number of consecutive failed validation attempts allowed. Must be a positive integer. Vault defaults this value to 5 if not provided or if set to 0.
+                      The maximum number of consecutive failed validation attempts allowed. Must be a positive integer. Vault defaults this value to 5 if not provided or if set to 0.
+                    type: number
                   name:
                     description: |-
                       (string: <required>) – Name of the MFA method.
@@ -159,6 +164,11 @@ spec:
                     description: |-
                       Specifies the size in bytes of the generated key.
                       Specifies the size in bytes of the generated key.
+                    type: number
+                  maxValidationAttempts:
+                    description: |-
+                      The maximum number of consecutive failed validation attempts allowed. Must be a positive integer. Vault defaults this value to 5 if not provided or if set to 0.
+                      The maximum number of consecutive failed validation attempts allowed. Must be a positive integer. Vault defaults this value to 5 if not provided or if set to 0.
                     type: number
                   name:
                     description: |-
@@ -313,6 +323,11 @@ spec:
                     description: |-
                       Specifies the size in bytes of the generated key.
                       Specifies the size in bytes of the generated key.
+                    type: number
+                  maxValidationAttempts:
+                    description: |-
+                      The maximum number of consecutive failed validation attempts allowed. Must be a positive integer. Vault defaults this value to 5 if not provided or if set to 0.
+                      The maximum number of consecutive failed validation attempts allowed. Must be a positive integer. Vault defaults this value to 5 if not provided or if set to 0.
                     type: number
                   name:
                     description: |-

@@ -21,7 +21,7 @@ func (mg *AuthBackendConfig) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this AuthBackendConfig
 func (tr *AuthBackendConfig) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"client_id": "clientIdSecretRef", "client_secret": "clientSecretSecretRef", "tenant_id": "tenantIdSecretRef"}
+	return map[string]string{"client_id": "clientIdSecretRef", "client_secret": "clientSecretSecretRef", "client_secret_wo": "clientSecretWoSecretRef", "tenant_id": "tenantIdSecretRef"}
 }
 
 // GetObservation of this AuthBackendConfig

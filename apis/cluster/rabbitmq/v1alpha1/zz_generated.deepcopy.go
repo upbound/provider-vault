@@ -185,7 +185,21 @@ func (in *SecretBackendInitParameters) DeepCopyInto(out *SecretBackendInitParame
 		*out = new(string)
 		**out = **in
 	}
-	in.PasswordSecretRef.DeepCopyInto(&out.PasswordSecretRef)
+	if in.PasswordSecretRef != nil {
+		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PasswordWoSecretRef != nil {
+		in, out := &in.PasswordWoSecretRef, &out.PasswordWoSecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
 		*out = new(string)
@@ -411,6 +425,11 @@ func (in *SecretBackendObservation) DeepCopyInto(out *SecretBackendObservation) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
 		*out = new(string)
@@ -593,7 +612,21 @@ func (in *SecretBackendParameters) DeepCopyInto(out *SecretBackendParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	in.PasswordSecretRef.DeepCopyInto(&out.PasswordSecretRef)
+	if in.PasswordSecretRef != nil {
+		in, out := &in.PasswordSecretRef, &out.PasswordSecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PasswordWoSecretRef != nil {
+		in, out := &in.PasswordWoSecretRef, &out.PasswordWoSecretRef
+		*out = new(v1.SecretKeySelector)
+		**out = **in
+	}
+	if in.PasswordWoVersion != nil {
+		in, out := &in.PasswordWoVersion, &out.PasswordWoVersion
+		*out = new(float64)
+		**out = **in
+	}
 	if in.Path != nil {
 		in, out := &in.Path, &out.Path
 		*out = new(string)

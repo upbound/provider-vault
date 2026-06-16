@@ -17,7 +17,7 @@ type AuthBackendLoginInitParameters struct {
 
 	// The unique path of the Vault backend to log in with.
 	// Unique name of the auth backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -38,7 +38,7 @@ type AuthBackendLoginInitParameters struct {
 
 	// The ID of the role to log in with.
 	// The RoleID to log in with.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/approle/v1alpha1.AuthBackendRole
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/approle/v1alpha1.AuthBackendRole
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("role_id",false)
 	RoleID *string `json:"roleId,omitempty" tf:"role_id,omitempty"`
 
@@ -52,8 +52,17 @@ type AuthBackendLoginInitParameters struct {
 
 	// The secret ID of the role to log in with. Required
 	// unless bind_secret_id is set to false on the role.
-	// The SecretID to log in with.
+	// The SecretID to log in with. Required unless `bind_secret_id` is set to false on the role.
 	SecretIDSecretRef *v1.SecretKeySelector `json:"secretIdSecretRef,omitempty" tf:"-"`
+
+	// The secret ID of the role to log in with. Write-only attribute that can accept ephemeral values. Required unless bind_secret_id is set to false on the role.
+	// Note: This property is write-only and will not be read from the API.
+	// The SecretID to log in with. Write-only attribute that can accept ephemeral values. Required unless `bind_secret_id` is set to false on the role.
+	SecretIDWoSecretRef *v1.SecretKeySelector `json:"secretIdWoSecretRef,omitempty" tf:"-"`
+
+	// The version of the secret_id_wo. For more info see updating write-only attributes.
+	// Version counter for the write-only secret_id field. Increment this to trigger re-authentication with a new SecretID.
+	SecretIDWoVersion *float64 `json:"secretIdWoVersion,omitempty" tf:"secret_id_wo_version,omitempty"`
 }
 
 type AuthBackendLoginObservation struct {
@@ -98,13 +107,17 @@ type AuthBackendLoginObservation struct {
 	// The ID of the role to log in with.
 	// The RoleID to log in with.
 	RoleID *string `json:"roleId,omitempty" tf:"role_id,omitempty"`
+
+	// The version of the secret_id_wo. For more info see updating write-only attributes.
+	// Version counter for the write-only secret_id field. Increment this to trigger re-authentication with a new SecretID.
+	SecretIDWoVersion *float64 `json:"secretIdWoVersion,omitempty" tf:"secret_id_wo_version,omitempty"`
 }
 
 type AuthBackendLoginParameters struct {
 
 	// The unique path of the Vault backend to log in with.
 	// Unique name of the auth backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -127,7 +140,7 @@ type AuthBackendLoginParameters struct {
 
 	// The ID of the role to log in with.
 	// The RoleID to log in with.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/approle/v1alpha1.AuthBackendRole
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/approle/v1alpha1.AuthBackendRole
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("role_id",false)
 	// +kubebuilder:validation:Optional
 	RoleID *string `json:"roleId,omitempty" tf:"role_id,omitempty"`
@@ -142,9 +155,20 @@ type AuthBackendLoginParameters struct {
 
 	// The secret ID of the role to log in with. Required
 	// unless bind_secret_id is set to false on the role.
-	// The SecretID to log in with.
+	// The SecretID to log in with. Required unless `bind_secret_id` is set to false on the role.
 	// +kubebuilder:validation:Optional
 	SecretIDSecretRef *v1.SecretKeySelector `json:"secretIdSecretRef,omitempty" tf:"-"`
+
+	// The secret ID of the role to log in with. Write-only attribute that can accept ephemeral values. Required unless bind_secret_id is set to false on the role.
+	// Note: This property is write-only and will not be read from the API.
+	// The SecretID to log in with. Write-only attribute that can accept ephemeral values. Required unless `bind_secret_id` is set to false on the role.
+	// +kubebuilder:validation:Optional
+	SecretIDWoSecretRef *v1.SecretKeySelector `json:"secretIdWoSecretRef,omitempty" tf:"-"`
+
+	// The version of the secret_id_wo. For more info see updating write-only attributes.
+	// Version counter for the write-only secret_id field. Increment this to trigger re-authentication with a new SecretID.
+	// +kubebuilder:validation:Optional
+	SecretIDWoVersion *float64 `json:"secretIdWoVersion,omitempty" tf:"secret_id_wo_version,omitempty"`
 }
 
 // AuthBackendLoginSpec defines the desired state of AuthBackendLogin

@@ -21,7 +21,7 @@ func (mg *SecretBackend) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this SecretBackend
 func (tr *SecretBackend) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"client_cert": "clientCertSecretRef", "client_key": "clientKeySecretRef", "token": "tokenSecretRef"}
+	return map[string]string{"client_cert": "clientCertSecretRef", "client_key": "clientKeySecretRef", "client_key_wo": "clientKeyWoSecretRef", "token": "tokenSecretRef", "token_wo": "tokenWoSecretRef"}
 }
 
 // GetObservation of this SecretBackend

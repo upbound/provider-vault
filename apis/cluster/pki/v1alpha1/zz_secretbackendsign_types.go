@@ -25,7 +25,7 @@ type SecretBackendSignInitParameters struct {
 
 	// The PKI secret backend the resource belongs to.
 	// The PKI secret backend the resource belongs to.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/vault/v1alpha1.Mount
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -74,7 +74,7 @@ type SecretBackendSignInitParameters struct {
 
 	// Name of the role to create the certificate against
 	// Name of the role to create the certificate against.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/pki/v1alpha1.SecretBackendRole
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/pki/v1alpha1.SecretBackendRole
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
@@ -100,6 +100,10 @@ type SecretBackendSignInitParameters struct {
 	// List of other SANs
 	// List of other SANs.
 	OtherSans []*string `json:"otherSans,omitempty" tf:"other_sans,omitempty"`
+
+	// If set to true, the returned ca_chain field will not include any self-signed CA certificates. Useful if end-users already have the root CA in their trust store. Default false.
+	// If true, the returned ca_chain field will not include any self-signed CA certificates. Useful if end-users already have the root CA in their trust store.
+	RemoveRootsFromChain *bool `json:"removeRootsFromChain,omitempty" tf:"remove_roots_from_chain,omitempty"`
 
 	// Time to live
 	// Time to live.
@@ -196,6 +200,10 @@ type SecretBackendSignObservation struct {
 	// List of other SANs.
 	OtherSans []*string `json:"otherSans,omitempty" tf:"other_sans,omitempty"`
 
+	// If set to true, the returned ca_chain field will not include any self-signed CA certificates. Useful if end-users already have the root CA in their trust store. Default false.
+	// If true, the returned ca_chain field will not include any self-signed CA certificates. Useful if end-users already have the root CA in their trust store.
+	RemoveRootsFromChain *bool `json:"removeRootsFromChain,omitempty" tf:"remove_roots_from_chain,omitempty"`
+
 	// true if the current time (during refresh) is after the start of the early renewal window declared by min_seconds_remaining, and false otherwise; if auto_renew is set to true then the provider will plan to replace the certificate once renewal is pending.
 	// Initially false, and then set to true during refresh once the expiration is less than min_seconds_remaining in the future.
 	RenewPending *bool `json:"renewPending,omitempty" tf:"renew_pending,omitempty"`
@@ -227,7 +235,7 @@ type SecretBackendSignParameters struct {
 
 	// The PKI secret backend the resource belongs to.
 	// The PKI secret backend the resource belongs to.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/vault/v1alpha1.Mount
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/vault/v1alpha1.Mount
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -285,7 +293,7 @@ type SecretBackendSignParameters struct {
 
 	// Name of the role to create the certificate against
 	// Name of the role to create the certificate against.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/pki/v1alpha1.SecretBackendRole
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/pki/v1alpha1.SecretBackendRole
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -315,6 +323,11 @@ type SecretBackendSignParameters struct {
 	// List of other SANs.
 	// +kubebuilder:validation:Optional
 	OtherSans []*string `json:"otherSans,omitempty" tf:"other_sans,omitempty"`
+
+	// If set to true, the returned ca_chain field will not include any self-signed CA certificates. Useful if end-users already have the root CA in their trust store. Default false.
+	// If true, the returned ca_chain field will not include any self-signed CA certificates. Useful if end-users already have the root CA in their trust store.
+	// +kubebuilder:validation:Optional
+	RemoveRootsFromChain *bool `json:"removeRootsFromChain,omitempty" tf:"remove_roots_from_chain,omitempty"`
 
 	// Time to live
 	// Time to live.

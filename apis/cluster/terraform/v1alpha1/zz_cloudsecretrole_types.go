@@ -16,7 +16,7 @@ import (
 type CloudSecretRoleInitParameters struct {
 
 	// Must not begin or end with a /.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/terraform/v1alpha1.CloudSecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/terraform/v1alpha1.CloudSecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("backend",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -27,6 +27,14 @@ type CloudSecretRoleInitParameters struct {
 	// Selector for a CloudSecretBackend in terraform to populate backend.
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
+
+	// The type of credential to generate. Valid values are 'team', 'team_legacy', 'user', or 'organization'. Can only create multiple-team tokens with team.
+	// The type of credential to generate. Valid values are 'team', 'team_legacy', 'user', or 'organization'.
+	CredentialType *string `json:"credentialType,omitempty" tf:"credential_type,omitempty"`
+
+	// Description of the role. Only valid with team or user credential types.
+	// Description of the role. Only valid with 'team' or 'user' credential types.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// Maximum TTL for leases associated with this role, in seconds.
 	// Maximum allowed lease for generated credentials. If not set or set to 0, will use system default.
@@ -63,6 +71,14 @@ type CloudSecretRoleObservation struct {
 	// Must not begin or end with a /.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// The type of credential to generate. Valid values are 'team', 'team_legacy', 'user', or 'organization'. Can only create multiple-team tokens with team.
+	// The type of credential to generate. Valid values are 'team', 'team_legacy', 'user', or 'organization'.
+	CredentialType *string `json:"credentialType,omitempty" tf:"credential_type,omitempty"`
+
+	// Description of the role. Only valid with team or user credential types.
+	// Description of the role. Only valid with 'team' or 'user' credential types.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Maximum TTL for leases associated with this role, in seconds.
@@ -98,7 +114,7 @@ type CloudSecretRoleObservation struct {
 type CloudSecretRoleParameters struct {
 
 	// Must not begin or end with a /.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/cluster/terraform/v1alpha1.CloudSecretBackend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/cluster/terraform/v1alpha1.CloudSecretBackend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("backend",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -110,6 +126,16 @@ type CloudSecretRoleParameters struct {
 	// Selector for a CloudSecretBackend in terraform to populate backend.
 	// +kubebuilder:validation:Optional
 	BackendSelector *v1.Selector `json:"backendSelector,omitempty" tf:"-"`
+
+	// The type of credential to generate. Valid values are 'team', 'team_legacy', 'user', or 'organization'. Can only create multiple-team tokens with team.
+	// The type of credential to generate. Valid values are 'team', 'team_legacy', 'user', or 'organization'.
+	// +kubebuilder:validation:Optional
+	CredentialType *string `json:"credentialType,omitempty" tf:"credential_type,omitempty"`
+
+	// Description of the role. Only valid with team or user credential types.
+	// Description of the role. Only valid with 'team' or 'user' credential types.
+	// +kubebuilder:validation:Optional
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// Maximum TTL for leases associated with this role, in seconds.
 	// Maximum allowed lease for generated credentials. If not set or set to 0, will use system default.

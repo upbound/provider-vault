@@ -19,7 +19,7 @@ type AuthBackendConfigInitParameters struct {
 	// The path the Azure auth backend being configured was
 	// mounted at.  Defaults to azure.
 	// Unique name of the auth backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/namespaced/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
@@ -37,9 +37,22 @@ type AuthBackendConfigInitParameters struct {
 	ClientIDSecretRef *v1.LocalSecretKeySelector `json:"clientIdSecretRef,omitempty" tf:"-"`
 
 	// The client secret for credentials to query the
-	// Azure APIs.
-	// The client secret for credentials to query the Azure APIs
+	// Azure APIs. Mutually exclusive with client_secret_wo. Consider using client_secret_wo instead for enhanced security.
+	// The client secret for credentials to query the Azure APIs. Mutually exclusive with 'client_secret_wo'.
 	ClientSecretSecretRef *v1.LocalSecretKeySelector `json:"clientSecretSecretRef,omitempty" tf:"-"`
+
+	// The client secret for credentials to query the Azure APIs,
+	// provided as a write-only field.
+	// Mutually exclusive with client_secret. Must be used with client_secret_wo_version.
+	// To rotate the secret, update the value and increment client_secret_wo_version.
+	// The client secret for credentials to query the Azure APIs. This field is write-only and will never be stored in state. Mutually exclusive with 'client_secret'. Requires 'client_secret_wo_version' to trigger updates.
+	ClientSecretWoSecretRef *v1.LocalSecretKeySelector `json:"clientSecretWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for the write-only client secret.
+	// Increment this value to trigger an update of the client secret in Vault.
+	// Required when using client_secret_wo.
+	// Version counter for the write-only client secret. Increment this value to trigger rotation of the client secret. Required when using 'client_secret_wo'.
+	ClientSecretWoVersion *float64 `json:"clientSecretWoVersion,omitempty" tf:"client_secret_wo_version,omitempty"`
 
 	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
 	// Available only for Vault Enterprise
@@ -63,6 +76,16 @@ type AuthBackendConfigInitParameters struct {
 	// The TTL of generated identity tokens in seconds.
 	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
+	// Maximum number of retries for Azure API requests.
+	// Defaults to 3.
+	// Maximum number of retries for Azure API requests. Defaults to 3.
+	MaxRetries *float64 `json:"maxRetries,omitempty" tf:"max_retries,omitempty"`
+
+	// The maximum delay in seconds between retries for Azure API requests.
+	// Defaults to 60.
+	// The maximum delay in seconds between retries for Azure API requests. Defaults to 60.
+	MaxRetryDelay *float64 `json:"maxRetryDelay,omitempty" tf:"max_retry_delay,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -74,6 +97,11 @@ type AuthBackendConfigInitParameters struct {
 	// Azure Active Directory.
 	// The configured URL for the application registered in Azure Active Directory.
 	Resource *string `json:"resource,omitempty" tf:"resource,omitempty"`
+
+	// The initial delay in seconds between retries for Azure API requests.
+	// Defaults to 4.
+	// The initial delay in seconds between retries for Azure API requests. Defaults to 4.
+	RetryDelay *float64 `json:"retryDelay,omitempty" tf:"retry_delay,omitempty"`
 
 	// The amount of time in seconds Vault should wait before rotating the root credential.
 	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
@@ -107,6 +135,12 @@ type AuthBackendConfigObservation struct {
 	// Unique name of the auth backend to configure.
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
 
+	// Version counter for the write-only client secret.
+	// Increment this value to trigger an update of the client secret in Vault.
+	// Required when using client_secret_wo.
+	// Version counter for the write-only client secret. Increment this value to trigger rotation of the client secret. Required when using 'client_secret_wo'.
+	ClientSecretWoVersion *float64 `json:"clientSecretWoVersion,omitempty" tf:"client_secret_wo_version,omitempty"`
+
 	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
 	// Available only for Vault Enterprise
 	// Stops rotation of the root credential until set to false.
@@ -131,6 +165,16 @@ type AuthBackendConfigObservation struct {
 	// The TTL of generated identity tokens in seconds.
 	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
+	// Maximum number of retries for Azure API requests.
+	// Defaults to 3.
+	// Maximum number of retries for Azure API requests. Defaults to 3.
+	MaxRetries *float64 `json:"maxRetries,omitempty" tf:"max_retries,omitempty"`
+
+	// The maximum delay in seconds between retries for Azure API requests.
+	// Defaults to 60.
+	// The maximum delay in seconds between retries for Azure API requests. Defaults to 60.
+	MaxRetryDelay *float64 `json:"maxRetryDelay,omitempty" tf:"max_retry_delay,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -142,6 +186,11 @@ type AuthBackendConfigObservation struct {
 	// Azure Active Directory.
 	// The configured URL for the application registered in Azure Active Directory.
 	Resource *string `json:"resource,omitempty" tf:"resource,omitempty"`
+
+	// The initial delay in seconds between retries for Azure API requests.
+	// Defaults to 4.
+	// The initial delay in seconds between retries for Azure API requests. Defaults to 4.
+	RetryDelay *float64 `json:"retryDelay,omitempty" tf:"retry_delay,omitempty"`
 
 	// The amount of time in seconds Vault should wait before rotating the root credential.
 	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.
@@ -168,7 +217,7 @@ type AuthBackendConfigParameters struct {
 	// The path the Azure auth backend being configured was
 	// mounted at.  Defaults to azure.
 	// Unique name of the auth backend to configure.
-	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v3/apis/namespaced/auth/v1alpha1.Backend
+	// +crossplane:generate:reference:type=github.com/upbound/provider-vault/v4/apis/namespaced/auth/v1alpha1.Backend
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("path",false)
 	// +kubebuilder:validation:Optional
 	Backend *string `json:"backend,omitempty" tf:"backend,omitempty"`
@@ -188,10 +237,25 @@ type AuthBackendConfigParameters struct {
 	ClientIDSecretRef *v1.LocalSecretKeySelector `json:"clientIdSecretRef,omitempty" tf:"-"`
 
 	// The client secret for credentials to query the
-	// Azure APIs.
-	// The client secret for credentials to query the Azure APIs
+	// Azure APIs. Mutually exclusive with client_secret_wo. Consider using client_secret_wo instead for enhanced security.
+	// The client secret for credentials to query the Azure APIs. Mutually exclusive with 'client_secret_wo'.
 	// +kubebuilder:validation:Optional
 	ClientSecretSecretRef *v1.LocalSecretKeySelector `json:"clientSecretSecretRef,omitempty" tf:"-"`
+
+	// The client secret for credentials to query the Azure APIs,
+	// provided as a write-only field.
+	// Mutually exclusive with client_secret. Must be used with client_secret_wo_version.
+	// To rotate the secret, update the value and increment client_secret_wo_version.
+	// The client secret for credentials to query the Azure APIs. This field is write-only and will never be stored in state. Mutually exclusive with 'client_secret'. Requires 'client_secret_wo_version' to trigger updates.
+	// +kubebuilder:validation:Optional
+	ClientSecretWoSecretRef *v1.LocalSecretKeySelector `json:"clientSecretWoSecretRef,omitempty" tf:"-"`
+
+	// Version counter for the write-only client secret.
+	// Increment this value to trigger an update of the client secret in Vault.
+	// Required when using client_secret_wo.
+	// Version counter for the write-only client secret. Increment this value to trigger rotation of the client secret. Required when using 'client_secret_wo'.
+	// +kubebuilder:validation:Optional
+	ClientSecretWoVersion *float64 `json:"clientSecretWoVersion,omitempty" tf:"client_secret_wo_version,omitempty"`
 
 	// Cancels all upcoming rotations of the root credential until unset. Requires Vault Enterprise 1.19+.
 	// Available only for Vault Enterprise
@@ -219,6 +283,18 @@ type AuthBackendConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	IdentityTokenTTL *float64 `json:"identityTokenTtl,omitempty" tf:"identity_token_ttl,omitempty"`
 
+	// Maximum number of retries for Azure API requests.
+	// Defaults to 3.
+	// Maximum number of retries for Azure API requests. Defaults to 3.
+	// +kubebuilder:validation:Optional
+	MaxRetries *float64 `json:"maxRetries,omitempty" tf:"max_retries,omitempty"`
+
+	// The maximum delay in seconds between retries for Azure API requests.
+	// Defaults to 60.
+	// The maximum delay in seconds between retries for Azure API requests. Defaults to 60.
+	// +kubebuilder:validation:Optional
+	MaxRetryDelay *float64 `json:"maxRetryDelay,omitempty" tf:"max_retry_delay,omitempty"`
+
 	// The namespace to provision the resource in.
 	// The value should not contain leading or trailing forward slashes.
 	// The namespace is always relative to the provider's configured namespace.
@@ -232,6 +308,12 @@ type AuthBackendConfigParameters struct {
 	// The configured URL for the application registered in Azure Active Directory.
 	// +kubebuilder:validation:Optional
 	Resource *string `json:"resource,omitempty" tf:"resource,omitempty"`
+
+	// The initial delay in seconds between retries for Azure API requests.
+	// Defaults to 4.
+	// The initial delay in seconds between retries for Azure API requests. Defaults to 4.
+	// +kubebuilder:validation:Optional
+	RetryDelay *float64 `json:"retryDelay,omitempty" tf:"retry_delay,omitempty"`
 
 	// The amount of time in seconds Vault should wait before rotating the root credential.
 	// A zero value tells Vault not to rotate the root credential. The minimum rotation period is 10 seconds. Requires Vault Enterprise 1.19+.

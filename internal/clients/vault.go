@@ -19,8 +19,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	tfsdk "github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
-	clusterv1beta1 "github.com/upbound/provider-vault/v3/apis/cluster/v1beta1"
-	namespacedv1beta1 "github.com/upbound/provider-vault/v3/apis/namespaced/v1beta1"
+	clusterv1beta1 "github.com/upbound/provider-vault/v4/apis/cluster/v1beta1"
+	namespacedv1beta1 "github.com/upbound/provider-vault/v4/apis/namespaced/v1beta1"
 )
 
 const (
@@ -280,8 +280,8 @@ func resolveProviderConfigModern(ctx context.Context, crClient client.Client, mg
 	switch pc := pcObj.(type) {
 	case *namespacedv1beta1.ProviderConfig:
 		pcSpec = pc.Spec
-		if pcSpec.Credentials.CommonCredentialSelectors.SecretRef != nil {
-			pcSpec.Credentials.CommonCredentialSelectors.SecretRef.Namespace = mg.GetNamespace()
+		if pcSpec.Credentials.SecretRef != nil {
+			pcSpec.Credentials.SecretRef.Namespace = mg.GetNamespace()
 		}
 	case *namespacedv1beta1.ClusterProviderConfig:
 		pcSpec = pc.Spec
