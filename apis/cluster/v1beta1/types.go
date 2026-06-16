@@ -95,6 +95,11 @@ type ProviderConfigSpec struct {
 	// +optional
 	Role *string `json:"role,omitempty"`
 
+	// Mount path of the auth method.
+	// +optional
+	// +kubebuilder:default="kubernetes"
+	MountPath *string `json:"mountPath,omitempty"`
+
 	// Credentials required to authenticate to this provider.
 	// There are many options to authenticate. They include
 	// - token - (Optional) Vault token that will be used
