@@ -48,7 +48,7 @@ GO_SUBDIRS += cmd internal apis generate
 # ====================================================================================
 # Setup Kubernetes tools
 
-KIND_VERSION = v0.30.0
+KIND_VERSION = v0.32.0
 UPTEST_VERSION = v2.2.0
 YQ_VERSION = v4.40.5
 RELDIR = "examples/release"
