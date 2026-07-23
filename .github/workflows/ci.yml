@@ -196,7 +196,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   local-deploy:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
 
