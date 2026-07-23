@@ -15,7 +15,7 @@ require (
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.40.0
 	github.com/hashicorp/terraform-provider-vault v1.9.1-0.20250709180749-dc098d37d2bc
 	github.com/pkg/errors v0.9.1
-	google.golang.org/grpc v1.80.0
+	google.golang.org/grpc v1.82.1
 	k8s.io/api v0.35.3
 	k8s.io/apiextensions-apiserver v0.35.0
 	k8s.io/apimachinery v0.35.3
