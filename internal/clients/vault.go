@@ -18,6 +18,7 @@ import (
 	xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	tfsdk "github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-vault/xpprovider"
 
 	clusterv1beta1 "github.com/upbound/provider-vault/v4/apis/cluster/v1beta1"
 	namespacedv1beta1 "github.com/upbound/provider-vault/v4/apis/namespaced/v1beta1"
@@ -209,6 +210,7 @@ func configureNoForkVaultClient(ctx context.Context, ps *terraform.Setup, p sche
 		return errors.Errorf("failed to configure the provider: %v", diag)
 	}
 	ps.Meta = p.Meta()
+	ps.FrameworkProvider = xpprovider.FrameworkProvider(&p)
 	return nil
 }
 
