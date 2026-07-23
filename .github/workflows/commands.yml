@@ -24,7 +24,7 @@ jobs:
         fetch-depth: 0
 
     - name: Open Backport PR
-      uses: zeebe-io/backport-action@v3
+      uses: zeebe-io/backport-action@2e830a1d0b8269505846ddd407a70876913ad1f8 # v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         github_workspace: ${{ github.workspace }}
