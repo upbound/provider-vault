@@ -771,8 +771,8 @@ github.com/tidwall/sjson v1.2.5/go.mod h1:Fvgq9kS/6ociJEDnK0Fk1cpYF4FIW6ZF7LAe+6
 github.com/tmccombs/hcl2json v0.3.3 h1:+DLNYqpWE0CsOQiEZu+OZm5ZBImake3wtITYxQ8uLFQ=
 github.com/tmccombs/hcl2json v0.3.3/go.mod h1:Y2chtz2x9bAeRTvSibVRVgbLJhLJXKlUeIvjeVdnm4w=
 github.com/tv42/httpunix v0.0.0-20150427012821-b75d8614f926/go.mod h1:9ESjWnEqriFuLhtthL60Sar/7RFoluCcXsuvEwTV5KM=
-github.com/upbound/terraform-provider-vault v0.0.0-20260609124043-4bb4f076a4b5 h1:5YuwCZH7uYqiEyHOsE+PKKof6Tzi7/HpqWcPTrRaK+s=
-github.com/upbound/terraform-provider-vault v0.0.0-20260609124043-4bb4f076a4b5/go.mod h1:7U/YuNJ+PpisSCDosMTulfOrPl17b3lfLAg/JeT6p4k=
+github.com/upbound/terraform-provider-vault v0.0.0-20260902052604-3bc68cca9d21 h1:eqoHBeZ2KQUBa+44Y05rZ9Nx3NDt6EDBkYckFhIcYdY=
+github.com/upbound/terraform-provider-vault v0.0.0-20260902052604-3bc68cca9d21/go.mod h1:7U/YuNJ+PpisSCDosMTulfOrPl17b3lfLAg/JeT6p4k=
 github.com/upbound/uptest v0.12.1-0.20260728095952-c230a8044006 h1:j4vaCxXdTtUmNUMX8UAXbDtgE/Tw6s2WLEJryUyBGiY=
 github.com/upbound/uptest v0.12.1-0.20260728095952-c230a8044006/go.mod h1:cuujm9YkUiUW2CC0XRIh6bVPDjfS8kbGI9t5T5TSJzk=
 github.com/vmihailenco/msgpack v3.3.3+incompatible/go.mod h1:fy3FlTQTDXWkZ7Bh6AcGMlsjHatGryHQYUTf1ShIgkk=
