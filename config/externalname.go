@@ -4,7 +4,13 @@ Copyright 2022 Upbound Inc.
 
 package config
 
-import "github.com/crossplane/upjet/v2/pkg/config"
+import (
+	"context"
+	"strings"
+
+	"github.com/crossplane/upjet/v2/pkg/config"
+	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
+)
 
 // ExternalNameConfigs contains all external name configurations for this
 // provider.
@@ -138,7 +144,42 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 }
 
 var TerraformPluginFrameworkExternalNameConfigs = map[string]config.ExternalName{
-	"vault_password_policy": config.IdentifierFromProvider,
+	"vault_password_policy": vaultPasswordPolicy(),
+}
+
+// vaultPasswordPolicy returns the external name configuration for
+// vault_password_policy TF resource.
+// Ideally, this resource should have been NameAsIdentifier,
+// however, keeping it unnormalized to preserve backward compatibility.
+func vaultPasswordPolicy() config.ExternalName { //nolint:gocyclo
+	e := config.IdentifierFromProvider
+	e.SetIdentifierArgumentFn = func(base map[string]any, externalName string) {
+		if externalName != "" {
+			base["name"] = externalName
+		}
+
+	}
+	e.GetIDFn = func(_ context.Context, externalName string, parameters map[string]any, _ map[string]any) (string, error) {
+		if externalName == "" {
+			return parameters["name"].(string), nil
+		}
+		return externalName, nil
+	}
+	// NOTE: Upstream vault client impl surfaces 404s as nil struct + nil error
+	// ref: https://github.com/hashicorp/vault/blob/99d122d00c97ba40c6c8965f02edcb0064030c78/api/logical.go#L154
+	// Upstream TF provider Read impl always surfaces this as an error-severity diagnostics
+	// ref: https://github.com/hashicorp/terraform-provider-vault/blob/0f882c6450f1405418e6349e35354f2209a3af5c/internal/vault/sys/password_policy.go#L175-L178
+	e.IsNotFoundDiagnosticFn = func(diags []*tfprotov6.Diagnostic) bool {
+		for _, diag := range diags {
+			if diag.Severity == tfprotov6.DiagnosticSeverityError &&
+				diag.Summary == "Unable to Read Resource from Vault" &&
+				strings.HasSuffix(diag.Detail, "Vault response was nil") {
+				return true
+			}
+		}
+		return false
+	}
+	return e
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the
