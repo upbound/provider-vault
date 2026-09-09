@@ -295,4 +295,4 @@ require (
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )
 
-replace github.com/hashicorp/terraform-provider-vault => github.com/upbound/terraform-provider-vault v0.0.0-20260609124043-4bb4f076a4b5 // v5.9.0-upjet.1
+replace github.com/hashicorp/terraform-provider-vault => github.com/upbound/terraform-provider-vault v0.0.0-20260902052604-3bc68cca9d21 // v5.9.0-upjet.2
