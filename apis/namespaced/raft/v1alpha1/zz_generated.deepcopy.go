@@ -9,6 +9,7 @@ Copyright 2022 Upbound Inc.
 package v1alpha1
 
 import (
+	"github.com/crossplane/crossplane/apis/v2/core/v2"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -356,19 +357,19 @@ func (in *SnapshotAgentConfigInitParameters) DeepCopyInto(out *SnapshotAgentConf
 		*out = new(bool)
 		**out = **in
 	}
-	if in.AwsSecretAccessKey != nil {
-		in, out := &in.AwsSecretAccessKey, &out.AwsSecretAccessKey
-		*out = new(string)
+	if in.AwsSecretAccessKeySecretRef != nil {
+		in, out := &in.AwsSecretAccessKeySecretRef, &out.AwsSecretAccessKeySecretRef
+		*out = new(v2.LocalSecretKeySelector)
 		**out = **in
 	}
-	if in.AwsSessionToken != nil {
-		in, out := &in.AwsSessionToken, &out.AwsSessionToken
-		*out = new(string)
+	if in.AwsSessionTokenSecretRef != nil {
+		in, out := &in.AwsSessionTokenSecretRef, &out.AwsSessionTokenSecretRef
+		*out = new(v2.LocalSecretKeySelector)
 		**out = **in
 	}
-	if in.AzureAccountKey != nil {
-		in, out := &in.AzureAccountKey, &out.AzureAccountKey
-		*out = new(string)
+	if in.AzureAccountKeySecretRef != nil {
+		in, out := &in.AzureAccountKeySecretRef, &out.AzureAccountKeySecretRef
+		*out = new(v2.LocalSecretKeySelector)
 		**out = **in
 	}
 	if in.AzureAccountName != nil {
@@ -421,9 +422,9 @@ func (in *SnapshotAgentConfigInitParameters) DeepCopyInto(out *SnapshotAgentConf
 		*out = new(string)
 		**out = **in
 	}
-	if in.GoogleServiceAccountKey != nil {
-		in, out := &in.GoogleServiceAccountKey, &out.GoogleServiceAccountKey
-		*out = new(string)
+	if in.GoogleServiceAccountKeySecretRef != nil {
+		in, out := &in.GoogleServiceAccountKeySecretRef, &out.GoogleServiceAccountKeySecretRef
+		*out = new(v2.LocalSecretKeySelector)
 		**out = **in
 	}
 	if in.IntervalSeconds != nil {
@@ -558,21 +559,6 @@ func (in *SnapshotAgentConfigObservation) DeepCopyInto(out *SnapshotAgentConfigO
 		*out = new(bool)
 		**out = **in
 	}
-	if in.AwsSecretAccessKey != nil {
-		in, out := &in.AwsSecretAccessKey, &out.AwsSecretAccessKey
-		*out = new(string)
-		**out = **in
-	}
-	if in.AwsSessionToken != nil {
-		in, out := &in.AwsSessionToken, &out.AwsSessionToken
-		*out = new(string)
-		**out = **in
-	}
-	if in.AzureAccountKey != nil {
-		in, out := &in.AzureAccountKey, &out.AzureAccountKey
-		*out = new(string)
-		**out = **in
-	}
 	if in.AzureAccountName != nil {
 		in, out := &in.AzureAccountName, &out.AzureAccountName
 		*out = new(string)
@@ -620,11 +606,6 @@ func (in *SnapshotAgentConfigObservation) DeepCopyInto(out *SnapshotAgentConfigO
 	}
 	if in.GoogleGcsBucket != nil {
 		in, out := &in.GoogleGcsBucket, &out.GoogleGcsBucket
-		*out = new(string)
-		**out = **in
-	}
-	if in.GoogleServiceAccountKey != nil {
-		in, out := &in.GoogleServiceAccountKey, &out.GoogleServiceAccountKey
 		*out = new(string)
 		**out = **in
 	}
@@ -733,19 +714,19 @@ func (in *SnapshotAgentConfigParameters) DeepCopyInto(out *SnapshotAgentConfigPa
 		*out = new(bool)
 		**out = **in
 	}
-	if in.AwsSecretAccessKey != nil {
-		in, out := &in.AwsSecretAccessKey, &out.AwsSecretAccessKey
-		*out = new(string)
+	if in.AwsSecretAccessKeySecretRef != nil {
+		in, out := &in.AwsSecretAccessKeySecretRef, &out.AwsSecretAccessKeySecretRef
+		*out = new(v2.LocalSecretKeySelector)
 		**out = **in
 	}
-	if in.AwsSessionToken != nil {
-		in, out := &in.AwsSessionToken, &out.AwsSessionToken
-		*out = new(string)
+	if in.AwsSessionTokenSecretRef != nil {
+		in, out := &in.AwsSessionTokenSecretRef, &out.AwsSessionTokenSecretRef
+		*out = new(v2.LocalSecretKeySelector)
 		**out = **in
 	}
-	if in.AzureAccountKey != nil {
-		in, out := &in.AzureAccountKey, &out.AzureAccountKey
-		*out = new(string)
+	if in.AzureAccountKeySecretRef != nil {
+		in, out := &in.AzureAccountKeySecretRef, &out.AzureAccountKeySecretRef
+		*out = new(v2.LocalSecretKeySelector)
 		**out = **in
 	}
 	if in.AzureAccountName != nil {
@@ -798,9 +779,9 @@ func (in *SnapshotAgentConfigParameters) DeepCopyInto(out *SnapshotAgentConfigPa
 		*out = new(string)
 		**out = **in
 	}
-	if in.GoogleServiceAccountKey != nil {
-		in, out := &in.GoogleServiceAccountKey, &out.GoogleServiceAccountKey
-		*out = new(string)
+	if in.GoogleServiceAccountKeySecretRef != nil {
+		in, out := &in.GoogleServiceAccountKeySecretRef, &out.GoogleServiceAccountKeySecretRef
+		*out = new(v2.LocalSecretKeySelector)
 		**out = **in
 	}
 	if in.IntervalSeconds != nil {

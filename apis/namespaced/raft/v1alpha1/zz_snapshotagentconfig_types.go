@@ -62,15 +62,15 @@ type SnapshotAgentConfigInitParameters struct {
 
 	// AWS secret access key.
 	// AWS secret access key.
-	AwsSecretAccessKey *string `json:"awsSecretAccessKey,omitempty" tf:"aws_secret_access_key,omitempty"`
+	AwsSecretAccessKeySecretRef *v2.LocalSecretKeySelector `json:"awsSecretAccessKeySecretRef,omitempty" tf:"-"`
 
 	// AWS session token.
 	// AWS session token.
-	AwsSessionToken *string `json:"awsSessionToken,omitempty" tf:"aws_session_token,omitempty"`
+	AwsSessionTokenSecretRef *v2.LocalSecretKeySelector `json:"awsSessionTokenSecretRef,omitempty" tf:"-"`
 
 	// Azure account key. Required when azure_auth_mode = "shared".
 	// Azure account key. Required when azure_auth_mode is 'shared'.
-	AzureAccountKey *string `json:"azureAccountKey,omitempty" tf:"azure_account_key,omitempty"`
+	AzureAccountKeySecretRef *v2.LocalSecretKeySelector `json:"azureAccountKeySecretRef,omitempty" tf:"-"`
 
 	// Azure account name.
 	// Azure account name.
@@ -123,7 +123,7 @@ type SnapshotAgentConfigInitParameters struct {
 	// Google service account key in JSON format.
 	// The raw value looks like this:
 	// Google service account key in JSON format.
-	GoogleServiceAccountKey *string `json:"googleServiceAccountKey,omitempty" tf:"google_service_account_key,omitempty"`
+	GoogleServiceAccountKeySecretRef *v2.LocalSecretKeySelector `json:"googleServiceAccountKeySecretRef,omitempty" tf:"-"`
 
 	// Time (in seconds) between snapshots.
 	// Number of seconds between snapshots.
@@ -213,18 +213,6 @@ type SnapshotAgentConfigObservation struct {
 	// Use AES256 to encrypt bucket contents.
 	AwsS3ServerSideEncryption *bool `json:"awsS3ServerSideEncryption,omitempty" tf:"aws_s3_server_side_encryption,omitempty"`
 
-	// AWS secret access key.
-	// AWS secret access key.
-	AwsSecretAccessKey *string `json:"awsSecretAccessKey,omitempty" tf:"aws_secret_access_key,omitempty"`
-
-	// AWS session token.
-	// AWS session token.
-	AwsSessionToken *string `json:"awsSessionToken,omitempty" tf:"aws_session_token,omitempty"`
-
-	// Azure account key. Required when azure_auth_mode = "shared".
-	// Azure account key. Required when azure_auth_mode is 'shared'.
-	AzureAccountKey *string `json:"azureAccountKey,omitempty" tf:"azure_account_key,omitempty"`
-
 	// Azure account name.
 	// Azure account name.
 	AzureAccountName *string `json:"azureAccountName,omitempty" tf:"azure_account_name,omitempty"`
@@ -272,11 +260,6 @@ type SnapshotAgentConfigObservation struct {
 	// GCS bucket to write snapshots to.
 	// GCS bucket to write snapshots to.
 	GoogleGcsBucket *string `json:"googleGcsBucket,omitempty" tf:"google_gcs_bucket,omitempty"`
-
-	// Google service account key in JSON format.
-	// The raw value looks like this:
-	// Google service account key in JSON format.
-	GoogleServiceAccountKey *string `json:"googleServiceAccountKey,omitempty" tf:"google_service_account_key,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -381,17 +364,17 @@ type SnapshotAgentConfigParameters struct {
 	// AWS secret access key.
 	// AWS secret access key.
 	// +kubebuilder:validation:Optional
-	AwsSecretAccessKey *string `json:"awsSecretAccessKey,omitempty" tf:"aws_secret_access_key,omitempty"`
+	AwsSecretAccessKeySecretRef *v2.LocalSecretKeySelector `json:"awsSecretAccessKeySecretRef,omitempty" tf:"-"`
 
 	// AWS session token.
 	// AWS session token.
 	// +kubebuilder:validation:Optional
-	AwsSessionToken *string `json:"awsSessionToken,omitempty" tf:"aws_session_token,omitempty"`
+	AwsSessionTokenSecretRef *v2.LocalSecretKeySelector `json:"awsSessionTokenSecretRef,omitempty" tf:"-"`
 
 	// Azure account key. Required when azure_auth_mode = "shared".
 	// Azure account key. Required when azure_auth_mode is 'shared'.
 	// +kubebuilder:validation:Optional
-	AzureAccountKey *string `json:"azureAccountKey,omitempty" tf:"azure_account_key,omitempty"`
+	AzureAccountKeySecretRef *v2.LocalSecretKeySelector `json:"azureAccountKeySecretRef,omitempty" tf:"-"`
 
 	// Azure account name.
 	// Azure account name.
@@ -455,7 +438,7 @@ type SnapshotAgentConfigParameters struct {
 	// The raw value looks like this:
 	// Google service account key in JSON format.
 	// +kubebuilder:validation:Optional
-	GoogleServiceAccountKey *string `json:"googleServiceAccountKey,omitempty" tf:"google_service_account_key,omitempty"`
+	GoogleServiceAccountKeySecretRef *v2.LocalSecretKeySelector `json:"googleServiceAccountKeySecretRef,omitempty" tf:"-"`
 
 	// Time (in seconds) between snapshots.
 	// Number of seconds between snapshots.
