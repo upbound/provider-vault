@@ -1,0 +1,18 @@
+apiVersion: plugin.vault.upbound.io/v1alpha1
+kind: Runtime
+metadata:
+  annotations:
+    meta.upbound.io/example-id: plugin/v1alpha1/runtime
+  labels:
+    testing.upbound.io/example-name: gvisor
+  name: gvisor
+spec:
+  forProvider:
+    type: container
+    name: gvisor
+    ociRuntime: runsc
+    cpuNanos: 1000000000
+    memoryBytes: 536870912
+    rootless: true
+  providerConfigRef:
+    name: vault-provider-config

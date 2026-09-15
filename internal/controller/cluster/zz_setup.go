@@ -110,6 +110,9 @@ import (
 	secretbackendrootcert "github.com/upbound/provider-vault/v4/internal/controller/cluster/pki/secretbackendrootcert"
 	secretbackendrootsignintermediate "github.com/upbound/provider-vault/v4/internal/controller/cluster/pki/secretbackendrootsignintermediate"
 	secretbackendsign "github.com/upbound/provider-vault/v4/internal/controller/cluster/pki/secretbackendsign"
+	pinnedversion "github.com/upbound/provider-vault/v4/internal/controller/cluster/plugin/pinnedversion"
+	plugin "github.com/upbound/provider-vault/v4/internal/controller/cluster/plugin/plugin"
+	runtime "github.com/upbound/provider-vault/v4/internal/controller/cluster/plugin/runtime"
 	providerconfig "github.com/upbound/provider-vault/v4/internal/controller/cluster/providerconfig"
 	leasecount "github.com/upbound/provider-vault/v4/internal/controller/cluster/quota/leasecount"
 	ratelimit "github.com/upbound/provider-vault/v4/internal/controller/cluster/quota/ratelimit"
@@ -241,6 +244,9 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		secretbackendrootcert.Setup,
 		secretbackendrootsignintermediate.Setup,
 		secretbackendsign.Setup,
+		pinnedversion.Setup,
+		plugin.Setup,
+		runtime.Setup,
 		providerconfig.Setup,
 		leasecount.Setup,
 		ratelimit.Setup,
@@ -378,6 +384,9 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		secretbackendrootcert.SetupGated,
 		secretbackendrootsignintermediate.SetupGated,
 		secretbackendsign.SetupGated,
+		pinnedversion.SetupGated,
+		plugin.SetupGated,
+		runtime.SetupGated,
 		providerconfig.SetupGated,
 		leasecount.SetupGated,
 		ratelimit.SetupGated,

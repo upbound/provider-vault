@@ -39,14 +39,14 @@ echo_info "Adding Hashicorp repo"
 helm repo add hashicorp https://helm.releases.hashicorp.com --force-update
 
 echo_info "Checking for HashiCorp Vault installation"
-VAULT_DEPLOYMENT_STATUS=$(helm status vault -n vault|grep STATUS || true)
+VAULT_DEPLOYMENT_STATUS=$(helm status vault -n vault | grep -m1 "^STATUS:" || true)
 echo_info "$VAULT_DEPLOYMENT_STATUS"
 if [[ "$VAULT_DEPLOYMENT_STATUS" == "STATUS: deployed" ]]; then
     echo "Uninstalling Hashicorp vault; need clean installation"
     helm uninstall vault -n vault --wait
 fi
 
-helm install vault hashicorp/vault -n vault
+helm install vault hashicorp/vault -n vault -f "${SCRIPT_DIR}/vault-values.yaml"
 
 echo_info "Waiting for vault deployments"
 ${KUBECTL} -n vault wait --for=condition=Available deployment --all --timeout=5m

@@ -1,0 +1,44 @@
+# Helm values for the Vault instance used by the uptest e2e suite.
+# Adds a plugin directory with a community plugin binary so that the
+# plugin.vault.upbound.io examples (Plugin, PinnedVersion) can register it.
+server:
+  standalone:
+    enabled: true
+    config: |
+      ui = true
+
+      listener "tcp" {
+        tls_disable = 1
+        address = "[::]:8200"
+        cluster_address = "[::]:8201"
+      }
+      storage "file" {
+        path = "/vault/data"
+      }
+      plugin_directory = "/vault/plugins"
+  volumes:
+    - name: plugins
+      emptyDir: {}
+  volumeMounts:
+    - name: plugins
+      mountPath: /vault/plugins
+      readOnly: true
+  extraInitContainers:
+    - name: fetch-plugins
+      image: alpine:3.22
+      command: [sh, -ec]
+      args:
+        - |
+          case "$(uname -m)" in
+            x86_64) ARCH=amd64 ;;
+            aarch64) ARCH=arm64 ;;
+            *) echo "unsupported architecture: $(uname -m)"; exit 1 ;;
+          esac
+          PLUGIN=vault-plugin-auth-jwt
+          VERSION=0.26.4
+          wget -qO "/tmp/${PLUGIN}.zip" "https://releases.hashicorp.com/${PLUGIN}/${VERSION}/${PLUGIN}_${VERSION}_linux_${ARCH}.zip"
+          unzip -o "/tmp/${PLUGIN}.zip" "${PLUGIN}" -d /vault/plugins
+          chmod 0755 "/vault/plugins/${PLUGIN}"
+      volumeMounts:
+        - name: plugins
+          mountPath: /vault/plugins

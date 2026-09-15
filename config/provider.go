@@ -20,6 +20,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
+	"github.com/upbound/provider-vault/v4/config/plugin"
 	"github.com/upbound/provider-vault/v4/config/templates"
 	"github.com/upbound/provider-vault/v4/config/vault"
 )
@@ -90,6 +91,7 @@ func GetProvider(_ context.Context, sdkProvider *tfschema.Provider, fwProvider p
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
+		plugin.Configure,
 		vault.Configure,
 	} {
 		configure(pc)
@@ -134,6 +136,7 @@ func GetProviderNamespaced(_ context.Context, sdkProvider *tfschema.Provider, fw
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
+		plugin.Configure,
 		vault.Configure,
 	} {
 		configure(pc)

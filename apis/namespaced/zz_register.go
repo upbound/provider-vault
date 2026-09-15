@@ -37,6 +37,7 @@ import (
 	v1alpha1okta "github.com/upbound/provider-vault/v4/apis/namespaced/okta/v1alpha1"
 	v1alpha1password "github.com/upbound/provider-vault/v4/apis/namespaced/password/v1alpha1"
 	v1alpha1pki "github.com/upbound/provider-vault/v4/apis/namespaced/pki/v1alpha1"
+	v1alpha1plugin "github.com/upbound/provider-vault/v4/apis/namespaced/plugin/v1alpha1"
 	v1alpha1quota "github.com/upbound/provider-vault/v4/apis/namespaced/quota/v1alpha1"
 	v1alpha1rabbitmq "github.com/upbound/provider-vault/v4/apis/namespaced/rabbitmq/v1alpha1"
 	v1alpha1raft "github.com/upbound/provider-vault/v4/apis/namespaced/raft/v1alpha1"
@@ -81,6 +82,7 @@ func init() {
 		v1alpha1okta.SchemeBuilder.AddToScheme,
 		v1alpha1password.SchemeBuilder.AddToScheme,
 		v1alpha1pki.SchemeBuilder.AddToScheme,
+		v1alpha1plugin.SchemeBuilder.AddToScheme,
 		v1alpha1quota.SchemeBuilder.AddToScheme,
 		v1alpha1rabbitmq.SchemeBuilder.AddToScheme,
 		v1alpha1raft.SchemeBuilder.AddToScheme,

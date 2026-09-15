@@ -1,0 +1,15 @@
+apiVersion: plugin.vault.m.upbound.io/v1alpha1
+kind: Runtime
+metadata:
+  annotations:
+    meta.upbound.io/example-id: plugin/v1alpha1/runtime
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    name: example-runtime
+    ociRuntime: runc
+    rootless: false
+    type: container

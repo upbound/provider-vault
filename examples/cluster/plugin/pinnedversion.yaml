@@ -1,0 +1,36 @@
+apiVersion: plugin.vault.upbound.io/v1alpha1
+kind: PinnedVersion
+metadata:
+  annotations:
+    meta.upbound.io/example-id: plugin/v1alpha1/pinnedversion
+  labels:
+    testing.upbound.io/example-name: jwt-pinned
+  name: jwt-pinned
+spec:
+  forProvider:
+    typeRef:
+      name: jwt-pinned
+    nameRef:
+      name: jwt-pinned
+    versionRef:
+      name: jwt-pinned
+  providerConfigRef:
+    name: vault-provider-config
+---
+apiVersion: plugin.vault.upbound.io/v1alpha1
+kind: Plugin
+metadata:
+  annotations:
+    meta.upbound.io/example-id: plugin/v1alpha1/pinnedversion
+  labels:
+    testing.upbound.io/example-name: jwt-pinned
+  name: jwt-pinned
+spec:
+  forProvider:
+    type: auth
+    name: jwt-pinned
+    version: v0.26.4
+    command: vault-plugin-auth-jwt
+    sha256: dd2a0d360563d480e472c268196140799c5d57282fce9ccd4b44dec0314b300c
+  providerConfigRef:
+    name: vault-provider-config

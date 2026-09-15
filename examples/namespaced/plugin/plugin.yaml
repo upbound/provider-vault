@@ -1,0 +1,19 @@
+apiVersion: plugin.vault.m.upbound.io/v1alpha1
+kind: Plugin
+metadata:
+  annotations:
+    meta.upbound.io/example-id: plugin/v1alpha1/plugin
+  labels:
+    testing.upbound.io/example-name: jwt-external
+  name: jwt-external
+  namespace: vault
+spec:
+  forProvider:
+    type: auth
+    name: jwt-external
+    version: v0.26.4
+    command: vault-plugin-auth-jwt
+    sha256: dd2a0d360563d480e472c268196140799c5d57282fce9ccd4b44dec0314b300c
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: vault-provider-config

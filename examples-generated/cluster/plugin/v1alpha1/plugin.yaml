@@ -1,0 +1,13 @@
+apiVersion: plugin.vault.upbound.io/v1alpha1
+kind: Plugin
+metadata:
+  annotations:
+    meta.upbound.io/example-id: plugin/v1alpha1/plugin
+  labels:
+    testing.upbound.io/example-name: oracle
+  name: oracle
+spec:
+  forProvider:
+    name: vault-plugin-database-oracle
+    type: database
+    version: v0.13.0+ent
