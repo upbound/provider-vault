@@ -21,7 +21,7 @@ func (mg *SnapshotAgentConfig) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this SnapshotAgentConfig
 func (tr *SnapshotAgentConfig) GetConnectionDetailsMapping() map[string]string {
-	return nil
+	return map[string]string{"aws_secret_access_key": "awsSecretAccessKeySecretRef", "aws_session_token": "awsSessionTokenSecretRef", "azure_account_key": "azureAccountKeySecretRef", "google_service_account_key": "googleServiceAccountKeySecretRef"}
 }
 
 // GetObservation of this SnapshotAgentConfig

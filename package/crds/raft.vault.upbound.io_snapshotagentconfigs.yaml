@@ -128,21 +128,63 @@ spec:
                       Use AES256 to encrypt bucket contents.
                       Use AES256 to encrypt bucket contents.
                     type: boolean
-                  awsSecretAccessKey:
+                  awsSecretAccessKeySecretRef:
                     description: |-
                       AWS secret access key.
                       AWS secret access key.
-                    type: string
-                  awsSessionToken:
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  awsSessionTokenSecretRef:
                     description: |-
                       AWS session token.
                       AWS session token.
-                    type: string
-                  azureAccountKey:
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  azureAccountKeySecretRef:
                     description: |-
                       Azure account key. Required when azure_auth_mode = "shared".
                       Azure account key. Required when azure_auth_mode is 'shared'.
-                    type: string
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
                   azureAccountName:
                     description: |-
                       Azure account name.
@@ -201,12 +243,26 @@ spec:
                       GCS bucket to write snapshots to.
                       GCS bucket to write snapshots to.
                     type: string
-                  googleServiceAccountKey:
+                  googleServiceAccountKeySecretRef:
                     description: |-
                       Google service account key in JSON format.
                       The raw value looks like this:
                       Google service account key in JSON format.
-                    type: string
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
                   intervalSeconds:
                     description: |-
                       Time (in seconds) between snapshots.
@@ -323,21 +379,63 @@ spec:
                       Use AES256 to encrypt bucket contents.
                       Use AES256 to encrypt bucket contents.
                     type: boolean
-                  awsSecretAccessKey:
+                  awsSecretAccessKeySecretRef:
                     description: |-
                       AWS secret access key.
                       AWS secret access key.
-                    type: string
-                  awsSessionToken:
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  awsSessionTokenSecretRef:
                     description: |-
                       AWS session token.
                       AWS session token.
-                    type: string
-                  azureAccountKey:
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  azureAccountKeySecretRef:
                     description: |-
                       Azure account key. Required when azure_auth_mode = "shared".
                       Azure account key. Required when azure_auth_mode is 'shared'.
-                    type: string
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
                   azureAccountName:
                     description: |-
                       Azure account name.
@@ -396,12 +494,26 @@ spec:
                       GCS bucket to write snapshots to.
                       GCS bucket to write snapshots to.
                     type: string
-                  googleServiceAccountKey:
+                  googleServiceAccountKeySecretRef:
                     description: |-
                       Google service account key in JSON format.
                       The raw value looks like this:
                       Google service account key in JSON format.
-                    type: string
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
                   intervalSeconds:
                     description: |-
                       Time (in seconds) between snapshots.
@@ -613,21 +725,6 @@ spec:
                       Use AES256 to encrypt bucket contents.
                       Use AES256 to encrypt bucket contents.
                     type: boolean
-                  awsSecretAccessKey:
-                    description: |-
-                      AWS secret access key.
-                      AWS secret access key.
-                    type: string
-                  awsSessionToken:
-                    description: |-
-                      AWS session token.
-                      AWS session token.
-                    type: string
-                  azureAccountKey:
-                    description: |-
-                      Azure account key. Required when azure_auth_mode = "shared".
-                      Azure account key. Required when azure_auth_mode is 'shared'.
-                    type: string
                   azureAccountName:
                     description: |-
                       Azure account name.
@@ -685,12 +782,6 @@ spec:
                     description: |-
                       GCS bucket to write snapshots to.
                       GCS bucket to write snapshots to.
-                    type: string
-                  googleServiceAccountKey:
-                    description: |-
-                      Google service account key in JSON format.
-                      The raw value looks like this:
-                      Google service account key in JSON format.
                     type: string
                   id:
                     type: string
