@@ -53,7 +53,7 @@ UPTEST_VERSION = v2.2.0
 YQ_VERSION = v4.40.5
 RELDIR = "examples/release"
 CROSSPLANE_VERSION = 2.4.2
-CROSSPLANE_CLI_VERSION = v2.4.2
+CROSSPLANE_CLI_VERSION = v2.5.0
 
 -include build/makelib/k8s_tools.mk
 
