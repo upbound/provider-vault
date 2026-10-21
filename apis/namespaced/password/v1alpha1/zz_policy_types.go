@@ -16,7 +16,7 @@ import (
 type PolicyInitParameters struct {
 
 	// Specifies an override to the default source of entropy (randomness) used to generate the passwords. Must be one of: "", "platform", or "seal" (Vault Enterprise only). Requires Vault 1.21+.
-	// Specifies an override to the default source of entropy (randomness) used to generate the passwords. Must be one of: ”, 'platform', or 'seal'. Requires Vault 1.21+.
+	// Specifies an override to the default source of entropy (randomness) used to generate the passwords. Must be one of: '', 'platform', or 'seal'. Requires Vault 1.21+.
 	EntropySource *string `json:"entropySource,omitempty" tf:"entropy_source,omitempty"`
 
 	// The name of the password policy.
@@ -38,7 +38,7 @@ type PolicyInitParameters struct {
 type PolicyObservation struct {
 
 	// Specifies an override to the default source of entropy (randomness) used to generate the passwords. Must be one of: "", "platform", or "seal" (Vault Enterprise only). Requires Vault 1.21+.
-	// Specifies an override to the default source of entropy (randomness) used to generate the passwords. Must be one of: ”, 'platform', or 'seal'. Requires Vault 1.21+.
+	// Specifies an override to the default source of entropy (randomness) used to generate the passwords. Must be one of: '', 'platform', or 'seal'. Requires Vault 1.21+.
 	EntropySource *string `json:"entropySource,omitempty" tf:"entropy_source,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -62,7 +62,7 @@ type PolicyObservation struct {
 type PolicyParameters struct {
 
 	// Specifies an override to the default source of entropy (randomness) used to generate the passwords. Must be one of: "", "platform", or "seal" (Vault Enterprise only). Requires Vault 1.21+.
-	// Specifies an override to the default source of entropy (randomness) used to generate the passwords. Must be one of: ”, 'platform', or 'seal'. Requires Vault 1.21+.
+	// Specifies an override to the default source of entropy (randomness) used to generate the passwords. Must be one of: '', 'platform', or 'seal'. Requires Vault 1.21+.
 	// +kubebuilder:validation:Optional
 	EntropySource *string `json:"entropySource,omitempty" tf:"entropy_source,omitempty"`
 
