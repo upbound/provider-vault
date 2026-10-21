@@ -1,6 +1,6 @@
 module github.com/upbound/provider-vault/v4
 
-go 1.26.8
+go 1.26.10
 
 tool golang.org/x/tools/cmd/goimports
 
