@@ -28,7 +28,7 @@ jobs:
           do_not_skip: '["workflow_dispatch", "schedule", "push"]'
 
   report-breaking-changes:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
     steps:
@@ -60,7 +60,7 @@ jobs:
           make schema-version-diff
 
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
     steps:
@@ -103,7 +103,7 @@ jobs:
           version: ${{ env.GOLANGCI_VERSION }}
 
   check-diff:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
 
@@ -201,6 +201,13 @@ jobs:
     if: needs.detect-noop.outputs.noop != 'true'
 
     steps:
+      # Temporary workaround: ubuntu-26.04 mounts /tmp as a tmpfs capped at about 8 GiB,
+      # which makes large builds fail with "disk quota exceeded". RUNNER_TEMP lives on the
+      # root disk. Remove once GitHub's ubuntu-26.04 rollout keeps /tmp on disk.
+      # See https://github.com/actions/runner-images/issues/14777
+      - name: Keep temp files off the size-capped tmpfs /tmp of ubuntu-26.04 runners
+        run: echo "TMPDIR=$RUNNER_TEMP" >> "$GITHUB_ENV"
+
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:

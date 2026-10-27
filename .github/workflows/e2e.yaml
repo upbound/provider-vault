@@ -6,7 +6,7 @@ on:
 
 jobs:
   debug:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - name: Debug
         run: |
@@ -18,7 +18,7 @@ jobs:
     if: ${{ (github.event.comment.author_association == 'OWNER' || github.event.comment.author_association == 'MEMBER' ) &&
       github.event.issue.pull_request &&
       contains(github.event.comment.body, '/test-examples' ) }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     outputs:
       example_list: ${{ steps.get-example-list-name.outputs.example-list }}
       example_hash: ${{ steps.get-example-list-name.outputs.example-hash }}
@@ -75,7 +75,7 @@ jobs:
     if: ${{ (github.event.comment.author_association == 'OWNER' || github.event.comment.author_association == 'MEMBER' ) &&
       github.event.issue.pull_request &&
       contains(github.event.comment.body, '/test-examples' ) }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: get-example-list
     steps:
       - name: Cleanup Disk
