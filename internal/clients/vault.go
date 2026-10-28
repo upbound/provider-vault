@@ -6,9 +6,14 @@ package clients
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"os"
 	"strconv"
+	"strings"
+	"sync"
+	"time"
 
 	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
 	"github.com/crossplane/upjet/v2/pkg/terraform"
@@ -20,6 +25,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	tfsdk "github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/hashicorp/terraform-provider-vault/xpprovider"
+	"github.com/hashicorp/vault/api"
 
 	clusterv1beta1 "github.com/upbound/provider-vault/v4/apis/cluster/v1beta1"
 	namespacedv1beta1 "github.com/upbound/provider-vault/v4/apis/namespaced/v1beta1"
@@ -77,7 +83,67 @@ const (
 	serviceAccountTokenPath = "/var/run/secrets/kubernetes.io/serviceaccount/token"
 
 	credentialsSourceKubernetes xpv2.CredentialsSource = "Kubernetes"
+
+	errConfigure = "failed to configure the no-fork Vault client"
 )
+
+// tokenRefreshMargin is how long before its expiry a cached token stops being
+// reused, so that a reconcile never starts with a token about to expire.
+const tokenRefreshMargin = time.Minute
+
+// tokenReuseWithoutTTL bounds the reuse of tokens that report no TTL, such as
+// root tokens, so that the lookup still runs regularly.
+const tokenReuseWithoutTTL = 20 * time.Minute
+
+var now = time.Now
+
+// A tokenCache remembers the token the Terraform provider ended up with for a
+// given provider configuration. The Terraform provider logs in and mints a
+// child token every time it is configured, and it is configured on every
+// reconcile, so without the cache every reconcile of every resource creates
+// one or two Vault leases that are never revoked.
+type tokenCache struct {
+	mu      sync.Mutex
+	entries map[string]cachedToken
+}
+
+type cachedToken struct {
+	token     string
+	expiresAt time.Time
+}
+
+var tokens = &tokenCache{entries: map[string]cachedToken{}}
+
+func (c *tokenCache) get(key string) (string, bool) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	e, ok := c.entries[key]
+	if !ok {
+		return "", false
+	}
+	if !now().Add(tokenRefreshMargin).Before(e.expiresAt) {
+		delete(c.entries, key)
+		return "", false
+	}
+	return e.token, true
+}
+
+func (c *tokenCache) put(key, token string, expiresAt time.Time) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	for k, e := range c.entries {
+		if !now().Before(e.expiresAt) {
+			delete(c.entries, k)
+		}
+	}
+	c.entries[key] = cachedToken{token: token, expiresAt: expiresAt}
+}
+
+func (c *tokenCache) drop(key string) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	delete(c.entries, key)
+}
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
 // returns Terraform provider setup configuration
@@ -104,11 +170,93 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 			}
 		}
 
-		return ps, errors.Wrap(
-			configureNoForkVaultClient(ctx, &ps, *tfProvider),
-			"failed to configure the no-fork Vault client",
-		)
+		return configureWithCachedToken(ctx, ps, *tfProvider)
 	}
+}
+
+// configureWithCachedToken configures the Terraform provider, reusing the
+// token of an earlier login for the same configuration while it is valid. A
+// reused token is passed as the token with skip_child_token set and the
+// auth_login blocks removed, so the Terraform provider only looks the token
+// up instead of logging in and creating a child token again. If that lookup
+// fails, for example because the token was revoked, the cached entry is
+// dropped and the original configuration logs in again.
+func configureWithCachedToken(ctx context.Context, ps terraform.Setup, p schema.Provider) (terraform.Setup, error) {
+	key, err := configurationKey(ps.Configuration)
+	if err != nil {
+		return ps, errors.Wrap(err, errConfigure)
+	}
+
+	if token, ok := tokens.get(key); ok {
+		cached := ps
+		cached.Configuration = withToken(ps.Configuration, token)
+		if err := configureNoForkVaultClient(ctx, &cached, p); err == nil {
+			return cached, nil
+		}
+		tokens.drop(key)
+	}
+
+	if err := configureNoForkVaultClient(ctx, &ps, p); err != nil {
+		return ps, errors.Wrap(err, errConfigure)
+	}
+	if token, expiresAt, ok := configuredToken(ps.Meta); ok {
+		tokens.put(key, token, expiresAt)
+	}
+	return ps, nil
+}
+
+// configurationKey identifies a provider configuration, credentials included,
+// so that two ProviderConfigs only share a token when they are identical.
+func configurationKey(cfg terraform.ProviderConfiguration) (string, error) {
+	data, err := json.Marshal(cfg)
+	if err != nil {
+		return "", err
+	}
+	sum := sha256.Sum256(data)
+	return hex.EncodeToString(sum[:]), nil
+}
+
+// withToken returns a copy of the configuration that authenticates with the
+// given token instead of any auth_login block, and keeps it as is.
+func withToken(cfg terraform.ProviderConfiguration, token string) terraform.ProviderConfiguration {
+	out := make(terraform.ProviderConfiguration, len(cfg)+2)
+	for k, v := range cfg {
+		if strings.HasPrefix(k, keyAuthLogin) {
+			continue
+		}
+		out[k] = v
+	}
+	out[keyToken] = token
+	out[keySkipChildToken] = true
+	return out
+}
+
+// configuredToken returns the token the configured Terraform provider uses and
+// when it expires, read from the token itself so that a child token and a
+// login token are handled alike.
+func configuredToken(meta any) (string, time.Time, bool) {
+	m, ok := meta.(interface {
+		GetClient() (*api.Client, error)
+	})
+	if !ok {
+		return "", time.Time{}, false
+	}
+	c, err := m.GetClient()
+	if err != nil || c == nil || c.Token() == "" {
+		return "", time.Time{}, false
+	}
+	info, err := c.Auth().Token().LookupSelf()
+	if err != nil || info == nil {
+		return "", time.Time{}, false
+	}
+	ttl, err := info.TokenTTL()
+	if err != nil {
+		return "", time.Time{}, false
+	}
+	if ttl <= 0 {
+		ttl = tokenReuseWithoutTTL
+	}
+	return c.Token(), now().Add(ttl), true
 }
 
 // setProviderConfiguration translates a ProviderConfig spec into the Terraform
