@@ -57,6 +57,56 @@ func (mg *SecretBackendCert) SetWriteConnectionSecretToReference(r *xpv2.SecretR
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
+// GetCondition of this SecretBackendConfigAutoTidy.
+func (mg *SecretBackendConfigAutoTidy) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this SecretBackendConfigAutoTidy.
+func (mg *SecretBackendConfigAutoTidy) GetDeletionPolicy() xpv2.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicies of this SecretBackendConfigAutoTidy.
+func (mg *SecretBackendConfigAutoTidy) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this SecretBackendConfigAutoTidy.
+func (mg *SecretBackendConfigAutoTidy) GetProviderConfigReference() *xpv2.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this SecretBackendConfigAutoTidy.
+func (mg *SecretBackendConfigAutoTidy) GetWriteConnectionSecretToReference() *xpv2.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this SecretBackendConfigAutoTidy.
+func (mg *SecretBackendConfigAutoTidy) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this SecretBackendConfigAutoTidy.
+func (mg *SecretBackendConfigAutoTidy) SetDeletionPolicy(r xpv2.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this SecretBackendConfigAutoTidy.
+func (mg *SecretBackendConfigAutoTidy) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this SecretBackendConfigAutoTidy.
+func (mg *SecretBackendConfigAutoTidy) SetProviderConfigReference(r *xpv2.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this SecretBackendConfigAutoTidy.
+func (mg *SecretBackendConfigAutoTidy) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
 // GetCondition of this SecretBackendConfigCA.
 func (mg *SecretBackendConfigCA) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)

@@ -94,6 +94,7 @@
 "vault_okta_auth_backend_user",
 "vault_password_policy",
 "vault_pki_secret_backend_cert",
+"vault_pki_secret_backend_config_auto_tidy",
 "vault_pki_secret_backend_config_ca",
 "vault_pki_secret_backend_config_urls",
 "vault_pki_secret_backend_crl_config",

@@ -101,6 +101,7 @@ import (
 	authbackenduserokta "github.com/upbound/provider-vault/v4/internal/controller/namespaced/okta/authbackenduser"
 	policypassword "github.com/upbound/provider-vault/v4/internal/controller/namespaced/password/policy"
 	secretbackendcert "github.com/upbound/provider-vault/v4/internal/controller/namespaced/pki/secretbackendcert"
+	secretbackendconfigautotidy "github.com/upbound/provider-vault/v4/internal/controller/namespaced/pki/secretbackendconfigautotidy"
 	secretbackendconfigca "github.com/upbound/provider-vault/v4/internal/controller/namespaced/pki/secretbackendconfigca"
 	secretbackendconfigurls "github.com/upbound/provider-vault/v4/internal/controller/namespaced/pki/secretbackendconfigurls"
 	secretbackendcrlconfig "github.com/upbound/provider-vault/v4/internal/controller/namespaced/pki/secretbackendcrlconfig"
@@ -235,6 +236,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		authbackenduserokta.Setup,
 		policypassword.Setup,
 		secretbackendcert.Setup,
+		secretbackendconfigautotidy.Setup,
 		secretbackendconfigca.Setup,
 		secretbackendconfigurls.Setup,
 		secretbackendcrlconfig.Setup,
@@ -375,6 +377,7 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		authbackenduserokta.SetupGated,
 		policypassword.SetupGated,
 		secretbackendcert.SetupGated,
+		secretbackendconfigautotidy.SetupGated,
 		secretbackendconfigca.SetupGated,
 		secretbackendconfigurls.SetupGated,
 		secretbackendcrlconfig.SetupGated,
