@@ -111,6 +111,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"vault_okta_auth_backend_group":                      config.IdentifierFromProvider,
 	"vault_okta_auth_backend_user":                       config.IdentifierFromProvider,
 	"vault_pki_secret_backend_cert":                      config.IdentifierFromProvider,
+	"vault_pki_secret_backend_config_auto_tidy":          config.IdentifierFromProvider,
 	"vault_pki_secret_backend_config_ca":                 config.IdentifierFromProvider,
 	"vault_pki_secret_backend_config_urls":               config.IdentifierFromProvider,
 	"vault_pki_secret_backend_crl_config":                config.IdentifierFromProvider,
