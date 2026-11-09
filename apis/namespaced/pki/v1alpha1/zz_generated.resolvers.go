@@ -92,6 +92,50 @@ func (mg *SecretBackendCert) ResolveReferences(ctx context.Context, c client.Rea
 	return nil
 }
 
+// ResolveReferences of this SecretBackendConfigAutoTidy.
+func (mg *SecretBackendConfigAutoTidy) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Backend),
+		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.BackendRef,
+		Selector:     mg.Spec.ForProvider.BackendSelector,
+		To: reference.To{
+			List:    &v1alpha1.MountList{},
+			Managed: &v1alpha1.Mount{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Backend")
+	}
+	mg.Spec.ForProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.BackendRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Backend),
+		Extract:      resource.ExtractParamPath("path", false),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.BackendRef,
+		Selector:     mg.Spec.InitProvider.BackendSelector,
+		To: reference.To{
+			List:    &v1alpha1.MountList{},
+			Managed: &v1alpha1.Mount{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Backend")
+	}
+	mg.Spec.InitProvider.Backend = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.BackendRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this SecretBackendConfigCA.
 func (mg *SecretBackendConfigCA) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPINamespacedResolver(c, mg)

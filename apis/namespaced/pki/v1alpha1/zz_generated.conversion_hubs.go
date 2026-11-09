@@ -10,6 +10,9 @@ package v1alpha1
 func (tr *SecretBackendCert) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *SecretBackendConfigAutoTidy) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *SecretBackendConfigCA) Hub() {}
 
 // Hub marks this type as a conversion hub.
