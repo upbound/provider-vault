@@ -4,6 +4,11 @@ on:
   issue_comment:
     types: [created]
 
+permissions:
+  contents: read
+  pull-requests: read
+  statuses: write
+
 jobs:
   debug:
     runs-on: ubuntu-26.04
@@ -22,6 +27,7 @@ jobs:
     outputs:
       example_list: ${{ steps.get-example-list-name.outputs.example-list }}
       example_hash: ${{ steps.get-example-list-name.outputs.example-hash }}
+      commit_sha: ${{ steps.checkout-pr.outputs.commit-sha }}
 
     steps:
       - name: Checkout
@@ -97,12 +103,12 @@ jobs:
       - name: Checkout PR
         id: checkout-pr
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMIT_SHA: ${{ needs.get-example-list.outputs.commit_sha }}
         run: |
-          gh pr checkout ${{ github.event.issue.number }}
+          git fetch origin "pull/${{ github.event.issue.number }}/head"
+          git checkout "${COMMIT_SHA}"
           git submodule update --init --recursive
-          OUTPUT=$(git log -1 --format='%H')
-          echo "commit-sha=$OUTPUT" >> $GITHUB_OUTPUT
+          echo "commit-sha=${COMMIT_SHA}" >> $GITHUB_OUTPUT
 
       - name: Setup Go
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
@@ -120,8 +126,9 @@ jobs:
           UPTEST_TEST_DIR: ./_output/controlplane-dump
           UPTEST_DATASOURCE_PATH: .work/uptest-datasource.yaml
           UPTEST_UPDATE_PARAMETER: ""
+          UPTEST_DATASOURCE: ${{ secrets.UPTEST_DATASOURCE }}
         run: |
-          mkdir -p .work && echo "${{ secrets.UPTEST_DATASOURCE }}" > .work/uptest-datasource.yaml
+          mkdir -p .work && echo "${UPTEST_DATASOURCE}" > .work/uptest-datasource.yaml
           make e2e
 
       - name: Create Successful Status Check
