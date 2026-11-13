@@ -39,7 +39,7 @@ const (
 	keyTokenName             = "token_name"
 	keyCaCertFile            = "ca_cert_file"
 	keyCaCertDir             = "ca_cert_dir"
-	keyAuthLoginUserpass     = "auth_login_userpath"
+	keyAuthLoginUserpass     = "auth_login_userpass"
 	keyAuthLoginAWS          = "auth_login_aws"
 	keyAuthLoginCert         = "auth_login_cert"
 	keyAuthLoginGCP          = "auth_login_gcp"
@@ -49,6 +49,7 @@ const (
 	keyAuthLoginOIDC         = "auth_login_oidc"
 	keyAuthLoginJWT          = "auth_login_jwt"
 	keyAuthLoginAzure        = "auth_login_azure"
+	keyAuthLoginTokenFile    = "auth_login_token_file"
 	keyAuthLogin             = "auth_login"
 	keyClientAuth            = "client_auth"
 	keySkipTLSVerify         = "skip_tls_verify"
@@ -77,6 +78,20 @@ const (
 	serviceAccountTokenPath = "/var/run/secrets/kubernetes.io/serviceaccount/token"
 
 	credentialsSourceKubernetes xpv2.CredentialsSource = "Kubernetes"
+)
+
+// credsKeys are copied from the credentials JSON as they are. authKeys are the
+// auth method blocks, which the Terraform provider declares as single element
+// lists.
+var (
+	credsKeys = []string{keyToken, keyTokenName, keyCaCertFile, keyCaCertDir}
+	authKeys  = []string{
+		keyAuthLoginUserpass, keyAuthLoginAWS,
+		keyAuthLoginCert, keyAuthLoginGCP, keyAuthLoginKerberos,
+		keyAuthLoginRadius, keyAuthLoginOCI, keyAuthLoginOIDC,
+		keyAuthLoginJWT, keyAuthLoginAzure, keyAuthLoginTokenFile,
+		keyAuthLogin, keyClientAuth,
+	}
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -165,8 +180,13 @@ func setProviderConfiguration(pcSpec *namespacedv1beta1.ProviderConfigSpec, ps *
 	if len(pcSpec.VaultVersionOverride) > 0 {
 		ps.Configuration[keyVaultVersionOverride] = pcSpec.VaultVersionOverride
 	}
+	// headers is a list of {name, value} blocks in the Terraform provider
+	// schema; the SDK only understands maps and slices there.
 	if pcSpec.Headers != (namespacedv1beta1.ProviderHeaders{}) {
-		ps.Configuration[keyHeaders] = pcSpec.Headers
+		ps.Configuration[keyHeaders] = []any{map[string]any{
+			"name":  pcSpec.Headers.Name,
+			"value": pcSpec.Headers.Value,
+		}}
 	}
 }
 
@@ -183,7 +203,6 @@ func commonCredentialsAuth(ctx context.Context, client client.Client, pcSpec *na
 
 	// Set credentials in Terraform
 	// provider configuration
-	credsKeys := [...]string{keyToken, keyTokenName, keyCaCertFile, keyCaCertDir}
 	for _, key := range credsKeys {
 		if v, ok := creds[key]; ok {
 			ps.Configuration[key] = v
@@ -191,12 +210,6 @@ func commonCredentialsAuth(ctx context.Context, client client.Client, pcSpec *na
 	}
 	// structured auth methods need to be wrapped in a single element array
 	// see: https://registry.terraform.io/providers/hashicorp/vault/latest/docs#vault-authentication-configuration-options
-	authKeys := [...]string{
-		keyAuthLoginUserpass, keyAuthLoginAWS,
-		keyAuthLoginCert, keyAuthLoginGCP, keyAuthLoginKerberos,
-		keyAuthLoginRadius, keyAuthLoginOCI, keyAuthLoginOIDC,
-		keyAuthLoginJWT, keyAuthLoginAzure, keyAuthLogin, keyClientAuth,
-	}
 	for _, key := range authKeys {
 		if v, ok := creds[key]; ok {
 			ps.Configuration[key] = []interface{}{v}
