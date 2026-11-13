@@ -6,8 +6,12 @@ package clients
 
 import (
 	"context"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/crossplane/upjet/v2/pkg/terraform"
 	"github.com/google/go-cmp/cmp"
@@ -244,4 +248,194 @@ func effectiveToken(t *testing.T, ps terraform.Setup) string {
 		t.Fatalf("GetClient() error = %v", err)
 	}
 	return client.Token()
+}
+
+// fakeMeta is what a configured Terraform provider exposes to effectiveToken.
+type fakeMeta struct{ client *api.Client }
+
+func (m fakeMeta) GetClient() (*api.Client, error) { return m.client, nil }
+
+// newTokenServer answers auth/token/lookup-self for the tokens it knows with
+// their TTL in seconds and refuses every other token, like Vault does for a
+// revoked one.
+func newTokenServer(ttls map[string]int) *httptest.Server {
+	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/v1/auth/token/lookup-self" {
+			http.Error(w, r.URL.Path, http.StatusNotFound)
+			return
+		}
+		ttl, ok := ttls[r.Header.Get("X-Vault-Token")]
+		if !ok {
+			http.Error(w, `{"errors":["permission denied"]}`, http.StatusForbidden)
+			return
+		}
+		fmt.Fprintf(w, `{"data":{"ttl":%d}}`, ttl)
+	}))
+}
+
+// loginProvider mimics the Terraform provider's Configure: a configuration
+// with an auth_login block logs in and gets a fresh token, a configuration
+// with a token uses it as is, and either way the token is looked up, which
+// fails Configure when Vault refuses it.
+func loginProvider(address string, logins *[]string) schema.Provider {
+	return schema.Provider{
+		Schema: tfvault.Provider().Schema,
+		ConfigureContextFunc: func(_ context.Context, d *schema.ResourceData) (any, diag.Diagnostics) {
+			token, _ := d.Get(keyToken).(string)
+			if _, ok := d.GetOk(keyAuthLoginJWT); ok {
+				token = fmt.Sprintf("login-%d", len(*logins)+1)
+				*logins = append(*logins, token)
+			}
+			cfg := api.DefaultConfig()
+			cfg.Address = address
+			c, err := api.NewClient(cfg)
+			if err != nil {
+				return nil, diag.FromErr(err)
+			}
+			c.SetToken(token)
+			if _, err := c.Auth().Token().LookupSelf(); err != nil {
+				return nil, diag.FromErr(err)
+			}
+			return fakeMeta{client: c}, nil
+		},
+	}
+}
+
+const (
+	readerRole = "reader"
+	writerRole = "writer"
+	firstLogin = "login-1"
+)
+
+func jwtConfiguration(role string) terraform.ProviderConfiguration {
+	return terraform.ProviderConfiguration{
+		keyAddress:      testAddress,
+		keyAuthLoginJWT: []any{map[string]any{"jwt": "sa-token", "mount": "kubernetes", "role": role}},
+	}
+}
+
+// TestConfigureWithCachedToken pins the token lifecycle across reconciles:
+// one login per configuration while its token is valid, a new login when the
+// token nears expiry or is refused, and no sharing between configurations.
+func TestConfigureWithCachedToken(t *testing.T) {
+	ttls := map[string]int{firstLogin: 1200, "login-2": 1200, "login-3": 0, "login-4": 1200}
+	server := newTokenServer(ttls)
+	defer server.Close()
+
+	base := time.Date(2026, 10, 27, 12, 0, 0, 0, time.UTC)
+	clock := base
+	now = func() time.Time { return clock }
+	tokens = &tokenCache{entries: map[string]cachedToken{}}
+	t.Cleanup(func() {
+		now = time.Now
+		tokens = &tokenCache{entries: map[string]cachedToken{}}
+	})
+
+	var logins []string
+	p := loginProvider(server.URL, &logins)
+	configure := func(cfg terraform.ProviderConfiguration) terraform.Setup {
+		t.Helper()
+		got, err := configureWithCachedToken(context.Background(), terraform.Setup{Configuration: cfg}, p)
+		if err != nil {
+			t.Fatalf("configureWithCachedToken() error = %v", err)
+		}
+		return got
+	}
+
+	first := configure(jwtConfiguration(readerRole))
+	second := configure(jwtConfiguration(readerRole))
+	if diff := cmp.Diff([]string{firstLogin}, logins); diff != "" {
+		t.Errorf("logins after two reconciles of one configuration: -want +got:\n%s", diff)
+	}
+	if got := effectiveToken(t, second); got != firstLogin {
+		t.Errorf("second reconcile uses token %q, want the first login's", got)
+	}
+	if _, ok := second.Configuration[keyAuthLoginJWT]; ok {
+		t.Errorf("second reconcile still carries %s", keyAuthLoginJWT)
+	}
+	if second.Configuration[keySkipChildToken] != true || second.Configuration[keyToken] != firstLogin {
+		t.Errorf("second reconcile configuration = %v, want the cached token with skip_child_token", second.Configuration)
+	}
+	if first.Configuration[keyToken] != nil {
+		t.Errorf("first reconcile configuration gained a token: %v", first.Configuration[keyToken])
+	}
+
+	configure(jwtConfiguration(writerRole))
+	if diff := cmp.Diff([]string{firstLogin, "login-2"}, logins); diff != "" {
+		t.Errorf("logins after a different configuration: -want +got:\n%s", diff)
+	}
+
+	clock = base.Add(1200*time.Second - tokenRefreshMargin)
+	configure(jwtConfiguration(readerRole))
+	if diff := cmp.Diff([]string{firstLogin, "login-2", "login-3"}, logins); diff != "" {
+		t.Errorf("logins once the token nears expiry: -want +got:\n%s", diff)
+	}
+
+	// login-3 reports no TTL, so it is reused for a bounded time only.
+	clock = clock.Add(tokenReuseWithoutTTL - tokenRefreshMargin - time.Second)
+	if got := effectiveToken(t, configure(jwtConfiguration(readerRole))); got != "login-3" {
+		t.Errorf("token without TTL not reused within the bound, got %q", got)
+	}
+	delete(ttls, "login-3")
+	if got := effectiveToken(t, configure(jwtConfiguration(readerRole))); got != "login-4" {
+		t.Errorf("refused token not replaced by a new login, got %q", got)
+	}
+	if diff := cmp.Diff([]string{firstLogin, "login-2", "login-3", "login-4"}, logins); diff != "" {
+		t.Errorf("logins at the end: -want +got:\n%s", diff)
+	}
+}
+
+// TestConfigureWithCachedTokenAgainstVault counts the tokens that repeated
+// configurations create on a real Vault. Set VAULT_ADDR and VAULT_TOKEN to
+// run it, see TestConfigureNoForkVaultClient.
+func TestConfigureWithCachedTokenAgainstVault(t *testing.T) {
+	addr, token := os.Getenv("VAULT_ADDR"), os.Getenv("VAULT_TOKEN")
+	if addr == "" || token == "" {
+		t.Skip("VAULT_ADDR and VAULT_TOKEN must be set to run this test")
+	}
+	tokens = &tokenCache{entries: map[string]cachedToken{}}
+	t.Cleanup(func() { tokens = &tokenCache{entries: map[string]cachedToken{}} })
+
+	cfg := api.DefaultConfig()
+	cfg.Address = addr
+	root, err := api.NewClient(cfg)
+	if err != nil {
+		t.Fatal(err)
+	}
+	root.SetToken(token)
+	accessors := func() int {
+		t.Helper()
+		s, err := root.Logical().List("auth/token/accessors")
+		if err != nil {
+			t.Fatalf("cannot list token accessors: %v", err)
+		}
+		keys, _ := s.Data["keys"].([]any)
+		return len(keys)
+	}
+
+	const reconciles = 5
+	before := accessors()
+	effective := make([]string, 0, reconciles)
+	for range reconciles {
+		ps := terraform.Setup{}
+		setProviderConfiguration(&namespacedv1beta1.ProviderConfigSpec{Address: addr}, &ps)
+		ps.Configuration[keyToken] = token
+		p := *tfvaultschema.NewProvider(tfvault.Provider()).SchemaProvider()
+		got, err := configureWithCachedToken(context.Background(), ps, p)
+		if err != nil {
+			t.Fatalf("configureWithCachedToken() error = %v", err)
+		}
+		effective = append(effective, effectiveToken(t, got))
+	}
+	if created := accessors() - before; created != 1 {
+		t.Errorf("%d reconciles created %d tokens, want 1 child token", reconciles, created)
+	}
+	for i, tok := range effective {
+		if tok == token {
+			t.Errorf("reconcile %d used the configured token itself, want the child token", i)
+		}
+		if tok != effective[0] {
+			t.Errorf("reconcile %d used token %q, want the child token of the first reconcile", i, tok)
+		}
+	}
 }
