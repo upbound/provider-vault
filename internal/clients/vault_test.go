@@ -7,15 +7,21 @@ package clients
 import (
 	"context"
 	"os"
+	"slices"
+	"strings"
 	"testing"
 
+	"github.com/crossplane/crossplane-runtime/v2/pkg/test"
 	"github.com/crossplane/upjet/v2/pkg/terraform"
 	"github.com/google/go-cmp/cmp"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	tfsdk "github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/hashicorp/vault/api"
+	corev1 "k8s.io/api/core/v1"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 	tfvaultschema "github.com/hashicorp/terraform-provider-vault/schema"
 	tfvault "github.com/hashicorp/terraform-provider-vault/vault"
 
@@ -104,6 +110,22 @@ func TestSetProviderConfiguration(t *testing.T) {
 				keyMaxRetries:         0,
 				keyMaxRetriesCcc:      0,
 				keyAddAddressToEnv:    trueAsString,
+			},
+		},
+		// The Terraform provider declares headers as a list of blocks, and
+		// the SDK panics on anything but maps and slices. See
+		// TestHeadersReachTheProvider.
+		"headers are written as a single element list": {
+			spec: namespacedv1beta1.ProviderConfigSpec{
+				Address: testAddress,
+				Headers: namespacedv1beta1.ProviderHeaders{Name: "X-Vault-Request", Value: trueAsString},
+			},
+			want: terraform.ProviderConfiguration{
+				keyAddress:            testAddress,
+				keyMaxLeaseTTLSeconds: 0,
+				keyMaxRetries:         0,
+				keyMaxRetriesCcc:      0,
+				keyHeaders:            []any{map[string]any{"name": "X-Vault-Request", "value": trueAsString}},
 			},
 		},
 	}
@@ -244,4 +266,93 @@ func effectiveToken(t *testing.T, ps terraform.Setup) string {
 		t.Fatalf("GetClient() error = %v", err)
 	}
 	return client.Token()
+}
+
+// TestHeadersReachTheProvider feeds the headers block through the Terraform
+// provider's own schema for it, which is a list of {name, value} blocks. The
+// SDK walks the raw config with reflection and panics on a Go struct, which is
+// what setProviderConfiguration used to write.
+func TestHeadersReachTheProvider(t *testing.T) {
+	var got any
+	p := schema.Provider{
+		Schema: map[string]*schema.Schema{keyHeaders: tfvault.Provider().Schema[keyHeaders]},
+		ConfigureContextFunc: func(_ context.Context, d *schema.ResourceData) (any, diag.Diagnostics) {
+			got = d.Get(keyHeaders)
+			return nil, nil
+		},
+	}
+
+	ps := terraform.Setup{}
+	setProviderConfiguration(&namespacedv1beta1.ProviderConfigSpec{
+		Address: testAddress,
+		Headers: namespacedv1beta1.ProviderHeaders{Name: "X-Vault-Request", Value: trueAsString},
+	}, &ps)
+
+	if d := p.Configure(context.Background(), &tfsdk.ResourceConfig{
+		Config: map[string]any{keyHeaders: ps.Configuration[keyHeaders]},
+	}); d.HasError() {
+		t.Fatalf("Configure() diagnostics = %v", d)
+	}
+	want := []any{map[string]any{"name": "X-Vault-Request", "value": trueAsString}}
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("d.Get(%q) -want +got:\n%s", keyHeaders, diff)
+	}
+}
+
+// TestCredentialKeysMatchProviderSchema pins the keys forwarded from the
+// credentials JSON against the Terraform provider's schema, so a renamed or
+// mistyped key cannot be dropped silently, and every auth_login block the
+// Terraform provider knows can be used.
+func TestCredentialKeysMatchProviderSchema(t *testing.T) {
+	s := tfvault.Provider().Schema
+	for _, key := range slices.Concat(credsKeys, authKeys) {
+		if _, ok := s[key]; !ok {
+			t.Errorf("%q is forwarded but is not a Terraform provider field", key)
+		}
+	}
+	for key := range s {
+		if strings.HasPrefix(key, keyAuthLogin) && !slices.Contains(authKeys, key) {
+			t.Errorf("Terraform provider auth field %q is not forwarded", key)
+		}
+	}
+}
+
+// TestCommonCredentialsAuthForwardsAuthBlocks checks that a credentials
+// Secret with a token and an auth method block reaches ps.Configuration under
+// the Terraform provider's keys, with the block wrapped as a list.
+func TestCommonCredentialsAuthForwardsAuthBlocks(t *testing.T) {
+	creds := []byte(`{"token_name":"tn","auth_login_userpass":{"username":"u","password":"p"},"auth_login_token_file":{"filename":"/tmp/t"}}`)
+	kube := &test.MockClient{
+		MockGet: test.NewMockGetFn(nil, func(obj client.Object) error {
+			if s, ok := obj.(*corev1.Secret); ok {
+				s.Data = map[string][]byte{"creds": creds}
+			}
+			return nil
+		}),
+	}
+	spec := &namespacedv1beta1.ProviderConfigSpec{
+		Address: testAddress,
+		Credentials: namespacedv1beta1.ProviderCredentials{
+			Source: xpv2.CredentialsSourceSecret,
+			CommonCredentialSelectors: xpv2.CommonCredentialSelectors{
+				SecretRef: &xpv2.SecretKeySelector{
+					SecretReference: xpv2.SecretReference{Name: "vault-creds", Namespace: "crossplane-system"},
+					Key:             "creds",
+				},
+			},
+		},
+	}
+
+	ps := terraform.Setup{Configuration: terraform.ProviderConfiguration{}}
+	if err := commonCredentialsAuth(context.Background(), kube, spec, &ps); err != nil {
+		t.Fatalf("commonCredentialsAuth() error = %v", err)
+	}
+	want := terraform.ProviderConfiguration{
+		keyTokenName:          "tn",
+		keyAuthLoginUserpass:  []any{map[string]any{"username": "u", "password": "p"}},
+		keyAuthLoginTokenFile: []any{map[string]any{"filename": "/tmp/t"}},
+	}
+	if diff := cmp.Diff(want, ps.Configuration); diff != "" {
+		t.Errorf("commonCredentialsAuth() -want +got:\n%s", diff)
+	}
 }
