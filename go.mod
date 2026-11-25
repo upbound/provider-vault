@@ -89,7 +89,6 @@ require (
 	github.com/fxamacker/cbor/v2 v2.9.1 // indirect
 	github.com/getkin/kin-openapi v0.149.0 // indirect
 	github.com/go-asn1-ber/asn1-ber v1.5.8-0.20250403174932-29230038a667 // indirect
-	github.com/go-jose/go-jose/v4 v4.0.0 // indirect
 	github.com/go-jose/go-jose/v4 v4.1.6 // indirect
 	github.com/go-ldap/ldap/v3 v3.4.13 // indirect
 	github.com/go-logr/logr v1.4.4 // indirect
@@ -125,7 +124,7 @@ require (
 	github.com/googleapis/gax-go/v2 v2.22.0 // indirect
 	github.com/gosimple/slug v1.15.0 // indirect
 	github.com/gosimple/unidecode v1.0.1 // indirect
-	github.com/hashicorp/cap v0.12.0 // indirect
+	github.com/hashicorp/cap v0.15.0 // indirect
 	github.com/hashicorp/cap/ldap v0.0.0-20250911140431-44d01434c285 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-checkpoint v0.5.0 // indirect
@@ -167,7 +166,7 @@ require (
 	github.com/hashicorp/terraform-plugin-testing v1.15.0 // indirect
 	github.com/hashicorp/terraform-registry-address v0.4.0 // indirect
 	github.com/hashicorp/terraform-svchost v0.1.1 // indirect
-	github.com/hashicorp/vault-plugin-auth-jwt v0.26.1 // indirect
+	github.com/hashicorp/vault-plugin-auth-jwt v0.27.3 // indirect
 	github.com/hashicorp/vault-plugin-auth-kerberos v0.17.1 // indirect
 	github.com/hashicorp/vault-plugin-auth-oci v0.21.1 // indirect
 	github.com/hashicorp/vault/sdk v0.25.1 // indirect
@@ -273,11 +272,11 @@ require (
 	golang.org/x/time v0.16.0 // indirect
 	golang.org/x/tools v0.52.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
-	google.golang.org/api v0.278.0 // indirect
+	google.golang.org/api v0.279.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/genproto v0.0.0-20260420184626-e10c466a9529 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260803160001-6ac0973c030d // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260803160001-6ac0973c030d // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260819154853-08b0e4226688 // indirect
 	google.golang.org/protobuf v1.36.12 // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.13.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
